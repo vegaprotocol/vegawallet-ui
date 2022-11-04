@@ -39,6 +39,7 @@
     "react-hook-form": "^7.39.1",
     "react-hook-thunk-reducer": "^0.3.0",
     "react-router-dom": "^6.4.3",
+    "react-spring": "^9.5.5",
     "zod": "^3.19.1"
   },
   "lint-staged": {
