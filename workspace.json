@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "projects": {
+    "wallet-ui": "libs/wallet-ui",
+    "wallet-client": "libs/wallet-client"
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
+}

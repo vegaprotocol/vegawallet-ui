@@ -1,0 +1,24 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {
+      "@vegaprotocol/wallet-client": ["libs/wallet-client/src/index.ts"],
+      "@vegaprotocol/wallet-ui": ["libs/wallet-ui/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

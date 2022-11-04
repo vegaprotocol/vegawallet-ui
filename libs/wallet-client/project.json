@@ -1,0 +1,50 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/wallet-client/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/wallet-client",
+        "tsConfig": "libs/wallet-client/tsconfig.lib.json",
+        "project": "libs/wallet-client/package.json",
+        "entryFile": "libs/wallet-client/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/wallet-client/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/wallet-client/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/wallet-client"],
+      "options": {
+        "jestConfig": "libs/wallet-client/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "build-spec": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn tsc --project ./libs/wallet-client/tsconfig.spec.json"
+      }
+    }
+  }
+}
