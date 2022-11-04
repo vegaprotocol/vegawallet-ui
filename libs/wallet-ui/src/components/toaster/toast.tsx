@@ -21,7 +21,7 @@ export function Toast({
   intent = Intent.NONE,
   timeout = 2000
 }: ToastProps) {
-  const timeoutRef = useRef<any>()
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>()
 
   const startTimeout = () => {
     if (timeout && timeout > 0) {
@@ -48,7 +48,7 @@ export function Toast({
     return () => {
       cancelTimeout()
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -62,18 +62,20 @@ export function Toast({
       }}
       data-testid='toast'
     >
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
         style={{
           position: 'relative',
           padding: '10px 45px 10px 15px',
           background: IntentBackgrounds[intent]
         }}
+        role="alert"
         onBlur={startTimeout}
         onFocus={cancelTimeout}
         onMouseEnter={cancelTimeout}
         onMouseLeave={startTimeout}
+        /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
         tabIndex={0}
-        role='alert'
       >
         <span style={{ wordBreak: 'break-word' }}>{message}</span>
         <ButtonUnstyled

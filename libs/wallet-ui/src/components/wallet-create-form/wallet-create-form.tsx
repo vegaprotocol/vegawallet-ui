@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 
 import { ButtonUnstyled } from '../../components/button-unstyled'
@@ -24,10 +24,15 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
     control,
     register,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm<FormFields>()
 
   const passphrase = useWatch({ control, name: 'passphrase' })
+
+  useEffect(() => {
+    setFocus('wallet')
+  }, [setFocus])
 
   return (
     <form data-testid='create-wallet-form' onSubmit={handleSubmit(submit)}>
@@ -39,7 +44,6 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         <Input
           data-testid='create-wallet-form-name'
           type='text'
-          autoFocus={true}
           {...register('wallet', { required: Validation.REQUIRED })}
           autoComplete='off'
         />

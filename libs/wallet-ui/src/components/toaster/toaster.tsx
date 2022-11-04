@@ -24,11 +24,11 @@ interface ToasterState {
   toasts: Toast[]
 }
 
-export class Toaster extends React.Component<any, ToasterState> {
+export class Toaster extends React.Component<undefined, ToasterState> {
   toastId = 0
   container: HTMLDivElement | null = null
 
-  state: ToasterState = {
+  override state: ToasterState = {
     toasts: []
   }
 
@@ -46,8 +46,7 @@ export class Toaster extends React.Component<any, ToasterState> {
     container.style.padding = '30px 20px 20px'
     container.style.zIndex = '10'
     document.body.appendChild(container)
-    // @ts-ignore
-    const toaster = ReactDOM.render(<Toaster />, container) as Toaster
+    const toaster = ReactDOM.render(<Toaster />, container)
     return toaster
   }
 
@@ -74,12 +73,12 @@ export class Toaster extends React.Component<any, ToasterState> {
     })
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     this.container = document.createElement('div')
     this.container.className = 'toaster-portal-container'
   }
 
-  render() {
+  override render() {
     if (this.container === null) {
       return null
     }

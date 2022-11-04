@@ -1,5 +1,5 @@
 import { produce } from 'immer'
-import omit from 'lodash/omit'
+import { omit } from 'ramda'
 import { nanoid } from 'nanoid'
 import { useEffect, useState } from 'react'
 
@@ -64,7 +64,7 @@ export function InteractionManager() {
       onFinish={() => {
         setInteractions(interactions => ({
           ids: interactions.ids.slice(1),
-          values: omit(interactions.values, interactions.ids.slice(0, 1))
+          values: omit(interactions.ids.slice(0, 1), interactions.values)
         }))
       }}
     />

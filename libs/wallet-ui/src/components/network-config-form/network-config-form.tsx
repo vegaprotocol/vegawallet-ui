@@ -1,11 +1,11 @@
 import React from 'react'
 import type { Control, UseFormRegister } from 'react-hook-form'
 import { useFieldArray, useForm } from 'react-hook-form'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
-import type { WalletModel } from '../../wallet-client'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
 import { Select } from '../forms'
@@ -146,14 +146,16 @@ export const NetworkConfigForm = ({
   )
 }
 
+type ArrayFields = 'graphqlHosts' | 'grpcHosts' | 'restHosts' | 'restHosts'
+
 interface NodeEditorProps {
-  name: string
+  name: ArrayFields
   control: Control<FormFields, object>
   register: UseFormRegister<FormFields>
 }
 
 function HostEditor({ name, control, register }: NodeEditorProps) {
-  const { fields, append, remove } = useFieldArray<FormFields, any>({
+  const { fields, append, remove } = useFieldArray<FormFields, ArrayFields>({
     control,
     name
   })
@@ -170,7 +172,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
               <Input
                 data-testid='node-list'
                 type='text'
-                {...register(`${name}.${i}.value` as any, {
+                {...register(`${name}.${i}.value`, {
                   required: Validation.REQUIRED,
                   pattern: Validation.URL
                 })}
@@ -192,7 +194,7 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
         })}
       </ul>
       <div>
-        <Button data-testid='add' type='button' onClick={() => append('')}>
+        <Button data-testid='add' type='button' onClick={() => append({ value: '' })}>
           Add
         </Button>
       </div>

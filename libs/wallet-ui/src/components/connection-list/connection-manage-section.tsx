@@ -1,9 +1,9 @@
-import startCase from 'lodash/startCase'
+import { sentenceCase } from 'change-case'
 import type { Control } from 'react-hook-form'
 import { Controller, useFieldArray } from 'react-hook-form'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { truncateMiddle } from '../../lib/truncate-middle'
-import type { WalletModel } from '../../wallet-client'
 import { Checkbox } from '../checkbox'
 import { RadioGroup } from '../radio-group'
 import { Title } from '../title'
@@ -23,7 +23,7 @@ export const PermissionSection = ({
   accessType,
   control
 }: PermissionSectionProps) => {
-  const title = startCase(accessType)
+  const title = sentenceCase(accessType)
   const { fields } = useFieldArray({
     name: `${accessType}.restrictedKeys`,
     control

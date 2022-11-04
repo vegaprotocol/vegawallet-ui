@@ -1,4 +1,4 @@
-import omit from 'lodash/omit'
+import { omit } from 'ramda'
 
 import type { RequestTransactionReview } from '../components/interaction-manager/types'
 
@@ -60,7 +60,7 @@ const getPayload = (transaction: string): TransactionData => {
 
 const getType = (payload: object) => {
   return Object.keys(
-    omit(payload, ['blockHeight', 'nonce'])
+    omit(['blockHeight', 'nonce'], payload)
   )[0] as TransactionKeys
 }
 

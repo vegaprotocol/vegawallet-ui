@@ -47,7 +47,7 @@ export const Passphrase = ({
             source &&
             source.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
           ) {
-            const { wallet, hostname } = source?.event.data
+            const { wallet, hostname } = source?.event.data || {}
 
             const { permissions } = await service.WalletApi.DescribePermissions(
               {

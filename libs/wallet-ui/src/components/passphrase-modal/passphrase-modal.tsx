@@ -12,9 +12,9 @@ import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
 
 interface ModalHandler {
-  open: Function
-  resolve: Function
-  close: Function
+  open: () => void
+  resolve: (passphrase: string) => void
+  close: () => void
 }
 
 const handler: ModalHandler = {
@@ -79,8 +79,13 @@ function PassphraseModalForm({
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm<FormFields>()
+
+  useEffect(() => {
+    setFocus('passphrase')
+  }, [setFocus])
 
   return (
     <form
@@ -98,7 +103,6 @@ function PassphraseModalForm({
           data-testid='input-passphrase'
           type='password'
           autoComplete='off'
-          autoFocus={true}
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>

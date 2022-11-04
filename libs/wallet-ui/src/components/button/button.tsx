@@ -165,6 +165,7 @@ export const AnchorButton = React.forwardRef(
       <a
         ref={ref}
         role='button'
+        tabIndex={0}
         {...props}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

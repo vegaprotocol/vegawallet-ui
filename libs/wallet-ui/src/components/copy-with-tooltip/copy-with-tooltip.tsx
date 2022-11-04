@@ -13,16 +13,18 @@ export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
   const [copied, setCopied] = React.useState(false)
 
   React.useEffect(() => {
-    let timeout: any
+    let timeout: NodeJS.Timeout | undefined
 
     if (copied) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setCopied(false)
       }, 800)
     }
 
     return () => {
-      clearTimeout(timeout)
+      if (timeout) {
+        clearTimeout(timeout)
+      }
     }
   }, [copied])
 

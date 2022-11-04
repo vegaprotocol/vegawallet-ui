@@ -194,7 +194,7 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                                   placeholder='key'
                                   data-testid='metadata-key'
                                   aria-invalid={
-                                    !!errors.meta?.[index + 1]?.key
+                                    errors.meta?.[index + 1]?.key
                                       ? 'true'
                                       : 'false'
                                   }
@@ -218,7 +218,7 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                                   placeholder='value'
                                   data-testid='metadata-value'
                                   aria-invalid={
-                                    !!errors.meta?.[index + 1]?.value
+                                    errors.meta?.[index + 1]?.value
                                       ? 'true'
                                       : 'false'
                                   }

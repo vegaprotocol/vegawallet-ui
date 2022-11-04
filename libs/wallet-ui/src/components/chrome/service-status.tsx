@@ -63,8 +63,7 @@ export function ServiceStatus() {
       return (
         <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle background={Colors.VEGA_GREEN} />
-          <>
-            Wallet Service:{' '}
+          Wallet Service:{' '}
             <span
               style={{
                 fontFamily: Fonts.MONO,
@@ -75,7 +74,6 @@ export function ServiceStatus() {
               {network}
             </span>{' '}
             on <code>{serviceUrl}</code>
-          </>
         </div>
       )
     }

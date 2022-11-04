@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
@@ -14,7 +15,7 @@ type TransactionDetailsProps = {
 }
 
 const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
-  const rows = [
+  const rows: Array<{ key?: string, value: ReactNode }> = [
     {
       value: <TransactionStatus transaction={transaction} />
     },
@@ -45,7 +46,7 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
           <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
         </a>
       ) : (
-        <>{transaction.blockHeight}</>
+        transaction.blockHeight
       )
     })
   }

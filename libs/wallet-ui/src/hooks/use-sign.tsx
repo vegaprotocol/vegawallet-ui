@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
@@ -11,7 +11,7 @@ const logger = createLogger('Sign')
 export const useSign = (pubKey?: string, wallet?: string) => {
   const { service } = useGlobal()
   const [signedData, setSignedData] = useState<string>('')
-  const sign = React.useCallback(
+  const sign = useCallback(
     async (values: { message: string }) => {
       try {
         if (!pubKey || !wallet) {
@@ -23,10 +23,8 @@ export const useSign = (pubKey?: string, wallet?: string) => {
           wallet,
           passphrase,
           pubKey,
-          // @ts-ignore
           encodedMessage: btoa(values.message)
         })
-        // @ts-ignore
         setSignedData(resp.encodedSignature)
         AppToaster.show({
           message: `Message signed successfully`,

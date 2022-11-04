@@ -3,10 +3,9 @@ import {
   captureException,
   captureMessage,
   init,
-  Severity
 } from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
-import once from 'lodash/once'
+import { once } from 'ramda'
 import log from 'loglevel'
 
 import packageJson from '../../package.json'
@@ -28,7 +27,7 @@ log.methodFactory = (methodName, logLevel, loggerName) => {
     if (methodName === 'debug') {
       addBreadcrumb({
         type: loggerName.toString(),
-        level: Severity.Debug,
+        level: 'debug',
         message,
         timestamp: Date.now()
       })

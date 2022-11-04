@@ -1,4 +1,4 @@
-import omit from 'lodash/omit'
+import { omit } from 'ramda'
 
 import { indexBy } from '../../lib/index-by'
 import type { NetworkPreset } from '../../lib/networks'
@@ -339,7 +339,7 @@ export function globalReducer(
       return {
         ...state,
         wallet: null,
-        wallets: omit(state.wallets, [action.wallet])
+        wallets: omit([action.wallet], state.wallets)
       }
     }
     case 'SET_KEYPAIRS': {

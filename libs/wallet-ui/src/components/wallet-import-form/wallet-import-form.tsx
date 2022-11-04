@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 
 import { Validation } from '../../lib/form-validation'
@@ -33,9 +33,14 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
     control,
     register,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm<FormFields>()
   const passphrase = useWatch({ control, name: 'passphrase' })
+
+  useEffect(() => {
+    setFocus('wallet')
+  }, [setFocus])
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -48,7 +53,6 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
           data-testid='wallet-name'
           type='text'
           {...register('wallet', { required: Validation.REQUIRED })}
-          autoFocus={true}
         />
       </FormGroup>
       <FormGroup
