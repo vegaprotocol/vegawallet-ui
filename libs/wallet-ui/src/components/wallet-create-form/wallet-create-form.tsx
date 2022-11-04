@@ -25,7 +25,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
     register,
     handleSubmit,
     setFocus,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormFields>()
 
   const passphrase = useWatch({ control, name: 'passphrase' })
@@ -35,46 +35,46 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
   }, [setFocus])
 
   return (
-    <form data-testid='create-wallet-form' onSubmit={handleSubmit(submit)}>
+    <form data-testid="create-wallet-form" onSubmit={handleSubmit(submit)}>
       <FormGroup
-        label='Name'
-        labelFor='wallet'
+        label="Name"
+        labelFor="wallet"
         helperText={errors.wallet?.message}
       >
         <Input
-          data-testid='create-wallet-form-name'
-          type='text'
+          data-testid="create-wallet-form-name"
+          type="text"
           {...register('wallet', { required: Validation.REQUIRED })}
-          autoComplete='off'
+          autoComplete="off"
         />
       </FormGroup>
       <FormGroup
-        label='Passphrase'
-        labelFor='passphrase'
+        label="Passphrase"
+        labelFor="passphrase"
         helperText={errors.passphrase?.message}
       >
         <Input
-          data-testid='create-wallet-form-passphrase'
-          type='password'
+          data-testid="create-wallet-form-passphrase"
+          type="password"
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
-        label='Confirm passphrase'
-        labelFor='confirmPassphrase'
+        label="Confirm passphrase"
+        labelFor="confirmPassphrase"
         helperText={errors.confirmPassphrase?.message}
       >
         <Input
-          data-testid='create-wallet-form-passphrase-confirm'
-          type='password'
+          data-testid="create-wallet-form-passphrase-confirm"
+          type="password"
           {...register('confirmPassphrase', {
             required: Validation.REQUIRED,
-            pattern: Validation.match(passphrase)
+            pattern: Validation.match(passphrase),
           })}
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid='submit' type='submit'>
+        <Button data-testid="submit" type="submit">
           Submit
         </Button>
         <ButtonUnstyled onClick={cancel}>Cancel</ButtonUnstyled>

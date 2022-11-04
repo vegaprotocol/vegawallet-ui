@@ -13,7 +13,7 @@ interface NetworkConfigContainerProps {
 
 export function NetworkConfigContainer({
   children,
-  name
+  name,
 }: NetworkConfigContainerProps) {
   const { config, loading } = useNetworkConfig(name)
 

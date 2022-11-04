@@ -8,7 +8,7 @@ import type { InteractionContentProps, RequestPassphrase } from '../types'
 import {
   EVENT_FLOW_TYPE,
   INTERACTION_RESPONSE_TYPE,
-  INTERACTION_TYPE
+  INTERACTION_TYPE,
 } from '../types'
 
 export const Passphrase = ({
@@ -16,7 +16,7 @@ export const Passphrase = ({
   flow,
   history,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<RequestPassphrase>) => {
   const { service, dispatch } = useGlobal()
 
@@ -32,13 +32,13 @@ export const Passphrase = ({
           traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.ENTERED_PASSPHRASE,
           data: {
-            passphrase
-          }
+            passphrase,
+          },
         })
 
         if (flow === EVENT_FLOW_TYPE.PERMISSION_REQUEST) {
           const source = history.find(
-            interaction =>
+            (interaction) =>
               interaction.event.name ===
               INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
           )
@@ -53,7 +53,7 @@ export const Passphrase = ({
               {
                 wallet,
                 passphrase,
-                hostname
+                hostname,
               }
             )
 
@@ -63,8 +63,8 @@ export const Passphrase = ({
               connection: {
                 hostname,
                 active: true,
-                permissions
-              }
+                permissions,
+              },
             })
           }
         }
@@ -75,12 +75,12 @@ export const Passphrase = ({
           await service.RespondToInteraction({
             traceID: event.traceID,
             name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
-            data: {}
+            data: {},
           })
         } else {
           AppToaster.show({
             message: `${err}`,
-            intent: Intent.DANGER
+            intent: Intent.DANGER,
           })
         }
       }

@@ -26,7 +26,7 @@ export function useCheckForUpdate() {
               </>
             ),
             timeout: 0,
-            intent: Intent.PRIMARY
+            intent: Intent.PRIMARY,
           })
         }
       } catch (err) {

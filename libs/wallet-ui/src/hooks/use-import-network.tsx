@@ -34,12 +34,12 @@ export function useImportNetwork() {
           name,
           filePath,
           url,
-          overwrite: force
+          overwrite: force,
         })
 
         if (res && res.name) {
           const config = await service.WalletApi.DescribeNetwork({
-            network: res.name
+            network: res.name,
           })
 
           // Update the config
@@ -50,7 +50,7 @@ export function useImportNetwork() {
 
           AppToaster.show({
             message: `Network imported to: ${res.filePath}`,
-            intent: Intent.SUCCESS
+            intent: Intent.SUCCESS,
           })
         } else {
           throw new Error("Error: couldn't import network configuration")
@@ -63,7 +63,7 @@ export function useImportNetwork() {
         setStatus(FormStatus.Error)
         AppToaster.show({
           message,
-          intent: Intent.DANGER
+          intent: Intent.DANGER,
         })
       }
     },
@@ -74,7 +74,7 @@ export function useImportNetwork() {
     status,
     response,
     submit,
-    error
+    error,
   }
 }
 
@@ -87,7 +87,7 @@ function createImportNetworkArgs(values: ImportNetworkArgs) {
       name: values.name,
       url: isUrl ? values.fileOrUrl : '',
       filePath: !isUrl ? values.fileOrUrl : '',
-      force: values.force
+      force: values.force,
     }
   }
 
@@ -96,6 +96,6 @@ function createImportNetworkArgs(values: ImportNetworkArgs) {
     name: '',
     url: values.network,
     filePath: '',
-    force: false
+    force: false,
   }
 }

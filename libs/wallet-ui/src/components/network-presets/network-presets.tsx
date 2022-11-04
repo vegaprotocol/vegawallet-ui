@@ -12,7 +12,7 @@ const hasImportedTestNetworks = (
   networks: string[]
 ) => {
   return testPresets.reduce<boolean>((acc, preset) => {
-    return acc || !!networks.find(n => n === preset.name)
+    return acc || !!networks.find((n) => n === preset.name)
   }, false)
 }
 
@@ -20,7 +20,7 @@ const itemStyles = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  margin: '12px 0'
+  margin: '12px 0',
 }
 
 type NetworkPresetItemProps = {
@@ -32,11 +32,11 @@ type NetworkPresetItemProps = {
 const NetworkPresetItem = ({
   preset,
   onEdit,
-  onRemove
+  onRemove,
 }: NetworkPresetItemProps) => {
   const { state } = useGlobal()
   const { submit } = useImportNetwork()
-  const isImported = state.networks.find(n => n === preset.name)
+  const isImported = state.networks.find((n) => n === preset.name)
 
   return (
     <div style={itemStyles}>
@@ -50,7 +50,7 @@ const NetworkPresetItem = ({
                 name: preset.name,
                 fileOrUrl: preset.configFileUrl,
                 network: preset.configFileUrl,
-                force: false
+                force: false,
               })
             }
           >
@@ -88,7 +88,7 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
   const {
     actions,
     dispatch,
-    state: { networks, presets, presetsInternal }
+    state: { networks, presets, presetsInternal },
   } = useGlobal()
   const [showTestNetworks, setShowTestNetworks] = useState(
     hasImportedTestNetworks(presetsInternal, networks)
@@ -96,8 +96,8 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
 
   const myNetworks = useMemo(() => {
     return networks.reduce<string[]>((acc, network) => {
-      const isPreset = !!presets.find(p => p.name === network)
-      const isPresetInternal = !!presetsInternal.find(p => p.name === network)
+      const isPreset = !!presets.find((p) => p.name === network)
+      const isPresetInternal = !!presetsInternal.find((p) => p.name === network)
 
       if (!isPreset && !isPresetInternal) {
         acc.push(network)
@@ -110,7 +110,7 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
   return (
     <>
       <Title>Networks</Title>
-      {presets.map(preset => (
+      {presets.map((preset) => (
         <NetworkPresetItem
           key={preset.name}
           preset={preset}
@@ -125,7 +125,7 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
       {showTestNetworks && (
         <>
           <Title>Test Networks</Title>
-          {presetsInternal.map(preset => (
+          {presetsInternal.map((preset) => (
             <NetworkPresetItem
               key={preset.name}
               preset={preset}
@@ -141,7 +141,7 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
       )}
       {!showTestNetworks && (
         <ButtonUnstyled
-          data-testid='show-test-networks'
+          data-testid="show-test-networks"
           style={{ margin: '20px 0 0' }}
           onClick={() => setShowTestNetworks(!showTestNetworks)}
         >
@@ -149,7 +149,7 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
         </ButtonUnstyled>
       )}
       {myNetworks.length > 0 && <Title>My Networks</Title>}
-      {myNetworks.map(network => (
+      {myNetworks.map((network) => (
         <div key={network} style={itemStyles}>
           <div>{network}</div>
           <div style={{ display: 'flex', gap: 12 }}>

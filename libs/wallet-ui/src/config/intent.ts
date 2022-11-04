@@ -3,7 +3,7 @@ export const Intent = {
   PRIMARY: 'primary' as const,
   SUCCESS: 'success' as const,
   WARNING: 'warning' as const,
-  DANGER: 'danger' as const
+  DANGER: 'danger' as const,
 }
 
 // eslint-disable-next-line

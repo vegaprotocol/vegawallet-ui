@@ -11,7 +11,7 @@ const style: React.CSSProperties = {
   border: 0,
   background: 'transparent',
   padding: 0,
-  textDecoration: 'underline'
+  textDecoration: 'underline',
 }
 
 export const ButtonUnstyled = React.forwardRef(
@@ -21,12 +21,12 @@ export const ButtonUnstyled = React.forwardRef(
   ) => {
     return (
       <button
-        type='button'
+        type="button"
         ref={ref}
         {...props}
         style={{
           ...style,
-          ...props.style
+          ...props.style,
         }}
       />
     )

@@ -14,19 +14,19 @@ export function BulletListItem({ children, ...props }: BulletListItemProps) {
     <li {...props}>
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         <svg
-          width='11'
-          height='11'
-          viewBox='0 0 11 11'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
+          width="11"
+          height="11"
+          viewBox="0 0 11 11"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
           style={{
             position: 'relative',
             top: 7,
             display: 'inline-block',
-            marginRight: 10
+            marginRight: 10,
           }}
         >
-          <rect width='11' height='11' fill='currentColor'></rect>
+          <rect width="11" height="11" fill="currentColor"></rect>
         </svg>
         <div style={{ flex: 1 }}>{children}</div>
       </div>

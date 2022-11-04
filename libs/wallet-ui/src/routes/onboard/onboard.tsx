@@ -22,7 +22,7 @@ export function Onboard() {
     dispatch,
     actions,
     service,
-    state: { networks, wallets }
+    state: { networks, wallets },
   } = useGlobal()
 
   const handleImportExistingWallet = async () => {
@@ -39,13 +39,13 @@ export function Onboard() {
           ? config.defaultNetwork
           : networks[0]
         const defaultNetworkConfig = await service.WalletApi.DescribeNetwork({
-          network: defaultNetwork
+          network: defaultNetwork,
         })
         dispatch({
           type: 'ADD_NETWORKS',
           networks,
           network: defaultNetwork,
-          networkConfig: defaultNetworkConfig
+          networkConfig: defaultNetworkConfig,
         })
       }
 
@@ -80,22 +80,22 @@ export function Onboard() {
         width: '545px',
         margin: 'auto',
         textAlign: 'center',
-        paddingTop: 82
+        paddingTop: 82,
       }}
     >
       <Title style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
         <Vega />
       </Title>
       {renderExistingMessage()}
-      <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
+      <ButtonGroup orientation="vertical" style={{ marginBottom: 20 }}>
         <Button
-          data-testid='create-new-wallet'
+          data-testid="create-new-wallet"
           onClick={() => navigate('/wallet-create')}
         >
           Create new wallet
         </Button>
         <Button
-          data-testid='import-wallet'
+          data-testid="import-wallet"
           onClick={() => navigate('/wallet-import')}
         >
           Use recovery phrase

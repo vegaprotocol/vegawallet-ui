@@ -55,7 +55,7 @@ function App() {
     <ErrorBoundary
       fallback={({ error }) => (
         <SplashError
-          title='Somthing went wrong'
+          title="Somthing went wrong"
           message={error.message}
           actions={[<Button onClick={WindowReload}>Reload</Button>]}
         />

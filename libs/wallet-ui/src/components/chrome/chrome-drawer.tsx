@@ -19,20 +19,20 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
     to: {
       y: state.drawerState.isOpen
         ? -(height - APP_FRAME_HEIGHT - DRAWER_HEIGHT)
-        : 0
+        : 0,
     },
-    config: { ...config.default, duration: 170 }
+    config: { ...config.default, duration: 170 },
   })
 
   return (
     <animated.div
-      className='vega-border-image'
+      className="vega-border-image"
       style={{
         translateY: styles.y,
         background: Colors.BLACK,
         borderTop: '3px solid',
         height: height - APP_FRAME_HEIGHT,
-        overflowY: state.drawerState.isOpen ? 'auto' : 'hidden'
+        overflowY: state.drawerState.isOpen ? 'auto' : 'hidden',
       }}
     >
       <DrawerContent />

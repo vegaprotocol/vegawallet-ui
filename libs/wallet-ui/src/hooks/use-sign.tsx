@@ -23,12 +23,12 @@ export const useSign = (pubKey?: string, wallet?: string) => {
           wallet,
           passphrase,
           pubKey,
-          encodedMessage: btoa(values.message)
+          encodedMessage: btoa(values.message),
         })
         setSignedData(resp.encodedSignature)
         AppToaster.show({
           message: `Message signed successfully`,
-          intent: Intent.SUCCESS
+          intent: Intent.SUCCESS,
         })
       } catch (err) {
         AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
@@ -40,6 +40,6 @@ export const useSign = (pubKey?: string, wallet?: string) => {
   return {
     signedData,
     setSignedData,
-    sign
+    sign,
   }
 }

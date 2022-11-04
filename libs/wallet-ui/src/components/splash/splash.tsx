@@ -25,7 +25,7 @@ export function Splash({ children, style, ...props }: SplashProps) {
         padding: 20,
         overflowY: 'auto',
         color: Colors.WHITE,
-        ...style
+        ...style,
       }}
     >
       <div
@@ -36,7 +36,7 @@ export function Splash({ children, style, ...props }: SplashProps) {
           flexDirection: 'column',
           justifyContent: 'center',
           maxWidth: '100%',
-          padding: 20
+          padding: 20,
         }}
       >
         {children}

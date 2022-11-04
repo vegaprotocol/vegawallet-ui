@@ -19,7 +19,7 @@ export function Toast({
   message,
   onDismiss,
   intent = Intent.NONE,
-  timeout = 2000
+  timeout = 2000,
 }: ToastProps) {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>()
 
@@ -58,16 +58,16 @@ export function Toast({
         borderRadius: 2,
         maxWidth: '90vw',
         overflow: 'hidden',
-        pointerEvents: 'all' // Re enable pointer events as overlay container disables
+        pointerEvents: 'all', // Re enable pointer events as overlay container disables
       }}
-      data-testid='toast'
+      data-testid="toast"
     >
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
         style={{
           position: 'relative',
           padding: '10px 45px 10px 15px',
-          background: IntentBackgrounds[intent]
+          background: IntentBackgrounds[intent],
         }}
         role="alert"
         onBlur={startTimeout}
@@ -79,7 +79,7 @@ export function Toast({
       >
         <span style={{ wordBreak: 'break-word' }}>{message}</span>
         <ButtonUnstyled
-          data-testid='close'
+          data-testid="close"
           onClick={dismiss}
           style={{ position: 'absolute', top: 0, right: 0 }}
         >

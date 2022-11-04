@@ -14,7 +14,7 @@ import { useCurrentWallet } from '../../hooks/use-current-wallet'
 
 enum Tabs {
   KEYPAIRS = 'Keypairs',
-  CONNECTIONS = 'Connections'
+  CONNECTIONS = 'Connections',
 }
 
 type TabTitlesProps = {
@@ -25,10 +25,10 @@ type TabTitlesProps = {
 const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
   return (
     <div style={{ display: 'flex', gap: 20 }}>
-      {Object.values(Tabs).map(tab => (
+      {Object.values(Tabs).map((tab) => (
         <Title
           key={tab}
-          element='h2'
+          element="h2"
           onClick={() => setTab(tab)}
           style={{
             cursor: 'pointer',
@@ -38,7 +38,7 @@ const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
               tab === activeTab ? Colors.WHITE : 'transparent'
             }`,
             color:
-              tab === activeTab ? Colors.WHITE : Colors.TEXT_COLOR_DEEMPHASISE
+              tab === activeTab ? Colors.WHITE : Colors.TEXT_COLOR_DEEMPHASISE,
           }}
         >
           {tab}
@@ -55,14 +55,14 @@ export function WalletList() {
   const { wallet } = useCurrentWallet()
 
   if (!wallet) {
-    return <Navigate to='/' />
+    return <Navigate to="/" />
   }
 
   return (
     <>
       <Header
         title={wallet.name}
-        breadcrumb='Wallets'
+        breadcrumb="Wallets"
         onBack={() => {
           dispatch(actions.deactivateWalletAction(wallet.name))
           navigate('/')
@@ -73,7 +73,7 @@ export function WalletList() {
         {tab === Tabs.KEYPAIRS && (
           <KeypairList
             wallet={wallet}
-            onClick={publicKey =>
+            onClick={(publicKey) =>
               navigate(
                 `/wallet/${encodeURIComponent(
                   wallet.name
@@ -83,10 +83,10 @@ export function WalletList() {
           />
         )}
         {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
-        <ButtonGroup orientation='vertical' style={{ padding: '20px 0' }}>
+        <ButtonGroup orientation="vertical" style={{ padding: '20px 0' }}>
           {tab === Tabs.KEYPAIRS && (
             <Button
-              data-testid='generate-keypair'
+              data-testid="generate-keypair"
               onClick={() => {
                 dispatch(actions.addKeypairAction(wallet.name))
               }}
@@ -98,7 +98,7 @@ export function WalletList() {
             onClick={() =>
               dispatch({ type: 'SET_REMOVE_WALLET_MODAL', open: true })
             }
-            data-testid='remove-wallet'
+            data-testid="remove-wallet"
           >
             Remove wallet
           </ButtonUnstyled>

@@ -24,13 +24,13 @@ const getMessageIntent = (type: LogContent['type']) => {
 export const LogComponent = ({
   event,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<Log>) => {
   useEffect(() => {
     if (!isResolved) {
       AppToaster.show({
         message: event.data.message,
-        intent: getMessageIntent(event.data.type)
+        intent: getMessageIntent(event.data.type),
       })
       setResolved(true)
     }

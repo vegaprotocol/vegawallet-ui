@@ -4,7 +4,7 @@ import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import type {
   backend as BackendModel,
-  version as VersionModel
+  version as VersionModel,
 } from '../../wailsjs/go/models'
 import { AnchorButton, Button } from '../button'
 import { ButtonGroup } from '../button-group'
@@ -28,8 +28,8 @@ const findNetworkData = (
   return {
     supportedVersion: version.backend.version,
     networkData: version.backend.networksCompatibility.find(
-      n => n.network === network
-    )
+      (n) => n.network === network
+    ),
   }
 }
 
@@ -98,12 +98,12 @@ export const NetworkCompatibilityDialog = () => {
         const version = await service.GetVersion()
         dispatch({
           type: 'SET_VERSION',
-          version
+          version,
         })
       } catch (err) {
         AppToaster.show({
           intent: Intent.DANGER,
-          message: 'There was an error checking for new releases'
+          message: 'There was an error checking for new releases',
         })
       }
     }
@@ -134,7 +134,7 @@ export const NetworkCompatibilityDialog = () => {
       const version = await service.GetVersion()
       dispatch({
         type: 'SET_VERSION',
-        version
+        version,
       })
 
       dispatch(actions.changeNetworkAction(network))
@@ -150,8 +150,8 @@ export const NetworkCompatibilityDialog = () => {
 
   return (
     <Dialog
-      size='lg'
-      data-testid='network-compatibility-dialog'
+      size="lg"
+      data-testid="network-compatibility-dialog"
       open={isOpen}
       title={title}
     >
@@ -176,16 +176,16 @@ export const NetworkCompatibilityDialog = () => {
           )}
           <ButtonGroup inline style={{ padding: `20px 0` }}>
             <AnchorButton
-              data-testid='network-compatibility-release'
-              href='https://github.com/vegaprotocol/vegawallet-desktop/releases'
-              target='_blank'
-              rel='noopener noreferrer'
+              data-testid="network-compatibility-release"
+              href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Get a compatible release
             </AnchorButton>
             {compatibleNetworksList.length > 0 && (
               <Button
-                data-testid='network-compatibility-change'
+                data-testid="network-compatibility-change"
                 onClick={() => setSubview('change')}
               >
                 Change network
@@ -197,7 +197,7 @@ export const NetworkCompatibilityDialog = () => {
           </ButtonGroup>
           <ButtonGroup inline>
             <ButtonUnstyled
-              data-testid='network-compatibility-continue'
+              data-testid="network-compatibility-continue"
               onClick={() => setOpen(false)}
             >
               Continue with existing network

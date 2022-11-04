@@ -30,9 +30,9 @@ export const RemoveWalletDialog = () => {
 
   return (
     <Dialog
-      size='lg'
+      size="lg"
       open={state.isRemoveWalletModalOpen}
-      title='Remove wallet'
+      title="Remove wallet"
     >
       <div style={{ padding: '0 20px 20px' }}>
         <h2 style={{ marginBottom: 15 }}>
@@ -70,41 +70,41 @@ const RemoveForm = ({
   onSubmit,
   status,
   onCancel,
-  walletName
+  walletName,
 }: DeleteFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormFields>()
   const confirmText = `Remove ${walletName}`
   const isPending = status === FormStatus.Pending
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} data-testid='remove-wallet-form'>
+    <form onSubmit={handleSubmit(onSubmit)} data-testid="remove-wallet-form">
       <FormGroup
         label={`Type: "${confirmText}" to remove this wallet`}
-        labelFor='confirmText'
+        labelFor="confirmText"
         helperText={errors.confirmText?.message}
         intent={errors.confirmText?.message ? Intent.DANGER : Intent.NONE}
       >
         <Input
-          id='confirmText'
+          id="confirmText"
           {...register('confirmText', {
             required: Validation.REQUIRED,
             validate: {
-              confirmText: value => {
+              confirmText: (value) => {
                 if (value === confirmText) {
                   return true
                 }
                 return 'Invalid confirmation text'
-              }
-            }
+              },
+            },
           })}
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button type='submit' disabled={isPending} loading={isPending}>
+        <Button type="submit" disabled={isPending} loading={isPending}>
           Remove
         </Button>
         <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>

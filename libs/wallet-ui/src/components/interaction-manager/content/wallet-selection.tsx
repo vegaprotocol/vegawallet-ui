@@ -17,15 +17,15 @@ import { INTERACTION_RESPONSE_TYPE } from '../types'
 export const WalletSelection = ({
   event,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<RequestWalletSelection>) => {
   const { service, dispatch } = useGlobal()
   const {
     control,
     handleSubmit,
-    formState: { isValid }
+    formState: { isValid },
   } = useForm<{ wallet: string }>({
-    mode: 'onChange'
+    mode: 'onChange',
   })
 
   const handleApprove = async ({ wallet }: { wallet: string }) => {
@@ -38,14 +38,14 @@ export const WalletSelection = ({
           name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
           data: {
             wallet,
-            passphrase
-          }
+            passphrase,
+          },
         })
 
         const { permissions } = await service.WalletApi.DescribePermissions({
           wallet,
           passphrase,
-          hostname: event.data.hostname
+          hostname: event.data.hostname,
         })
 
         dispatch({
@@ -54,13 +54,13 @@ export const WalletSelection = ({
           connection: {
             hostname: event.data.hostname,
             active: true,
-            permissions
-          }
+            permissions,
+          },
         })
       } catch (err) {
         AppToaster.show({
           message: `${err}`,
-          intent: Intent.DANGER
+          intent: Intent.DANGER,
         })
       }
 
@@ -75,16 +75,16 @@ export const WalletSelection = ({
         await service.RespondToInteraction({
           traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
-          data: {}
+          data: {},
         })
         AppToaster.show({
           message: `The connection request from "${event.data.hostname}" has been rejected.`,
-          intent: Intent.SUCCESS
+          intent: Intent.SUCCESS,
         })
       } catch (err) {
         AppToaster.show({
           message: `${err}`,
-          intent: Intent.DANGER
+          intent: Intent.DANGER,
         })
       }
 
@@ -93,10 +93,10 @@ export const WalletSelection = ({
   }
 
   return (
-    <Dialog open={true} size='lg' title='Approve connection'>
+    <Dialog open={true} size="lg" title="Approve connection">
       <form
         onSubmit={handleSubmit(handleApprove)}
-        data-testid='wallet-selection-modal'
+        data-testid="wallet-selection-modal"
         style={{ padding: '0 20px 20px' }}
       >
         <p
@@ -104,7 +104,7 @@ export const WalletSelection = ({
             marginBottom: 20,
             border: `1px solid ${Colors.VEGA_PINK}`,
             padding: 20,
-            textAlign: 'center'
+            textAlign: 'center',
           }}
         >
           <strong>{event.data.hostname}</strong> is requesting access to a
@@ -121,36 +121,36 @@ export const WalletSelection = ({
             display: 'flex',
             flexDirection: 'column',
             gap: 12,
-            margin: '20px 0 32px'
+            margin: '20px 0 32px',
           }}
         >
           <RadioGroup
-            name='wallet'
+            name="wallet"
             rules={{
-              required: Validation.REQUIRED
+              required: Validation.REQUIRED,
             }}
             control={control}
-            options={event.data.availableWallets.map(w => ({
+            options={event.data.availableWallets.map((w) => ({
               value: w,
-              label: w
+              label: w,
             }))}
             itemStyle={{
               padding: 10,
               borderTop: `1px solid ${Colors.DARK_GRAY_1}`,
-              width: '100%'
+              width: '100%',
             }}
           />
         </div>
         <ButtonGroup inline>
           <Button
-            data-testid='wallet-connection-approve'
-            type='submit'
+            data-testid="wallet-connection-approve"
+            type="submit"
             disabled={!isValid}
           >
             Approve
           </Button>
           <ButtonUnstyled
-            data-testid='wallet-connection-reject'
+            data-testid="wallet-connection-reject"
             onClick={handleReject}
           >
             Cancel

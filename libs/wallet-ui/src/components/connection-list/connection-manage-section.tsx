@@ -11,7 +11,7 @@ import type { NormalizedPermissionMap } from './connection-manage'
 
 const AccessModes: Record<string, WalletModel.AccessMode> = {
   Read: 'read',
-  None: 'none'
+  None: 'none',
 }
 
 type PermissionSectionProps = {
@@ -21,18 +21,18 @@ type PermissionSectionProps = {
 
 export const PermissionSection = ({
   accessType,
-  control
+  control,
 }: PermissionSectionProps) => {
   const title = sentenceCase(accessType)
   const { fields } = useFieldArray({
     name: `${accessType}.restrictedKeys`,
-    control
+    control,
   })
 
   return (
     <div
       style={{
-        padding: `20px 0`
+        padding: `20px 0`,
       }}
     >
       <Controller
@@ -44,9 +44,9 @@ export const PermissionSection = ({
             <RadioGroup
               name={`${accessType}.access`}
               control={control}
-              options={Object.keys(AccessModes).map(label => ({
+              options={Object.keys(AccessModes).map((label) => ({
                 label,
-                value: AccessModes[label]
+                value: AccessModes[label],
               }))}
             />
             {field.value !== 'none' && <Title>Key pairs</Title>}
@@ -60,7 +60,7 @@ export const PermissionSection = ({
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       }}
                     >
                       <Title style={{ margin: '0 12px 0 0' }}>

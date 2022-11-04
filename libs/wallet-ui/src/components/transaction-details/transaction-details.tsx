@@ -15,13 +15,13 @@ type TransactionDetailsProps = {
 }
 
 const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
-  const rows: Array<{ key?: string, value: ReactNode }> = [
+  const rows: Array<{ key?: string; value: ReactNode }> = [
     {
-      value: <TransactionStatus transaction={transaction} />
+      value: <TransactionStatus transaction={transaction} />,
     },
     {
       key: 'Wallet',
-      value: <p>{transaction.wallet}</p>
+      value: <p>{transaction.wallet}</p>,
     },
     {
       key: 'Public key',
@@ -29,8 +29,8 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
         <CopyWithTooltip text={transaction.publicKey}>
           <BreakText>{transaction.publicKey}</BreakText>
         </CopyWithTooltip>
-      )
-    }
+      ),
+    },
   ]
 
   if (transaction.blockHeight) {
@@ -39,15 +39,15 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
       value: explorerUrl ? (
         <a
           href={`${explorerUrl}/blocks/${transaction.blockHeight}`}
-          target='_blank'
-          rel='noopener noreferrer'
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {transaction.blockHeight}
           <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
         </a>
       ) : (
         transaction.blockHeight
-      )
+      ),
     })
   }
 
@@ -58,14 +58,14 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
         <CopyWithTooltip text={transaction.signature}>
           {truncateMiddle(transaction.signature)}
         </CopyWithTooltip>
-      )
+      ),
     })
   }
 
   if (transaction.error) {
     rows.push({
       key: 'Error',
-      value: <p>{transaction.error}</p>
+      value: <p>{transaction.error}</p>,
     })
   }
 
@@ -73,23 +73,23 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
     key: 'Transaction details',
     value: (
       <CodeBlock style={{ fontSize: 12, marginBottom: 0 }}>
-        <pre data-testid='transaction-payload'>
+        <pre data-testid="transaction-payload">
           {JSON.stringify(transaction.payload, null, 2)}
         </pre>
       </CodeBlock>
-    )
+    ),
   })
 
   rows.push({
     key: 'Received at',
-    value: <p>{formatDate(new Date(transaction.receivedAt))}</p>
+    value: <p>{formatDate(new Date(transaction.receivedAt))}</p>,
   })
 
   return rows
 }
 
 export const TransactionDetails = ({
-  transaction
+  transaction,
 }: TransactionDetailsProps) => {
   const explorerUrl = useExplorerUrl()
   const sectionList = compileSectionList(transaction, explorerUrl)

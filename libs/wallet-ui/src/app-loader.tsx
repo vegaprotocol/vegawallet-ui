@@ -18,7 +18,7 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
   const {
     state: { status },
     actions,
-    dispatch
+    dispatch,
   } = useGlobal()
 
   // Get wallets, service state and version
@@ -37,7 +37,7 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
   if (status === AppStatus.Failed) {
     return (
       <SplashError
-        message='Failed to initialise'
+        message="Failed to initialise"
         actions={<Button onClick={() => WindowReload()}>Reload</Button>}
       />
     )
@@ -66,9 +66,9 @@ export function AppFrame({ children }: AppFrameProps) {
         backgroundSize: 'cover',
         backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
         position: 'relative',
-        overflowY: 'auto'
+        overflowY: 'auto',
       }}
-      data-testid='app-frame'
+      data-testid="app-frame"
       className={useVegaBg ? 'vega-bg' : undefined}
     >
       <div
@@ -83,7 +83,7 @@ export function AppFrame({ children }: AppFrameProps) {
           // which you can click and drag to move the app around.
           // https://wails.io/docs/guides/frameless/
           // @ts-ignore: Allow custom css property for wails
-          '--wails-draggable': 'drag'
+          '--wails-draggable': 'drag',
         }}
       />
       {children}
@@ -95,7 +95,7 @@ const logger = createLogger('ErrorBoundary')
 
 export class ErrorBoundary extends Component<{ children: ReactNode }> {
   state: { error: Error | null } = {
-    error: null
+    error: null,
   }
 
   static getDerivedStateFromError(error: Error) {

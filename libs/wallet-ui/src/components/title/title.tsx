@@ -17,7 +17,7 @@ const secondaryTitleStyles = {
   margin: '30px 0 20px 0',
   textTransform: 'uppercase',
   letterSpacing: '0.3em',
-  lineHeight: 1.2
+  lineHeight: 1.2,
 } as React.CSSProperties
 
 const mainTitleStyles = {
@@ -25,7 +25,7 @@ const mainTitleStyles = {
   margin: 0,
   padding: 20,
   color: Colors.WHITE,
-  lineHeight: 1.2
+  lineHeight: 1.2,
 }
 
 const getVariantStyles = (variant: Variant): React.CSSProperties => {
@@ -53,7 +53,7 @@ export const Title = ({
       {...rest}
       style={{
         ...getVariantStyles(variant),
-        ...style
+        ...style,
       }}
     >
       {children}

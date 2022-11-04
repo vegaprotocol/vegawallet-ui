@@ -8,38 +8,38 @@ const fetch = require('node-fetch')
 
 const COMPILE_OPTS = {
   additionalProperties: false,
-  bannerComment: ''
+  bannerComment: '',
 }
 
 log.setLevel('trace')
 const logger = log.getLogger('JSON-RPC-Generator')
 
-const pascalCase = str => camelCase(str).replace(/^(.)/, toUpper)
+const pascalCase = (str) => camelCase(str).replace(/^(.)/, toUpper)
 
-const getMethodName = method => {
+const getMethodName = (method) => {
   return pascalCase(method.name).replace('Admin', '')
 }
 
-const getMethodParamsType = method => {
+const getMethodParamsType = (method) => {
   return `${getMethodName(method)}Params`
 }
 
-const getMethodResultType = method => {
+const getMethodResultType = (method) => {
   return `${getMethodName(method)}Result`
 }
 
-const getMethodParams = method => {
+const getMethodParams = (method) => {
   if (method.paramStructure === 'by-name') {
     return 'params'
   }
   return `...params`
 }
 
-const withoutTitles = doc => {
+const withoutTitles = (doc) => {
   return JSON.parse(JSON.stringify(doc).replace(/"title":\s?"(.*?)",/, ''))
 }
 
-const withoutSchemas = doc => {
+const withoutSchemas = (doc) => {
   return JSON.parse(
     JSON.stringify(doc).replace(/"schema":\s?"(.*?)",/, (a, match) => {
       console.log(a, match)
@@ -49,7 +49,7 @@ const withoutSchemas = doc => {
   )
 }
 
-const normalizeDocument = doc => {
+const normalizeDocument = (doc) => {
   if (doc && Array.isArray(doc)) {
     const pieces = []
     for (let index in doc) {
@@ -78,7 +78,7 @@ const normalizeDocument = doc => {
   return doc
 }
 
-const getParamsSchemaByName = method =>
+const getParamsSchemaByName = (method) =>
   method.params.reduce(
     (acc, param) => {
       const { name, required, ...rest } = param
@@ -92,27 +92,27 @@ const getParamsSchemaByName = method =>
       title: `${getMethodName(method)}Params`,
       type: 'object',
       required: [],
-      properties: {}
+      properties: {},
     }
   )
 
-const getParamsSchemaByPosition = method => ({
+const getParamsSchemaByPosition = (method) => ({
   title: `${getMethodName(method)}Params`,
   type: 'array',
-  items: method.params
+  items: method.params,
 })
 
-const getResultSchema = method => {
+const getResultSchema = (method) => {
   const result = method.result
   const { name, title, ...rest } = result
 
   return {
     ...rest,
-    title: `${getMethodName(method)}Result`
+    title: `${getMethodName(method)}Result`,
   }
 }
 
-const getTsDefs = async openrpcDocument => {
+const getTsDefs = async (openrpcDocument) => {
   const normalizedDocument = normalizeDocument(
     JSON.parse(JSON.stringify(openrpcDocument))
   )
@@ -135,20 +135,20 @@ const getTsDefs = async openrpcDocument => {
           (acc, key) => {
             acc[key] = {
               ...openrpcDocument.components.schemas[key],
-              title: pascalCase(key)
+              title: pascalCase(key),
             }
             return acc
           },
           {}
-        )
-      }
+        ),
+      },
     }
   )
 
   return compile(schema, '', COMPILE_OPTS)
 }
 
-const isUrl = path => {
+const isUrl = (path) => {
   try {
     new URL(path)
     return true
@@ -157,13 +157,13 @@ const isUrl = path => {
   }
 }
 
-const getRemoteFile = async filePath => {
+const getRemoteFile = async (filePath) => {
   const res = await fetch(filePath)
   const json = await res.json()
   return json
 }
 
-const getJsonFileContent = async filePath => {
+const getJsonFileContent = async (filePath) => {
   if (isUrl(filePath)) {
     logger.info(`Fetching remote openrpc specs...`)
     return getRemoteFile(filePath)
@@ -199,7 +199,7 @@ const createClient = () => {
       const {
         document,
         outFile,
-        template: templateFile
+        template: templateFile,
       } = { ...configContent, ...rest }
 
       if (!document) {
@@ -216,7 +216,7 @@ const createClient = () => {
 
       const [openrpcDocument, templateContent] = await Promise.all([
         getJsonFileContent(document),
-        readFile(templateFile).then(buff => buff.toString())
+        readFile(templateFile).then((buff) => buff.toString()),
       ])
 
       const types = await getTsDefs(openrpcDocument)
@@ -227,7 +227,7 @@ const createClient = () => {
         getMethodName,
         getMethodParamsType,
         getMethodResultType,
-        getMethodParams
+        getMethodParams,
       })
 
       await writeFile(path.join(process.cwd(), outFile), content)

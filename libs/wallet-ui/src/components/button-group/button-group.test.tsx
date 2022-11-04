@@ -7,7 +7,7 @@ test('renders children', () => {
   const buttonText = 'Foo'
   render(
     <ButtonGroup>
-      <button type='submit'>{buttonText}</button>
+      <button type="submit">{buttonText}</button>
     </ButtonGroup>
   )
 

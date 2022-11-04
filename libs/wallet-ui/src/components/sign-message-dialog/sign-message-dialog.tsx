@@ -24,7 +24,7 @@ export const SignMessageDialog = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormFields>()
 
   const { sign, signedData, setSignedData } = useSign(
@@ -37,13 +37,13 @@ export const SignMessageDialog = () => {
       open={state.isSignMessageModalOpen}
       title={signedData ? 'Signed message' : 'Sign message'}
     >
-      <div data-testid='keypair-sign' style={{ padding: '0 20px 20px' }}>
+      <div data-testid="keypair-sign" style={{ padding: '0 20px 20px' }}>
         {signedData ? (
           <>
             <div
               style={{
                 color: Colors.WHITE,
-                marginBottom: 32
+                marginBottom: 32,
               }}
             >
               <CopyWithTooltip text={signedData}>
@@ -52,7 +52,7 @@ export const SignMessageDialog = () => {
             </div>
             <ButtonGroup inline>
               <Button
-                data-testid='sign-more'
+                data-testid="sign-more"
                 onClick={() => {
                   setValue('message', '')
                   setSignedData('')
@@ -61,7 +61,7 @@ export const SignMessageDialog = () => {
                 Sign another
               </Button>
               <ButtonUnstyled
-                data-testid='sign-close'
+                data-testid="sign-close"
                 onClick={() =>
                   dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: false })
                 }
@@ -77,21 +77,21 @@ export const SignMessageDialog = () => {
               your identity from this key.
             </p>
             <FormGroup
-              label='Message'
-              labelFor='message'
+              label="Message"
+              labelFor="message"
               helperText={errors.message?.message}
             >
               <Textarea
-                data-testid='message-field'
+                data-testid="message-field"
                 {...register('message', { required: 'Required' })}
               />
             </FormGroup>
             <ButtonGroup inline>
-              <Button data-testid='sign' type='submit'>
+              <Button data-testid="sign" type="submit">
                 Sign
               </Button>
               <ButtonUnstyled
-                data-testid='sign-close'
+                data-testid="sign-close"
                 onClick={() =>
                   dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: false })
                 }

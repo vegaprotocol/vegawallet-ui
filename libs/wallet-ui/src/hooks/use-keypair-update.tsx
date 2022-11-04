@@ -37,13 +37,13 @@ export const useKeypairUpdate = (
           wallet,
           passphrase,
           publicKey: pubKey,
-          metadata
+          metadata,
         })
 
         const keypair = await service.WalletApi.DescribeKey({
           wallet,
           passphrase,
-          publicKey: pubKey
+          publicKey: pubKey,
         })
 
         dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -51,7 +51,7 @@ export const useKeypairUpdate = (
 
         AppToaster.show({
           message: `Successfully updated metadata`,
-          intent: Intent.SUCCESS
+          intent: Intent.SUCCESS,
         })
         setLoading(false)
       } catch (err) {
@@ -65,6 +65,6 @@ export const useKeypairUpdate = (
 
   return {
     loading,
-    update
+    update,
   }
 }

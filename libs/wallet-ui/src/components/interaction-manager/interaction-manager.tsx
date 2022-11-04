@@ -19,7 +19,7 @@ type IndexedInteractions = {
 export function InteractionManager() {
   const [interactions, setInteractions] = useState<IndexedInteractions>({
     ids: [],
-    values: {}
+    values: {},
   })
   const traceID = interactions.ids[0]
   const events = traceID ? interactions.values[traceID] : undefined
@@ -28,13 +28,13 @@ export function InteractionManager() {
   useEffect(() => {
     // Listen for new incoming transactions
     EventsOn(EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => {
-      setInteractions(interactions =>
-        produce(interactions, interactions => {
+      setInteractions((interactions) =>
+        produce(interactions, (interactions) => {
           const wrappedInteraction = {
             meta: {
-              id: nanoid()
+              id: nanoid(),
             },
-            event: interaction
+            event: interaction,
           }
 
           if (
@@ -62,9 +62,9 @@ export function InteractionManager() {
     <InteractionFlow
       events={events}
       onFinish={() => {
-        setInteractions(interactions => ({
+        setInteractions((interactions) => ({
           ids: interactions.ids.slice(1),
-          values: omit(interactions.ids.slice(0, 1), interactions.values)
+          values: omit(interactions.ids.slice(0, 1), interactions.values),
         }))
       }}
     />

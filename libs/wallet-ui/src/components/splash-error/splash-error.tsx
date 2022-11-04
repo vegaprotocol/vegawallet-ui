@@ -16,7 +16,7 @@ export const SplashError = ({ title, message, actions }: SplashErrorProps) => {
     <Splash>
       <div style={{ textAlign: 'center' }}>
         <Warning style={{ margin: 20, width: 28 }} />
-        <Title variant='main'>{title || 'Error'}</Title>
+        <Title variant="main">{title || 'Error'}</Title>
       </div>
       <p style={{ margin: 20 }}>{message}</p>
       <ButtonGroup style={{ margin: 20 }}>{actions}</ButtonGroup>

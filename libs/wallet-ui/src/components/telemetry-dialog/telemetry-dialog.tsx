@@ -9,19 +9,19 @@ export const TelemetryDialog = () => {
   const {
     state: { config },
     actions,
-    dispatch
+    dispatch,
   } = useGlobal()
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      consent: 'no'
-    }
+      consent: 'no',
+    },
   })
 
   const onSubmit = (data: { consent: string }) => {
     dispatch(
       actions.updateTelemetry({
         consentAsked: true,
-        enabled: data.consent === 'yes'
+        enabled: data.consent === 'yes',
       })
     )
   }
@@ -29,11 +29,11 @@ export const TelemetryDialog = () => {
   return (
     <Dialog
       open={config?.telemetry.consentAsked === false}
-      title='Report bugs and crashes'
+      title="Report bugs and crashes"
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        data-testid='telemetry-option-form'
+        data-testid="telemetry-option-form"
         style={{ padding: '0 20px 20px' }}
       >
         <p style={{ marginBottom: '1em' }}>
@@ -41,15 +41,15 @@ export const TelemetryDialog = () => {
         </p>
         <div style={{ marginBottom: '1em' }}>
           <RadioGroup
-            name='consent'
+            name="consent"
             control={control}
             options={[
               { label: 'No', value: 'no' },
-              { label: 'Yes', value: 'yes' }
+              { label: 'Yes', value: 'yes' },
             ]}
           />
         </div>
-        <Button type='submit' data-testid='telemetry-option-continue'>
+        <Button type="submit" data-testid="telemetry-option-continue">
           Continue
         </Button>
       </form>

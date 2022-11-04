@@ -29,7 +29,7 @@ log.methodFactory = (methodName, logLevel, loggerName) => {
         type: loggerName.toString(),
         level: 'debug',
         message,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       })
     } else if (methodName === 'info') {
       captureMessage(message)
@@ -53,7 +53,7 @@ export const initLogger = once(() => {
       dsn: SENTRY_DSN,
       integrations: [new BrowserTracing()],
       release: packageJson.version,
-      tracesSampleRate: 1.0
+      tracesSampleRate: 1.0,
     })
   }
 })

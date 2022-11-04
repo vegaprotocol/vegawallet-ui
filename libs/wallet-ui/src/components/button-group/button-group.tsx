@@ -12,7 +12,7 @@ const getItemStyles = (isInline?: boolean) =>
     ? undefined
     : {
         flexGrow: 1,
-        flexBasis: 0
+        flexBasis: 0,
       }
 
 export function ButtonGroup({
@@ -31,17 +31,17 @@ export function ButtonGroup({
         flexDirection: orientation === 'horizontal' ? 'row' : 'column',
         alignItems: orientation === 'horizontal' ? 'center' : undefined,
         gap: 20,
-        ...style
+        ...style,
       }}
     >
-      {React.Children.map(children, child => {
+      {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
           const styles = getItemStyles(inline)
           return React.cloneElement(child, {
             style: {
               ...styles,
-              ...child.props.style
-            }
+              ...child.props.style,
+            },
           })
         }
 

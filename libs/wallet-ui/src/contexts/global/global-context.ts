@@ -7,7 +7,7 @@ import type { Transaction } from '../../lib/transactions'
 import type { ServiceType } from '../../service'
 import type {
   app as AppModel,
-  backend as BackendModel
+  backend as BackendModel,
 } from '../../wailsjs/go/models'
 import type { WalletModel } from '../../wallet-client'
 import type { GlobalActions } from './global-actions'
@@ -17,7 +17,7 @@ export enum AppStatus {
   Pending = 'Pending',
   Initialised = 'Initialised',
   Failed = 'Failed',
-  Onboarding = 'Onboarding'
+  Onboarding = 'Onboarding',
 }
 
 export enum ServiceState {
@@ -27,14 +27,14 @@ export enum ServiceState {
   Stopping = 'Stopping',
   Unhealthy = 'Unhealthy',
   Unreachable = 'Unreachable',
-  Error = 'Error'
+  Error = 'Error',
 }
 
 export enum DrawerPanel {
   Network,
   Manage,
   Edit,
-  Add
+  Add,
 }
 
 export type DrawerState = {
@@ -44,11 +44,11 @@ export type DrawerState = {
 }
 
 export const enum PermissionTarget {
-  PUBLIC_KEYS = 'public_keys'
+  PUBLIC_KEYS = 'public_keys',
 }
 
 export const enum PermissionType {
-  READ = 'read'
+  READ = 'read',
 }
 
 export type Connection = {

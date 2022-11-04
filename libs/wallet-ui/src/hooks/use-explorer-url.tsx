@@ -7,7 +7,7 @@ export const useExplorerUrl = () => {
 
   const url = useMemo(() => {
     const presets = state.presets.concat(state.presetsInternal)
-    return presets.find(p => p.name === state.networkConfig?.name)?.explorer
+    return presets.find((p) => p.name === state.networkConfig?.name)?.explorer
   }, [state.networkConfig, state.presets, state.presetsInternal])
 
   return url

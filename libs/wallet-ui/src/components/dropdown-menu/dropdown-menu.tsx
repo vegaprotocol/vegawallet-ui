@@ -16,7 +16,7 @@ export function DropdownMenu({ trigger, content }: DropdownMenuProps) {
         {trigger}
       </DropdownPrimitive.Trigger>
       <DropdownPrimitive.Content
-        align='start'
+        align="start"
         sideOffset={10}
         style={{ background: Colors.DARK_GRAY_3, padding: 10 }}
       >

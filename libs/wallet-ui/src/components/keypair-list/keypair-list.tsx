@@ -13,10 +13,10 @@ export const KeypairList = ({ wallet, onClick }: KeypairListProps) => {
   return (
     <div
       style={{
-        borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : ''
+        borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : '',
       }}
     >
-      {Object.keys(wallet.keypairs || {}).map(key => {
+      {Object.keys(wallet.keypairs || {}).map((key) => {
         if (!wallet.keypairs) {
           return null
         }
@@ -24,11 +24,11 @@ export const KeypairList = ({ wallet, onClick }: KeypairListProps) => {
           wallet.keypairs[key] || {}
         return (
           <div
-            data-testid='wallet-keypair'
+            data-testid="wallet-keypair"
             key={publicKey}
             style={{
               borderTop: `1px solid ${Colors.BLACK}`,
-              padding: '20px 0'
+              padding: '20px 0',
             }}
           >
             <div>

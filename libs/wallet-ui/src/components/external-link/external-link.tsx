@@ -12,7 +12,7 @@ export function ExternalLink({ style, href, ...props }: ExternalLinkProps) {
     // eslint-disable-next-line
     <a
       {...props}
-      target='_blank'
+      target="_blank"
       style={{ textDecoration: 'underline', cursor: 'pointer', ...style }}
       onClick={() => BrowserOpenURL(href)}
     />

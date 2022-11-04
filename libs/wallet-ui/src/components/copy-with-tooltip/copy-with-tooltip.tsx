@@ -39,7 +39,7 @@ export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
               <Copy style={{ width: 13, marginLeft: 6 }} />
             </span>
           }
-          content='Copied'
+          content="Copied"
           isOpen={copied}
         />
       </span>

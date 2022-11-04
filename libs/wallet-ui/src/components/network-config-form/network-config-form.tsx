@@ -29,16 +29,16 @@ export interface NetworkConfigFormProps {
 
 export const NetworkConfigForm = ({
   config,
-  onSubmit
+  onSubmit,
 }: NetworkConfigFormProps) => {
   const {
     control,
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormFields>({
-    defaultValues: configToFields(config)
+    defaultValues: configToFields(config),
   })
 
   // If the config changes reset the fields with the new config. This happens
@@ -55,53 +55,53 @@ export const NetworkConfigForm = ({
       })}
     >
       <FormGroup
-        label='Wallet Service Host'
-        labelFor='host'
+        label="Wallet Service Host"
+        labelFor="host"
         intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.host?.message}
       >
         <Input
-          data-testid='service-host'
-          type='text'
+          data-testid="service-host"
+          type="text"
           {...register('host', {
             required: Validation.REQUIRED,
-            pattern: Validation.URL
+            pattern: Validation.URL,
           })}
         />
       </FormGroup>
       <FormGroup
-        label='Wallet Service Port'
-        labelFor='port'
+        label="Wallet Service Port"
+        labelFor="port"
         intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.port?.message}
       >
         <Input
-          data-testid='service-port'
-          type='number'
+          data-testid="service-port"
+          type="number"
           {...register('port', {
             required: Validation.REQUIRED,
             min: Validation.NUMBER_MIN_PORT,
-            max: Validation.NUMBER_MAX_PORT
+            max: Validation.NUMBER_MAX_PORT,
           })}
         />
       </FormGroup>
       <h2>gRPC Nodes</h2>
-      <HostEditor name='grpcHosts' control={control} register={register} />
+      <HostEditor name="grpcHosts" control={control} register={register} />
       <h2>GraphQL Nodes</h2>
-      <HostEditor name='graphqlHosts' control={control} register={register} />
+      <HostEditor name="graphqlHosts" control={control} register={register} />
       <h2>REST Nodes</h2>
-      <HostEditor name='restHosts' control={control} register={register} />
+      <HostEditor name="restHosts" control={control} register={register} />
       <FormGroup
-        label='Log level'
-        labelFor='logLevel'
+        label="Log level"
+        labelFor="logLevel"
         intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.logLevel?.message}
       >
         <Select
-          data-testid='network-log-level'
+          data-testid="network-log-level"
           {...register('logLevel', { required: Validation.REQUIRED })}
         >
-          {Object.values(LogLevels).map(level => (
+          {Object.values(LogLevels).map((level) => (
             <option key={level} value={level}>
               {level}
             </option>
@@ -109,37 +109,37 @@ export const NetworkConfigForm = ({
         </Select>
       </FormGroup>
       <FormGroup
-        label='gRPC Node retries'
-        labelFor='grpcNodeRetries'
+        label="gRPC Node retries"
+        labelFor="grpcNodeRetries"
         intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.grpcNodeRetries?.message}
       >
         <Input
-          data-testid='node-retries'
-          type='number'
+          data-testid="node-retries"
+          type="number"
           {...register('grpcNodeRetries', {
             required: Validation.REQUIRED,
             min: Validation.NUMBER_MIN_GRPC_RETRIES,
-            max: Validation.NUMBER_MAX_GRPC_RETRIES
+            max: Validation.NUMBER_MAX_GRPC_RETRIES,
           })}
         />
       </FormGroup>
       <FormGroup
-        label='Token expiry'
-        labelFor='tokenExpiry'
+        label="Token expiry"
+        labelFor="tokenExpiry"
         intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
         helperText={errors.tokenExpiry?.message}
       >
         <Input
-          data-testid='token-expiry'
-          type='text'
+          data-testid="token-expiry"
+          type="text"
           {...register('tokenExpiry', {
             required: Validation.REQUIRED,
-            pattern: Validation.GOLANG_DURATION
+            pattern: Validation.GOLANG_DURATION,
           })}
         />
       </FormGroup>
-      <Button data-testid='submit' type='submit'>
+      <Button data-testid="submit" type="submit">
         Submit
       </Button>
     </form>
@@ -157,7 +157,7 @@ interface NodeEditorProps {
 function HostEditor({ name, control, register }: NodeEditorProps) {
   const { fields, append, remove } = useFieldArray<FormFields, ArrayFields>({
     control,
-    name
+    name,
   })
 
   return (
@@ -170,16 +170,16 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
               style={{ display: 'flex', gap: 10, marginBottom: 5 }}
             >
               <Input
-                data-testid='node-list'
-                type='text'
+                data-testid="node-list"
+                type="text"
                 {...register(`${name}.${i}.value`, {
                   required: Validation.REQUIRED,
-                  pattern: Validation.URL
+                  pattern: Validation.URL,
                 })}
               />
               <Button
-                data-testid='remove'
-                type='button'
+                data-testid="remove"
+                type="button"
                 disabled={fields.length <= 1}
                 onClick={() => {
                   if (fields.length > 1) {
@@ -194,7 +194,11 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
         })}
       </ul>
       <div>
-        <Button data-testid='add' type='button' onClick={() => append({ value: '' })}>
+        <Button
+          data-testid="add"
+          type="button"
+          onClick={() => append({ value: '' })}
+        >
           Add
         </Button>
       </div>
@@ -214,16 +218,16 @@ function fieldsToConfig(
     host: values.host,
     api: {
       grpcConfig: {
-        hosts: values.grpcHosts.map(x => x.value),
-        retries: Number(values.grpcNodeRetries)
+        hosts: values.grpcHosts.map((x) => x.value),
+        retries: Number(values.grpcNodeRetries),
       },
       graphQLConfig: {
-        hosts: values.graphqlHosts.map(x => x.value)
+        hosts: values.graphqlHosts.map((x) => x.value),
       },
       restConfig: {
-        hosts: values.restHosts.map(x => x.value)
-      }
-    }
+        hosts: values.restHosts.map((x) => x.value),
+      },
+    },
   }
 }
 
@@ -235,10 +239,10 @@ function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
     host: config.host ?? 'localhost',
     grpcNodeRetries: config.api?.grpcConfig?.retries || 0,
     // @ts-ignore any resulting from generated types
-    grpcHosts: config.api.grpcConfig.hosts.map(x => ({ value: x })),
+    grpcHosts: config.api.grpcConfig.hosts.map((x) => ({ value: x })),
     // @ts-ignore any resulting from generated types
-    graphqlHosts: config.api.graphQLConfig.hosts.map(x => ({ value: x })),
+    graphqlHosts: config.api.graphQLConfig.hosts.map((x) => ({ value: x })),
     // @ts-ignore any resulting from generated types
-    restHosts: config.api.restConfig.hosts.map(x => ({ value: x }))
+    restHosts: config.api.restConfig.hosts.map((x) => ({ value: x })),
   }
 }

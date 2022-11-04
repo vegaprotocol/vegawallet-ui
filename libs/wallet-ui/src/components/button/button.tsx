@@ -1,7 +1,7 @@
 import type {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
-  ForwardedRef
+  ForwardedRef,
 } from 'react'
 import React from 'react'
 
@@ -14,7 +14,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const getColor = ({
   hover,
-  disabled
+  disabled,
 }: {
   hover: boolean
   disabled?: boolean
@@ -57,7 +57,7 @@ export const Button = React.forwardRef(
       () =>
         getColor({
           hover,
-          disabled: props.disabled
+          disabled: props.disabled,
         }),
       [hover, props.disabled]
     )
@@ -72,13 +72,13 @@ export const Button = React.forwardRef(
       padding: '7px 17px',
       textTransform: 'uppercase',
       minWidth: 145,
-      transition: 'all .3s ease'
+      transition: 'all .3s ease',
     }
 
     return (
       <button
         ref={ref}
-        type='button'
+        type="button"
         {...props}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -90,7 +90,7 @@ export const Button = React.forwardRef(
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 5
+            gap: 5,
           }}
         >
           {loading ? <Spinner /> : children}
@@ -141,7 +141,7 @@ export const AnchorButton = React.forwardRef(
       () =>
         getColor({
           hover,
-          disabled: disabled
+          disabled: disabled,
         }),
       [hover, disabled]
     )
@@ -158,13 +158,13 @@ export const AnchorButton = React.forwardRef(
       textDecoration: 'none',
       minWidth: 145,
       transition: 'all .3s ease',
-      pointerEvents: disabled || loading ? 'none' : 'initial'
+      pointerEvents: disabled || loading ? 'none' : 'initial',
     }
 
     return (
       <a
         ref={ref}
-        role='button'
+        role="button"
         tabIndex={0}
         {...props}
         onMouseEnter={handleMouseEnter}
@@ -176,7 +176,7 @@ export const AnchorButton = React.forwardRef(
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 5
+            gap: 5,
           }}
         >
           {loading ? <Spinner /> : children}

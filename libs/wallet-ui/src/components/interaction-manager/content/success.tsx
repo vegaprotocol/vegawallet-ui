@@ -7,7 +7,7 @@ import type { InteractionContentProps, RequestSucceeded } from '../types'
 export const SuccessComponent = ({
   event,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<RequestSucceeded>) => {
   const message = event.data.message
 
@@ -15,7 +15,7 @@ export const SuccessComponent = ({
     if (!isResolved && message) {
       AppToaster.show({
         message,
-        intent: Intent.SUCCESS
+        intent: Intent.SUCCESS,
       })
       setResolved(true)
     }

@@ -21,30 +21,30 @@ export function Transactions() {
   return (
     <>
       <Header
-        title='Transactions'
+        title="Transactions"
         breadcrumb={keypair.name}
         onBack={() => {
           navigate(`/wallet/${wallet}/keypair/${pubkey}`)
         }}
       />
       <PublicKey publicKey={keypair.publicKey} />
-      <div style={{ padding: 20, paddingTop: 0 }} data-testid='keypair-home'>
+      <div style={{ padding: 20, paddingTop: 0 }} data-testid="keypair-home">
         <div
           style={{
             display: 'flex',
             gap: 20,
             margin: '20px 0',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Title style={{ margin: 0 }}>Current session transactions</Title>
           {explorerUrl && (
             <a
               href={`${explorerUrl}/parties/${keypair.publicKey}`}
-              target='_blank'
+              target="_blank"
               style={{ textDecoration: 'underline' }}
-              rel='noreferrer'
+              rel="noreferrer"
             >
               View full history
               <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />

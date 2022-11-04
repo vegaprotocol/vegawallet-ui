@@ -12,7 +12,7 @@ export function ServiceStatus() {
   const {
     service,
     dispatch,
-    state: { network, networkConfig, serviceStatus }
+    state: { network, networkConfig, serviceStatus },
   } = useGlobal()
   const serviceUrl = networkConfig
     ? `http://${networkConfig.host}:${networkConfig.port}`
@@ -22,18 +22,18 @@ export function ServiceStatus() {
     if (network) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Loading
+        status: ServiceState.Loading,
       })
       try {
         await service.StartService({ network })
       } catch (err) {
         dispatch({
           type: 'SET_SERVICE_STATUS',
-          status: ServiceState.Error
+          status: ServiceState.Error,
         })
         AppToaster.show({
           intent: Intent.DANGER,
-          message: `${err}`
+          message: `${err}`,
         })
       }
     }
@@ -46,11 +46,11 @@ export function ServiceStatus() {
       } catch (err) {
         dispatch({
           type: 'SET_SERVICE_STATUS',
-          status: ServiceState.Error
+          status: ServiceState.Error,
         })
         AppToaster.show({
           intent: Intent.DANGER,
-          message: `${err}`
+          message: `${err}`,
         })
       }
 
@@ -61,25 +61,25 @@ export function ServiceStatus() {
   switch (serviceStatus) {
     case ServiceState.Started: {
       return (
-        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle background={Colors.VEGA_GREEN} />
           Wallet Service:{' '}
-            <span
-              style={{
-                fontFamily: Fonts.MONO,
-                background: Colors.DARK_GRAY_4,
-                padding: '1px 5px'
-              }}
-            >
-              {network}
-            </span>{' '}
-            on <code>{serviceUrl}</code>
+          <span
+            style={{
+              fontFamily: Fonts.MONO,
+              background: Colors.DARK_GRAY_4,
+              padding: '1px 5px',
+            }}
+          >
+            {network}
+          </span>{' '}
+          on <code>{serviceUrl}</code>
         </div>
       )
     }
     case ServiceState.Stopped: {
       return (
-        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle background={Colors.VEGA_RED} />
           <span>
             Wallet Service: Not running.{' '}
@@ -92,23 +92,23 @@ export function ServiceStatus() {
     }
     case ServiceState.Loading: {
       return (
-        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle blinking background={Colors.VEGA_ORANGE} />
-          <span className='loading'>Wallet Service: Loading</span>
+          <span className="loading">Wallet Service: Loading</span>
         </div>
       )
     }
     case ServiceState.Stopping: {
       return (
-        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle blinking background={Colors.VEGA_ORANGE} />
-          <span className='loading'>Wallet Service: Stopping</span>
+          <span className="loading">Wallet Service: Stopping</span>
         </div>
       )
     }
     case ServiceState.Unhealthy: {
       return (
-        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle blinking background={Colors.VEGA_ORANGE} />
           <span>
             Wallet Service: Unhealthy{' '}
@@ -119,9 +119,9 @@ export function ServiceStatus() {
     }
     case ServiceState.Unreachable: {
       return (
-        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle blinking background={Colors.VEGA_ORANGE} />
-          <span className='loading'>
+          <span className="loading">
             Wallet Service: Not reachable, retrying
           </span>
         </div>
@@ -129,7 +129,7 @@ export function ServiceStatus() {
     }
     case ServiceState.Error: {
       return (
-        <div data-testid='service-status' style={{ whiteSpace: 'nowrap' }}>
+        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
           <StatusCircle background={Colors.VEGA_RED} />
           <span>
             Wallet Service: Failed to start.{' '}

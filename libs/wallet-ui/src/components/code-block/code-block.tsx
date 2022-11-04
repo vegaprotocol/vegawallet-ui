@@ -18,7 +18,7 @@ export function CodeBlock({ children, style, ...props }: CodeBlockProps) {
         background: 'transparent',
         border: `1px solid ${Colors.WHITE}`,
         overflow: 'auto',
-        ...style
+        ...style,
       }}
     >
       {children}

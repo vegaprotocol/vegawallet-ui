@@ -9,7 +9,7 @@ import { CONNECTION_RESPONSE, INTERACTION_RESPONSE_TYPE } from '../types'
 export const WalletConnection = ({
   event,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<RequestWalletConnection>) => {
   const { service } = useGlobal()
 
@@ -22,13 +22,13 @@ export const WalletConnection = ({
           data: {
             connectionApproval: decision
               ? CONNECTION_RESPONSE.APPROVED_ONCE
-              : CONNECTION_RESPONSE.REJECTED_ONCE
-          }
+              : CONNECTION_RESPONSE.REJECTED_ONCE,
+          },
         })
       } catch (err: unknown) {
         AppToaster.show({
           message: `${err}`,
-          intent: Intent.DANGER
+          intent: Intent.DANGER,
         })
       }
     }

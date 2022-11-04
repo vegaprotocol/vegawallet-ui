@@ -42,7 +42,7 @@ export function Checkbox<T>({ name, control, label }: CheckboxProps<T>) {
 const wrapper = {
   display: 'flex',
   alignItems: 'center',
-  gap: 10
+  gap: 10,
 }
 
 const box = {
@@ -51,7 +51,7 @@ const box = {
   justifyContent: 'center',
   width: 16,
   height: 16,
-  background: Colors.DARK_GRAY_5
+  background: Colors.DARK_GRAY_5,
 }
 
 const boxInner = {
@@ -60,5 +60,5 @@ const boxInner = {
   justifyContent: 'center',
   width: 10,
   height: 10,
-  color: Colors.WHITE
+  color: Colors.WHITE,
 }

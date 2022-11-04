@@ -20,7 +20,7 @@ export function Tooltip({ trigger, content, isOpen }: TooltipProps) {
           style={{
             background: Colors.WHITE,
             padding: '5px 10px',
-            color: Colors.DARK_GRAY_1
+            color: Colors.DARK_GRAY_1,
           }}
         >
           <TooltipPrimitive.Arrow fill={Colors.WHITE} />

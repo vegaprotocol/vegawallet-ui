@@ -14,7 +14,7 @@ type TransactionItemProps = {
 }
 
 const TransactionId = ({
-  transaction
+  transaction,
 }: Pick<TransactionItemProps, 'transaction'>) => {
   const explorerUrl = useExplorerUrl()
 
@@ -26,8 +26,8 @@ const TransactionId = ({
     return (
       <a
         href={`${explorerUrl}/txs/${transaction.txHash}`}
-        target='_blank'
-        rel='noopener noreferrer'
+        target="_blank"
+        rel="noopener noreferrer"
       >
         {truncateMiddle(transaction.txHash)}
         <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
@@ -40,7 +40,7 @@ const TransactionId = ({
 
 export const TransactionItem = ({
   transaction,
-  viewDetails
+  viewDetails,
 }: TransactionItemProps) => {
   return (
     <div
@@ -50,7 +50,7 @@ export const TransactionItem = ({
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <ButtonUnstyled onClick={viewDetails}>
@@ -63,7 +63,7 @@ export const TransactionItem = ({
             style={{
               textAlign: 'right',
               color: Colors.TEXT_COLOR_DEEMPHASISE,
-              fontSize: 14
+              fontSize: 14,
             }}
           >
             {formatDate(transaction.receivedAt)}

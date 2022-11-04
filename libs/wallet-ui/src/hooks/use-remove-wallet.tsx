@@ -27,7 +27,7 @@ export const useRemoveWallet = () => {
       } catch (err) {
         AppToaster.show({
           message: 'Failed to remove wallet',
-          intent: Intent.DANGER
+          intent: Intent.DANGER,
         })
         setStatus(FormStatus.Error)
         logger.error(err)

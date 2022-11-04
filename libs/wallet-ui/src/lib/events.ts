@@ -19,5 +19,5 @@ export const enum EVENTS {
   // Sent when the service has been stopped by the user.
   // This event is emitted once per service lifecycle.
   // If emitted, the `ServiceStoppedWithError` is not be emitted.
-  SERVICE_STOPPED = 'service_stopped'
+  SERVICE_STOPPED = 'service_stopped',
 }

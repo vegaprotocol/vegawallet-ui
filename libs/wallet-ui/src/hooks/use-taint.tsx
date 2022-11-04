@@ -30,13 +30,13 @@ export const useTaint = (
       await service.WalletApi.TaintKey({
         wallet,
         passphrase,
-        publicKey: publicKey
+        publicKey: publicKey,
       })
 
       const keypair = await service.WalletApi.DescribeKey({
         wallet,
         passphrase,
-        publicKey
+        publicKey,
       })
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -44,7 +44,7 @@ export const useTaint = (
       setLoading(false)
       AppToaster.show({
         message: `This key has been tainted`,
-        intent: Intent.SUCCESS
+        intent: Intent.SUCCESS,
       })
     } catch (err) {
       setLoading(false)
@@ -66,7 +66,7 @@ export const useTaint = (
       const keypair = await service.WalletApi.DescribeKey({
         wallet,
         passphrase,
-        publicKey
+        publicKey,
       })
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -74,7 +74,7 @@ export const useTaint = (
       setLoading(false)
       AppToaster.show({
         message: `This key has been untainted`,
-        intent: Intent.SUCCESS
+        intent: Intent.SUCCESS,
       })
     } catch (err) {
       setLoading(false)
@@ -86,6 +86,6 @@ export const useTaint = (
   return {
     loading,
     taint,
-    untaint
+    untaint,
   }
 }

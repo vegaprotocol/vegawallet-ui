@@ -20,7 +20,7 @@ interface ModalHandler {
 const handler: ModalHandler = {
   open: () => undefined,
   resolve: () => undefined,
-  close: () => undefined
+  close: () => undefined,
 }
 
 interface FormFields {
@@ -74,13 +74,13 @@ interface PassphraseModalFormProps {
 function PassphraseModalForm({
   onSubmit,
   onCancel,
-  loading
+  loading,
 }: PassphraseModalFormProps) {
   const {
     register,
     handleSubmit,
     setFocus,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormFields>()
 
   useEffect(() => {
@@ -91,26 +91,26 @@ function PassphraseModalForm({
     <form
       style={{ padding: 20 }}
       onSubmit={handleSubmit(onSubmit)}
-      data-testid='passphrase-form'
+      data-testid="passphrase-form"
     >
       <FormGroup
-        label='Passphrase'
-        labelFor='passphrase'
+        label="Passphrase"
+        labelFor="passphrase"
         helperText={errors.passphrase?.message}
         intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
       >
         <Input
-          data-testid='input-passphrase'
-          type='password'
-          autoComplete='off'
+          data-testid="input-passphrase"
+          type="password"
+          autoComplete="off"
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid='input-submit' type='submit' loading={loading}>
+        <Button data-testid="input-submit" type="submit" loading={loading}>
           Submit
         </Button>
-        <ButtonUnstyled data-testid='input-cancel' onClick={onCancel}>
+        <ButtonUnstyled data-testid="input-cancel" onClick={onCancel}>
           Cancel
         </ButtonUnstyled>
       </ButtonGroup>

@@ -29,7 +29,7 @@ export class Toaster extends React.Component<undefined, ToasterState> {
   container: HTMLDivElement | null = null
 
   override state: ToasterState = {
-    toasts: []
+    toasts: [],
   }
 
   public static create() {
@@ -52,23 +52,23 @@ export class Toaster extends React.Component<undefined, ToasterState> {
 
   handleDismiss = (toast: Toast) => {
     this.setState(({ toasts }) => ({
-      toasts: toasts.filter(t => {
+      toasts: toasts.filter((t) => {
         return t.id !== toast.id
-      })
+      }),
     }))
   }
 
   show(toast: ToastOptions) {
-    this.setState(curr => {
+    this.setState((curr) => {
       return {
         ...curr,
         toasts: [
           {
             id: `toast-${this.toastId++}`,
-            ...toast
+            ...toast,
           },
-          ...curr.toasts
-        ]
+          ...curr.toasts,
+        ],
       }
     })
   }
@@ -101,7 +101,7 @@ interface ToasterAnimationHandlerProps {
 
 function ToasterAnimationHandler({
   toasts,
-  handleDismiss
+  handleDismiss,
 }: ToasterAnimationHandlerProps) {
   const height = 49
   const transitions = useTransition(toasts, {
@@ -109,7 +109,7 @@ function ToasterAnimationHandler({
     enter: (t, i) => ({ opacity: 1, y: i * height }),
     update: (t, i) => ({ opacity: 1, y: i * height }),
     leave: (t, i) => ({ y: (i - 1) * height, opacity: 0 }),
-    config: { ...config.default, duration: 170 }
+    config: { ...config.default, duration: 170 },
   })
 
   return transitions((styles, t) => {
@@ -120,7 +120,7 @@ function ToasterAnimationHandler({
           position: 'absolute',
           overflow: 'hidden',
           paddingTop: 15,
-          ...styles
+          ...styles,
         }}
       >
         <ToastComponent key={t.id} onDismiss={handleDismiss} {...t} />

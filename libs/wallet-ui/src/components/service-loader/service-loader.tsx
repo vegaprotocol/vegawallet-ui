@@ -4,14 +4,14 @@ import { Intent } from '../../config/intent'
 import {
   DrawerPanel,
   ServiceState,
-  useGlobal
+  useGlobal,
 } from '../../contexts/global/global-context'
 import { useCheckForUpdate } from '../../hooks/use-check-for-update'
 import { EVENTS } from '../../lib/events'
 import {
   EventsOff,
   EventsOn,
-  WindowReload
+  WindowReload,
 } from '../../wailsjs/runtime/runtime'
 import { Button } from '../button'
 import { Chrome } from '../chrome'
@@ -28,7 +28,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
   const {
     state: { serviceStatus, network, networkConfig },
     actions,
-    dispatch
+    dispatch,
   } = useGlobal()
 
   useEffect(() => {
@@ -49,40 +49,40 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
       setServiceError(null)
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Started
+        status: ServiceState.Started,
       })
     })
 
     EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Unreachable
+        status: ServiceState.Unreachable,
       })
     })
 
     EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Unhealthy
+        status: ServiceState.Unhealthy,
       })
     })
 
     EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Error
+        status: ServiceState.Error,
       })
 
       AppToaster.show({
         intent: Intent.DANGER,
-        message: `${err}`
+        message: `${err}`,
       })
     })
 
     EventsOn(EVENTS.SERVICE_STOPPED, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Stopped
+        status: ServiceState.Stopped,
       })
     })
 
@@ -101,7 +101,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
     return (
       <Chrome>
         <SplashError
-          title='Wallet service cannot load'
+          title="Wallet service cannot load"
           message={
             <span>
               Make sure you don't already have an application running on machine
@@ -120,8 +120,8 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
                     state: {
                       isOpen: true,
                       panel: DrawerPanel.Edit,
-                      editingNetwork: network
-                    }
+                      editingNetwork: network,
+                    },
                   })
                 }
               >

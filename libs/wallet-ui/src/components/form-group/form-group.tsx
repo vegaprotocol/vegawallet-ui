@@ -19,7 +19,7 @@ export function FormGroup({
   labelFor,
   helperText,
   style,
-  intent = Intent.NONE
+  intent = Intent.NONE,
 }: FormGroupProps) {
   return (
     <div
@@ -27,7 +27,7 @@ export function FormGroup({
         display: 'flex',
         flexDirection: 'column',
         margin: '0 0 8px 0',
-        ...style
+        ...style,
       }}
     >
       <label htmlFor={labelFor}>{label}</label>
@@ -35,13 +35,13 @@ export function FormGroup({
         style={{
           position: 'relative',
           marginTop: 5,
-          paddingBottom: 21
+          paddingBottom: 21,
         }}
       >
         {children}
         {helperText && (
           <div
-            data-testid='helper-text'
+            data-testid="helper-text"
             style={{
               marginTop: 5,
               fontSize: 14,
@@ -49,7 +49,7 @@ export function FormGroup({
                 // if no intent is provided, use deemphasises text to help visual hierarchy
                 intent === 'none'
                   ? Colors.TEXT_COLOR_DEEMPHASISE
-                  : IntentColors[intent]
+                  : IntentColors[intent],
             }}
           >
             {helperText}

@@ -17,7 +17,7 @@ export const useOpenWallet = () => {
       if (w?.auth) {
         dispatch({
           type: 'ACTIVATE_WALLET',
-          wallet
+          wallet,
         })
         navigate(`/wallet/${encodeURIComponent(wallet)}`)
         return
@@ -30,30 +30,30 @@ export const useOpenWallet = () => {
         const [_w, { keys = [] }, { permissions }] = await Promise.all([
           service.WalletApi.DescribeWallet({ wallet, passphrase }),
           service.WalletApi.ListKeys({ wallet, passphrase }),
-          service.WalletApi.ListPermissions({ wallet, passphrase })
+          service.WalletApi.ListPermissions({ wallet, passphrase }),
         ])
 
         const keysWithMeta = await Promise.all(
-          keys.map(key =>
+          keys.map((key) =>
             service.WalletApi.DescribeKey({
               wallet,
               passphrase,
-              publicKey: key.publicKey ?? ''
+              publicKey: key.publicKey ?? '',
             })
           )
         )
 
         const permissionDetails = await Promise.all(
-          Object.keys(permissions).map(async hostname => {
+          Object.keys(permissions).map(async (hostname) => {
             const result = await service.WalletApi.DescribePermissions({
               wallet,
               passphrase,
-              hostname
+              hostname,
             })
             return {
               hostname,
               active: false,
-              permissions: result.permissions
+              permissions: result.permissions,
             }
           })
         )
@@ -61,22 +61,22 @@ export const useOpenWallet = () => {
         dispatch({
           type: 'SET_KEYPAIRS',
           wallet,
-          keypairs: keysWithMeta
+          keypairs: keysWithMeta,
         })
         dispatch({
           type: 'SET_CONNECTIONS',
           wallet,
-          connections: permissionDetails
+          connections: permissionDetails,
         })
         dispatch({
           type: 'ACTIVATE_WALLET',
-          wallet
+          wallet,
         })
         navigate(`/wallet/${encodeURIComponent(wallet)}`)
       } catch (err) {
         AppToaster.show({
           intent: Intent.DANGER,
-          message: `${err}`
+          message: `${err}`,
         })
       }
     },

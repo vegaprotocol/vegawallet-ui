@@ -33,7 +33,7 @@ export function useImportWallet() {
           wallet: values.wallet,
           passphrase: values.passphrase,
           recoveryPhrase: values.recoveryPhrase,
-          version: Number(values.version)
+          version: Number(values.version),
         })
 
         if (resp && resp.key && resp.wallet) {
@@ -42,14 +42,14 @@ export function useImportWallet() {
           const keypair = await service.WalletApi.DescribeKey({
             wallet: values.wallet,
             passphrase: values.passphrase,
-            publicKey: resp.key.publicKey
+            publicKey: resp.key.publicKey,
           })
 
           dispatch(actions.addWalletAction(values.wallet, keypair))
           AppToaster.show({
             message: `Wallet imported to: ${resp.wallet.filePath}`,
             intent: Intent.SUCCESS,
-            timeout: 0
+            timeout: 0,
           })
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
@@ -67,6 +67,6 @@ export function useImportWallet() {
   return {
     response,
     submit,
-    error
+    error,
   }
 }

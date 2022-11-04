@@ -25,11 +25,11 @@ export const TaintKeyDialog = () => {
 
   return (
     <Dialog
-      size='lg'
+      size="lg"
       open={state.isTaintKeyModalOpen}
       title={keypair.isTainted ? 'Untaint key' : 'Taint key'}
     >
-      <div data-testid='keypair-taint' style={{ padding: '0 20px 20px' }}>
+      <div data-testid="keypair-taint" style={{ padding: '0 20px 20px' }}>
         {keypair.isTainted && (
           <div style={{ marginBottom: 20 }}>
             <p style={{ marginBottom: 10 }}>
@@ -57,7 +57,7 @@ export const TaintKeyDialog = () => {
       <div style={{ padding: '32px 20px 20px' }}>
         <ButtonGroup inline>
           <Button
-            data-testid='taint-action'
+            data-testid="taint-action"
             disabled={loading}
             onClick={() => {
               if (keypair.isTainted) {

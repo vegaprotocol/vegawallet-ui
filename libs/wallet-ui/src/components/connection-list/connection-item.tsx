@@ -12,7 +12,7 @@ type ConnectionItemProps = {
 export const ConnectionItem = ({
   connection,
   onManage,
-  onDisconnect
+  onDisconnect,
 }: ConnectionItemProps) => {
   return (
     <div
@@ -22,20 +22,20 @@ export const ConnectionItem = ({
         alignItems: 'center',
         gap: 20,
         padding: '20px 0',
-        borderTop: `1px solid ${Colors.BLACK}`
+        borderTop: `1px solid ${Colors.BLACK}`,
       }}
     >
       <div
         style={{
           minWidth: 0,
-          flexBasis: '50%'
+          flexBasis: '50%',
         }}
       >
         <code
           style={{
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
           }}
         >
           <StatusCircle

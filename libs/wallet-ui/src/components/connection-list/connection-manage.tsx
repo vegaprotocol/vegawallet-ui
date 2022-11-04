@@ -59,12 +59,12 @@ const compileDefaultValues = (
               acc.push({
                 key,
                 name: keypair.name,
-                value: p.restrictedKeys?.includes(key) ? false : true
+                value: p.restrictedKeys?.includes(key) ? false : true,
               })
             }
             return acc
-          }, [])
-        }
+          }, []),
+        },
       }
     },
     {} as NormalizedPermissionMap
@@ -72,7 +72,7 @@ const compileDefaultValues = (
 
   return {
     permissions,
-    permissionAccessKeys
+    permissionAccessKeys,
   }
 }
 
@@ -94,8 +94,8 @@ const compileSubmissionData = (
                   acc.push(item.key)
                 }
                 return acc
-              }, [])
-      }
+              }, []),
+      },
     }
   }, {} as WalletModel.Permissions)
 }
@@ -109,7 +109,7 @@ type ManageDialogProps = {
 export const ManagePermissions = ({
   wallet,
   hostname,
-  onClose
+  onClose,
 }: ManageDialogProps) => {
   const { service, dispatch } = useGlobal()
   const { permissions, permissionAccessKeys } = useMemo(
@@ -119,8 +119,8 @@ export const ManagePermissions = ({
   )
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      ...permissions
-    }
+      ...permissions,
+    },
   })
 
   const onUpdate = useCallback(
@@ -134,14 +134,14 @@ export const ManagePermissions = ({
             wallet: wallet.name,
             passphrase,
             hostname,
-            permissions
+            permissions,
           })
 
         dispatch({
           type: 'SET_PERMISSONS',
           wallet: wallet.name,
           hostname,
-          permissions: result
+          permissions: result,
         })
 
         onClose()
@@ -149,7 +149,7 @@ export const ManagePermissions = ({
         if (err !== 'dismissed') {
           AppToaster.show({
             message: `${err}`,
-            intent: Intent.DANGER
+            intent: Intent.DANGER,
           })
         }
       }
@@ -165,13 +165,13 @@ export const ManagePermissions = ({
           wallet "<code>{wallet.name}</code>":
         </p>
         <div>
-          {permissionAccessKeys.map(key => (
+          {permissionAccessKeys.map((key) => (
             <PermissionSection key={key} accessType={key} control={control} />
           ))}
         </div>
       </div>
       <ButtonGroup inline style={{ padding: `0 20px 20px` }}>
-        <Button type='submit'>Update</Button>
+        <Button type="submit">Update</Button>
         <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
       </ButtonGroup>
     </form>

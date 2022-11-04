@@ -26,7 +26,7 @@ interface NetworkImportFormProps {
 
 export function NetworkImportForm({
   onComplete,
-  onCancel
+  onCancel,
 }: NetworkImportFormProps) {
   const [isCheckboxVisible, setCheckboxVisible] = useState(false)
   const { status, submit, error } = useImportNetwork()
@@ -38,13 +38,13 @@ export function NetworkImportForm({
     setError,
     reset,
     getValues,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormFields>({
     defaultValues: {
       name: '',
       fileOrUrl: '',
-      force: false
-    }
+      force: false,
+    },
   })
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export function NetworkImportForm({
         'name',
         {
           message:
-            'Network with name already exists. Provide a new name or overwrite by checking the box below'
+            'Network with name already exists. Provide a new name or overwrite by checking the box below',
         },
         { shouldFocus: true }
       )
@@ -84,26 +84,28 @@ export function NetworkImportForm({
 
   return (
     <form
-      onSubmit={handleSubmit(values => submit({ ...values, network: 'other' }))}
+      onSubmit={handleSubmit((values) =>
+        submit({ ...values, network: 'other' })
+      )}
     >
       <FormGroup
-        label='URL or path'
-        labelFor='fileOrUrl'
+        label="URL or path"
+        labelFor="fileOrUrl"
         intent={errors.fileOrUrl?.message ? Intent.DANGER : Intent.NONE}
         helperText={renderFileOrUrlHelperText(errors.fileOrUrl)}
       >
         <Input
-          id='fileOrUrl'
-          type='text'
-          data-testid='url-path'
+          id="fileOrUrl"
+          type="text"
+          data-testid="url-path"
           {...register('fileOrUrl', {
-            required: Validation.REQUIRED
+            required: Validation.REQUIRED,
           })}
         />
       </FormGroup>
       <FormGroup
-        label='Network name'
-        labelFor='name'
+        label="Network name"
+        labelFor="name"
         intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
         helperText={
           errors.name
@@ -112,21 +114,21 @@ export function NetworkImportForm({
         }
       >
         <Input
-          data-testid='network-name'
-          type='text'
-          id='name'
+          data-testid="network-name"
+          type="text"
+          id="name"
           {...register('name')}
         />
       </FormGroup>
       {isCheckboxVisible && (
-        <FormGroup helperText='Overwrite existing network configuration'>
-          <Checkbox name='force' control={control} label='Overwrite' />
+        <FormGroup helperText="Overwrite existing network configuration">
+          <Checkbox name="force" control={control} label="Overwrite" />
         </FormGroup>
       )}
       <ButtonGroup inline>
         <Button
-          data-testid='import-network'
-          type='submit'
+          data-testid="import-network"
+          type="submit"
           loading={status === FormStatus.Pending}
         >
           Import

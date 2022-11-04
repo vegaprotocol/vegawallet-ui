@@ -6,7 +6,7 @@ export enum TransactionStatus {
   PENDING = 'pending',
   REJECTED = 'rejected',
   SUCCESS = 'success',
-  FAILURE = 'failure'
+  FAILURE = 'failure',
 }
 
 export enum TransactionKeys {
@@ -30,7 +30,7 @@ export enum TransactionKeys {
   TRANSFER = 'transfer',
   CANCEL_TRANSFER = 'cancelTransfer',
   KEY_ROTATE_SUBMISSION = 'keyRotateSubmission',
-  ETHEREUM_KEY_ROTATE_SUBMISSION = 'ethereumKeyRotateSubmission'
+  ETHEREUM_KEY_ROTATE_SUBMISSION = 'ethereumKeyRotateSubmission',
 }
 
 type TransactionData = object
@@ -79,7 +79,7 @@ export const parseTransactionInput = (
     receivedAt: new Date(event.data.receivedAt),
     wallet: event.data.wallet,
     publicKey: event.data.publicKey,
-    txHash: null
+    txHash: null,
   }
 }
 
