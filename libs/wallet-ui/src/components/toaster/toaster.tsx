@@ -24,7 +24,7 @@ interface ToasterState {
   toasts: Toast[]
 }
 
-export class Toaster extends React.Component<undefined, ToasterState> {
+export class Toaster extends React.Component<Readonly<any>, ToasterState> {
   toastId = 0
   container: HTMLDivElement | null = null
 
