@@ -9,8 +9,8 @@ import type {
   RequestTransactionFailure,
   RequestTransactionReview,
   RequestTransactionSuccess,
-} from '../types'
-import { INTERACTION_TYPE } from '../types'
+} from '../../../types/interaction'
+import { INTERACTION_TYPE } from '../../../types/interaction'
 
 type TransactionEndProps =
   | InteractionContentProps<RequestTransactionSuccess>

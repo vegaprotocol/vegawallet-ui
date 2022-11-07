@@ -1,20 +1,24 @@
 import type { AnchorHTMLAttributes } from 'react'
 
-import { BrowserOpenURL } from '../../wailsjs/runtime/runtime'
-
 interface ExternalLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  href: string // make href prop required
+  href: string
 }
 
-export function ExternalLink({ style, href, ...props }: ExternalLinkProps) {
+export function ExternalLink({
+  style,
+  href,
+  children,
+  ...props
+}: ExternalLinkProps) {
   return (
-    // ignore warning about no content
-    // eslint-disable-next-line
     <a
       {...props}
+      href={href}
       target="_blank"
+      rel="noreferrer noopener"
       style={{ textDecoration: 'underline', cursor: 'pointer', ...style }}
-      onClick={() => BrowserOpenURL(href)}
-    />
+    >
+      {children}
+    </a>
   )
 }

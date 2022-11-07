@@ -2,7 +2,11 @@ import { useEffect } from 'react'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, Log, LogContent } from '../types'
+import type {
+  InteractionContentProps,
+  Log,
+  LogContent,
+} from '../../../types/interaction'
 
 const getMessageIntent = (type: LogContent['type']) => {
   switch (type) {

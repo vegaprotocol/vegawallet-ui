@@ -8,7 +8,7 @@ import { useGlobal } from '../contexts/global/global-context'
 
 export const useOpenWallet = () => {
   const navigate = useNavigate()
-  const { dispatch, service, state } = useGlobal()
+  const { dispatch, client, state } = useGlobal()
 
   const open = useCallback(
     async (wallet: string) => {
@@ -28,14 +28,14 @@ export const useOpenWallet = () => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [_w, { keys = [] }, { permissions }] = await Promise.all([
-          service.WalletApi.DescribeWallet({ wallet, passphrase }),
-          service.WalletApi.ListKeys({ wallet, passphrase }),
-          service.WalletApi.ListPermissions({ wallet, passphrase }),
+          client.DescribeWallet({ wallet, passphrase }),
+          client.ListKeys({ wallet, passphrase }),
+          client.ListPermissions({ wallet, passphrase }),
         ])
 
         const keysWithMeta = await Promise.all(
           keys.map((key) =>
-            service.WalletApi.DescribeKey({
+            client.DescribeKey({
               wallet,
               passphrase,
               publicKey: key.publicKey ?? '',
@@ -45,7 +45,7 @@ export const useOpenWallet = () => {
 
         const permissionDetails = await Promise.all(
           Object.keys(permissions).map(async (hostname) => {
-            const result = await service.WalletApi.DescribePermissions({
+            const result = await client.DescribePermissions({
               wallet,
               passphrase,
               hostname,
@@ -80,7 +80,7 @@ export const useOpenWallet = () => {
         })
       }
     },
-    [navigate, state, service, dispatch]
+    [navigate, state, client, dispatch]
   )
 
   return { open }

@@ -4,6 +4,7 @@ import { Header } from '../../../components/header'
 import { ArrowTopRight } from '../../../components/icons/arrow-top-right'
 import { PublicKey } from '../../../components/public-key'
 import { Title } from '../../../components/title'
+import { ExternalLink } from '../../../components/external-link'
 import { TransactionHistory } from '../../../components/transaction-history'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { useExplorerUrl } from '../../../hooks/use-explorer-url'
@@ -40,15 +41,10 @@ export function Transactions() {
         >
           <Title style={{ margin: 0 }}>Current session transactions</Title>
           {explorerUrl && (
-            <a
-              href={`${explorerUrl}/parties/${keypair.publicKey}`}
-              target="_blank"
-              style={{ textDecoration: 'underline' }}
-              rel="noreferrer"
-            >
+            <ExternalLink href={`${explorerUrl}/parties/${keypair.publicKey}`}>
               View full history
               <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
-            </a>
+            </ExternalLink>
           )}
         </div>
         <TransactionHistory />

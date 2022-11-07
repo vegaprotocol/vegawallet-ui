@@ -39,6 +39,13 @@
         "passWithNoTests": true
       }
     },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn tsc --noEmit --project ./libs/wallet-ui/tsconfig.json"
+      }
+    },
     "storybook": {
       "executor": "@nrwl/storybook:storybook",
       "options": {
@@ -71,7 +78,7 @@
       }
     },
     "build-spec": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "command": "yarn tsc --project ./libs/wallet-ui/tsconfig.spec.json"

@@ -1,22 +1,21 @@
-import type log from 'loglevel'
+import type { WalletModel, WalletClient } from '@vegaprotocol/wallet-client'
 
+import type { Service, AppConfig } from '../../types/service'
+import type { Logger } from '../../types/logger'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
-import type { ServiceType } from '../../service'
-import { app as AppModel } from '../../wailsjs/go/models'
-import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
 type ServiceAction = {
-  logger: log.Logger
   getState: () => GlobalState
-  service: ServiceType
+  service: Service
+  logger: Logger
   dispatch: GlobalDispatch
 }
 
@@ -86,25 +85,25 @@ const startService = async ({
   }
 }
 
-const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
-  const networks = await service.WalletApi.ListNetworks()
+const getNetworks = async (client: WalletClient, preset?: NetworkPreset) => {
+  const networks = await client.ListNetworks()
 
   if (preset && (!networks.networks || networks.networks.length === 0)) {
-    await service.WalletApi.ImportNetwork({
+    await client.ImportNetwork({
       name: preset.name,
       url: preset.configFileUrl,
       filePath: '',
       overwrite: true,
     })
 
-    return service.WalletApi.ListNetworks()
+    return client.ListNetworks()
   }
 
   return networks
 }
 
 const getDefaultNetwork = (
-  config: AppModel.Config,
+  config: AppConfig,
   networks: WalletModel.ListNetworksResult
 ) => {
   if (config.defaultNetwork) {
@@ -113,11 +112,9 @@ const getDefaultNetwork = (
   return networks.networks?.[0]
 }
 
-export function createActions(
-  service: ServiceType,
-  logger: log.Logger,
-  enableTelemetry: () => void
-) {
+export function createActions(service: Service, client: WalletClient) {
+  const logger = service.GetLogger('GlobalActions')
+
   const actions = {
     initAppAction() {
       return async (dispatch: GlobalDispatch) => {
@@ -143,19 +140,19 @@ export function createActions(
           ])
 
           if (config.telemetry.enabled) {
-            enableTelemetry()
+            service.EnableTelemetry()
           }
 
           // should now have an app config
           const [wallets, networks] = await Promise.all([
-            service.WalletApi.ListWallets(),
-            getNetworks(service, presets[0]),
+            client.ListWallets(),
+            getNetworks(client, presets[0]),
           ])
 
           const defaultNetwork = getDefaultNetwork(config, networks)
 
           const defaultNetworkConfig = defaultNetwork
-            ? await service.WalletApi.DescribeNetwork({
+            ? await client.DescribeNetwork({
                 network: defaultNetwork,
               })
             : null
@@ -180,14 +177,14 @@ export function createActions(
     updateTelemetry(telemetry: { enabled: boolean; consentAsked: boolean }) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         if (telemetry.enabled) {
-          enableTelemetry()
+          service.EnableTelemetry()
         }
 
         logger.debug('UpdateTelemetry')
         try {
           const { config } = getState()
           if (config) {
-            const newConfig = new AppModel.Config({ ...config, telemetry })
+            const newConfig = { ...config, telemetry }
             await service.UpdateAppConfig(newConfig)
             dispatch({
               type: 'SET_CONFIG',
@@ -228,13 +225,13 @@ export function createActions(
         logger.debug('AddKeyPair')
         try {
           const passphrase = await requestPassphrase()
-          const res = await service.WalletApi.GenerateKey({
+          const res = await client.GenerateKey({
             wallet,
             passphrase,
             metadata: [],
           })
 
-          const keypair = await service.WalletApi.DescribeKey({
+          const keypair = await client.DescribeKey({
             wallet,
             passphrase,
             publicKey: res.publicKey ?? '',
@@ -309,14 +306,14 @@ export function createActions(
             service,
           })
 
-          await service.UpdateAppConfig(
-            new AppModel.Config({
+          if (state.config) {
+            await service.UpdateAppConfig({
               ...state.config,
               defaultNetwork: network,
             })
-          )
+          }
 
-          const config = await service.WalletApi.DescribeNetwork({ network })
+          const config = await client.DescribeNetwork({ network })
 
           dispatch({
             type: 'CHANGE_NETWORK',
@@ -360,9 +357,7 @@ export function createActions(
         }
 
         try {
-          const isSuccessful = await service.WalletApi.UpdateNetwork(
-            networkConfig
-          )
+          const isSuccessful = await client.UpdateNetwork(networkConfig)
 
           if (isSuccessful) {
             AppToaster.show({
@@ -370,7 +365,7 @@ export function createActions(
               intent: Intent.SUCCESS,
             })
 
-            const updatedNetwork = await service.WalletApi.DescribeNetwork({
+            const updatedNetwork = await client.DescribeNetwork({
               network: networkConfig.name,
             })
 
@@ -429,7 +424,7 @@ export function createActions(
               service,
             })
           }
-          await service.WalletApi.RemoveNetwork({ network })
+          await client.RemoveNetwork({ network })
           dispatch({
             type: 'REMOVE_NETWORK',
             network,

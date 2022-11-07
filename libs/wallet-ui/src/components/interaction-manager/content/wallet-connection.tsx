@@ -3,8 +3,14 @@ import { useEffect } from 'react'
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestWalletConnection } from '../types'
-import { CONNECTION_RESPONSE, INTERACTION_RESPONSE_TYPE } from '../types'
+import type {
+  InteractionContentProps,
+  RequestWalletConnection,
+} from '../../../types/interaction'
+import {
+  CONNECTION_RESPONSE,
+  INTERACTION_RESPONSE_TYPE,
+} from '../../../types/interaction'
 
 export const WalletConnection = ({
   event,

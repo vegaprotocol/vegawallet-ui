@@ -1,10 +1,12 @@
-const path = require('path')
-const log = require('loglevel')
-const { readFile, writeFile } = require('fs-extra')
-const { template, camelCase, toUpper } = require('lodash')
-const { compile } = require('json-schema-to-typescript')
-const { Command } = require('commander')
-const fetch = require('node-fetch')
+import path from 'path'
+import log from 'loglevel'
+import fs from 'fs-extra'
+import { template } from 'underscore'
+import { camelCase } from 'change-case'
+import { toUpper } from 'ramda'
+import { compile } from 'json-schema-to-typescript'
+import { Command } from 'commander'
+import fetch from 'node-fetch'
 
 const COMPILE_OPTS = {
   additionalProperties: false,
@@ -216,7 +218,7 @@ const createClient = () => {
 
       const [openrpcDocument, templateContent] = await Promise.all([
         getJsonFileContent(document),
-        readFile(templateFile).then((buff) => buff.toString()),
+        fs.readFile(templateFile).then((buff) => buff.toString()),
       ])
 
       const types = await getTsDefs(openrpcDocument)
@@ -230,7 +232,7 @@ const createClient = () => {
         getMethodParams,
       })
 
-      await writeFile(path.join(process.cwd(), outFile), content)
+      await fs.writeFile(path.join(process.cwd(), outFile), content)
       logger.info(`Generated client to ${path.join(process.cwd(), outFile)}`)
     })
 

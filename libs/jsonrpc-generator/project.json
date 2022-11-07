@@ -40,10 +40,17 @@
       }
     },
     "build-spec": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "command": "yarn tsc --project ./libs/jsonrpc-generator/tsconfig.spec.json"
+      }
+    },
+    "run": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "node ./libs/jsonrpc-generator/src/index.js"
       }
     }
   }

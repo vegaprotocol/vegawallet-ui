@@ -12,14 +12,14 @@ const logger = createLogger('Delete')
 
 export const useRemoveWallet = () => {
   const navigate = useNavigate()
-  const { dispatch, service } = useGlobal()
+  const { dispatch, client } = useGlobal()
   const [status, setStatus] = useFormState()
   const submit = useCallback(
     async (walletName: string) => {
       try {
         setStatus(FormStatus.Pending)
         logger.debug(`DeleteWallet: ${walletName}`)
-        await service.WalletApi.RemoveWallet({ wallet: walletName })
+        await client.RemoveWallet({ wallet: walletName })
         AppToaster.show({ message: 'Wallet removed', intent: Intent.SUCCESS })
         setStatus(FormStatus.Success)
         dispatch({ type: 'REMOVE_WALLET', wallet: walletName })
@@ -33,7 +33,7 @@ export const useRemoveWallet = () => {
         logger.error(err)
       }
     },
-    [dispatch, navigate, service, setStatus]
+    [dispatch, navigate, client, setStatus]
   )
 
   return { status, submit }

@@ -1,4 +1,4 @@
-import type log from 'loglevel'
+import type { Logger } from '../types/logger'
 import z from 'zod'
 
 export const networkConfigSchema = z.object({
@@ -25,7 +25,7 @@ export type NetworkPreset = z.infer<typeof networkPresetSchema>
 
 export const networkPresetsSchema = z.array(networkPresetSchema)
 
-export const fetchNetworkPreset = (url: string, logger: log.Logger) =>
+export const fetchNetworkPreset = (url: string, logger: Logger) =>
   fetch(url)
     .then((res) => res.json())
     .then((r) => {

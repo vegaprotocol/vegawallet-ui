@@ -4,6 +4,7 @@ import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { ButtonUnstyled } from '../button-unstyled'
+import { ExternalLink } from '../external-link'
 import { ArrowTopRight } from '../icons/arrow-top-right'
 import { TRANSACTION_TITLES } from '../interaction-manager/content/transaction'
 import { TransactionStatus } from '../transaction-status'
@@ -24,14 +25,10 @@ const TransactionId = ({
 
   if (explorerUrl) {
     return (
-      <a
-        href={`${explorerUrl}/txs/${transaction.txHash}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
         {truncateMiddle(transaction.txHash)}
         <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
-      </a>
+      </ExternalLink>
     )
   }
 

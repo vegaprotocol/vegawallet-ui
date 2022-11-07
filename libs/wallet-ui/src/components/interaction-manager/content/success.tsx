@@ -2,7 +2,10 @@ import { useEffect } from 'react'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestSucceeded } from '../types'
+import type {
+  InteractionContentProps,
+  RequestSucceeded,
+} from '../../../types/interaction'
 
 export const SuccessComponent = ({
   event,

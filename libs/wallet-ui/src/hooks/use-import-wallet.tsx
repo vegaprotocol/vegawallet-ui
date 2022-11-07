@@ -1,22 +1,20 @@
-import React from 'react'
+import { useMemo, useState, useCallback } from 'react'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { AppStatus, useGlobal } from '../contexts/global/global-context'
-import { createLogger } from '../lib/logging'
-import type { WalletModel } from '../wallet-client'
 import { useVegaHome } from './use-vega-home'
-
-const logger = createLogger('UseImportWallet')
 
 export function useImportWallet() {
   const vegaHome = useVegaHome()
-  const { actions, service, dispatch, state } = useGlobal()
+  const { actions, service, client, dispatch, state } = useGlobal()
+  const logger = useMemo(() => service.GetLogger('UseImportWallet'), [service])
   const [response, setResponse] =
-    React.useState<WalletModel.ImportWalletResult | null>(null)
-  const [error, setError] = React.useState<Error | null>(null)
+    useState<WalletModel.ImportWalletResult | null>(null)
+  const [error, setError] = useState<Error | null>(null)
 
-  const submit = React.useCallback(
+  const submit = useCallback(
     async (values: {
       wallet: string
       passphrase: string
@@ -29,7 +27,7 @@ export function useImportWallet() {
           await service.InitialiseApp({ vegaHome })
         }
 
-        const resp = await service.WalletApi.ImportWallet({
+        const resp = await client.ImportWallet({
           wallet: values.wallet,
           passphrase: values.passphrase,
           recoveryPhrase: values.recoveryPhrase,
@@ -39,7 +37,7 @@ export function useImportWallet() {
         if (resp && resp.key && resp.wallet) {
           setResponse(resp)
 
-          const keypair = await service.WalletApi.DescribeKey({
+          const keypair = await client.DescribeKey({
             wallet: values.wallet,
             passphrase: values.passphrase,
             publicKey: resp.key.publicKey,
@@ -61,7 +59,7 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [dispatch, actions, service, state.status, vegaHome]
+    [dispatch, actions, service, client, state.status, vegaHome]
   )
 
   return {

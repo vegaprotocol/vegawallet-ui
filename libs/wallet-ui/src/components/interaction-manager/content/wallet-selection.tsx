@@ -11,15 +11,18 @@ import { Dialog } from '../../dialog'
 import { requestPassphrase } from '../../passphrase-modal'
 import { RadioGroup } from '../../radio-group'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestWalletSelection } from '../types'
-import { INTERACTION_RESPONSE_TYPE } from '../types'
+import type {
+  InteractionContentProps,
+  RequestWalletSelection,
+} from '../../../types/interaction'
+import { INTERACTION_RESPONSE_TYPE } from '../../../types/interaction'
 
 export const WalletSelection = ({
   event,
   isResolved,
   setResolved,
 }: InteractionContentProps<RequestWalletSelection>) => {
-  const { service, dispatch } = useGlobal()
+  const { service, client, dispatch } = useGlobal()
   const {
     control,
     handleSubmit,
@@ -42,7 +45,7 @@ export const WalletSelection = ({
           },
         })
 
-        const { permissions } = await service.WalletApi.DescribePermissions({
+        const { permissions } = await client.DescribePermissions({
           wallet,
           passphrase,
           hostname: event.data.hostname,

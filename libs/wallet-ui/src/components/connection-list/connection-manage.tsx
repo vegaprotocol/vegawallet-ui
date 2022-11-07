@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { Intent } from '../../config/intent'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
-import type { WalletModel } from '../../wallet-client'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -111,7 +111,7 @@ export const ManagePermissions = ({
   hostname,
   onClose,
 }: ManageDialogProps) => {
-  const { service, dispatch } = useGlobal()
+  const { client, dispatch } = useGlobal()
   const { permissions, permissionAccessKeys } = useMemo(
     () =>
       compileDefaultValues(wallet, wallet.connections?.[hostname]?.permissions),
@@ -129,13 +129,12 @@ export const ManagePermissions = ({
         const permissions = compileSubmissionData(formData)
         const passphrase = await requestPassphrase()
 
-        const { permissions: result } =
-          await service.WalletApi.UpdatePermissions({
-            wallet: wallet.name,
-            passphrase,
-            hostname,
-            permissions,
-          })
+        const { permissions: result } = await client.UpdatePermissions({
+          wallet: wallet.name,
+          passphrase,
+          hostname,
+          permissions,
+        })
 
         dispatch({
           type: 'SET_PERMISSONS',
@@ -154,7 +153,7 @@ export const ManagePermissions = ({
         }
       }
     },
-    [service, dispatch, wallet.name, hostname, onClose]
+    [client, dispatch, wallet.name, hostname, onClose]
   )
 
   return (

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { Intent } from '../../config/intent'
 import {
@@ -8,11 +9,6 @@ import {
 } from '../../contexts/global/global-context'
 import { useCheckForUpdate } from '../../hooks/use-check-for-update'
 import { EVENTS } from '../../lib/events'
-import {
-  EventsOff,
-  EventsOn,
-  WindowReload,
-} from '../../wailsjs/runtime/runtime'
 import { Button } from '../button'
 import { Chrome } from '../chrome'
 import { SplashError } from '../splash-error'
@@ -21,13 +17,15 @@ import { AppToaster } from '../toaster'
 /**
  * Initialiases the app
  */
-export function ServiceLoader({ children }: { children: React.ReactNode }) {
+export function ServiceLoader({ children }: { children?: ReactNode }) {
   const [serviceError, setServiceError] = useState<string | null>(null)
   useCheckForUpdate()
 
   const {
     state: { serviceStatus, network, networkConfig },
     actions,
+    service,
+    runtime,
     dispatch,
   } = useGlobal()
 
@@ -45,7 +43,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
   }, [serviceStatus, serviceError])
 
   useEffect(() => {
-    EventsOn(EVENTS.SERVICE_HEALTHY, () => {
+    service.EventsOn(EVENTS.SERVICE_HEALTHY, () => {
       setServiceError(null)
       dispatch({
         type: 'SET_SERVICE_STATUS',
@@ -53,21 +51,21 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
       })
     })
 
-    EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
+    service.EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unreachable,
       })
     })
 
-    EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
+    service.EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unhealthy,
       })
     })
 
-    EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
+    service.EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Error,
@@ -79,7 +77,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
       })
     })
 
-    EventsOn(EVENTS.SERVICE_STOPPED, () => {
+    service.EventsOn(EVENTS.SERVICE_STOPPED, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Stopped,
@@ -87,7 +85,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
     })
 
     return () => {
-      EventsOff(
+      service.EventsOff(
         EVENTS.SERVICE_HEALTHY,
         EVENTS.SERVICE_UNREACHABLE,
         EVENTS.SERVICE_UNHEALTHY,
@@ -112,7 +110,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
           }
           actions={
             <>
-              <Button onClick={() => WindowReload()}>Reload</Button>
+              <Button onClick={() => runtime.WindowReload()}>Reload</Button>
               <Button
                 onClick={() =>
                   dispatch({

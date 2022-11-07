@@ -1,15 +1,15 @@
-import type log from 'loglevel'
 import React from 'react'
 import type { Thunk } from 'react-hook-thunk-reducer'
+import type { WalletClient, WalletModel } from '@vegaprotocol/wallet-client'
 
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
-import type { ServiceType } from '../../service'
 import type {
-  app as AppModel,
-  backend as BackendModel,
-} from '../../wailsjs/go/models'
-import type { WalletModel } from '../../wallet-client'
+  Service,
+  GetVersionResponse,
+  AppConfig,
+} from '../../types/service'
+import type { Runtime } from '../../types/runtime'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
 
@@ -74,8 +74,8 @@ export interface Wallet {
 
 export interface GlobalState {
   status: AppStatus
-  version: BackendModel.GetVersionResponse | null
-  config: AppModel.Config | null
+  version: GetVersionResponse | null
+  config: AppConfig | null
 
   // Wallet
   wallet: string | null
@@ -105,10 +105,11 @@ export type GlobalDispatch = React.Dispatch<
 
 type GlobalContextShape = {
   state: GlobalState
-  logger: log.Logger
   actions: GlobalActions
   dispatch: GlobalDispatch
-  service: ServiceType
+  service: Service
+  runtime: Runtime
+  client: WalletClient
 }
 
 export const GlobalContext = React.createContext<

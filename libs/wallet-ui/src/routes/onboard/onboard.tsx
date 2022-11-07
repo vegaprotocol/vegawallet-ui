@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
@@ -8,10 +8,7 @@ import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useVegaHome } from '../../hooks/use-vega-home'
-import { createLogger } from '../../lib/logging'
 import { Paths } from '..'
-
-const logger = createLogger('Onboard')
 
 export function Onboard() {
   const navigate = useNavigate()
@@ -22,8 +19,11 @@ export function Onboard() {
     dispatch,
     actions,
     service,
+    client,
     state: { networks, wallets },
   } = useGlobal()
+
+  const logger = useMemo(() => service.GetLogger('Onboard'), [service])
 
   const handleImportExistingWallet = async () => {
     try {
@@ -38,7 +38,7 @@ export function Onboard() {
         const defaultNetwork = config.defaultNetwork
           ? config.defaultNetwork
           : networks[0]
-        const defaultNetworkConfig = await service.WalletApi.DescribeNetwork({
+        const defaultNetworkConfig = await client.DescribeNetwork({
           network: defaultNetwork,
         })
         dispatch({

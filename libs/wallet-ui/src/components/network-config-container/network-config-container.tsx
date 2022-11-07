@@ -29,7 +29,7 @@ export function NetworkConfigContainer({
 }
 
 export function useNetworkConfig(name: string | null) {
-  const { service } = useGlobal()
+  const { client } = useGlobal()
   const [config, setConfig] =
     React.useState<WalletModel.DescribeNetworkResult | null>(null)
   const [error, setError] = React.useState<Error | null>(null)
@@ -40,7 +40,7 @@ export function useNetworkConfig(name: string | null) {
       if (!name) return
       setLoading(true)
       try {
-        const res = await service.WalletApi.DescribeNetwork({ network: name })
+        const res = await client.DescribeNetwork({ network: name })
         setConfig(res)
       } catch (err) {
         setError(err as Error)
@@ -51,7 +51,7 @@ export function useNetworkConfig(name: string | null) {
     }
 
     run()
-  }, [name, service])
+  }, [name, client])
 
   return { config, error, loading }
 }

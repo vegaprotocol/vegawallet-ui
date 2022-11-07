@@ -1,8 +1,7 @@
+import { useMemo } from 'react'
 import { ErrorBoundary } from '@sentry/react'
-import { useEffect } from 'react'
-// Wails recommends to use Hash routing.
-// See https://wails.io/docs/guides/routing
 import { HashRouter as Router } from 'react-router-dom'
+import { WalletClient } from '@vegaprotocol/wallet-client'
 
 import { AppFrame, AppLoader } from './app-loader'
 import { Button } from './components/button'
@@ -14,42 +13,25 @@ import { Settings } from './components/settings'
 import { SplashError } from './components/splash-error'
 import { TelemetryDialog } from './components/telemetry-dialog'
 import { GlobalProvider } from './contexts/global/global-provider'
-import { createLogger, initLogger } from './lib/logging'
 import { AppRouter } from './routes'
-import { Service } from './service'
-import { BrowserOpenURL, WindowReload } from './wailsjs/runtime'
+import type { Service } from './types/service'
+import type { Runtime } from './types/runtime'
+import type { Logger } from './types/logger'
 
-const logger = createLogger('GlobalActions')
-
-const getAnchor = (element: HTMLElement | null): HTMLAnchorElement | null => {
-  if (element?.nodeName.toLocaleLowerCase() === 'a') {
-    return element as HTMLAnchorElement
-  }
-
-  if (element?.parentNode?.nodeName.toLowerCase() === 'a') {
-    return element.parentNode as HTMLAnchorElement
-  }
-
-  return null
+type AppProps = {
+  service: Service
+  logger: Logger
+  runtime: Runtime
 }
 
 /**
  * Renders all the providers
  */
-function App() {
-  useEffect(() => {
-    const handler = (event: MouseEvent) => {
-      const anchor = getAnchor(event.target as HTMLElement | null)
-      const url = anchor?.getAttribute('href')
-
-      if (url && anchor?.nodeName.toLocaleLowerCase() === 'a') {
-        BrowserOpenURL(url)
-      }
-    }
-    document.body.addEventListener('click', handler)
-
-    return () => document.body.removeEventListener('click', handler)
-  }, [])
+function App({ service, runtime }: AppProps) {
+  const client = useMemo(
+    () => new WalletClient(service.SendAPIRequest),
+    [service]
+  )
 
   return (
     <ErrorBoundary
@@ -57,15 +39,11 @@ function App() {
         <SplashError
           title="Somthing went wrong"
           message={error.message}
-          actions={[<Button onClick={WindowReload}>Reload</Button>]}
+          actions={[<Button onClick={runtime.WindowReload}>Reload</Button>]}
         />
       )}
     >
-      <GlobalProvider
-        service={Service}
-        logger={logger}
-        enableTelemetry={initLogger}
-      >
+      <GlobalProvider service={service} client={client} runtime={runtime}>
         <Router>
           <AppFrame>
             <Chrome>

@@ -14,8 +14,8 @@ import type {
   Interaction,
   InteractionContentProps,
   RawInteraction,
-} from './types'
-import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
+} from '../../types/interaction'
+import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from '../../types/interaction'
 
 const InteractionItem = ({
   event,

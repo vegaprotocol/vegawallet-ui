@@ -8,6 +8,7 @@ import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 import { ArrowTopRight } from '../icons/arrow-top-right'
 import { Title } from '../title'
+import { ExternalLink } from '../external-link'
 import { TransactionStatus } from '../transaction-status'
 
 type TransactionDetailsProps = {
@@ -37,14 +38,10 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
     rows.push({
       key: 'Block height',
       value: explorerUrl ? (
-        <a
-          href={`${explorerUrl}/blocks/${transaction.blockHeight}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <ExternalLink href={`${explorerUrl}/blocks/${transaction.blockHeight}`}>
           {transaction.blockHeight}
           <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
-        </a>
+        </ExternalLink>
       ) : (
         transaction.blockHeight
       ),

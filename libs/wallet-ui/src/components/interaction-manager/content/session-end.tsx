@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 
-import type { InteractionContentProps, SessionEnded } from '../types'
+import type {
+  InteractionContentProps,
+  SessionEnded,
+} from '../../../types/interaction'
 
 export const SessionEndComponent = ({
   onFinish,

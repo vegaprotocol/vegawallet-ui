@@ -4,12 +4,15 @@ import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestPassphrase } from '../types'
+import type {
+  InteractionContentProps,
+  RequestPassphrase,
+} from '../../../types/interaction'
 import {
   EVENT_FLOW_TYPE,
   INTERACTION_RESPONSE_TYPE,
   INTERACTION_TYPE,
-} from '../types'
+} from '../../../types/interaction'
 
 export const Passphrase = ({
   event,
@@ -18,7 +21,7 @@ export const Passphrase = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<RequestPassphrase>) => {
-  const { service, dispatch } = useGlobal()
+  const { service, client, dispatch } = useGlobal()
 
   useEffect(() => {
     const handleResponse = async () => {
@@ -49,13 +52,11 @@ export const Passphrase = ({
           ) {
             const { wallet, hostname } = source?.event.data || {}
 
-            const { permissions } = await service.WalletApi.DescribePermissions(
-              {
-                wallet,
-                passphrase,
-                hostname,
-              }
-            )
+            const { permissions } = await client.DescribePermissions({
+              wallet,
+              passphrase,
+              hostname,
+            })
 
             dispatch({
               type: 'ADD_CONNECTION',
@@ -89,7 +90,7 @@ export const Passphrase = ({
     if (!isResolved) {
       handleResponse()
     }
-  }, [dispatch, flow, history, service, event, isResolved, setResolved])
+  }, [dispatch, flow, history, service, client, event, isResolved, setResolved])
 
   return null
 }

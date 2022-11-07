@@ -2,7 +2,10 @@ import { useEffect } from 'react'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
-import type { ErrorOccurred, InteractionContentProps } from '../types'
+import type {
+  ErrorOccurred,
+  InteractionContentProps,
+} from '../../../types/interaction'
 
 export const ErrorComponent = ({
   event,

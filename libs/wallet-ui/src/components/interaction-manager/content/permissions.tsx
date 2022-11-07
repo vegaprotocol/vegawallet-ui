@@ -12,9 +12,9 @@ import type {
   InteractionContentProps,
   RequestPermissions,
   RequestPermissionsContent,
-} from '../types'
-import { PermissionTarget, PermissionType } from '../types'
-import { INTERACTION_RESPONSE_TYPE } from '../types'
+} from '../../../types/interaction'
+import { PermissionTarget, PermissionType } from '../../../types/interaction'
+import { INTERACTION_RESPONSE_TYPE } from '../../../types/interaction'
 
 const getPermissionAction = (
   data: RequestPermissionsContent,
