@@ -8,7 +8,7 @@ name: "Add Issues To Project Board"
       - opened
 env:
   GH_TOKEN: ${{ secrets.GH_NEW_CARD_TO_PROJECT }}
-  PROJECT_ID_FE: ${{ secrets.FRONT_END_PROJECT_ID }}
+  PROJECT_ID: ${{ secrets.FRONT_END_PROJECT_ID }}
   ISSUE_ID: ${{ github.event.issue.node_id }}
   USER: ${{ github.actor }}
   LABEL_ID: "LA_kwDOIXuppM8AAAABG8jLTQ"
@@ -26,7 +26,7 @@ jobs:
                   id
                 }
               }
-            }' -f project=$PROJECT_ID_FE -f issue=$ISSUE_ID -f user=$USER
+            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID -f user=$USER
 
       - name: "Add repo identifier label"
         run: |
