@@ -2,7 +2,7 @@ import type { EVENTS } from '../lib/events'
 import type { Interaction, RawInteraction } from './interaction'
 import type { Logger } from './logger'
 
-export type GetCurrentServiceInfo = {
+export type GetCurrentServiceInfoResponse = {
   url: string
   logFilePath: string
   isRunning: boolean
@@ -78,7 +78,7 @@ export type Service = {
   IsAppInitialised: () => Promise<boolean>
 
   // Telemetry
-  EnableTelemetry: () => void
+  EnableTelemetry: () => Promise<Empty>
 
   // Logging
   GetLogger: (namespace?: string) => Logger
@@ -86,10 +86,10 @@ export type Service = {
   // Service
   StartService: (arg: StartServiceArg) => Promise<Empty>
   StopService: () => Promise<Empty>
-  GetCurrentServiceInfo: () => Promise<GetCurrentServiceInfo>
+  GetCurrentServiceInfo: () => Promise<GetCurrentServiceInfoResponse>
 
   // API
-  SendAPIRequest: (arg: any) => Promise<any>
+  SendAPIRequest: (arg: any) => Promise<unknown>
   EventsOn: EventsCallback
   EventsOff: (...name: EVENTS[]) => void
   RespondToInteraction: (arg: Interaction) => Promise<Empty>

@@ -1,12 +1,11 @@
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
 import { useGlobal } from '../../contexts/global/global-context'
 import { FormStatus, useFormState } from '../../hooks/use-form-state'
-import { createLogger } from '../../lib/logging'
-import { app as AppModel } from '../../wailsjs/go/models'
-import { WindowReload } from '../../wailsjs/runtime/runtime'
+import type { AppConfig } from '../../types/service'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -17,27 +16,24 @@ import { Input } from '../forms/input'
 import { RadioGroup } from '../radio-group'
 import { AppToaster } from '../toaster'
 
-const logger = createLogger('Settings')
-
 const useUpdateConfig = () => {
-  const { service } = useGlobal()
+  const { service, runtime } = useGlobal()
+  const logger = useMemo(() => service.GetLogger('Settings'), [service])
   const [status, setStatus] = useFormState()
   const submit = async (fields: FormFields) => {
     try {
       logger.debug('UpdateAppConfig')
       setStatus(FormStatus.Pending)
-      await service.UpdateAppConfig(
-        new AppModel.Config({
-          vegaHome: fields.vegaHome,
-          logLevel: fields.logLevel,
-          defaultNetwork: fields.defaultNetwork,
-          telemetry: new AppModel.TelemetryConfig({
-            enabled: fields.telemetry === 'yes' ? true : false,
-            consentAsked: true,
-          }),
-        })
-      )
-      WindowReload()
+      await service.UpdateAppConfig({
+        vegaHome: fields.vegaHome,
+        logLevel: fields.logLevel,
+        defaultNetwork: fields.defaultNetwork,
+        telemetry: {
+          enabled: fields.telemetry === 'yes' ? true : false,
+          consentAsked: true,
+        },
+      })
+      runtime.WindowReload()
     } catch (err) {
       const message = 'Failed to update config'
       AppToaster.show({ message, intent: Intent.DANGER })
@@ -89,7 +85,7 @@ export function Settings() {
 interface SettingsFormProps {
   onSubmit: (fields: FormFields) => void
   onCancel: () => void
-  config: AppModel.Config
+  config: AppConfig
   isPending: boolean
 }
 

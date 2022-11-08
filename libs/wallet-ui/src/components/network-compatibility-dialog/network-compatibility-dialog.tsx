@@ -3,9 +3,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import type {
-  backend as BackendModel,
-  version as VersionModel,
-} from '../../wailsjs/go/models'
+  GetVersionResponse,
+  NetworkCompatibility,
+} from '../../types/service'
 import { AnchorButton, Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -19,7 +19,7 @@ const ONE_DAY = 86400000
 
 const findNetworkData = (
   network: string | null,
-  version: BackendModel.GetVersionResponse | null
+  version: GetVersionResponse | null
 ) => {
   if (!network || !version?.backend) {
     return {}
@@ -35,7 +35,7 @@ const findNetworkData = (
 
 const addCompatibleNetwork = (
   acc: string[],
-  { isCompatible, network }: VersionModel.NetworkCompatibility
+  { isCompatible, network }: NetworkCompatibility
 ) => {
   if (isCompatible) {
     acc.push(network)
@@ -65,7 +65,7 @@ const getTitle = (subview: Subview) => {
 }
 
 const shouldBeOpen = (
-  networkData?: VersionModel.NetworkCompatibility,
+  networkData?: NetworkCompatibility,
   telemetryConsentAsked?: boolean
 ) => {
   return telemetryConsentAsked === true && networkData?.isCompatible === false

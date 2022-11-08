@@ -1,14 +1,12 @@
 import { omit } from 'ramda'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { indexBy } from '../../lib/index-by'
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
-import type {
-  app as AppModel,
-  backend as BackendModel,
-} from '../../wailsjs/go/models'
-import type { WalletModel } from '../../wallet-client'
+import type { AppConfig, GetVersionResponse } from '../../types/service'
+
 import type {
   Connection,
   DrawerState,
@@ -52,7 +50,7 @@ export const initialGlobalState: GlobalState = {
 export type GlobalAction =
   | {
       type: 'INIT_APP'
-      config: AppModel.Config
+      config: AppConfig
       wallets: string[]
       network: string
       networks: string[]
@@ -69,11 +67,11 @@ export type GlobalAction =
     }
   | {
       type: 'SET_VERSION'
-      version: BackendModel.GetVersionResponse | null
+      version: GetVersionResponse | null
     }
   | {
       type: 'SET_CONFIG'
-      config: AppModel.Config
+      config: AppConfig
     }
   | {
       type: 'START_ONBOARDING'
