@@ -1,5 +1,27 @@
 {
   "document": "https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json",
   "outFile": "./src/index.ts",
-  "template": "./config/template.underscore"
+  "templateFile": "./config/template.underscore",
+  "methods": [
+    "admin.import_network",
+    "admin.list_networks",
+    "admin.describe_network",
+    "admin.update_network",
+    "admin.remove_network",
+    "admin.create_wallet",
+    "admin.import_wallet",
+    "admin.list_wallets",
+    "admin.describe_wallet",
+    "admin.rename_wallet",
+    "admin.list_permissions",
+    "admin.describe_permissions",
+    "admin.update_permissions",
+    "admin.generate_key",
+    "admin.describe_key",
+    "admin.list_keys",
+    "admin.annotate_key",
+    "admin.sign_message",
+    "admin.taint_key",
+    "admin.untaint_key"
+  ]
 }

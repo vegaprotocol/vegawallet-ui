@@ -1,7 +1,5 @@
 export const enum EVENTS {
   NEW_INTERACTION_EVENT = 'new_interaction',
-  NEW_CONSENT_REQUEST = 'new_consent_request',
-  TRANSACTION_SENT = 'transaction_sent',
   // Sent when the service is healthy.
   // This event can be emitted every 15 seconds.
   SERVICE_HEALTHY = 'service_is_healthy',

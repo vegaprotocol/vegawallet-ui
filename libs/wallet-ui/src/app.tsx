@@ -16,11 +16,9 @@ import { GlobalProvider } from './contexts/global/global-provider'
 import { AppRouter } from './routes'
 import type { Service } from './types/service'
 import type { Runtime } from './types/runtime'
-import type { Logger } from './types/logger'
 
 type AppProps = {
   service: Service
-  logger: Logger
   runtime: Runtime
 }
 

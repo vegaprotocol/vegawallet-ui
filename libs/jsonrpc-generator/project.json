@@ -50,7 +50,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "node ./libs/jsonrpc-generator/src/index.js"
+        "command": "npx ts-node ./libs/jsonrpc-generator/src/index.ts generate"
       }
     }
   }

@@ -1,3 +1,4 @@
+import type { WalletAPIRequest } from '@vegaprotocol/wallet-client'
 import type { EVENTS } from '../lib/events'
 import type { Interaction, RawInteraction } from './interaction'
 import type { Logger } from './logger'
@@ -53,8 +54,6 @@ type Empty = undefined | Error
 
 type EventsCallbackArgs =
   | [EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => void]
-  | [EVENTS.NEW_CONSENT_REQUEST, () => void]
-  | [EVENTS.TRANSACTION_SENT, () => void]
   | [EVENTS.SERVICE_HEALTHY, () => void]
   | [EVENTS.SERVICE_UNREACHABLE, () => void]
   | [EVENTS.SERVICE_UNHEALTHY, () => void]
@@ -89,7 +88,7 @@ export type Service = {
   GetCurrentServiceInfo: () => Promise<GetCurrentServiceInfoResponse>
 
   // API
-  SendAPIRequest: (arg: any) => Promise<unknown>
+  SendAPIRequest: WalletAPIRequest
   EventsOn: EventsCallback
   EventsOff: (...name: EVENTS[]) => void
   RespondToInteraction: (arg: Interaction) => Promise<Empty>
