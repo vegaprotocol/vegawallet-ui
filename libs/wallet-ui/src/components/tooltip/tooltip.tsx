@@ -1,11 +1,11 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
-import React from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
 import { Colors } from '../../config/colors'
 
 interface TooltipProps {
-  trigger: React.ReactElement
-  content: React.ReactNode
+  trigger: ReactElement
+  content: ReactNode
   isOpen?: boolean
 }
 

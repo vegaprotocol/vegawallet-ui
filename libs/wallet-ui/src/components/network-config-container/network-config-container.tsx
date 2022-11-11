@@ -1,13 +1,11 @@
-import React from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import type { ReactElement } from 'react'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { useGlobal } from '../../contexts/global/global-context'
-import { createLogger } from '../../lib/logging'
-import type { WalletModel } from '../../wallet-client'
-
-const logger = createLogger('NetworkConfigContainer')
 
 interface NetworkConfigContainerProps {
-  children: (config: WalletModel.DescribeNetworkResult) => React.ReactElement
+  children: (config: WalletModel.DescribeNetworkResult) => ReactElement
   name: string | null
 }
 
@@ -29,13 +27,17 @@ export function NetworkConfigContainer({
 }
 
 export function useNetworkConfig(name: string | null) {
-  const { client } = useGlobal()
+  const { client, service } = useGlobal()
+  const logger = useMemo(
+    () => service.GetLogger('NetworkConfigContainer'),
+    [service]
+  )
   const [config, setConfig] =
-    React.useState<WalletModel.DescribeNetworkResult | null>(null)
-  const [error, setError] = React.useState<Error | null>(null)
-  const [loading, setLoading] = React.useState(true)
+    useState<WalletModel.DescribeNetworkResult | null>(null)
+  const [error, setError] = useState<Error | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  React.useEffect(() => {
+  useEffect(() => {
     const run = async () => {
       if (!name) return
       setLoading(true)
@@ -51,7 +53,7 @@ export function useNetworkConfig(name: string | null) {
     }
 
     run()
-  }, [name, client])
+  }, [name, client, logger])
 
   return { config, error, loading }
 }

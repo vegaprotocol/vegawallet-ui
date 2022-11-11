@@ -1,16 +1,16 @@
-import React from 'react'
+import type { ReactNode, CSSProperties } from 'react'
 
 import { Colors, IntentColors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 
 interface FormGroupProps {
-  children: React.ReactNode
-  label?: React.ReactNode
+  children: ReactNode
+  label?: ReactNode
   labelFor?: string
-  helperText?: React.ReactNode
+  helperText?: ReactNode
   intent?: Intent
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 export function FormGroup({

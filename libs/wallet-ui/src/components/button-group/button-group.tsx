@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react'
-import React from 'react'
+import { isValidElement, cloneElement, Children } from 'react'
 
 interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
@@ -34,10 +34,11 @@ export function ButtonGroup({
         ...style,
       }}
     >
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
+      {Children.map(children, (child) => {
+        if (isValidElement(child)) {
           const styles = getItemStyles(inline)
-          return React.cloneElement(child, {
+          return cloneElement(child, {
+            // @ts-ignore Doesn't know what type the child styles are
             style: {
               ...styles,
               ...child.props.style,

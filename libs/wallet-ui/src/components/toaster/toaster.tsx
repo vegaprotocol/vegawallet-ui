@@ -1,5 +1,6 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import { Component } from 'react'
+import type { ReactNode } from 'react'
+import { render } from 'react-dom'
 import { animated, config, useTransition } from 'react-spring'
 
 import type { Intent } from '../../config/intent'
@@ -8,14 +9,14 @@ import { Toast as ToastComponent } from './toast'
 // Toast object to be stored in state
 export interface Toast {
   id: string
-  message: React.ReactNode
+  message: ReactNode
   intent?: Intent
   timeout?: number
 }
 
 // Options object to be passed to AppToaster.show(toastOptions)
 export interface ToastOptions {
-  message: React.ReactNode
+  message: ReactNode
   intent?: Intent
   timeout?: number
 }
@@ -24,7 +25,8 @@ interface ToasterState {
   toasts: Toast[]
 }
 
-export class Toaster extends React.Component<Readonly<any>, ToasterState> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class Toaster extends Component<Readonly<any>, ToasterState> {
   toastId = 0
   container: HTMLDivElement | null = null
 
@@ -46,7 +48,8 @@ export class Toaster extends React.Component<Readonly<any>, ToasterState> {
     container.style.padding = '30px 20px 20px'
     container.style.zIndex = '10'
     document.body.appendChild(container)
-    const toaster = ReactDOM.render(<Toaster />, container)
+    // @ts-ignore Ts gets confused by the self-refefence here
+    const toaster = render(<Toaster />, container) as Toaster
     return toaster
   }
 
@@ -106,9 +109,9 @@ function ToasterAnimationHandler({
   const height = 49
   const transitions = useTransition(toasts, {
     from: () => ({ y: -height, opacity: 0 }),
-    enter: (t, i) => ({ opacity: 1, y: i * height }),
-    update: (t, i) => ({ opacity: 1, y: i * height }),
-    leave: (t, i) => ({ y: (i - 1) * height, opacity: 0 }),
+    enter: (_t, i) => ({ opacity: 1, y: i * height }),
+    update: (_t, i) => ({ opacity: 1, y: i * height }),
+    leave: (_t, i) => ({ y: (i - 1) * height, opacity: 0 }),
     config: { ...config.default, duration: 170 },
   })
 

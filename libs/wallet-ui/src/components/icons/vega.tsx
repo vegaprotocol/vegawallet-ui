@@ -1,8 +1,8 @@
-import React from 'react'
+import type { CSSProperties } from 'react'
 
 import { style as defaultStyle } from './style'
 
-export function Vega({ style }: { style?: React.CSSProperties }) {
+export function Vega({ style }: { style?: CSSProperties }) {
   return (
     <svg
       width="111"

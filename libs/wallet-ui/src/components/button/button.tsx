@@ -1,9 +1,11 @@
 import type {
+  CSSProperties,
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   ForwardedRef,
+  MouseEvent as ReactMouseEvent,
 } from 'react'
-import React from 'react'
+import { forwardRef, useState, useMemo } from 'react'
 
 import { Colors } from '../../config/colors'
 import { Spinner } from '../spinner'
@@ -28,15 +30,15 @@ const getColor = ({
   return Colors.WHITE
 }
 
-export const Button = React.forwardRef(
+export const Button = forwardRef(
   (
     { children, loading, onMouseEnter, onMouseLeave, ...props }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
-    const [hover, setHover] = React.useState(false)
+    const [hover, setHover] = useState(false)
 
     const handleMouseEnter = (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+      e: ReactMouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
       setHover(true)
       if (typeof onMouseEnter === 'function') {
@@ -45,7 +47,7 @@ export const Button = React.forwardRef(
     }
 
     const handleMouseLeave = (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+      e: ReactMouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
       setHover(false)
       if (typeof onMouseLeave === 'function') {
@@ -53,7 +55,7 @@ export const Button = React.forwardRef(
       }
     }
 
-    const color = React.useMemo(
+    const color = useMemo(
       () =>
         getColor({
           hover,
@@ -62,7 +64,7 @@ export const Button = React.forwardRef(
       [hover, props.disabled]
     )
 
-    const style: React.CSSProperties = {
+    const style: CSSProperties = {
       background: hover ? Colors.WHITE : 'transparent',
       color,
       border: `1px solid ${props.disabled ? Colors.GRAY_3 : Colors.WHITE}`,
@@ -105,7 +107,7 @@ interface AnchorButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   disabled?: boolean
 }
 
-export const AnchorButton = React.forwardRef(
+export const AnchorButton = forwardRef(
   (
     {
       children,
@@ -117,10 +119,10 @@ export const AnchorButton = React.forwardRef(
     }: AnchorButtonProps,
     ref: ForwardedRef<HTMLAnchorElement>
   ) => {
-    const [hover, setHover] = React.useState(false)
+    const [hover, setHover] = useState(false)
 
     const handleMouseEnter = (
-      e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+      e: ReactMouseEvent<HTMLAnchorElement, MouseEvent>
     ) => {
       setHover(true)
       if (typeof onMouseEnter === 'function') {
@@ -129,7 +131,7 @@ export const AnchorButton = React.forwardRef(
     }
 
     const handleMouseLeave = (
-      e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+      e: ReactMouseEvent<HTMLAnchorElement, MouseEvent>
     ) => {
       setHover(false)
       if (typeof onMouseLeave === 'function') {
@@ -137,7 +139,7 @@ export const AnchorButton = React.forwardRef(
       }
     }
 
-    const color = React.useMemo(
+    const color = useMemo(
       () =>
         getColor({
           hover,
@@ -146,7 +148,7 @@ export const AnchorButton = React.forwardRef(
       [hover, disabled]
     )
 
-    const style: React.CSSProperties = {
+    const style: CSSProperties = {
       background: hover ? Colors.WHITE : 'transparent',
       color,
       border: `1px solid ${disabled ? Colors.GRAY_3 : Colors.WHITE}`,

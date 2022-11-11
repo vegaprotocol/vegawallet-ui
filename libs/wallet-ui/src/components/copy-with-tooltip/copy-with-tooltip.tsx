@@ -1,18 +1,19 @@
-import React from 'react'
+import type { ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
 import { Copy } from '../icons/copy'
 import { Tooltip } from '../tooltip'
 
 interface CopyWithtooltipProps {
-  children?: React.ReactNode
+  children?: ReactNode
   text: string
 }
 
 export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
-  const [copied, setCopied] = React.useState(false)
+  const [copied, setCopied] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     let timeout: NodeJS.Timeout | undefined
 
     if (copied) {

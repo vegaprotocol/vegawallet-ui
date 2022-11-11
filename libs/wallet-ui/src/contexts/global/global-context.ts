@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Thunk } from 'react-hook-thunk-reducer'
+import type { ThunkDispatch } from 'react-hook-thunk-reducer'
 import type { WalletClient, WalletModel } from '@vegaprotocol/wallet-client'
 
 import type { NetworkPreset } from '../../lib/networks'
@@ -99,9 +99,7 @@ export interface GlobalState {
   isSettingsModalOpen: boolean
 }
 
-export type GlobalDispatch = React.Dispatch<
-  GlobalAction | Thunk<GlobalState, GlobalAction>
->
+export type GlobalDispatch = ThunkDispatch<GlobalState, GlobalAction>
 
 type GlobalContextShape = {
   state: GlobalState

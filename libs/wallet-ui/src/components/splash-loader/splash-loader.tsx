@@ -1,10 +1,10 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import { Colors } from '../../config/colors'
 
 export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
-  const [, forceRender] = React.useState(false)
-  React.useEffect(() => {
+  const [, forceRender] = useState(false)
+  useEffect(() => {
     const interval = setInterval(() => {
       forceRender((x) => !x)
     }, 100)

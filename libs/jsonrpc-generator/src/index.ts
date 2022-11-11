@@ -6,11 +6,7 @@ const createClient = () => {
   const program = new Command('jsonrpc')
 
   program
-    .version(
-      packageJson.version,
-      '-v, --version',
-      'Print the current version of the generator'
-    )
+    .version(packageJson.version, '-v, --version')
     .command('generate')
     .description('Generate JSONRPC client')
     .option('-d, --document <file>', 'The path to openrpc json file.')

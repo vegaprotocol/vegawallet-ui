@@ -1,6 +1,8 @@
+import type { Service } from '../src/types/service'
+
 const logger = {}
 
-export const service = {
+export const service: Service = {
   GetLatestRelease: jest.fn().mockImplementation(() =>
     Promise.resolve({
       version: '0.99.0',

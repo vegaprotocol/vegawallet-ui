@@ -1,5 +1,5 @@
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 import type { KeyPair, Wallet } from '../contexts/global/global-context'
-import type { WalletModel } from '../wallet-client'
 import { truncateMiddle } from './truncate-middle'
 
 export function extendKeypair(kp: WalletModel.DescribeKeyResult): KeyPair {

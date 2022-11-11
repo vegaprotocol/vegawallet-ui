@@ -1,8 +1,8 @@
-import React from 'react'
+import type { CSSProperties } from 'react'
 
 import { style as defaultStyle } from './style'
 
-export function DropdownArrow({ style }: { style?: React.CSSProperties }) {
+export function DropdownArrow({ style }: { style?: CSSProperties }) {
   return (
     <svg
       style={{ ...defaultStyle, fill: 'transparent', ...style }}

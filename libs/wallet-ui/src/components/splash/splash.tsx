@@ -1,10 +1,10 @@
 import type { HTMLAttributes } from 'react'
-import React from 'react'
+import type { ReactNode } from 'react'
 
 import { Colors } from '../../config/colors'
 
 interface SplashProps extends HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 /**

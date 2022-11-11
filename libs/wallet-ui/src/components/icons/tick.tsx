@@ -1,8 +1,8 @@
-import React from 'react'
+import type { CSSProperties } from 'react'
 
 import { style as defaultStyle } from './style'
 
-export function Tick({ style }: { style?: React.CSSProperties }) {
+export function Tick({ style }: { style?: CSSProperties }) {
   return (
     <svg viewBox="0 0 16 16" style={{ ...defaultStyle, ...style }}>
       <path

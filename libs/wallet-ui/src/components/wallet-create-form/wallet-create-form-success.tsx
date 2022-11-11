@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { Colors } from '../../config/colors'
-import type { WalletModel } from '../../wallet-client'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'

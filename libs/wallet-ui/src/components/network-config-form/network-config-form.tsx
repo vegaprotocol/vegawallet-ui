@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect } from 'react'
 import type { Control, UseFormRegister } from 'react-hook-form'
 import { useFieldArray, useForm } from 'react-hook-form'
 import type { WalletModel } from '@vegaprotocol/wallet-client'
@@ -43,7 +43,7 @@ export const NetworkConfigForm = ({
 
   // If the config changes reset the fields with the new config. This happens
   // if the network dropdown is used whilst editing
-  React.useEffect(() => {
+  useEffect(() => {
     reset(configToFields(config))
   }, [config, reset])
 

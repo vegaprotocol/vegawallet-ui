@@ -1,9 +1,9 @@
-import type { ButtonHTMLAttributes, ForwardedRef } from 'react'
-import React from 'react'
+import type { ButtonHTMLAttributes, ForwardedRef, CSSProperties } from 'react'
+import { forwardRef } from 'react'
 
 import { Colors } from '../../config/colors'
 
-const style: React.CSSProperties = {
+const style: CSSProperties = {
   color: Colors.WHITE,
   fontSize: 'inherit',
   cursor: 'pointer',
@@ -14,7 +14,7 @@ const style: React.CSSProperties = {
   textDecoration: 'underline',
 }
 
-export const ButtonUnstyled = React.forwardRef(
+export const ButtonUnstyled = forwardRef(
   (
     props: ButtonHTMLAttributes<HTMLButtonElement>,
     ref: ForwardedRef<HTMLButtonElement>

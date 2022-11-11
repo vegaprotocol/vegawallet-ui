@@ -93,7 +93,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
         EVENTS.SERVICE_STOPPED
       )
     }
-  }, [dispatch])
+  }, [service, dispatch])
 
   if (serviceError && networkConfig) {
     return (
@@ -132,5 +132,5 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     )
   }
 
-  return children
+  return <>{children}</>
 }
