@@ -7,6 +7,7 @@ export namespace WalletModel {
   export type PublicKey = string
   export type ListWalletsParams = []
   export type RenameWalletResult = null
+  export type RemoveWalletResult = null
   export type ListNetworksParams = []
   export type UpdateNetworkResult = null
   export type RemoveNetworkResult = null
@@ -28,6 +29,8 @@ export namespace WalletModel {
     ListWalletsParams?: ListWalletsParams
     RenameWalletResult?: RenameWalletResult
     RenameWalletParams?: RenameWalletParams
+    RemoveWalletResult?: RemoveWalletResult
+    RemoveWalletParams?: RemoveWalletParams
     ListNetworksResult?: ListNetworksResult
     ListNetworksParams?: ListNetworksParams
     DescribeNetworkResult?: DescribeNetworkResult
@@ -137,6 +140,9 @@ export namespace WalletModel {
     wallet: string
     newName: string
     passphrase: string
+  }
+  export interface RemoveWalletParams {
+    wallet: string
   }
   export interface ListNetworksResult {
     networks: string[]
@@ -306,6 +312,7 @@ enum Identifier {
   DescribeWallet = 'admin.describe_wallet',
   ListWallets = 'admin.list_wallets',
   RenameWallet = 'admin.rename_wallet',
+  RemoveWallet = 'admin.remove_wallet',
   ListNetworks = 'admin.list_networks',
   DescribeNetwork = 'admin.describe_network',
   UpdateNetwork = 'admin.update_network',
@@ -343,6 +350,10 @@ export type WalletAPIRequest = ((
     id: Identifier.RenameWallet,
     params: WalletModel.RenameWalletParams
   ) => Promise<WalletModel.RenameWalletResult>) &
+  ((
+    id: Identifier.RemoveWallet,
+    params: WalletModel.RemoveWalletParams
+  ) => Promise<WalletModel.RemoveWalletResult>) &
   ((
     id: Identifier.ListNetworks,
     params: WalletModel.ListNetworksParams
@@ -454,6 +465,15 @@ export class WalletClient {
   // tslint:disable-next-line:max-line-length
   public RenameWallet = (params: WalletModel.RenameWalletParams) => {
     return this.request(Identifier.RenameWallet, params)
+  }
+
+  /**
+   * Removes a wallet from the computer.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public RemoveWallet = (params: WalletModel.RemoveWalletParams) => {
+    return this.request(Identifier.RemoveWallet, params)
   }
 
   /**

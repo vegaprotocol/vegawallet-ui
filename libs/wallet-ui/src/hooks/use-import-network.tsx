@@ -1,11 +1,9 @@
 import React from 'react'
-import { JSONRPCError } from '@vegaprotocol/wallet-client'
 import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
-// import { createLogger } from '../lib/logging'
 import { FormStatus, useFormState } from './use-form-state'
 
 // const logger = createLogger('UseImportNetwork')
@@ -56,13 +54,10 @@ export function useImportNetwork() {
           throw new Error("Error: couldn't import network configuration")
         }
       } catch (err: unknown) {
-        const message = "Error: couldn't import network configuration"
-        setError(
-          message + (err instanceof JSONRPCError ? ` - ${err.message}` : '')
-        )
+        setError(`${err}`)
         setStatus(FormStatus.Error)
         AppToaster.show({
-          message,
+          message: `${err}`,
           intent: Intent.DANGER,
         })
       }

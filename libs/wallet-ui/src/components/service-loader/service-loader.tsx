@@ -7,7 +7,6 @@ import {
   ServiceState,
   useGlobal,
 } from '../../contexts/global/global-context'
-import { useCheckForUpdate } from '../../hooks/use-check-for-update'
 import { EVENTS } from '../../lib/events'
 import { Button } from '../button'
 import { Chrome } from '../chrome'
@@ -19,7 +18,6 @@ import { AppToaster } from '../toaster'
  */
 export function ServiceLoader({ children }: { children?: ReactNode }) {
   const [serviceError, setServiceError] = useState<string | null>(null)
-  useCheckForUpdate()
 
   const {
     state: { serviceStatus, network, networkConfig },
@@ -132,5 +130,5 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     )
   }
 
-  return <>{children}</>
+  return children ?? null
 }

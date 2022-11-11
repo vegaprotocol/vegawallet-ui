@@ -78,7 +78,6 @@ export const WalletSelection = ({
         await service.RespondToInteraction({
           traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
-          data: {},
         })
         AppToaster.show({
           message: `The connection request from "${event.data.hostname}" has been rejected.`,

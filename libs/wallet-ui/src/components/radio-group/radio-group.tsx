@@ -1,11 +1,11 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import type { ComponentProps } from 'react'
-import type { Control, Path } from 'react-hook-form'
+import type { Control, Path, FieldValues } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 import { Colors } from '../../config/colors'
 
-type RadioGroupProps<T> = {
+type RadioGroupProps<T extends FieldValues> = {
   name: Path<T>
   options: Array<{ value: string; label: string }>
   // TODO: Figure out how best to type the control prop, it should be form generic
@@ -15,7 +15,7 @@ type RadioGroupProps<T> = {
   itemStyle?: React.CSSProperties
 }
 
-export function RadioGroup<T>({
+export function RadioGroup<T extends FieldValues>({
   name,
   control,
   rules,

@@ -1,6 +1,6 @@
 import { omit } from 'ramda'
 
-import type { RequestTransactionReview } from '../components/interaction-manager/types'
+import type { RequestTransactionReview } from '../types/interaction'
 
 export enum TransactionStatus {
   PENDING = 'pending',

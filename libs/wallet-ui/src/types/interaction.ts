@@ -255,8 +255,14 @@ export type InteractionResponseDecision = {
   data: Decision
 }
 
+export type InteractionResponseCancelEvent = {
+  traceID: string
+  name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST
+}
+
 export type InteractionResponse =
   | InteractionResponseEnteredPassphrase
   | InteractionResponseWalletConnectionDecision
   | InteractionResponseSelectedWallet
   | InteractionResponseDecision
+  | InteractionResponseCancelEvent

@@ -13,6 +13,7 @@
     "admin.list_wallets",
     "admin.describe_wallet",
     "admin.rename_wallet",
+    "admin.remove_wallet",
     "admin.list_permissions",
     "admin.describe_permissions",
     "admin.update_permissions",

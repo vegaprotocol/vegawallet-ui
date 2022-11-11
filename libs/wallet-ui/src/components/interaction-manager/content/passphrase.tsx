@@ -76,7 +76,6 @@ export const Passphrase = ({
           await service.RespondToInteraction({
             traceID: event.traceID,
             name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
-            data: {},
           })
         } else {
           AppToaster.show({

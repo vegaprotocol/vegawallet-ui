@@ -1,6 +1,6 @@
 import type { WalletAPIRequest } from '@vegaprotocol/wallet-client'
 import type { EVENTS } from '../lib/events'
-import type { Interaction, RawInteraction } from './interaction'
+import type { RawInteraction, InteractionResponse } from './interaction'
 import type { Logger } from './logger'
 
 export type GetCurrentServiceInfoResponse = {
@@ -91,5 +91,5 @@ export type Service = {
   SendAPIRequest: WalletAPIRequest
   EventsOn: EventsCallback
   EventsOff: (...name: EVENTS[]) => void
-  RespondToInteraction: (arg: Interaction) => Promise<Empty>
+  RespondToInteraction: (arg: InteractionResponse) => Promise<Empty>
 }
