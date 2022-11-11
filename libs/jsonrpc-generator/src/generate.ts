@@ -2,8 +2,9 @@ import path from 'path'
 import { readFile, writeFile } from 'fs-extra'
 import { template } from 'underscore'
 
+// @ts-ignore Typescript refuses to import this file
 import packageJson from '../package.json'
-import type { ConfigProps } from './util/config';
+import type { ConfigProps } from './util/config'
 import { getConfig } from './util/config'
 import { logger } from './util/logger'
 import { requestJson } from './util/request-json'

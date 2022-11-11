@@ -1,8 +1,8 @@
 import type { Story } from '@storybook/react'
-import type { AppProps } from '../app';
-import { App } from '../app'
-import { service } from '../../mocks/service'
-import { runtime } from '../../mocks/runtime'
+import type { AppProps } from '../'
+import { App } from '../'
+import { service } from '../__mocks__/service'
+import { runtime } from '../__mocks__/runtime'
 
 export default {
   component: App,

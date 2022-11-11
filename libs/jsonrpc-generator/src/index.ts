@@ -1,5 +1,6 @@
 import { Command } from 'commander'
 import generate from './generate'
+// @ts-ignore Typescript refuses to import this file
 import packageJson from '../package.json'
 
 const createClient = () => {

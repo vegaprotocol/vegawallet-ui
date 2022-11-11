@@ -130,5 +130,5 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     )
   }
 
-  return children ?? null
+  return <>{children}</>
 }

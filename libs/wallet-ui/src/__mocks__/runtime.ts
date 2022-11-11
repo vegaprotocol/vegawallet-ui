@@ -1,4 +1,4 @@
-import type { Runtime } from '../src/types/runtime'
+import type { Runtime } from '../types/runtime'
 
 export const runtime: Runtime = {
   WindowReload: jest.fn(),

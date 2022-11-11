@@ -1,4 +1,4 @@
-import type { Service } from '../src/types/service'
+import type { Service } from '../types/service'
 
 const logger = {}
 
