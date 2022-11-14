@@ -1,15 +1,19 @@
+import log from 'loglevel'
+import { MockAPIRequest } from '@vegaprotocol/wallet-client'
 import type { Service } from '../types/service'
 
-const logger = {}
+const logger = log.getLogger('test')
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {}
 
 export const service: Service = {
-  GetLatestRelease: jest.fn().mockImplementation(() =>
+  GetLatestRelease: () =>
     Promise.resolve({
       version: '0.99.0',
       url: 'https://github.com/vegaprotocol/vegawallet-ui',
-    })
-  ),
-  GetVersion: jest.fn().mockImplementation(() =>
+    }),
+  GetVersion: () =>
     Promise.resolve({
       version: '0.98.0',
       gitHash: '0x0',
@@ -24,11 +28,10 @@ export const service: Service = {
           },
         ],
       },
-    })
-  ),
+    }),
 
   // Config
-  GetAppConfig: jest.fn().mockImplementation(() =>
+  GetAppConfig: () =>
     Promise.resolve({
       logLevel: 'debug',
       vegaHome: '',
@@ -37,47 +40,38 @@ export const service: Service = {
         consentAsked: true,
         enabled: true,
       },
-    })
-  ),
-  SearchForExistingConfiguration: jest.fn().mockImplementation(() =>
+    }),
+  SearchForExistingConfiguration: () =>
     Promise.resolve({
       wallets: [],
       networks: ['test'],
-    })
-  ),
-  UpdateAppConfig: jest.fn().mockImplementation(() => Promise.resolve()),
+    }),
+  UpdateAppConfig: () => Promise.resolve(undefined),
 
   // Initialization
-  InitialiseApp: jest.fn().mockImplementation(() => Promise.resolve()),
-  IsAppInitialised: jest.fn().mockImplementation(() => Promise.resolve(true)),
+  InitialiseApp: () => Promise.resolve(undefined),
+  IsAppInitialised: () => Promise.resolve(true),
 
   // Telemetry
-  EnableTelemetry: jest.fn().mockImplementation(() => Promise.resolve()),
+  EnableTelemetry: () => Promise.resolve(undefined),
 
   // Logging
-  GetLogger: jest.fn().mockImplementation(() => Promise.resolve(logger)),
+  GetLogger: () => logger,
 
   // Service
-  StartService: jest.fn().mockImplementation(() => Promise.resolve()),
-  StopService: jest.fn().mockImplementation(() => Promise.resolve()),
-  GetCurrentServiceInfo: jest.fn().mockImplementation(() =>
+  StartService: () => Promise.resolve(undefined),
+  StopService: () => Promise.resolve(undefined),
+  GetCurrentServiceInfo: () =>
     Promise.resolve({
       url: 'http://localhost:1789',
       logFilePath: './',
       isRunning: true,
       latestHealthState: 'HEALTHY',
-    })
-  ),
+    }),
 
   // API
-  SendAPIRequest: jest.fn().mockImplementation(async (id: string) => {
-    switch (id) {
-      default: {
-        return undefined
-      }
-    }
-  }),
-  EventsOn: jest.fn(),
-  EventsOff: jest.fn(),
-  RespondToInteraction: jest.fn().mockImplementation(() => Promise.resolve()),
+  SendAPIRequest: MockAPIRequest,
+  EventsOn: noop,
+  EventsOff: noop,
+  RespondToInteraction: () => Promise.resolve(undefined),
 }

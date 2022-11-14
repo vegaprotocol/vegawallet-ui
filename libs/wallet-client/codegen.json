@@ -1,7 +1,7 @@
 {
   "document": "https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json",
-  "outFile": "./src/index.ts",
-  "templateFile": "./config/template.underscore",
+  "templateDir": "./template",
+  "outDir": "./src/__generated__",
   "methods": [
     "admin.import_network",
     "admin.list_networks",

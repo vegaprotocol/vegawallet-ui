@@ -24,8 +24,12 @@ const createClient = () => {
       'The path to the codegen configuration file.'
     )
     .option(
-      '-m, --methods <list>',
+      '--methods <list>',
       'A comma separated list of methods to pick from the openrpc specs for the generated client.'
+    )
+    .option(
+      '--mocksPath <file>',
+      'The path to a file where to generate mock data.'
     )
     .action(generate)
 

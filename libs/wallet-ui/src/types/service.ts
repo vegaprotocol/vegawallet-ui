@@ -13,7 +13,7 @@ export type NetworkCompatibility = {
   network: string
   isCompatible: boolean
   retrievedVersion: string
-  error: string
+  error?: string
 }
 export type BackendVersionResponse = {
   version: string

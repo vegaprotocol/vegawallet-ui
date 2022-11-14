@@ -15,6 +15,7 @@
   },
   "files": [],
   "include": [],
+  "exclude": ["./template/*"],
   "references": [
     {
       "path": "./tsconfig.lib.json"

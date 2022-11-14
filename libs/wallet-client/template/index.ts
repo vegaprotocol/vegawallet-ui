@@ -4,7 +4,7 @@ export namespace WalletModel {
 <%= types %>
 }
 
-enum Identifier {
+export enum Identifier {
 <% methods.forEach((method) => { %><%= getMethodName(method) %> = '<%= method.name %>',
 <%}) %>}
 

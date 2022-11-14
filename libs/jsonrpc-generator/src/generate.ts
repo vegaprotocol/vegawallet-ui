@@ -1,5 +1,5 @@
 import path from 'path'
-import { readFile, writeFile } from 'fs-extra'
+import { readFile, readdir, writeFile, ensureDir, stat, copy } from 'fs-extra'
 import { template } from 'underscore'
 
 // @ts-ignore Typescript refuses to import this file
@@ -12,20 +12,43 @@ import {
   DocumentSchema,
   compileTs,
   getMethodName,
+  getMethodExample,
   getMethodParams,
   getMethodParamsType,
   getMethodResultType,
 } from './util/compile-ts'
 
+type PipeProps = {
+  dest: string
+  process: (content: string) => string
+}
+
+const pipeFiles = async ({ dest, process }: PipeProps) => {
+  const files = await readdir(dest)
+  await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(dest, file)
+      const stats = await stat(filePath)
+
+      if (stats.isFile()) {
+        const content = await readFile(path.join(dest, file))
+        await writeFile(path.join(dest, file), process(content.toString()))
+      }
+
+      if (stats.isDirectory()) {
+        await pipeFiles({ dest: filePath, process })
+      }
+    })
+  )
+}
+
 const generate = async (props: ConfigProps) => {
   try {
-    const { document, outFile, templateFile, methods } = getConfig(props)
+    const { document, outDir, templateDir, methods } = getConfig(props)
 
-    const [json, templateContent] = await Promise.all([
-      requestJson(logger, document),
-      readFile(templateFile).then((buff) => buff.toString()),
-    ])
+    await Promise.all([ensureDir(outDir), ensureDir(templateDir)])
 
+    const json = await requestJson(logger, document)
     const openrpcDocument = DocumentSchema.parse(json)
 
     const documentWithSelectedMethods = {
@@ -36,20 +59,25 @@ const generate = async (props: ConfigProps) => {
     }
 
     const types = await compileTs(documentWithSelectedMethods)
+    await copy(templateDir, outDir)
 
-    const content = template(templateContent)({
-      types,
-      version: packageJson.version,
-      openrpcDocument,
-      methods: documentWithSelectedMethods.methods,
-      getMethodName,
-      getMethodParamsType,
-      getMethodResultType,
-      getMethodParams,
+    await pipeFiles({
+      dest: outDir,
+      process: (content: string) =>
+        template(content)({
+          types,
+          version: packageJson.version,
+          openrpcDocument,
+          methods: documentWithSelectedMethods.methods,
+          getMethodName,
+          getMethodExample,
+          getMethodParamsType,
+          getMethodResultType,
+          getMethodParams,
+        }),
     })
 
-    await writeFile(path.join(process.cwd(), outFile), content)
-    logger.info(`Generated client to ${path.join(process.cwd(), outFile)}`)
+    logger.info(`Generated client to ${outDir}`)
   } catch (err) {
     logger.error(err instanceof Error ? err.message : err)
     process.exit(1)

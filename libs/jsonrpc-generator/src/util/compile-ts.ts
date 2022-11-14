@@ -38,6 +38,19 @@ const MethodSchema = z.object({
     schema: z.union([z.object({}).passthrough(), RefSchema, z.boolean()]),
   }),
   errors: z.array(RefSchema).optional(),
+  examples: z
+    .array(
+      z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        params: z.array(z.object({})),
+        result: z.object({
+          name: z.string(),
+          value: z.any(),
+        }),
+      })
+    )
+    .optional(),
 })
 
 export const DocumentSchema = z.object({
@@ -80,6 +93,15 @@ export const getMethodParams = (method: MethodType) => {
     return 'params'
   }
   return `...params`
+}
+
+export const getMethodExample = (method: MethodType) => {
+  const example = method.examples?.[0]
+
+  if (typeof example?.result.value === 'object') {
+    return JSON.stringify(example.result.value, null, 2)
+  }
+  return 'undefined'
 }
 
 // recursive function, skipping strict doc type definition here

@@ -4,16 +4,23 @@ import { fromZodError } from 'zod-validation-error'
 
 import { isUrl } from './is-url'
 
+const buildPath = (rootPath: string, pathStr: string) => {
+  if (pathStr.startsWith('.')) {
+    return path.join(rootPath, pathStr)
+  }
+  return pathStr
+}
+
 const ConfigSchema = z.object({
   document: z.string({
     required_error:
       'Required property, make sure you define this in your codegen config or pass it in as a flag',
   }),
-  outFile: z.string({
+  outDir: z.string({
     required_error:
       'Required property, make sure you define this in your codegen config or pass it in as a flag',
   }),
-  templateFile: z.string({
+  templateDir: z.string({
     required_error:
       'Required property, make sure you define this in your codegen config or pass it in as a flag',
   }),
@@ -27,7 +34,7 @@ const getConfigFromFile = (configPath?: string) => {
     return {}
   }
 
-  const fullConfigPath = path.join(process.cwd(), configPath)
+  const fullConfigPath = buildPath(process.cwd(), configPath)
   // allow dynamic require of json files
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const config = ConfigSchema.partial().parse(require(fullConfigPath))
@@ -36,32 +43,54 @@ const getConfigFromFile = (configPath?: string) => {
   return {
     document:
       config.document && !isUrl(config.document)
-        ? path.join(rootPath, config.document)
+        ? buildPath(rootPath, config.document)
         : config.document,
-    outFile: config.outFile ? path.join(rootPath, config.outFile) : undefined,
-    templateFile: config.templateFile
-      ? path.join(rootPath, config.templateFile)
+    outDir: config.outDir ? buildPath(rootPath, config.outDir) : undefined,
+    templateDir: config.templateDir
+      ? buildPath(rootPath, config.templateDir)
       : undefined,
     methods: config.methods,
   }
 }
 
-export type ConfigProps = ConfigType & {
+export type ConfigProps = Partial<ConfigType> & {
   config: string
   methods: string
 }
 
-export const getConfig = ({
-  config,
-  methods,
-  ...rest
-}: ConfigProps): ConfigType => {
+export const getConfig = ({ config, ...rest }: ConfigProps): ConfigType => {
   try {
-    const configContent = getConfigFromFile(config)
+    const fileConfig = getConfigFromFile(config)
+    const inputConfig = (
+      Object.keys(ConfigSchema) as Array<keyof ConfigType>
+    ).reduce<Partial<ConfigType>>((acc, key) => {
+      if (rest[key]) {
+        switch (key) {
+          case 'document': {
+            acc.document = buildPath(process.cwd(), rest.document ?? '')
+            break
+          }
+          case 'outDir': {
+            acc.outDir = buildPath(process.cwd(), rest.outDir ?? '')
+            break
+          }
+          case 'templateDir': {
+            acc.templateDir = buildPath(process.cwd(), rest.templateDir ?? '')
+            break
+          }
+          case 'methods': {
+            acc.methods = rest.methods.split(',') ?? undefined
+            break
+          }
+        }
+        return acc
+      }
+      return acc
+    }, {})
+
     return ConfigSchema.parse({
-      ...configContent,
-      ...rest,
-      methods: methods ? methods.split(',') : configContent.methods,
+      ...fileConfig,
+      ...inputConfig,
     })
   } catch (err) {
     if (err instanceof ZodError) {
