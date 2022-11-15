@@ -58,7 +58,7 @@ export const useKeypairUpdate = (
         logger.error(err)
       }
     },
-    [dispatch, actions, logger, pubKey, wallet]
+    [dispatch, actions, client, logger, pubKey, wallet]
   )
 
   return {
