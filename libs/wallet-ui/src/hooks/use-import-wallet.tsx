@@ -59,7 +59,7 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [dispatch, actions, service, client, state.status, vegaHome]
+    [dispatch, actions, logger, service, client, state.status, vegaHome]
   )
 
   return {

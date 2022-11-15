@@ -33,7 +33,7 @@ export const useSign = (pubKey?: string, wallet?: string) => {
         logger.error(err)
       }
     },
-    [client, pubKey, wallet]
+    [logger, client, pubKey, wallet]
   )
   return {
     signedData,

@@ -48,7 +48,7 @@ export function useCreateWallet() {
         logger.error(err)
       }
     },
-    [dispatch, actions, service, client, state.status, vegaHome]
+    [dispatch, actions, logger, service, client, state.status, vegaHome]
   )
 
   return {
