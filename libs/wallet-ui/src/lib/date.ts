@@ -5,7 +5,7 @@ export const formatDate = (date: Date) => {
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
-    second: 'numeric'
+    second: 'numeric',
   })
 
   return formatter.format(date)

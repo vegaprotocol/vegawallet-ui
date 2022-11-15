@@ -16,8 +16,11 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
+      "@vegaprotocol/jsconrpc-generator": [
+        "libs/jsconrpc-generator/src/index.ts"
+      ],
       "@vegaprotocol/wallet-client": ["libs/wallet-client/src/index.ts"],
-      "@vegaprotocol/wallet-ui": ["libs/wallet-ui/src/index.ts"]
+      "@vegaprotocol/wallet-ui": ["libs/wallet-ui/src/index.tsx"]
     }
   },
   "exclude": ["node_modules", "tmp"]

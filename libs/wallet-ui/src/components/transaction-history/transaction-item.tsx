@@ -4,6 +4,7 @@ import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
 import { ButtonUnstyled } from '../button-unstyled'
+import { ExternalLink } from '../external-link'
 import { ArrowTopRight } from '../icons/arrow-top-right'
 import { TRANSACTION_TITLES } from '../interaction-manager/content/transaction'
 import { TransactionStatus } from '../transaction-status'
@@ -14,7 +15,7 @@ type TransactionItemProps = {
 }
 
 const TransactionId = ({
-  transaction
+  transaction,
 }: Pick<TransactionItemProps, 'transaction'>) => {
   const explorerUrl = useExplorerUrl()
 
@@ -24,14 +25,10 @@ const TransactionId = ({
 
   if (explorerUrl) {
     return (
-      <a
-        href={`${explorerUrl}/txs/${transaction.txHash}`}
-        target='_blank'
-        rel='noopener noreferrer'
-      >
+      <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
         {truncateMiddle(transaction.txHash)}
         <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
-      </a>
+      </ExternalLink>
     )
   }
 
@@ -40,7 +37,7 @@ const TransactionId = ({
 
 export const TransactionItem = ({
   transaction,
-  viewDetails
+  viewDetails,
 }: TransactionItemProps) => {
   return (
     <div
@@ -50,7 +47,7 @@ export const TransactionItem = ({
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <ButtonUnstyled onClick={viewDetails}>
@@ -63,7 +60,7 @@ export const TransactionItem = ({
             style={{
               textAlign: 'right',
               color: Colors.TEXT_COLOR_DEEMPHASISE,
-              fontSize: 14
+              fontSize: 14,
             }}
           >
             {formatDate(transaction.receivedAt)}

@@ -1,20 +1,18 @@
-import omit from 'lodash/omit'
+import { omit } from 'ramda'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { indexBy } from '../../lib/index-by'
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
-import type {
-  app as AppModel,
-  backend as BackendModel
-} from '../../wailsjs/go/models'
-import type { WalletModel } from '../../wallet-client'
+import type { AppConfig, GetVersionResponse } from '../../types/service'
+
 import type {
   Connection,
   DrawerState,
   GlobalState,
   KeyPair,
-  Wallet
+  Wallet,
 } from './global-context'
 import { AppStatus, DrawerPanel, ServiceState } from './global-context'
 
@@ -39,20 +37,20 @@ export const initialGlobalState: GlobalState = {
   drawerState: {
     isOpen: false,
     panel: DrawerPanel.Network,
-    editingNetwork: null
+    editingNetwork: null,
   },
   isPassphraseModalOpen: false,
   isRemoveWalletModalOpen: false,
   isSignMessageModalOpen: false,
   isTaintKeyModalOpen: false,
   isUpdateKeyModalOpen: false,
-  isSettingsModalOpen: false
+  isSettingsModalOpen: false,
 }
 
 export type GlobalAction =
   | {
       type: 'INIT_APP'
-      config: AppModel.Config
+      config: AppConfig
       wallets: string[]
       network: string
       networks: string[]
@@ -69,11 +67,11 @@ export type GlobalAction =
     }
   | {
       type: 'SET_VERSION'
-      version: BackendModel.GetVersionResponse | null
+      version: GetVersionResponse | null
     }
   | {
       type: 'SET_CONFIG'
-      config: AppModel.Config
+      config: AppConfig
     }
   | {
       type: 'START_ONBOARDING'
@@ -240,8 +238,8 @@ export function globalReducer(
             [name]: {
               name,
               keypairs: null,
-              auth: false
-            }
+              auth: false,
+            },
           }),
           {}
         ),
@@ -250,31 +248,31 @@ export function globalReducer(
         networkConfig: action.networkConfig,
         presets: action.presetNetworks,
         presetsInternal: action.presetNetworksInternal,
-        status: AppStatus.Initialised
+        status: AppStatus.Initialised,
       }
     }
     case 'INIT_APP_FAILED': {
       return {
         ...state,
-        status: AppStatus.Failed
+        status: AppStatus.Failed,
       }
     }
     case 'COMPLETE_ONBOARD': {
       return {
         ...state,
-        status: AppStatus.Initialised
+        status: AppStatus.Initialised,
       }
     }
     case 'SET_VERSION': {
       return {
         ...state,
-        version: action.version
+        version: action.version,
       }
     }
     case 'SET_CONFIG': {
       return {
         ...state,
-        config: action.config
+        config: action.config,
       }
     }
     case 'START_ONBOARDING': {
@@ -287,11 +285,11 @@ export function globalReducer(
             ...acc,
             [w]: {
               name: w,
-              auth: false
-            }
+              auth: false,
+            },
           }),
           {}
-        )
+        ),
       }
     }
     case 'ADD_WALLET': {
@@ -301,18 +299,18 @@ export function globalReducer(
         connections: {},
         keypairs: {
           ...(keypairExtended.publicKey && {
-            [keypairExtended.publicKey ?? '']: keypairExtended
-          })
+            [keypairExtended.publicKey ?? '']: keypairExtended,
+          }),
         },
-        auth: false
+        auth: false,
       }
       return {
         ...state,
         wallet: newWallet.name,
         wallets: {
           ...state.wallets,
-          [newWallet.name]: newWallet
-        }
+          [newWallet.name]: newWallet,
+        },
       }
     }
     case 'ADD_WALLETS': {
@@ -322,8 +320,8 @@ export function globalReducer(
           [name]: {
             name,
             keypairs: null,
-            auth: false
-          }
+            auth: false,
+          },
         }),
         {}
       )
@@ -331,15 +329,15 @@ export function globalReducer(
         ...state,
         wallets: {
           ...state.wallets,
-          ...newWallets
-        }
+          ...newWallets,
+        },
       }
     }
     case 'REMOVE_WALLET': {
       return {
         ...state,
         wallet: null,
-        wallets: omit(state.wallets, [action.wallet])
+        wallets: omit([action.wallet], state.wallets),
       }
     }
     case 'SET_KEYPAIRS': {
@@ -352,15 +350,15 @@ export function globalReducer(
         ...state.wallets[action.wallet],
         name: action.wallet,
         keypairs: keypairsExtended.reduce(indexBy('publicKey'), {}),
-        auth: true
+        auth: true,
       }
 
       return {
         ...state,
         wallets: {
           ...state.wallets,
-          [action.wallet]: newWallet
-        }
+          [action.wallet]: newWallet,
+        },
       }
     }
     case 'ADD_KEYPAIR':
@@ -376,17 +374,17 @@ export function globalReducer(
         keypairs: {
           ...currentWallet.keypairs,
           ...(newKeypair.publicKey && {
-            [newKeypair.publicKey ?? '']: newKeypair
-          })
-        }
+            [newKeypair.publicKey ?? '']: newKeypair,
+          }),
+        },
       }
 
       return {
         ...state,
         wallets: {
           ...state.wallets,
-          [action.wallet]: updatedWallet
-        }
+          [action.wallet]: updatedWallet,
+        },
       }
     }
     case 'SET_CONNECTIONS': {
@@ -400,15 +398,15 @@ export function globalReducer(
         connections: action.connections.reduce(
           indexBy<Connection>('hostname'),
           {}
-        )
+        ),
       }
 
       return {
         ...state,
         wallets: {
           ...state.wallets,
-          [action.wallet]: updatedWallet
-        }
+          [action.wallet]: updatedWallet,
+        },
       }
     }
     case 'SET_PERMISSONS': {
@@ -429,17 +427,17 @@ export function globalReducer(
           ...targetWallet.connections,
           [action.hostname]: {
             ...targetConnection,
-            permissions: action.permissions
-          }
-        }
+            permissions: action.permissions,
+          },
+        },
       }
 
       return {
         ...state,
         wallets: {
           ...state.wallets,
-          [action.wallet]: updatedWallet
-        }
+          [action.wallet]: updatedWallet,
+        },
       }
     }
     case 'ACTIVATE_WALLET': {
@@ -454,15 +452,15 @@ export function globalReducer(
           ...state.wallets,
           [action.wallet]: {
             ...state.wallets[action.wallet],
-            auth: true
-          }
-        }
+            auth: true,
+          },
+        },
       }
     }
     case 'DEACTIVATE_WALLET': {
       return {
         ...state,
-        wallet: null
+        wallet: null,
       }
     }
     case 'CHANGE_WALLET': {
@@ -472,49 +470,49 @@ export function globalReducer(
 
       return {
         ...state,
-        wallet: action.wallet
+        wallet: action.wallet,
       }
     }
     case 'SET_DRAWER': {
       return {
         ...state,
-        drawerState: action.state
+        drawerState: action.state,
       }
     }
     case 'SET_PASSPHRASE_MODAL': {
       return {
         ...state,
-        isPassphraseModalOpen: action.open
+        isPassphraseModalOpen: action.open,
       }
     }
     case 'SET_SETTINGS_MODAL': {
       return {
         ...state,
-        isSettingsModalOpen: action.open
+        isSettingsModalOpen: action.open,
       }
     }
     case 'SET_TAINT_KEY_MODAL': {
       return {
         ...state,
-        isTaintKeyModalOpen: action.open
+        isTaintKeyModalOpen: action.open,
       }
     }
     case 'SET_SIGN_MESSAGE_MODAL': {
       return {
         ...state,
-        isSignMessageModalOpen: action.open
+        isSignMessageModalOpen: action.open,
       }
     }
     case 'SET_UPDATE_KEY_MODAL': {
       return {
         ...state,
-        isUpdateKeyModalOpen: action.open
+        isUpdateKeyModalOpen: action.open,
       }
     }
     case 'SET_REMOVE_WALLET_MODAL': {
       return {
         ...state,
-        isRemoveWalletModalOpen: action.open
+        isRemoveWalletModalOpen: action.open,
       }
     }
     // network
@@ -523,38 +521,38 @@ export function globalReducer(
         ...state,
         network: action.network,
         networks: action.networks.sort(),
-        networkConfig: action.config
+        networkConfig: action.config,
       }
     }
     case 'SET_PRESETS': {
       return {
         ...state,
-        presets: action.presets
+        presets: action.presets,
       }
     }
     case 'SET_PRESETS_INTERNAL': {
       return {
         ...state,
-        presetsInternal: action.presets
+        presetsInternal: action.presets,
       }
     }
     case 'CHANGE_NETWORK': {
       return {
         ...state,
         network: action.network,
-        networkConfig: action.config
+        networkConfig: action.config,
       }
     }
     case 'UPDATE_NETWORK_CONFIG': {
       return {
         ...state,
-        networkConfig: action.config
+        networkConfig: action.config,
       }
     }
     case 'ADD_NETWORK': {
       const networks = [
-        ...state.networks.filter(n => n !== action.network),
-        action.network
+        ...state.networks.filter((n) => n !== action.network),
+        action.network,
       ].sort()
       const changeToNewNetwork =
         state.networks === null || state.networks.length === 0
@@ -564,32 +562,32 @@ export function globalReducer(
         ...state,
         network,
         networks,
-        networkConfig: config
+        networkConfig: config,
       }
     }
     case 'ADD_NETWORKS': {
       const newNetworks = action.networks.filter(
-        n => state.networks.indexOf(n) < 0
+        (n) => state.networks.indexOf(n) < 0
       )
       return {
         ...state,
         networks: [...state.networks, ...newNetworks],
         network: action.network,
-        networkConfig: action.networkConfig
+        networkConfig: action.networkConfig,
       }
     }
     case 'REMOVE_NETWORK': {
       return {
         ...state,
         network: null,
-        networks: state.networks.filter(n => n !== action.network),
-        networkConfig: null
+        networks: state.networks.filter((n) => n !== action.network),
+        networkConfig: null,
       }
     }
     case 'SET_SERVICE_STATUS': {
       return {
         ...state,
-        serviceStatus: action.status
+        serviceStatus: action.status,
       }
     }
     case 'ADD_TRANSACTION':
@@ -614,18 +612,18 @@ export function globalReducer(
             ...keypair,
             transactions: {
               ...keypair.transactions,
-              [action.transaction.id]: action.transaction
-            }
-          }
-        }
+              [action.transaction.id]: action.transaction,
+            },
+          },
+        },
       }
 
       return {
         ...state,
         wallets: {
           ...state.wallets,
-          [action.transaction.wallet]: updatedWallet
-        }
+          [action.transaction.wallet]: updatedWallet,
+        },
       }
     }
     case 'ADD_CONNECTION': {
@@ -640,16 +638,16 @@ export function globalReducer(
         auth: true,
         connections: {
           ...targetWallet.connections,
-          [action.connection.hostname]: action.connection
-        }
+          [action.connection.hostname]: action.connection,
+        },
       }
 
       return {
         ...state,
         wallets: {
           ...state.wallets,
-          [action.wallet]: updatedWallet
-        }
+          [action.wallet]: updatedWallet,
+        },
       }
     }
     default: {

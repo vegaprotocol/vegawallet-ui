@@ -1,18 +1,22 @@
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import type { ReactNode } from 'react'
-import type { Control, Path } from 'react-hook-form'
+import type { Control, Path, FieldValues } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 import { Colors } from '../../config/colors'
 import { Tick } from '../icons/tick'
 
-type CheckboxProps<T> = {
+type CheckboxProps<T extends FieldValues> = {
   name: Path<T>
   control: Control<T>
   label: ReactNode
 }
 
-export function Checkbox<T>({ name, control, label }: CheckboxProps<T>) {
+export function Checkbox<T extends FieldValues>({
+  name,
+  control,
+  label,
+}: CheckboxProps<T>) {
   return (
     <Controller
       name={name}
@@ -42,7 +46,7 @@ export function Checkbox<T>({ name, control, label }: CheckboxProps<T>) {
 const wrapper = {
   display: 'flex',
   alignItems: 'center',
-  gap: 10
+  gap: 10,
 }
 
 const box = {
@@ -51,7 +55,7 @@ const box = {
   justifyContent: 'center',
   width: 16,
   height: 16,
-  background: Colors.DARK_GRAY_5
+  background: Colors.DARK_GRAY_5,
 }
 
 const boxInner = {
@@ -60,5 +64,5 @@ const boxInner = {
   justifyContent: 'center',
   width: 10,
   height: 10,
-  color: Colors.WHITE
+  color: Colors.WHITE,
 }

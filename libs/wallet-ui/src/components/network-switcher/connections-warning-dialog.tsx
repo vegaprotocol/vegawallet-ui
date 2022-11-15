@@ -31,7 +31,7 @@ export const ConnectionsWarningDialog = ({
   activeConnections,
   isOpen,
   setOpen,
-  onConfirm
+  onConfirm,
 }: NetworkSwitchDialogProps) => {
   return (
     <Dialog

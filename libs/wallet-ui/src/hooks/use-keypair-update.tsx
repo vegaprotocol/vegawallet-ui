@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useMemo } from 'react'
 
 import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
@@ -6,9 +6,6 @@ import { Intent } from '../config/intent'
 import type { GlobalActions } from '../contexts/global/global-actions'
 import type { GlobalDispatch } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
-import { createLogger } from '../lib/logging'
-
-const logger = createLogger('Metadata')
 
 export type Meta = {
   key: string
@@ -21,8 +18,9 @@ export const useKeypairUpdate = (
   pubKey?: string,
   wallet?: string
 ) => {
-  const { service } = useGlobal()
+  const { client, service } = useGlobal()
   const [loading, setLoading] = useState(false)
+  const logger = useMemo(() => service.GetLogger('Metadata'), [service])
 
   const update = useCallback(
     async (metadata: Meta[]): Promise<void> => {
@@ -33,17 +31,17 @@ export const useKeypairUpdate = (
         }
 
         const passphrase = await requestPassphrase()
-        await service.WalletApi.AnnotateKey({
+        await client.AnnotateKey({
           wallet,
           passphrase,
           publicKey: pubKey,
-          metadata
+          metadata,
         })
 
-        const keypair = await service.WalletApi.DescribeKey({
+        const keypair = await client.DescribeKey({
           wallet,
           passphrase,
-          publicKey: pubKey
+          publicKey: pubKey,
         })
 
         dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -51,7 +49,7 @@ export const useKeypairUpdate = (
 
         AppToaster.show({
           message: `Successfully updated metadata`,
-          intent: Intent.SUCCESS
+          intent: Intent.SUCCESS,
         })
         setLoading(false)
       } catch (err) {
@@ -60,11 +58,11 @@ export const useKeypairUpdate = (
         logger.error(err)
       }
     },
-    [dispatch, actions, pubKey, service, wallet]
+    [dispatch, actions, client, logger, pubKey, wallet]
   )
 
   return {
     loading,
-    update
+    update,
   }
 }

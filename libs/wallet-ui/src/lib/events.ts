@@ -1,7 +1,5 @@
 export const enum EVENTS {
   NEW_INTERACTION_EVENT = 'new_interaction',
-  NEW_CONSENT_REQUEST = 'new_consent_request',
-  TRANSACTION_SENT = 'transaction_sent',
   // Sent when the service is healthy.
   // This event can be emitted every 15 seconds.
   SERVICE_HEALTHY = 'service_is_healthy',
@@ -19,5 +17,5 @@ export const enum EVENTS {
   // Sent when the service has been stopped by the user.
   // This event is emitted once per service lifecycle.
   // If emitted, the `ServiceStoppedWithError` is not be emitted.
-  SERVICE_STOPPED = 'service_stopped'
+  SERVICE_STOPPED = 'service_stopped',
 }

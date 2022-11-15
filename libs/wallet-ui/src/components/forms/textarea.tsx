@@ -18,7 +18,7 @@ export const Textarea = forwardRef(
           ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
           minHeight: 200,
           resize: 'vertical',
-          ...style
+          ...style,
         }}
       />
     )

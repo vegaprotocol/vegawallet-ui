@@ -32,18 +32,18 @@ export const TransactionHistory = () => {
           />
         ))}
       <Dialog
-        size='lg'
+        size="lg"
         open={!!transaction}
         title={transaction ? TRANSACTION_TITLES[transaction.type] : ''}
-        onChange={open => setTransaction(open ? transaction : null)}
+        onChange={(open) => setTransaction(open ? transaction : null)}
       >
         {transaction && <TransactionDetails transaction={transaction} />}
         <ButtonGroup inline style={{ padding: 20 }}>
           {explorerUrl && transaction?.txHash && (
             <AnchorButton
               href={`${explorerUrl}/txs/${transaction.txHash}`}
-              target='_blank'
-              rel='noopener noreferrer'
+              target="_blank"
+              rel="noopener noreferrer"
             >
               View in explorer
             </AnchorButton>

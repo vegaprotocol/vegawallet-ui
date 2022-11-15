@@ -18,7 +18,7 @@ export const Select = forwardRef(
           style={{
             ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
             ...style,
-            paddingRight: 20
+            paddingRight: 20,
           }}
         />
         <span
@@ -31,7 +31,7 @@ export const Select = forwardRef(
             height: 0,
             borderTop: `${CARET_SIZE}px solid ${Colors.WHITE}`,
             borderRight: `${CARET_SIZE}px solid transparent`,
-            borderLeft: `${CARET_SIZE}px solid transparent`
+            borderLeft: `${CARET_SIZE}px solid transparent`,
           }}
         />
       </div>

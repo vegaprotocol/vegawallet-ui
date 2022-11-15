@@ -8,17 +8,17 @@ import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
 import { Colors } from './config/colors'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
-import { createLogger } from './lib/logging'
-import { WindowReload } from './wailsjs/runtime'
+import type { Logger } from './types/logger'
 
 /**
  * Initialiases the app
  */
-export function AppLoader({ children }: { children: React.ReactNode }) {
+export function AppLoader({ children }: { children?: ReactNode }) {
   const {
     state: { status },
+    runtime,
     actions,
-    dispatch
+    dispatch,
   } = useGlobal()
 
   // Get wallets, service state and version
@@ -37,8 +37,8 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
   if (status === AppStatus.Failed) {
     return (
       <SplashError
-        message='Failed to initialise'
-        actions={<Button onClick={() => WindowReload()}>Reload</Button>}
+        message="Failed to initialise"
+        actions={<Button onClick={() => runtime.WindowReload()}>Reload</Button>}
       />
     )
   }
@@ -48,7 +48,7 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
 
 export const APP_FRAME_HEIGHT = 35
 interface AppFrameProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 /**
@@ -66,9 +66,9 @@ export function AppFrame({ children }: AppFrameProps) {
         backgroundSize: 'cover',
         backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
         position: 'relative',
-        overflowY: 'auto'
+        overflowY: 'auto',
       }}
-      data-testid='app-frame'
+      data-testid="app-frame"
       className={useVegaBg ? 'vega-bg' : undefined}
     >
       <div
@@ -83,7 +83,7 @@ export function AppFrame({ children }: AppFrameProps) {
           // which you can click and drag to move the app around.
           // https://wails.io/docs/guides/frameless/
           // @ts-ignore: Allow custom css property for wails
-          '--wails-draggable': 'drag'
+          '--wails-draggable': 'drag',
         }}
       />
       {children}
@@ -91,33 +91,38 @@ export function AppFrame({ children }: AppFrameProps) {
   )
 }
 
-const logger = createLogger('ErrorBoundary')
+type ErrorBoundaryProps = {
+  reload: () => void
+  logger: Logger
+  children: ReactNode
+}
 
-export class ErrorBoundary extends Component<{ children: ReactNode }> {
-  state: { error: Error | null } = {
-    error: null
+export class ErrorBoundary extends Component<ErrorBoundaryProps> {
+  override state: { error: Error | null } = {
+    error: null,
   }
 
   static getDerivedStateFromError(error: Error) {
     return { error }
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    logger.error(error, errorInfo.componentStack)
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    this.props.logger.error(error, errorInfo.componentStack)
   }
 
-  render() {
+  override render() {
     const { error } = this.state
+    const { reload, children } = this.props
 
     if (error) {
       return (
         <SplashError
           message={`Something went wrong: ${error.message}`}
-          actions={<Button onClick={() => WindowReload()}>Reload</Button>}
+          actions={<Button onClick={() => reload()}>Reload</Button>}
         />
       )
     }
 
-    return this.props.children
+    return children
   }
 }

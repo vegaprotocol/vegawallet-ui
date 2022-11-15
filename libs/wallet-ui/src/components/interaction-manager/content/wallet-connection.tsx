@@ -3,13 +3,19 @@ import { useEffect } from 'react'
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestWalletConnection } from '../types'
-import { CONNECTION_RESPONSE, INTERACTION_RESPONSE_TYPE } from '../types'
+import type {
+  InteractionContentProps,
+  RequestWalletConnection,
+} from '../../../types/interaction'
+import {
+  CONNECTION_RESPONSE,
+  INTERACTION_RESPONSE_TYPE,
+} from '../../../types/interaction'
 
 export const WalletConnection = ({
   event,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<RequestWalletConnection>) => {
   const { service } = useGlobal()
 
@@ -22,13 +28,13 @@ export const WalletConnection = ({
           data: {
             connectionApproval: decision
               ? CONNECTION_RESPONSE.APPROVED_ONCE
-              : CONNECTION_RESPONSE.REJECTED_ONCE
-          }
+              : CONNECTION_RESPONSE.REJECTED_ONCE,
+          },
         })
       } catch (err: unknown) {
         AppToaster.show({
           message: `${err}`,
-          intent: Intent.DANGER
+          intent: Intent.DANGER,
         })
       }
     }

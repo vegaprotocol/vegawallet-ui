@@ -4,21 +4,24 @@ import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { requestPassphrase } from '../../passphrase-modal'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestPassphrase } from '../types'
+import type {
+  InteractionContentProps,
+  RequestPassphrase,
+} from '../../../types/interaction'
 import {
   EVENT_FLOW_TYPE,
   INTERACTION_RESPONSE_TYPE,
-  INTERACTION_TYPE
-} from '../types'
+  INTERACTION_TYPE,
+} from '../../../types/interaction'
 
 export const Passphrase = ({
   event,
   flow,
   history,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<RequestPassphrase>) => {
-  const { service, dispatch } = useGlobal()
+  const { service, client, dispatch } = useGlobal()
 
   useEffect(() => {
     const handleResponse = async () => {
@@ -32,13 +35,13 @@ export const Passphrase = ({
           traceID: event.traceID,
           name: INTERACTION_RESPONSE_TYPE.ENTERED_PASSPHRASE,
           data: {
-            passphrase
-          }
+            passphrase,
+          },
         })
 
         if (flow === EVENT_FLOW_TYPE.PERMISSION_REQUEST) {
           const source = history.find(
-            interaction =>
+            (interaction) =>
               interaction.event.name ===
               INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
           )
@@ -47,15 +50,13 @@ export const Passphrase = ({
             source &&
             source.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
           ) {
-            const { wallet, hostname } = source?.event.data
+            const { wallet, hostname } = source?.event.data || {}
 
-            const { permissions } = await service.WalletApi.DescribePermissions(
-              {
-                wallet,
-                passphrase,
-                hostname
-              }
-            )
+            const { permissions } = await client.DescribePermissions({
+              wallet,
+              passphrase,
+              hostname,
+            })
 
             dispatch({
               type: 'ADD_CONNECTION',
@@ -63,8 +64,8 @@ export const Passphrase = ({
               connection: {
                 hostname,
                 active: true,
-                permissions
-              }
+                permissions,
+              },
             })
           }
         }
@@ -75,12 +76,11 @@ export const Passphrase = ({
           await service.RespondToInteraction({
             traceID: event.traceID,
             name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
-            data: {}
           })
         } else {
           AppToaster.show({
             message: `${err}`,
-            intent: Intent.DANGER
+            intent: Intent.DANGER,
           })
         }
       }
@@ -89,7 +89,7 @@ export const Passphrase = ({
     if (!isResolved) {
       handleResponse()
     }
-  }, [dispatch, flow, history, service, event, isResolved, setResolved])
+  }, [dispatch, flow, history, service, client, event, isResolved, setResolved])
 
   return null
 }

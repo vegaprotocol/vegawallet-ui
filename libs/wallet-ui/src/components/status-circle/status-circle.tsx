@@ -10,7 +10,7 @@ export const StatusCircle = ({ background, blinking }: StatusCircleProps) => {
     height: 11,
     borderRadius: '50%',
     marginRight: 5,
-    background
+    background,
   }
 
   return (

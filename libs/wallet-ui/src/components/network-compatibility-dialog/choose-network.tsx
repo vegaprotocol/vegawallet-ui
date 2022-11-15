@@ -22,33 +22,33 @@ export const ChangeNetwork = ({
   networks,
   onSubmit,
   onCancel,
-  onAddNetwork
+  onAddNetwork,
 }: ChangeNetworkProps) => {
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
-      network: undefined
-    }
+      network: undefined,
+    },
   })
 
   const networkOptions = useMemo(() => {
-    return networks.map(n => ({ label: n, value: n }))
+    return networks.map((n) => ({ label: n, value: n }))
   }, [networks])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ padding: 20 }}>
       <RadioGroup
-        name='network'
+        name="network"
         control={control}
         options={networkOptions}
         rules={{
-          required: Validation.REQUIRED
+          required: Validation.REQUIRED,
         }}
       />
       <ButtonUnstyled onClick={onAddNetwork} style={{ marginTop: 12 }}>
         Add network
       </ButtonUnstyled>
       <ButtonGroup inline style={{ padding: '20px 0' }}>
-        <Button type='submit'>Select network</Button>
+        <Button type="submit">Select network</Button>
         <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>
       </ButtonGroup>
     </form>

@@ -13,15 +13,15 @@ import { WalletSelection } from './content/wallet-selection'
 import type {
   Interaction,
   InteractionContentProps,
-  RawInteraction
-} from './types'
-import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from './types'
+  RawInteraction,
+} from '../../types/interaction'
+import { EVENT_FLOW_TYPE, INTERACTION_TYPE } from '../../types/interaction'
 
 const InteractionItem = ({
   event,
   flow,
   history,
-  onFinish
+  onFinish,
 }: Omit<
   InteractionContentProps<RawInteraction>,
   'isResolved' | 'setResolved'
@@ -196,7 +196,7 @@ export const InteractionFlow = ({ events, onFinish }: InteractionFlowProps) => {
 
   return (
     <>
-      {events.map(interaction => (
+      {events.map((interaction) => (
         <InteractionItem
           key={interaction.meta.id}
           history={events}

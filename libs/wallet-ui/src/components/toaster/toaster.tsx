@@ -1,5 +1,6 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import { Component } from 'react'
+import type { ReactNode } from 'react'
+import { render } from 'react-dom'
 import { animated, config, useTransition } from 'react-spring'
 
 import type { Intent } from '../../config/intent'
@@ -8,14 +9,14 @@ import { Toast as ToastComponent } from './toast'
 // Toast object to be stored in state
 export interface Toast {
   id: string
-  message: React.ReactNode
+  message: ReactNode
   intent?: Intent
   timeout?: number
 }
 
 // Options object to be passed to AppToaster.show(toastOptions)
 export interface ToastOptions {
-  message: React.ReactNode
+  message: ReactNode
   intent?: Intent
   timeout?: number
 }
@@ -24,12 +25,13 @@ interface ToasterState {
   toasts: Toast[]
 }
 
-export class Toaster extends React.Component<any, ToasterState> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class Toaster extends Component<Readonly<any>, ToasterState> {
   toastId = 0
   container: HTMLDivElement | null = null
 
-  state: ToasterState = {
-    toasts: []
+  override state: ToasterState = {
+    toasts: [],
   }
 
   public static create() {
@@ -46,40 +48,40 @@ export class Toaster extends React.Component<any, ToasterState> {
     container.style.padding = '30px 20px 20px'
     container.style.zIndex = '10'
     document.body.appendChild(container)
-    // @ts-ignore
-    const toaster = ReactDOM.render(<Toaster />, container) as Toaster
+    // @ts-ignore Ts gets confused by the self-refefence here
+    const toaster = render(<Toaster />, container) as Toaster
     return toaster
   }
 
   handleDismiss = (toast: Toast) => {
     this.setState(({ toasts }) => ({
-      toasts: toasts.filter(t => {
+      toasts: toasts.filter((t) => {
         return t.id !== toast.id
-      })
+      }),
     }))
   }
 
   show(toast: ToastOptions) {
-    this.setState(curr => {
+    this.setState((curr) => {
       return {
         ...curr,
         toasts: [
           {
             id: `toast-${this.toastId++}`,
-            ...toast
+            ...toast,
           },
-          ...curr.toasts
-        ]
+          ...curr.toasts,
+        ],
       }
     })
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     this.container = document.createElement('div')
     this.container.className = 'toaster-portal-container'
   }
 
-  render() {
+  override render() {
     if (this.container === null) {
       return null
     }
@@ -102,15 +104,15 @@ interface ToasterAnimationHandlerProps {
 
 function ToasterAnimationHandler({
   toasts,
-  handleDismiss
+  handleDismiss,
 }: ToasterAnimationHandlerProps) {
   const height = 49
   const transitions = useTransition(toasts, {
     from: () => ({ y: -height, opacity: 0 }),
-    enter: (t, i) => ({ opacity: 1, y: i * height }),
-    update: (t, i) => ({ opacity: 1, y: i * height }),
-    leave: (t, i) => ({ y: (i - 1) * height, opacity: 0 }),
-    config: { ...config.default, duration: 170 }
+    enter: (_t, i) => ({ opacity: 1, y: i * height }),
+    update: (_t, i) => ({ opacity: 1, y: i * height }),
+    leave: (_t, i) => ({ y: (i - 1) * height, opacity: 0 }),
+    config: { ...config.default, duration: 170 },
   })
 
   return transitions((styles, t) => {
@@ -121,7 +123,7 @@ function ToasterAnimationHandler({
           position: 'absolute',
           overflow: 'hidden',
           paddingTop: 15,
-          ...styles
+          ...styles,
         }}
       >
         <ToastComponent key={t.id} onDismiss={handleDismiss} {...t} />

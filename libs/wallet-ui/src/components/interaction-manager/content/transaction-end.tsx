@@ -8,9 +8,9 @@ import type {
   InteractionContentProps,
   RequestTransactionFailure,
   RequestTransactionReview,
-  RequestTransactionSuccess
-} from '../types'
-import { INTERACTION_TYPE } from '../types'
+  RequestTransactionSuccess,
+} from '../../../types/interaction'
+import { INTERACTION_TYPE } from '../../../types/interaction'
 
 type TransactionEndProps =
   | InteractionContentProps<RequestTransactionSuccess>
@@ -62,7 +62,7 @@ const parseEvent = (event: TransactionEvent) => {
     error:
       event.name === INTERACTION_TYPE.TRANSACTION_FAILED
         ? event.data.error
-        : undefined
+        : undefined,
   }
 }
 
@@ -85,7 +85,7 @@ export const TransactionEnd = ({
   event,
   history,
   isResolved,
-  setResolved
+  setResolved,
 }: TransactionEndProps) => {
   const { dispatch, state } = useGlobal()
   const source = useMemo(
@@ -105,8 +105,8 @@ export const TransactionEnd = ({
         type: 'UPDATE_TRANSACTION',
         transaction: {
           ...transaction,
-          ...parseEvent(event)
-        }
+          ...parseEvent(event),
+        },
       })
 
       setResolved(true)

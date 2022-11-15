@@ -11,7 +11,7 @@ interface DrawerNetworkProps {
 
 export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   const {
-    state: { networks }
+    state: { networks },
   } = useGlobal()
 
   return (
@@ -23,12 +23,12 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 20
+            marginBottom: 20,
           }}
         >
           <NetworkSwitcher />
           <ButtonUnstyled
-            data-testid='manage-networks'
+            data-testid="manage-networks"
             onClick={() => setView(DrawerPanel.Manage)}
           >
             Manage networks
@@ -37,7 +37,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
       ) : (
         <div>
           <Button
-            data-testid='import'
+            data-testid="import"
             onClick={() => setView(DrawerPanel.Manage)}
           >
             Import

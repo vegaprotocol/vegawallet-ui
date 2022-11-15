@@ -2,7 +2,11 @@ import { useEffect } from 'react'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, Log, LogContent } from '../types'
+import type {
+  InteractionContentProps,
+  Log,
+  LogContent,
+} from '../../../types/interaction'
 
 const getMessageIntent = (type: LogContent['type']) => {
   switch (type) {
@@ -24,13 +28,13 @@ const getMessageIntent = (type: LogContent['type']) => {
 export const LogComponent = ({
   event,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<Log>) => {
   useEffect(() => {
     if (!isResolved) {
       AppToaster.show({
         message: event.data.message,
-        intent: getMessageIntent(event.data.type)
+        intent: getMessageIntent(event.data.type),
       })
       setResolved(true)
     }

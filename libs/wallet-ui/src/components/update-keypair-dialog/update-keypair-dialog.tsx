@@ -25,18 +25,18 @@ const rowStyles = {
   width: '100%',
   display: 'grid',
   gridTemplateColumns: '20px 1fr 1fr auto',
-  gap: 12
+  gap: 12,
 }
 
 const cellStyles = {
   display: 'flex',
   alignItems: 'center',
   height: 40,
-  marginTop: 5
+  marginTop: 5,
 }
 
 const underlined = {
-  textDecoration: 'underline'
+  textDecoration: 'underline',
 }
 
 export function UpdateKeypairDialog() {
@@ -48,7 +48,7 @@ export function UpdateKeypairDialog() {
   }
 
   return (
-    <Dialog open={state.isUpdateKeyModalOpen} title='Update key'>
+    <Dialog open={state.isUpdateKeyModalOpen} title="Update key">
       <PublicKey publicKey={keypair.publicKey} />
       <div style={{ padding: '0 20px 20px' }}>
         <UpdateKeyForm keypair={keypair} wallet={wallet} />
@@ -76,15 +76,15 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
     register,
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<{ meta: Meta[] }>({
     defaultValues: {
-      meta: (keypair?.meta || []).filter(kp => kp.key === 'name')
-    }
+      meta: (keypair?.meta || []).filter((kp) => kp.key === 'name'),
+    },
   })
   const { fields, append, remove, move } = useFieldArray({
     control,
-    name: 'meta'
+    name: 'meta',
   })
 
   const onSubmit = useCallback(
@@ -109,8 +109,8 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId='meta'>
-          {provided => (
+        <Droppable droppableId="meta">
+          {(provided) => (
             <>
               <div
                 {...provided.droppableProps}
@@ -122,16 +122,16 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                     helperText={nameError?.message}
                     intent={nameError ? Intent.DANGER : Intent.NONE}
                   >
-                    <label data-testid='metadata-key-0' htmlFor='meta-name'>
+                    <label data-testid="metadata-key-0" htmlFor="meta-name">
                       Name
                     </label>
                     <Input
-                      id='meta-name'
-                      placeholder='value'
-                      data-testid='metadata-value-0'
+                      id="meta-name"
+                      placeholder="value"
+                      data-testid="metadata-value-0"
                       aria-invalid={nameError ? 'true' : 'false'}
                       {...register(`meta.0.value`, {
-                        required: Validation.REQUIRED
+                        required: Validation.REQUIRED,
                       })}
                     />
                   </FormGroup>
@@ -140,19 +140,19 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                   )}
                 </div>
                 {fields
-                  .filter(kv => kv.key !== 'name')
+                  .filter((kv) => kv.key !== 'name')
                   .map((field, index) => (
                     <Draggable
                       key={field.id}
                       draggableId={field.id}
                       index={index + 1}
                     >
-                      {provided => {
+                      {(provided) => {
                         const draggerBarStyle = {
                           width: 20,
                           height: 1,
                           background: Colors.WHITE,
-                          margin: '3px 0'
+                          margin: '3px 0',
                         }
                         return (
                           <div
@@ -162,13 +162,13 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                           >
                             <div style={rowStyles}>
                               <div
-                                data-testid='metadata-row-indicator'
+                                data-testid="metadata-row-indicator"
                                 style={{
                                   ...cellStyles,
                                   display: 'flex',
                                   flexDirection: 'column',
                                   justifyContent: 'center',
-                                  alignItems: 'center'
+                                  alignItems: 'center',
                                 }}
                               >
                                 {Array(3)
@@ -191,16 +191,16 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                                 }
                               >
                                 <Input
-                                  placeholder='key'
-                                  data-testid='metadata-key'
+                                  placeholder="key"
+                                  data-testid="metadata-key"
                                   aria-invalid={
-                                    !!errors.meta?.[index + 1]?.key
+                                    errors.meta?.[index + 1]?.key
                                       ? 'true'
                                       : 'false'
                                   }
                                   {...register(`meta.${index + 1}.key`, {
                                     required: Validation.REQUIRED,
-                                    validate: notName
+                                    validate: notName,
                                   })}
                                 />
                               </FormGroup>
@@ -215,20 +215,20 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                                 }
                               >
                                 <Input
-                                  placeholder='value'
-                                  data-testid='metadata-value'
+                                  placeholder="value"
+                                  data-testid="metadata-value"
                                   aria-invalid={
-                                    !!errors.meta?.[index + 1]?.value
+                                    errors.meta?.[index + 1]?.value
                                       ? 'true'
                                       : 'false'
                                   }
                                   {...register(`meta.${index + 1}.value`, {
-                                    required: Validation.REQUIRED
+                                    required: Validation.REQUIRED,
                                   })}
                                 />
                               </FormGroup>
                               <button
-                                data-testid='metadata-remove'
+                                data-testid="metadata-remove"
                                 style={{ ...cellStyles, ...underlined }}
                                 onClick={() => remove(index + 1)}
                               >
@@ -248,7 +248,7 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
       </DragDropContext>
       <div style={{ margin: '1.5rem 0', display: 'none' }}>
         <button
-          data-testid='metadata-add'
+          data-testid="metadata-add"
           style={underlined}
           onClick={() => append({ key: '', value: '' })}
         >
@@ -256,7 +256,7 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
         </button>
       </div>
       <div style={{ display: 'flex', marginTop: 0, gap: 20 }}>
-        <Button data-testid='metadata-submit' disabled={loading} type='submit'>
+        <Button data-testid="metadata-submit" disabled={loading} type="submit">
           Update
         </Button>
         <ButtonUnstyled

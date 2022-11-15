@@ -22,13 +22,13 @@ const itemStyles = {
   borderTop: `1px solid ${Colors.BLACK}`,
   padding: `18px 0`,
   textDecoration: 'none',
-  width: '100%'
+  width: '100%',
 }
 
 const actionStyles: CSSProperties = {
   position: 'fixed',
   bottom: DRAWER_HEIGHT,
-  left: 0
+  left: 0,
 }
 
 /**
@@ -38,7 +38,7 @@ export const Home = () => {
   const { open } = useOpenWallet()
   const {
     state: { wallets, status },
-    dispatch
+    dispatch,
   } = useGlobal()
 
   const actionWrapperStyles = wallets.length ? actionStyles : undefined
@@ -53,11 +53,11 @@ export const Home = () => {
   }
 
   return (
-    <div data-testid='wallet-home' style={{ padding: 20 }}>
+    <div data-testid="wallet-home" style={{ padding: 20 }}>
       <Title
         style={{
           margin: '0 0 30px 0',
-          color: Colors.WHITE
+          color: Colors.WHITE,
         }}
       >
         Wallets
@@ -65,17 +65,17 @@ export const Home = () => {
       <div
         style={{
           paddingBottom: 144,
-          width: '100%'
+          width: '100%',
         }}
       >
         <div
           style={{
             borderBottom: `${walletsList.length > 0 ? '1' : '0'}px solid ${
               Colors.BLACK
-            }`
+            }`,
           }}
         >
-          {walletsList.map(w => (
+          {walletsList.map((w) => (
             <ButtonUnstyled
               style={itemStyles}
               onClick={() => open(w.name)}
@@ -100,17 +100,17 @@ export const Home = () => {
           padding: 20,
           width: '100%',
           backgroundColor: Colors.DARK_GRAY_1,
-          ...actionWrapperStyles
+          ...actionWrapperStyles,
         }}
       >
         <ButtonGroup style={{ marginBottom: 20 }}>
-          <Link to='/wallet-create'>
-            <Button data-testid='create-new-wallet' style={{ width: '100%' }}>
+          <Link to="/wallet-create">
+            <Button data-testid="create-new-wallet" style={{ width: '100%' }}>
               Create wallet
             </Button>
           </Link>
-          <Link to='/wallet-import'>
-            <Button data-testid='import-wallet' style={{ width: '100%' }}>
+          <Link to="/wallet-import">
+            <Button data-testid="import-wallet" style={{ width: '100%' }}>
               Import wallet
             </Button>
           </Link>
@@ -118,7 +118,7 @@ export const Home = () => {
         <p>
           <ButtonUnstyled
             onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
-            data-testid='home-settings'
+            data-testid="home-settings"
           >
             App settings
           </ButtonUnstyled>

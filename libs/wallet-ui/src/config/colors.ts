@@ -29,7 +29,7 @@ export const enum Colors {
   LIGHT_GRAY_5 = 'var(--light-gray5)',
   TEXT_COLOR = 'var(--text-color)',
   TEXT_COLOR_DEEMPHASISE = 'var(--text-color-deemphasise)',
-  TEXT_COLOR_EMPHASISE = 'var(--text-color-emphasise)'
+  TEXT_COLOR_EMPHASISE = 'var(--text-color-emphasise)',
 }
 
 export const IntentColors: { [i in Intent]: string } = {
@@ -37,7 +37,7 @@ export const IntentColors: { [i in Intent]: string } = {
   primary: 'inherit',
   success: Colors.INTENT_SUCCESS,
   warning: Colors.INTENT_WARNING,
-  danger: Colors.INTENT_DANGER
+  danger: Colors.INTENT_DANGER,
 }
 
 export const IntentBackgrounds: { [i in Intent]: string } = {
@@ -45,5 +45,5 @@ export const IntentBackgrounds: { [i in Intent]: string } = {
   primary: 'var(--intent-primary-bg)',
   success: 'var(--intent-success-bg)',
   warning: 'var(--intent-warning-bg)',
-  danger: 'var(--intent-danger-bg)'
+  danger: 'var(--intent-danger-bg)',
 }

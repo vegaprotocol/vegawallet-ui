@@ -1,12 +1,12 @@
 import type { HTMLAttributes } from 'react'
-import React from 'react'
+import type { ReactNode, CSSProperties } from 'react'
 
 import { Colors } from '../../config/colors'
 
 type Variant = 'main' | 'secondary'
 
 interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
-  children: React.ReactNode
+  children: ReactNode
   variant?: Variant
   element?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
@@ -17,18 +17,18 @@ const secondaryTitleStyles = {
   margin: '30px 0 20px 0',
   textTransform: 'uppercase',
   letterSpacing: '0.3em',
-  lineHeight: 1.2
-} as React.CSSProperties
+  lineHeight: 1.2,
+} as CSSProperties
 
 const mainTitleStyles = {
   fontSize: 28,
   margin: 0,
   padding: 20,
   color: Colors.WHITE,
-  lineHeight: 1.2
+  lineHeight: 1.2,
 }
 
-const getVariantStyles = (variant: Variant): React.CSSProperties => {
+const getVariantStyles = (variant: Variant): CSSProperties => {
   switch (variant) {
     case 'main': {
       return mainTitleStyles
@@ -53,7 +53,7 @@ export const Title = ({
       {...rest}
       style={{
         ...getVariantStyles(variant),
-        ...style
+        ...style,
       }}
     >
       {children}

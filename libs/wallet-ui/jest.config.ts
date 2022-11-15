@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'positions',
+  displayName: 'wallet-ui',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,6 +11,6 @@ export default {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/positions',
-  setupFilesAfterEnv: ['./src/setup-tests.ts'],
-};
+  coverageDirectory: '../../coverage/libs/wallet-ui',
+  setupFilesAfterEnv: ['./src/test/setup-tests.ts'],
+}

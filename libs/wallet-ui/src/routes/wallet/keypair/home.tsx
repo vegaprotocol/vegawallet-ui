@@ -32,14 +32,14 @@ export function KeyPairHome() {
       <PublicKey publicKey={keypair.publicKey} />
       {keypair.isTainted && (
         <div
-          data-testid='keypair-taint-notification'
+          data-testid="keypair-taint-notification"
           style={{
             display: 'flex',
             gap: 12,
             alignItems: 'center',
             padding: 20,
             border: `1px solid ${Colors.VEGA_PINK}`,
-            margin: '20px 20px 12px'
+            margin: '20px 20px 12px',
           }}
         >
           <div>
@@ -48,7 +48,7 @@ export function KeyPairHome() {
           <div>
             This key is marked as unsafe to use.{' '}
             <ButtonUnstyled
-              data-testid='keypair-taint-toggle'
+              data-testid="keypair-taint-toggle"
               onClick={() =>
                 dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
               }
@@ -59,13 +59,13 @@ export function KeyPairHome() {
           </div>
         </div>
       )}
-      <div style={{ padding: '20px 20px 48px' }} data-testid='keypair-home'>
+      <div style={{ padding: '20px 20px 48px' }} data-testid="keypair-home">
         <Title style={{ marginTop: 0 }}>Actions</Title>
         <div style={{ padding: '6px 0' }}>
           <div>
             <Button
               style={{ marginBottom: 8 }}
-              data-testid='keypair-sign'
+              data-testid="keypair-sign"
               onClick={() =>
                 dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: true })
               }
@@ -82,7 +82,7 @@ export function KeyPairHome() {
             <div>
               <Button
                 style={{ marginBottom: 8 }}
-                data-testid='keypair-taint-toggle'
+                data-testid="keypair-taint-toggle"
                 onClick={() =>
                   dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
                 }
@@ -102,7 +102,7 @@ export function KeyPairHome() {
           <div>
             <Button
               style={{ marginBottom: 8 }}
-              data-testid='keypair-transactions'
+              data-testid="keypair-transactions"
               onClick={() =>
                 navigate(`/wallet/${wallet}/keypair/${pubkey}/transactions`)
               }
@@ -118,7 +118,7 @@ export function KeyPairHome() {
           <div>
             <Button
               style={{ marginBottom: 8 }}
-              data-testid='keypair-update'
+              data-testid="keypair-update"
               onClick={() =>
                 dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: true })
               }

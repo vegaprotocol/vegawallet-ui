@@ -19,7 +19,7 @@ export function DrawerHead({
   title,
   isOpen,
   setOpen,
-  children
+  children,
 }: DrawerHeadProps) {
   return (
     <div
@@ -30,7 +30,7 @@ export function DrawerHead({
         alignItems: 'center',
         padding: '10px 20px 10px 20px',
         borderBottom: `1px solid ${Colors.DARK_GRAY_3}`,
-        fontSize: 14
+        fontSize: 14,
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
@@ -54,7 +54,7 @@ function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
 
   return (
     <ButtonUnstyled
-      data-testid='network-drawer'
+      data-testid="network-drawer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
@@ -64,7 +64,7 @@ function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
         width: 45,
         height: 45,
         borderRadius: '50%',
-        background: hover ? Colors.DARK_GRAY_2 : 'transparent'
+        background: hover ? Colors.DARK_GRAY_2 : 'transparent',
       }}
       onClick={() => setOpen(!isOpen)}
     >
@@ -72,7 +72,7 @@ function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
         style={{
           width: 16,
           height: 16,
-          transform: isOpen ? '' : 'rotate(180deg)'
+          transform: isOpen ? '' : 'rotate(180deg)',
         }}
       />
     </ButtonUnstyled>
