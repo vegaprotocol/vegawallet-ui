@@ -14,22 +14,22 @@ import { WalletImport } from './wallet-import'
 export enum Paths {
   Home = '/',
   Onboard = '/onboard',
-  Wallet = '/wallet'
+  Wallet = '/wallet',
 }
 
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route path='/' element={<Outlet />}>
+      <Route path="/" element={<Outlet />}>
         <Route index={true} element={<Home />} />
-        <Route path='onboard' element={<Onboard />} />
-        <Route path='wallet-create' element={<WalletCreate />} />
-        <Route path='wallet-import' element={<WalletImport />} />
-        <Route path='wallet/:wallet' element={<Wallet />}>
+        <Route path="onboard" element={<Onboard />} />
+        <Route path="wallet-create" element={<WalletCreate />} />
+        <Route path="wallet-import" element={<WalletImport />} />
+        <Route path="wallet/:wallet" element={<Wallet />}>
           <Route index={true} element={<WalletList />} />
-          <Route path='keypair/:pubkey' element={<WalletKeyPair />}>
+          <Route path="keypair/:pubkey" element={<WalletKeyPair />}>
             <Route index={true} element={<KeyPairHome />} />
-            <Route path='transactions' element={<Transactions />} />
+            <Route path="transactions" element={<Transactions />} />
           </Route>
         </Route>
       </Route>

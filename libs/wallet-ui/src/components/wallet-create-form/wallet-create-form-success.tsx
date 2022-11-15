@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { Colors } from '../../config/colors'
-import type { WalletModel } from '../../wallet-client'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
@@ -14,18 +14,18 @@ interface WalletCreateFormSuccessProps {
 
 export function WalletCreateFormSuccess({
   response,
-  callToAction
+  callToAction,
 }: WalletCreateFormSuccessProps) {
   return (
     <>
       <SuccessSection>
         <Callout
-          title='Warning'
+          title="Warning"
           icon={<Warning style={{ width: 15, height: 15 }} />}
           style={{ color: Colors.BLACK, background: Colors.WHITE }}
-          data-testid='recovery-phrase-warning'
+          data-testid="recovery-phrase-warning"
         >
-          <p data-testid='wallet-warning'>
+          <p data-testid="wallet-warning">
             Save your recovery phrase now, you will need it to recover your
             wallet. Keep it secure and secret. Your recovery phrase is only
             shown once and cannot be recovered.
@@ -33,7 +33,7 @@ export function WalletCreateFormSuccess({
         </Callout>
       </SuccessSection>
       <SuccessSection>
-        <p data-testid='wallet-version'>Wallet version</p>
+        <p data-testid="wallet-version">Wallet version</p>
         <p>
           <CodeBlock>{response?.wallet?.version}</CodeBlock>
         </p>
@@ -42,9 +42,9 @@ export function WalletCreateFormSuccess({
         <p>Recovery phrase</p>
         <p
           style={{ position: 'relative' }}
-          data-testid='wallet-recovery-phrase'
+          data-testid="wallet-recovery-phrase"
         >
-          <CodeBlock data-testid='recovery-phrase'>
+          <CodeBlock data-testid="recovery-phrase">
             {response?.wallet?.recoveryPhrase}
           </CodeBlock>
           <span style={{ position: 'absolute', top: 7, right: 10 }}>

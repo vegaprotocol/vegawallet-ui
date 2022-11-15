@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '../../components/button'
@@ -8,10 +8,7 @@ import { Title } from '../../components/title'
 import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useVegaHome } from '../../hooks/use-vega-home'
-import { createLogger } from '../../lib/logging'
 import { Paths } from '..'
-
-const logger = createLogger('Onboard')
 
 export function Onboard() {
   const navigate = useNavigate()
@@ -22,8 +19,11 @@ export function Onboard() {
     dispatch,
     actions,
     service,
-    state: { networks, wallets }
+    client,
+    state: { networks, wallets },
   } = useGlobal()
+
+  const logger = useMemo(() => service.GetLogger('Onboard'), [service])
 
   const handleImportExistingWallet = async () => {
     try {
@@ -38,14 +38,14 @@ export function Onboard() {
         const defaultNetwork = config.defaultNetwork
           ? config.defaultNetwork
           : networks[0]
-        const defaultNetworkConfig = await service.WalletApi.DescribeNetwork({
-          network: defaultNetwork
+        const defaultNetworkConfig = await client.DescribeNetwork({
+          network: defaultNetwork,
         })
         dispatch({
           type: 'ADD_NETWORKS',
           networks,
           network: defaultNetwork,
-          networkConfig: defaultNetworkConfig
+          networkConfig: defaultNetworkConfig,
         })
       }
 
@@ -80,22 +80,22 @@ export function Onboard() {
         width: '545px',
         margin: 'auto',
         textAlign: 'center',
-        paddingTop: 82
+        paddingTop: 82,
       }}
     >
       <Title style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
         <Vega />
       </Title>
       {renderExistingMessage()}
-      <ButtonGroup orientation='vertical' style={{ marginBottom: 20 }}>
+      <ButtonGroup orientation="vertical" style={{ marginBottom: 20 }}>
         <Button
-          data-testid='create-new-wallet'
+          data-testid="create-new-wallet"
           onClick={() => navigate('/wallet-create')}
         >
           Create new wallet
         </Button>
         <Button
-          data-testid='import-wallet'
+          data-testid="import-wallet"
           onClick={() => navigate('/wallet-import')}
         >
           Use recovery phrase

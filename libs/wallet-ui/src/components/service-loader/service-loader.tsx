@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { Intent } from '../../config/intent'
 import {
   DrawerPanel,
   ServiceState,
-  useGlobal
+  useGlobal,
 } from '../../contexts/global/global-context'
-import { useCheckForUpdate } from '../../hooks/use-check-for-update'
 import { EVENTS } from '../../lib/events'
-import {
-  EventsOff,
-  EventsOn,
-  WindowReload
-} from '../../wailsjs/runtime/runtime'
 import { Button } from '../button'
 import { Chrome } from '../chrome'
 import { SplashError } from '../splash-error'
@@ -21,14 +16,15 @@ import { AppToaster } from '../toaster'
 /**
  * Initialiases the app
  */
-export function ServiceLoader({ children }: { children: React.ReactNode }) {
+export function ServiceLoader({ children }: { children?: ReactNode }) {
   const [serviceError, setServiceError] = useState<string | null>(null)
-  useCheckForUpdate()
 
   const {
     state: { serviceStatus, network, networkConfig },
     actions,
-    dispatch
+    service,
+    runtime,
+    dispatch,
   } = useGlobal()
 
   useEffect(() => {
@@ -45,49 +41,49 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
   }, [serviceStatus, serviceError])
 
   useEffect(() => {
-    EventsOn(EVENTS.SERVICE_HEALTHY, () => {
+    service.EventsOn(EVENTS.SERVICE_HEALTHY, () => {
       setServiceError(null)
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Started
+        status: ServiceState.Started,
       })
     })
 
-    EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
+    service.EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Unreachable
+        status: ServiceState.Unreachable,
       })
     })
 
-    EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
+    service.EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Unhealthy
+        status: ServiceState.Unhealthy,
       })
     })
 
-    EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
+    service.EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Error
+        status: ServiceState.Error,
       })
 
       AppToaster.show({
         intent: Intent.DANGER,
-        message: `${err}`
+        message: `${err}`,
       })
     })
 
-    EventsOn(EVENTS.SERVICE_STOPPED, () => {
+    service.EventsOn(EVENTS.SERVICE_STOPPED, () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Stopped
+        status: ServiceState.Stopped,
       })
     })
 
     return () => {
-      EventsOff(
+      service.EventsOff(
         EVENTS.SERVICE_HEALTHY,
         EVENTS.SERVICE_UNREACHABLE,
         EVENTS.SERVICE_UNHEALTHY,
@@ -95,13 +91,13 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
         EVENTS.SERVICE_STOPPED
       )
     }
-  }, [dispatch])
+  }, [service, dispatch])
 
   if (serviceError && networkConfig) {
     return (
       <Chrome>
         <SplashError
-          title='Wallet service cannot load'
+          title="Wallet service cannot load"
           message={
             <span>
               Make sure you don't already have an application running on machine
@@ -112,7 +108,7 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
           }
           actions={
             <>
-              <Button onClick={() => WindowReload()}>Reload</Button>
+              <Button onClick={() => runtime.WindowReload()}>Reload</Button>
               <Button
                 onClick={() =>
                   dispatch({
@@ -120,8 +116,8 @@ export function ServiceLoader({ children }: { children: React.ReactNode }) {
                     state: {
                       isOpen: true,
                       panel: DrawerPanel.Edit,
-                      editingNetwork: network
-                    }
+                      editingNetwork: network,
+                    },
                   })
                 }
               >

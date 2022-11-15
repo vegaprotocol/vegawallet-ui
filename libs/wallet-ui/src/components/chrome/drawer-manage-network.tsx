@@ -9,14 +9,14 @@ interface DrawerManageNetworkProps {
 
 export function DrawerManageNetwork({
   setView,
-  setEditingNetwork
+  setEditingNetwork,
 }: DrawerManageNetworkProps) {
   return (
     <div>
       <NetworkPresets setEditView={setEditingNetwork} />
       <div style={{ margin: '24px 0' }}>
         <Button
-          data-testid='add-network'
+          data-testid="add-network"
           onClick={() => setView(DrawerPanel.Add)}
         >
           Add network

@@ -17,7 +17,7 @@ export const Input = forwardRef(
         ref={ref}
         style={{
           ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
-          ...style
+          ...style,
         }}
       />
     )

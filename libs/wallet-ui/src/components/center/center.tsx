@@ -12,7 +12,7 @@ export function Center({ children }: CenterProps) {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        height: '100%'
+        height: '100%',
       }}
     >
       <div>{children}</div>

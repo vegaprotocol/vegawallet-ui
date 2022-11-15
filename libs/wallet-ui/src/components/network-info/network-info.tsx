@@ -5,7 +5,7 @@ import { Title } from '../title'
 
 export function NetworkInfo() {
   const {
-    state: { networkConfig: config }
+    state: { networkConfig: config },
   } = useGlobal()
 
   if (!config) {
@@ -27,18 +27,18 @@ export function NetworkInfo() {
           {
             key: 'Wallet Service URL',
             value: `http://${config.host}:${config.port}`,
-            dataTestId: 'service-url'
+            dataTestId: 'service-url',
           },
           {
             key: 'Log level',
             value: config.logLevel,
-            dataTestId: 'network-log-level'
+            dataTestId: 'network-log-level',
           },
           {
             key: 'Token expiry',
             value: config.tokenExpiry,
-            dataTestId: 'token-expiry'
-          }
+            dataTestId: 'token-expiry',
+          },
         ]}
       />
     </>

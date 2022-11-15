@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { Intent } from '../../config/intent'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
-import type { WalletModel } from '../../wallet-client'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -59,12 +59,12 @@ const compileDefaultValues = (
               acc.push({
                 key,
                 name: keypair.name,
-                value: p.restrictedKeys?.includes(key) ? false : true
+                value: p.restrictedKeys?.includes(key) ? false : true,
               })
             }
             return acc
-          }, [])
-        }
+          }, []),
+        },
       }
     },
     {} as NormalizedPermissionMap
@@ -72,7 +72,7 @@ const compileDefaultValues = (
 
   return {
     permissions,
-    permissionAccessKeys
+    permissionAccessKeys,
   }
 }
 
@@ -94,8 +94,8 @@ const compileSubmissionData = (
                   acc.push(item.key)
                 }
                 return acc
-              }, [])
-      }
+              }, []),
+      },
     }
   }, {} as WalletModel.Permissions)
 }
@@ -109,9 +109,9 @@ type ManageDialogProps = {
 export const ManagePermissions = ({
   wallet,
   hostname,
-  onClose
+  onClose,
 }: ManageDialogProps) => {
-  const { service, dispatch } = useGlobal()
+  const { client, dispatch } = useGlobal()
   const { permissions, permissionAccessKeys } = useMemo(
     () =>
       compileDefaultValues(wallet, wallet.connections?.[hostname]?.permissions),
@@ -119,8 +119,8 @@ export const ManagePermissions = ({
   )
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      ...permissions
-    }
+      ...permissions,
+    },
   })
 
   const onUpdate = useCallback(
@@ -129,19 +129,18 @@ export const ManagePermissions = ({
         const permissions = compileSubmissionData(formData)
         const passphrase = await requestPassphrase()
 
-        const { permissions: result } =
-          await service.WalletApi.UpdatePermissions({
-            wallet: wallet.name,
-            passphrase,
-            hostname,
-            permissions
-          })
+        const { permissions: result } = await client.UpdatePermissions({
+          wallet: wallet.name,
+          passphrase,
+          hostname,
+          permissions,
+        })
 
         dispatch({
           type: 'SET_PERMISSONS',
           wallet: wallet.name,
           hostname,
-          permissions: result
+          permissions: result,
         })
 
         onClose()
@@ -149,12 +148,12 @@ export const ManagePermissions = ({
         if (err !== 'dismissed') {
           AppToaster.show({
             message: `${err}`,
-            intent: Intent.DANGER
+            intent: Intent.DANGER,
           })
         }
       }
     },
-    [service, dispatch, wallet.name, hostname, onClose]
+    [client, dispatch, wallet.name, hostname, onClose]
   )
 
   return (
@@ -165,13 +164,13 @@ export const ManagePermissions = ({
           wallet "<code>{wallet.name}</code>":
         </p>
         <div>
-          {permissionAccessKeys.map(key => (
+          {permissionAccessKeys.map((key) => (
             <PermissionSection key={key} accessType={key} control={control} />
           ))}
         </div>
       </div>
       <ButtonGroup inline style={{ padding: `0 20px 20px` }}>
-        <Button type='submit'>Update</Button>
+        <Button type="submit">Update</Button>
         <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
       </ButtonGroup>
     </form>

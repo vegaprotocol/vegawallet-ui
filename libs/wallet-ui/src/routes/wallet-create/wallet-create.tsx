@@ -23,7 +23,7 @@ export const WalletCreate = () => {
           response={response}
           callToAction={
             <Button
-              data-testid='create-wallet-success-cta'
+              data-testid="create-wallet-success-cta"
               onClick={() => {
                 const path = response.wallet?.name
                   ? `/wallet/${encodeURIComponent(response.wallet.name)}`

@@ -19,7 +19,7 @@ export const KeyValueTable = ({
         gridTemplateColumns: 'min-content 1fr',
         gridGap: 10,
         fontSize: 14,
-        ...style
+        ...style,
       }}
       {...props}
     >
@@ -31,7 +31,7 @@ export const KeyValueTable = ({
           <dd
             style={{
               textAlign: 'right',
-              color: Colors.TEXT_COLOR_DEEMPHASISE
+              color: Colors.TEXT_COLOR_DEEMPHASISE,
             }}
             data-testid={row.dataTestId}
           >

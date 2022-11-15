@@ -1,11 +1,11 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import type { ComponentProps } from 'react'
-import type { Control, Path } from 'react-hook-form'
+import type { Control, Path, FieldValues } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 import { Colors } from '../../config/colors'
 
-type RadioGroupProps<T> = {
+type RadioGroupProps<T extends FieldValues> = {
   name: Path<T>
   options: Array<{ value: string; label: string }>
   // TODO: Figure out how best to type the control prop, it should be form generic
@@ -15,19 +15,19 @@ type RadioGroupProps<T> = {
   itemStyle?: React.CSSProperties
 }
 
-export function RadioGroup<T>({
+export function RadioGroup<T extends FieldValues>({
   name,
   control,
   rules,
   options,
   itemStyle,
-  orientation = 'vertical'
+  orientation = 'vertical',
 }: RadioGroupProps<T>) {
   const rootStyle =
     orientation === 'horizontal'
       ? {
           display: 'grid',
-          gridTemplateColumns: Array(options.length).fill('1fr').join(' ')
+          gridTemplateColumns: Array(options.length).fill('1fr').join(' '),
         }
       : {}
 
@@ -45,7 +45,7 @@ export function RadioGroup<T>({
             orientation={orientation}
             style={rootStyle}
           >
-            {options.map(o => (
+            {options.map((o) => (
               <div key={o.value} style={{ ...wrapper, ...itemStyle }}>
                 <RadioGroupPrimitive.Item
                   value={o.value}
@@ -67,7 +67,7 @@ export function RadioGroup<T>({
 const wrapper = {
   display: 'flex',
   alignItems: 'center',
-  gap: 10
+  gap: 10,
 }
 
 const circle = {
@@ -77,12 +77,12 @@ const circle = {
   width: 16,
   height: 16,
   borderRadius: '100%',
-  background: Colors.DARK_GRAY_5
+  background: Colors.DARK_GRAY_5,
 }
 
 const circleInner = {
   width: 8,
   height: 8,
   background: Colors.WHITE,
-  borderRadius: '100%'
+  borderRadius: '100%',
 }

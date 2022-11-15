@@ -1,12 +1,12 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import { Colors } from '../../config/colors'
 
 export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
-  const [, forceRender] = React.useState(false)
-  React.useEffect(() => {
+  const [, forceRender] = useState(false)
+  useEffect(() => {
     const interval = setInterval(() => {
-      forceRender(x => !x)
+      forceRender((x) => !x)
     }, 100)
 
     return () => clearInterval(interval)
@@ -14,11 +14,11 @@ export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
 
   return (
     <div
-      data-testid='splash-loader'
+      data-testid="splash-loader"
       style={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <div
@@ -27,7 +27,7 @@ export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
           flexWrap: 'wrap',
           width: 50,
           height: 50,
-          marginBottom: 20
+          marginBottom: 20,
         }}
       >
         {new Array(25).fill(null).map((_, i) => {
@@ -38,7 +38,7 @@ export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
                 width: 10,
                 height: 10,
                 background: Colors.WHITE,
-                opacity: Math.random() > 0.75 ? 1 : 0
+                opacity: Math.random() > 0.75 ? 1 : 0,
               }}
             />
           )

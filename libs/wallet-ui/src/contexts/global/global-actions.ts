@@ -1,22 +1,21 @@
-import type log from 'loglevel'
+import type { WalletModel, WalletClient } from '@vegaprotocol/wallet-client'
 
+import type { Service, AppConfig } from '../../types/service'
+import type { Logger } from '../../types/logger'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { NetworkPreset } from '../../lib/networks'
 import { fetchNetworkPreset } from '../../lib/networks'
-import type { ServiceType } from '../../service'
-import { app as AppModel } from '../../wailsjs/go/models'
-import type { WalletModel } from '../../wallet-client'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 
 type ServiceAction = {
-  logger: log.Logger
   getState: () => GlobalState
-  service: ServiceType
+  service: Service
+  logger: Logger
   dispatch: GlobalDispatch
 }
 
@@ -26,25 +25,25 @@ const stopService = async ({ logger, service, dispatch }: ServiceAction) => {
   if (!isRunning) {
     dispatch({
       type: 'SET_SERVICE_STATUS',
-      status: ServiceState.Stopped
+      status: ServiceState.Stopped,
     })
     return
   }
   try {
     dispatch({
       type: 'SET_SERVICE_STATUS',
-      status: ServiceState.Stopping
+      status: ServiceState.Stopping,
     })
     await service.StopService()
   } catch (err) {
     dispatch({
       type: 'SET_SERVICE_STATUS',
-      status: ServiceState.Error
+      status: ServiceState.Error,
     })
     logger.error(err)
     AppToaster.show({
       message: `${err}`,
-      intent: Intent.DANGER
+      intent: Intent.DANGER,
     })
   }
 }
@@ -53,7 +52,7 @@ const startService = async ({
   logger,
   getState,
   service,
-  dispatch
+  dispatch,
 }: ServiceAction) => {
   logger.debug('StartService')
   const state = getState()
@@ -61,7 +60,7 @@ const startService = async ({
   if (isRunning) {
     dispatch({
       type: 'SET_SERVICE_STATUS',
-      status: ServiceState.Started
+      status: ServiceState.Started,
     })
     return
   }
@@ -69,7 +68,7 @@ const startService = async ({
     if (state.network && state.networkConfig) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Loading
+        status: ServiceState.Loading,
       })
       await service.StartService({ network: state.network })
     }
@@ -77,34 +76,34 @@ const startService = async ({
     logger.error(err)
     dispatch({
       type: 'SET_SERVICE_STATUS',
-      status: ServiceState.Error
+      status: ServiceState.Error,
     })
     AppToaster.show({
       message: `${err}`,
-      intent: Intent.DANGER
+      intent: Intent.DANGER,
     })
   }
 }
 
-const getNetworks = async (service: ServiceType, preset?: NetworkPreset) => {
-  const networks = await service.WalletApi.ListNetworks()
+const getNetworks = async (client: WalletClient, preset?: NetworkPreset) => {
+  const networks = await client.ListNetworks()
 
   if (preset && (!networks.networks || networks.networks.length === 0)) {
-    await service.WalletApi.ImportNetwork({
+    await client.ImportNetwork({
       name: preset.name,
       url: preset.configFileUrl,
       filePath: '',
-      overwrite: true
+      overwrite: true,
     })
 
-    return service.WalletApi.ListNetworks()
+    return client.ListNetworks()
   }
 
   return networks
 }
 
 const getDefaultNetwork = (
-  config: AppModel.Config,
+  config: AppConfig,
   networks: WalletModel.ListNetworksResult
 ) => {
   if (config.defaultNetwork) {
@@ -113,11 +112,9 @@ const getDefaultNetwork = (
   return networks.networks?.[0]
 }
 
-export function createActions(
-  service: ServiceType,
-  logger: log.Logger,
-  enableTelemetry: () => void
-) {
+export function createActions(service: Service, client: WalletClient) {
+  const logger = service.GetLogger('GlobalActions')
+
   const actions = {
     initAppAction() {
       return async (dispatch: GlobalDispatch) => {
@@ -139,24 +136,24 @@ export function createActions(
           const [config, presets, presetsInternal] = await Promise.all([
             service.GetAppConfig(),
             fetchNetworkPreset(DataSources.NETWORKS, logger),
-            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger)
+            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger),
           ])
 
           if (config.telemetry.enabled) {
-            enableTelemetry()
+            service.EnableTelemetry()
           }
 
           // should now have an app config
           const [wallets, networks] = await Promise.all([
-            service.WalletApi.ListWallets(),
-            getNetworks(service, presets[0])
+            client.ListWallets(),
+            getNetworks(client, presets[0]),
           ])
 
           const defaultNetwork = getDefaultNetwork(config, networks)
 
           const defaultNetworkConfig = defaultNetwork
-            ? await service.WalletApi.DescribeNetwork({
-                network: defaultNetwork
+            ? await client.DescribeNetwork({
+                network: defaultNetwork,
               })
             : null
 
@@ -168,7 +165,7 @@ export function createActions(
             networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
             presetNetworks: presets,
-            presetNetworksInternal: presetsInternal
+            presetNetworksInternal: presetsInternal,
           })
         } catch (err) {
           dispatch({ type: 'INIT_APP_FAILED' })
@@ -180,18 +177,18 @@ export function createActions(
     updateTelemetry(telemetry: { enabled: boolean; consentAsked: boolean }) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         if (telemetry.enabled) {
-          enableTelemetry()
+          service.EnableTelemetry()
         }
 
         logger.debug('UpdateTelemetry')
         try {
           const { config } = getState()
           if (config) {
-            const newConfig = new AppModel.Config({ ...config, telemetry })
+            const newConfig = { ...config, telemetry }
             await service.UpdateAppConfig(newConfig)
             dispatch({
               type: 'SET_CONFIG',
-              config: newConfig
+              config: newConfig,
             })
           }
         } catch (err) {
@@ -207,10 +204,10 @@ export function createActions(
           getState,
           logger,
           dispatch,
-          service
+          service,
         })
         dispatch({
-          type: 'COMPLETE_ONBOARD'
+          type: 'COMPLETE_ONBOARD',
         })
         onComplete()
       }
@@ -228,22 +225,22 @@ export function createActions(
         logger.debug('AddKeyPair')
         try {
           const passphrase = await requestPassphrase()
-          const res = await service.WalletApi.GenerateKey({
+          const res = await client.GenerateKey({
             wallet,
             passphrase,
-            metadata: []
+            metadata: [],
           })
 
-          const keypair = await service.WalletApi.DescribeKey({
+          const keypair = await client.DescribeKey({
             wallet,
             passphrase,
-            publicKey: res.publicKey ?? ''
+            publicKey: res.publicKey ?? '',
           })
 
           dispatch({
             type: 'ADD_KEYPAIR',
             wallet,
-            keypair
+            keypair,
           })
         } catch (err) {
           if (err !== 'dismissed') {
@@ -271,8 +268,8 @@ export function createActions(
         state: {
           isOpen,
           panel: panel ?? DrawerPanel.Network,
-          editingNetwork: editingNetwork ?? null
-        }
+          editingNetwork: editingNetwork ?? null,
+        },
       }
     },
 
@@ -283,14 +280,14 @@ export function createActions(
     changeWalletAction(wallet: string): GlobalAction {
       return {
         type: 'CHANGE_WALLET',
-        wallet
+        wallet,
       }
     },
 
     deactivateWalletAction(wallet: string): GlobalAction {
       return {
         type: 'DEACTIVATE_WALLET',
-        wallet
+        wallet,
       }
     },
 
@@ -306,34 +303,34 @@ export function createActions(
             getState,
             logger,
             dispatch,
-            service
+            service,
           })
 
-          await service.UpdateAppConfig(
-            new AppModel.Config({
+          if (state.config) {
+            await service.UpdateAppConfig({
               ...state.config,
-              defaultNetwork: network
+              defaultNetwork: network,
             })
-          )
+          }
 
-          const config = await service.WalletApi.DescribeNetwork({ network })
+          const config = await client.DescribeNetwork({ network })
 
           dispatch({
             type: 'CHANGE_NETWORK',
             network,
-            config
+            config,
           })
 
           await startService({
             getState,
             logger,
             dispatch,
-            service
+            service,
           })
         } catch (err) {
           AppToaster.show({
             message: `${err}`,
-            intent: Intent.DANGER
+            intent: Intent.DANGER,
           })
           logger.error(err)
         }
@@ -355,30 +352,28 @@ export function createActions(
             getState,
             logger,
             dispatch,
-            service
+            service,
           })
         }
 
         try {
-          const isSuccessful = await service.WalletApi.UpdateNetwork(
-            networkConfig
-          )
+          const isSuccessful = await client.UpdateNetwork(networkConfig)
 
           if (isSuccessful) {
             AppToaster.show({
               message: 'Configuration saved',
-              intent: Intent.SUCCESS
+              intent: Intent.SUCCESS,
             })
 
-            const updatedNetwork = await service.WalletApi.DescribeNetwork({
-              network: networkConfig.name
+            const updatedNetwork = await client.DescribeNetwork({
+              network: networkConfig.name,
             })
 
             dispatch({ type: 'UPDATE_NETWORK_CONFIG', config: updatedNetwork })
           } else {
             AppToaster.show({
               message: 'Error: Failed updating network configuration.',
-              intent: Intent.DANGER
+              intent: Intent.DANGER,
             })
           }
         } catch (err) {
@@ -391,7 +386,7 @@ export function createActions(
             getState,
             logger,
             dispatch,
-            service
+            service,
           })
         }
       }
@@ -407,7 +402,7 @@ export function createActions(
         dispatch({
           type: 'ADD_NETWORK',
           network,
-          config
+          config,
         })
 
         if (!state.network) {
@@ -426,23 +421,23 @@ export function createActions(
               getState,
               logger,
               dispatch,
-              service
+              service,
             })
           }
-          await service.WalletApi.RemoveNetwork({ network })
+          await client.RemoveNetwork({ network })
           dispatch({
             type: 'REMOVE_NETWORK',
-            network
+            network,
           })
           AppToaster.show({
             message: `Successfully removed network "${network}".`,
-            intent: Intent.SUCCESS
+            intent: Intent.SUCCESS,
           })
         } catch (err) {
           logger.error(err)
           AppToaster.show({
             message: `Error removing network "${network}".`,
-            intent: Intent.DANGER
+            intent: Intent.DANGER,
           })
         }
       }
@@ -454,7 +449,7 @@ export function createActions(
           logger,
           getState,
           service,
-          dispatch
+          dispatch,
         })
       }
     },
@@ -465,10 +460,10 @@ export function createActions(
           logger,
           getState,
           service,
-          dispatch
+          dispatch,
         })
       }
-    }
+    },
   }
 
   return actions

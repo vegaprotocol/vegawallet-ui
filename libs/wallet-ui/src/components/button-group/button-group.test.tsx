@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import React from 'react'
 
 import { ButtonGroup } from '.'
 
@@ -7,7 +6,7 @@ test('renders children', () => {
   const buttonText = 'Foo'
   render(
     <ButtonGroup>
-      <button type='submit'>{buttonText}</button>
+      <button type="submit">{buttonText}</button>
     </ButtonGroup>
   )
 

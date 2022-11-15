@@ -13,7 +13,7 @@ const findActiveConnections = (wallets: Record<string, Wallet>) => {
   return Object.keys(wallets).reduce<string[]>((acc, walletName) => {
     const connections = wallets[walletName].connections || {}
     const hosts = Object.keys(connections)
-    if (hosts.find(host => connections[host].active)) {
+    if (hosts.find((host) => connections[host].active)) {
       acc.push(walletName)
     }
     return acc
@@ -53,13 +53,13 @@ export const NetworkSwitcher = () => {
       <DropdownMenu
         trigger={
           <Button
-            data-testid='network-select'
+            data-testid="network-select"
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               gap: 5,
-              minWidth: 75
+              minWidth: 75,
             }}
           >
             <span>{state.network}</span>
@@ -68,7 +68,7 @@ export const NetworkSwitcher = () => {
         }
         content={
           <div>
-            {state.networks.map(network => (
+            {state.networks.map((network) => (
               <DropdownItem key={network}>
                 <ButtonUnstyled
                   data-testid={`select-${network}`}
@@ -82,7 +82,7 @@ export const NetworkSwitcher = () => {
                     color:
                       network === selectedNetwork
                         ? Colors.WHITE
-                        : Colors.TEXT_COLOR_DEEMPHASISE
+                        : Colors.TEXT_COLOR_DEEMPHASISE,
                   }}
                   onClick={() => {
                     handleNetworkChange(network)

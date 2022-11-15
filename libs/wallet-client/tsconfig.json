@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
@@ -14,15 +15,13 @@
   },
   "files": [],
   "include": [],
+  "exclude": ["./template/*"],
   "references": [
     {
       "path": "./tsconfig.lib.json"
     },
     {
       "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "./.storybook/tsconfig.json"
     }
   ]
 }

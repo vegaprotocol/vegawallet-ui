@@ -17,13 +17,13 @@ export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
     <div style={{ padding: 20 }}>
       {breadcrumb && onBack && (
         <ButtonUnstyled
-          data-testid='back'
+          data-testid="back"
           onClick={onBack}
           style={{
             display: 'flex',
             gap: 10,
             alignItems: 'center',
-            textDecoration: 'none'
+            textDecoration: 'none',
           }}
         >
           <ChevronLeft style={{ width: 14 }} />
@@ -32,13 +32,13 @@ export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
       )}
       <div>
         <Title
-          element='h1'
-          data-testid='header-title'
+          element="h1"
+          data-testid="header-title"
           style={{
             color: Colors.WHITE,
             fontSize: 32,
             textTransform: 'none',
-            letterSpacing: 0
+            letterSpacing: 0,
           }}
         >
           {title}

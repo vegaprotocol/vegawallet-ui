@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 
 import { Validation } from '../../lib/form-validation'
@@ -33,42 +33,46 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
     control,
     register,
     handleSubmit,
-    formState: { errors }
+    setFocus,
+    formState: { errors },
   } = useForm<FormFields>()
   const passphrase = useWatch({ control, name: 'passphrase' })
+
+  useEffect(() => {
+    setFocus('wallet')
+  }, [setFocus])
 
   return (
     <form onSubmit={handleSubmit(submit)}>
       <FormGroup
-        label='Name'
-        labelFor='wallet'
+        label="Name"
+        labelFor="wallet"
         helperText={errors.wallet?.message}
       >
         <Input
-          data-testid='wallet-name'
-          type='text'
+          data-testid="wallet-name"
+          type="text"
           {...register('wallet', { required: Validation.REQUIRED })}
-          autoFocus={true}
         />
       </FormGroup>
       <FormGroup
-        label='Recovery phrase'
-        labelFor='recoveryPhrase'
+        label="Recovery phrase"
+        labelFor="recoveryPhrase"
         helperText={errors.recoveryPhrase?.message}
       >
         <Textarea
-          data-testid='recovery-phrase'
+          data-testid="recovery-phrase"
           {...register('recoveryPhrase', { required: Validation.REQUIRED })}
           style={{ minHeight: 100 }}
         />
       </FormGroup>
       <FormGroup
-        label='Version'
-        labelFor='version'
+        label="Version"
+        labelFor="version"
         helperText={errors.version?.message}
       >
         <Select
-          data-testid='version'
+          data-testid="version"
           defaultValue={2}
           {...register('version', { required: Validation.REQUIRED })}
         >
@@ -77,36 +81,36 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         </Select>
       </FormGroup>
       <FormGroup
-        label='Choose passphrase'
-        labelFor='passphrase'
+        label="Choose passphrase"
+        labelFor="passphrase"
         helperText={errors.passphrase?.message}
       >
         <Input
-          data-testid='passphrase'
-          type='password'
+          data-testid="passphrase"
+          type="password"
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
-        data-testid='confirm-passphrase'
-        label='Confirm passphrase'
-        labelFor='confirmPassphrase'
+        data-testid="confirm-passphrase"
+        label="Confirm passphrase"
+        labelFor="confirmPassphrase"
         helperText={errors.confirmPassphrase?.message}
       >
         <Input
-          data-testid='confirm-passphrase'
-          type='password'
+          data-testid="confirm-passphrase"
+          type="password"
           {...register('confirmPassphrase', {
             required: Validation.REQUIRED,
-            pattern: Validation.match(passphrase)
+            pattern: Validation.match(passphrase),
           })}
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid='submit' type='submit'>
+        <Button data-testid="submit" type="submit">
           Submit
         </Button>
-        <ButtonUnstyled data-testid='cancel' onClick={cancel}>
+        <ButtonUnstyled data-testid="cancel" onClick={cancel}>
           Cancel
         </ButtonUnstyled>
       </ButtonGroup>

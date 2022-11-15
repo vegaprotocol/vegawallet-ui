@@ -1,12 +1,12 @@
-import omit from 'lodash/omit'
+import { omit } from 'ramda'
 
-import type { RequestTransactionReview } from '../components/interaction-manager/types'
+import type { RequestTransactionReview } from '../types/interaction'
 
 export enum TransactionStatus {
   PENDING = 'pending',
   REJECTED = 'rejected',
   SUCCESS = 'success',
-  FAILURE = 'failure'
+  FAILURE = 'failure',
 }
 
 export enum TransactionKeys {
@@ -30,7 +30,7 @@ export enum TransactionKeys {
   TRANSFER = 'transfer',
   CANCEL_TRANSFER = 'cancelTransfer',
   KEY_ROTATE_SUBMISSION = 'keyRotateSubmission',
-  ETHEREUM_KEY_ROTATE_SUBMISSION = 'ethereumKeyRotateSubmission'
+  ETHEREUM_KEY_ROTATE_SUBMISSION = 'ethereumKeyRotateSubmission',
 }
 
 type TransactionData = object
@@ -60,7 +60,7 @@ const getPayload = (transaction: string): TransactionData => {
 
 const getType = (payload: object) => {
   return Object.keys(
-    omit(payload, ['blockHeight', 'nonce'])
+    omit(['blockHeight', 'nonce'], payload)
   )[0] as TransactionKeys
 }
 
@@ -79,7 +79,7 @@ export const parseTransactionInput = (
     receivedAt: new Date(event.data.receivedAt),
     wallet: event.data.wallet,
     publicKey: event.data.publicKey,
-    txHash: null
+    txHash: null,
   }
 }
 

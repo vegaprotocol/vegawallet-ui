@@ -1,17 +1,15 @@
-import React, { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 
 import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
-import { createLogger } from '../lib/logging'
-
-const logger = createLogger('Sign')
 
 export const useSign = (pubKey?: string, wallet?: string) => {
-  const { service } = useGlobal()
+  const { client, service } = useGlobal()
+  const logger = useMemo(() => service.GetLogger('Sign'), [service])
   const [signedData, setSignedData] = useState<string>('')
-  const sign = React.useCallback(
+  const sign = useCallback(
     async (values: { message: string }) => {
       try {
         if (!pubKey || !wallet) {
@@ -19,29 +17,27 @@ export const useSign = (pubKey?: string, wallet?: string) => {
         }
 
         const passphrase = await requestPassphrase()
-        const resp = await service.WalletApi.SignMessage({
+        const resp = await client.SignMessage({
           wallet,
           passphrase,
           pubKey,
-          // @ts-ignore
-          encodedMessage: btoa(values.message)
+          encodedMessage: btoa(values.message),
         })
-        // @ts-ignore
         setSignedData(resp.encodedSignature)
         AppToaster.show({
           message: `Message signed successfully`,
-          intent: Intent.SUCCESS
+          intent: Intent.SUCCESS,
         })
       } catch (err) {
         AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
         logger.error(err)
       }
     },
-    [service, pubKey, wallet]
+    [logger, client, pubKey, wallet]
   )
   return {
     signedData,
     setSignedData,
-    sign
+    sign,
   }
 }

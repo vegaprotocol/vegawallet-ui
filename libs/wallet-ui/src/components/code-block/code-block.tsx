@@ -1,10 +1,9 @@
-import type { HTMLAttributes } from 'react'
-import React from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 
 import { Colors } from '../../config/colors'
 
 interface CodeBlockProps extends HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function CodeBlock({ children, style, ...props }: CodeBlockProps) {
@@ -18,7 +17,7 @@ export function CodeBlock({ children, style, ...props }: CodeBlockProps) {
         background: 'transparent',
         border: `1px solid ${Colors.WHITE}`,
         overflow: 'auto',
-        ...style
+        ...style,
       }}
     >
       {children}

@@ -17,13 +17,13 @@ export function Dialog({
   title,
   children,
   onChange,
-  size = 'sm'
+  size = 'sm',
 }: DialogProps) {
   const transitions = useTransition(open, {
     from: { opacity: 0, y: -10 },
     enter: { opacity: 1, y: 0 },
     leave: { opacity: 0, y: -10 },
-    config: { ...config.default, duration: 170 }
+    config: { ...config.default, duration: 170 },
   })
   return (
     <DialogPrimitives.Root open={open} onOpenChange={onChange}>
@@ -42,7 +42,7 @@ export function Dialog({
                       left: 0,
                       height: '100%',
                       background: 'rgba(54, 54, 54 ,0.8)',
-                      opacity: styles.opacity
+                      opacity: styles.opacity,
                     }}
                     data-wails-drag
                   />
@@ -59,10 +59,10 @@ export function Dialog({
                       overflowY: 'auto',
                       maxHeight: 'calc(100vh - 60px)',
                       translateY: styles.y,
-                      opacity: styles.opacity
+                      opacity: styles.opacity,
                     }}
                   >
-                    {title && <Title variant='main'>{title}</Title>}
+                    {title && <Title variant="main">{title}</Title>}
                     {children}
                   </animated.div>
                 </DialogPrimitives.Content>

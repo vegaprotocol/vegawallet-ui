@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useMemo } from 'react'
 
 import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
@@ -6,9 +6,6 @@ import { Intent } from '../config/intent'
 import type { GlobalActions } from '../contexts/global/global-actions'
 import type { GlobalDispatch } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
-import { createLogger } from '../lib/logging'
-
-const logger = createLogger('Taint')
 
 export const useTaint = (
   dispatch: GlobalDispatch,
@@ -16,7 +13,8 @@ export const useTaint = (
   publicKey?: string,
   wallet?: string
 ) => {
-  const { service } = useGlobal()
+  const { service, client } = useGlobal()
+  const logger = useMemo(() => service.GetLogger('Taint'), [service])
   const [loading, setLoading] = useState(false)
 
   const taint = useCallback(async () => {
@@ -27,16 +25,16 @@ export const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await service.WalletApi.TaintKey({
+      await client.TaintKey({
         wallet,
         passphrase,
-        publicKey: publicKey
+        publicKey: publicKey,
       })
 
-      const keypair = await service.WalletApi.DescribeKey({
+      const keypair = await client.DescribeKey({
         wallet,
         passphrase,
-        publicKey
+        publicKey,
       })
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -44,14 +42,14 @@ export const useTaint = (
       setLoading(false)
       AppToaster.show({
         message: `This key has been tainted`,
-        intent: Intent.SUCCESS
+        intent: Intent.SUCCESS,
       })
     } catch (err) {
       setLoading(false)
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, service, actions, publicKey, wallet])
+  }, [dispatch, client, logger, actions, publicKey, wallet])
 
   const untaint = useCallback(async () => {
     setLoading(true)
@@ -61,12 +59,12 @@ export const useTaint = (
       }
 
       const passphrase = await requestPassphrase()
-      await service.WalletApi.UntaintKey({ wallet, passphrase, publicKey })
+      await client.UntaintKey({ wallet, passphrase, publicKey })
 
-      const keypair = await service.WalletApi.DescribeKey({
+      const keypair = await client.DescribeKey({
         wallet,
         passphrase,
-        publicKey
+        publicKey,
       })
 
       dispatch(actions.updateKeyPairAction(wallet, keypair))
@@ -74,18 +72,18 @@ export const useTaint = (
       setLoading(false)
       AppToaster.show({
         message: `This key has been untainted`,
-        intent: Intent.SUCCESS
+        intent: Intent.SUCCESS,
       })
     } catch (err) {
       setLoading(false)
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, service, actions, publicKey, wallet])
+  }, [dispatch, client, logger, actions, publicKey, wallet])
 
   return {
     loading,
     taint,
-    untaint
+    untaint,
   }
 }

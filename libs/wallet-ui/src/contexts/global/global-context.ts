@@ -1,15 +1,15 @@
-import type log from 'loglevel'
 import React from 'react'
-import type { Thunk } from 'react-hook-thunk-reducer'
+import type { ThunkDispatch } from 'react-hook-thunk-reducer'
+import type { WalletClient, WalletModel } from '@vegaprotocol/wallet-client'
 
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
-import type { ServiceType } from '../../service'
 import type {
-  app as AppModel,
-  backend as BackendModel
-} from '../../wailsjs/go/models'
-import type { WalletModel } from '../../wallet-client'
+  Service,
+  GetVersionResponse,
+  AppConfig,
+} from '../../types/service'
+import type { Runtime } from '../../types/runtime'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
 
@@ -17,7 +17,7 @@ export enum AppStatus {
   Pending = 'Pending',
   Initialised = 'Initialised',
   Failed = 'Failed',
-  Onboarding = 'Onboarding'
+  Onboarding = 'Onboarding',
 }
 
 export enum ServiceState {
@@ -27,14 +27,14 @@ export enum ServiceState {
   Stopping = 'Stopping',
   Unhealthy = 'Unhealthy',
   Unreachable = 'Unreachable',
-  Error = 'Error'
+  Error = 'Error',
 }
 
 export enum DrawerPanel {
   Network,
   Manage,
   Edit,
-  Add
+  Add,
 }
 
 export type DrawerState = {
@@ -44,11 +44,11 @@ export type DrawerState = {
 }
 
 export const enum PermissionTarget {
-  PUBLIC_KEYS = 'public_keys'
+  PUBLIC_KEYS = 'public_keys',
 }
 
 export const enum PermissionType {
-  READ = 'read'
+  READ = 'read',
 }
 
 export type Connection = {
@@ -74,8 +74,8 @@ export interface Wallet {
 
 export interface GlobalState {
   status: AppStatus
-  version: BackendModel.GetVersionResponse | null
-  config: AppModel.Config | null
+  version: GetVersionResponse | null
+  config: AppConfig | null
 
   // Wallet
   wallet: string | null
@@ -99,16 +99,15 @@ export interface GlobalState {
   isSettingsModalOpen: boolean
 }
 
-export type GlobalDispatch = React.Dispatch<
-  GlobalAction | Thunk<GlobalState, GlobalAction>
->
+export type GlobalDispatch = ThunkDispatch<GlobalState, GlobalAction>
 
 type GlobalContextShape = {
   state: GlobalState
-  logger: log.Logger
   actions: GlobalActions
   dispatch: GlobalDispatch
-  service: ServiceType
+  service: Service
+  runtime: Runtime
+  client: WalletClient
 }
 
 export const GlobalContext = React.createContext<

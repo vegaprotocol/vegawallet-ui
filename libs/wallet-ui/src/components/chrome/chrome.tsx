@@ -25,13 +25,13 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           height: '100%',
           backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
           backgroundSize: 'cover',
-          borderTop: useVegaBg ? undefined : '3px solid'
+          borderTop: useVegaBg ? undefined : '3px solid',
         }}
       >
         <main
           style={{
             height: '100%',
-            overflowY: 'auto'
+            overflowY: 'auto',
           }}
         >
           {children}
@@ -45,7 +45,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
             left: 0,
             width: '100%',
             transition: 'bottom 0.2s',
-            height: state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT
+            height: state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT,
           }}
         >
           <ChromeDrawer height={height} />

@@ -4,7 +4,7 @@ import { useGlobal } from '../../../contexts/global/global-context'
 import {
   parseTransactionInput,
   TransactionKeys,
-  TransactionStatus
+  TransactionStatus,
 } from '../../../lib/transactions'
 import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
@@ -12,9 +12,9 @@ import { Dialog } from '../../dialog'
 import { TransactionDetails } from '../../transaction-details'
 import type {
   InteractionContentProps,
-  RequestTransactionReview
-} from '../types'
-import { INTERACTION_RESPONSE_TYPE } from '../types'
+  RequestTransactionReview,
+} from '../../../types/interaction'
+import { INTERACTION_RESPONSE_TYPE } from '../../../types/interaction'
 
 export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
   [TransactionKeys.UNKNOWN]: 'Unknown transaction',
@@ -40,7 +40,7 @@ export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
   [TransactionKeys.CANCEL_TRANSFER]: 'Cancel transfer',
   [TransactionKeys.KEY_ROTATE_SUBMISSION]: 'Key rotation submission',
   [TransactionKeys.ETHEREUM_KEY_ROTATE_SUBMISSION]:
-    'Ethereum key rotation submission'
+    'Ethereum key rotation submission',
 }
 
 const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
@@ -67,11 +67,11 @@ const TRANSACTION_DESCRIPTIONS: Record<TransactionKeys, string> = {
   [TransactionKeys.CANCEL_TRANSFER]: 'cancel a recurring transfer',
   [TransactionKeys.KEY_ROTATE_SUBMISSION]: 'submit a key rotation',
   [TransactionKeys.ETHEREUM_KEY_ROTATE_SUBMISSION]:
-    'submit an Ethereum key rotation'
+    'submit an Ethereum key rotation',
 }
 
 export const Transaction = ({
-  event
+  event,
 }: InteractionContentProps<RequestTransactionReview>) => {
   const [status, setStatus] = useState<null | 'approving' | 'rejecting'>(null)
   const { service, dispatch } = useGlobal()
@@ -82,7 +82,7 @@ export const Transaction = ({
   useEffect(() => {
     dispatch({
       type: 'ADD_TRANSACTION',
-      transaction
+      transaction,
     })
   }, [dispatch, transaction])
 
@@ -94,8 +94,8 @@ export const Transaction = ({
         traceID: event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
         data: {
-          approved: decision
-        }
+          approved: decision,
+        },
       })
 
       if (!decision) {
@@ -103,8 +103,8 @@ export const Transaction = ({
           type: 'UPDATE_TRANSACTION',
           transaction: {
             ...transaction,
-            status: TransactionStatus.REJECTED
-          }
+            status: TransactionStatus.REJECTED,
+          },
         })
       }
     },
@@ -112,7 +112,7 @@ export const Transaction = ({
   )
 
   return (
-    <Dialog open={true} size='lg' title={title}>
+    <Dialog open={true} size="lg" title={title}>
       <div style={{ padding: '0 20px 20px' }}>
         <p>
           <code>{transaction.hostname}</code> requested to use your key to{' '}
@@ -123,7 +123,7 @@ export const Transaction = ({
       <div style={{ padding: 20 }}>
         <ButtonGroup>
           <Button
-            data-testid='transaction-request-approve'
+            data-testid="transaction-request-approve"
             onClick={() => onReponse(true)}
             disabled={status === 'rejecting'}
             loading={status === 'approving'}
@@ -131,7 +131,7 @@ export const Transaction = ({
             Approve
           </Button>
           <Button
-            data-testid='transaction-request-reject'
+            data-testid="transaction-request-reject"
             onClick={() => onReponse(false)}
             disabled={status === 'approving'}
             loading={status === 'rejecting'}

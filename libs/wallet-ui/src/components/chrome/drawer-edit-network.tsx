@@ -11,10 +11,10 @@ export function DrawerEditNetwork({ selectedNetwork }: DrawerEditNetworkProps) {
 
   return (
     <NetworkConfigContainer name={selectedNetwork}>
-      {config => (
+      {(config) => (
         <NetworkConfigForm
           config={config}
-          onSubmit={updatedConfig => {
+          onSubmit={(updatedConfig) => {
             dispatch(
               actions.updateNetworkConfigAction(
                 selectedNetwork as string,

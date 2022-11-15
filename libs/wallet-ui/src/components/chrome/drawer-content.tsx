@@ -77,10 +77,10 @@ export function DrawerContent() {
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
-            title='Manage networks'
+            title="Manage networks"
           >
             <ButtonUnstyled
-              data-testid='back'
+              data-testid="back"
               style={{ textDecoration: 'none' }}
               onClick={() => setView(DrawerPanel.Network)}
             >
@@ -107,7 +107,7 @@ export function DrawerContent() {
             setOpen={handleToggle}
           >
             <ButtonUnstyled
-              data-testid='back'
+              data-testid="back"
               style={{ textDecoration: 'none' }}
               onClick={() => setView(DrawerPanel.Manage)}
             >
@@ -129,10 +129,10 @@ export function DrawerContent() {
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
-            title='Add network'
+            title="Add network"
           >
             <ButtonUnstyled
-              data-testid='back'
+              data-testid="back"
               style={{ textDecoration: 'none' }}
               onClick={() => setView(DrawerPanel.Manage)}
             >

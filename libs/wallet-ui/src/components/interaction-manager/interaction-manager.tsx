@@ -1,12 +1,12 @@
 import { produce } from 'immer'
-import omit from 'lodash/omit'
+import { omit } from 'ramda'
 import { nanoid } from 'nanoid'
 import { useEffect, useState } from 'react'
 
 import { EVENTS } from '../../lib/events'
-import { EventsOff, EventsOn } from '../../wailsjs/runtime'
+import { useGlobal } from '../../contexts/global/global-context'
 import { InteractionFlow } from './interaction-flow'
-import type { Interaction, RawInteraction } from './types'
+import type { Interaction, RawInteraction } from '../../types/interaction'
 
 type IndexedInteractions = {
   ids: string[]
@@ -17,9 +17,10 @@ type IndexedInteractions = {
  * Handles incoming interactions
  */
 export function InteractionManager() {
+  const { service } = useGlobal()
   const [interactions, setInteractions] = useState<IndexedInteractions>({
     ids: [],
-    values: {}
+    values: {},
   })
   const traceID = interactions.ids[0]
   const events = traceID ? interactions.values[traceID] : undefined
@@ -27,32 +28,35 @@ export function InteractionManager() {
   // Get any already pending tx on startup
   useEffect(() => {
     // Listen for new incoming transactions
-    EventsOn(EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => {
-      setInteractions(interactions =>
-        produce(interactions, interactions => {
-          const wrappedInteraction = {
-            meta: {
-              id: nanoid()
-            },
-            event: interaction
-          }
+    service.EventsOn(
+      EVENTS.NEW_INTERACTION_EVENT,
+      (interaction: RawInteraction) => {
+        setInteractions((interactions) =>
+          produce(interactions, (interactions) => {
+            const wrappedInteraction = {
+              meta: {
+                id: nanoid(),
+              },
+              event: interaction,
+            }
 
-          if (
-            !interactions.ids.includes(interaction.traceID) ||
-            !interactions.values[interaction.traceID]
-          ) {
-            interactions.ids.push(interaction.traceID)
-            interactions.values[interaction.traceID] = [wrappedInteraction]
-            return
-          }
-          interactions.values[interaction.traceID].push(wrappedInteraction)
-        })
-      )
-    })
+            if (
+              !interactions.ids.includes(interaction.traceID) ||
+              !interactions.values[interaction.traceID]
+            ) {
+              interactions.ids.push(interaction.traceID)
+              interactions.values[interaction.traceID] = [wrappedInteraction]
+              return
+            }
+            interactions.values[interaction.traceID].push(wrappedInteraction)
+          })
+        )
+      }
+    )
     return () => {
-      EventsOff(EVENTS.NEW_INTERACTION_EVENT)
+      service.EventsOff(EVENTS.NEW_INTERACTION_EVENT)
     }
-  }, [])
+  }, [service])
 
   if (!events) {
     return null
@@ -62,9 +66,9 @@ export function InteractionManager() {
     <InteractionFlow
       events={events}
       onFinish={() => {
-        setInteractions(interactions => ({
+        setInteractions((interactions) => ({
           ids: interactions.ids.slice(1),
-          values: omit(interactions.values, interactions.ids.slice(0, 1))
+          values: omit(interactions.ids.slice(0, 1), interactions.values),
         }))
       }}
     />

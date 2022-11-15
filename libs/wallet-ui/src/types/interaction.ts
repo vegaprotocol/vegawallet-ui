@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from 'react'
 export const enum EVENT_FLOW_TYPE {
   WALLET_CONNECTION = 'WALLET_CONNECTION',
   TRANSACTION_REVIEW = 'TRANSACTION_REVIEW',
-  PERMISSION_REQUEST = 'PERMISSION_REQUEST'
+  PERMISSION_REQUEST = 'PERMISSION_REQUEST',
 }
 
 export type InteractionContentProps<T extends RawInteraction> = {
@@ -41,11 +41,11 @@ export interface RequestPassphraseContent {
 }
 
 export const enum PermissionTarget {
-  PUBLIC_KEYS = 'public_keys'
+  PUBLIC_KEYS = 'public_keys',
 }
 
 export const enum PermissionType {
-  READ = 'read'
+  READ = 'read',
 }
 
 export interface RequestPermissionsContent {
@@ -102,7 +102,7 @@ export const enum INTERACTION_TYPE {
   REQUEST_PASSPHRASE = 'REQUEST_PASSPHRASE',
   REQUEST_SUCCEEDED = 'REQUEST_SUCCEEDED',
   ERROR_OCCURRED = 'ERROR_OCCURRED',
-  LOG = 'LOG'
+  LOG = 'LOG',
 }
 
 export type RequestWalletConnection = {
@@ -203,7 +203,7 @@ export const enum INTERACTION_RESPONSE_TYPE {
   DECISION = 'DECISION',
   ENTERED_PASSPHRASE = 'ENTERED_PASSPHRASE',
   WALLET_CONNECTION_DECISION = 'WALLET_CONNECTION_DECISION',
-  SELECTED_WALLET = 'SELECTED_WALLET'
+  SELECTED_WALLET = 'SELECTED_WALLET',
 }
 
 // response data types
@@ -214,7 +214,7 @@ export interface EnteredPassphrase {
 
 export const enum CONNECTION_RESPONSE {
   APPROVED_ONCE = 'APPROVED_ONLY_THIS_TIME',
-  REJECTED_ONCE = 'REJECTED_ONLY_THIS_TIME'
+  REJECTED_ONCE = 'REJECTED_ONLY_THIS_TIME',
 }
 export interface WalletConnectionDecision {
   connectionApproval: CONNECTION_RESPONSE
@@ -255,8 +255,14 @@ export type InteractionResponseDecision = {
   data: Decision
 }
 
+export type InteractionResponseCancelEvent = {
+  traceID: string
+  name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST
+}
+
 export type InteractionResponse =
   | InteractionResponseEnteredPassphrase
   | InteractionResponseWalletConnectionDecision
   | InteractionResponseSelectedWallet
   | InteractionResponseDecision
+  | InteractionResponseCancelEvent

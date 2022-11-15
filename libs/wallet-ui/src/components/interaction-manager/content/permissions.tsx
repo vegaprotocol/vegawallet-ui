@@ -11,10 +11,10 @@ import { AppToaster } from '../../toaster'
 import type {
   InteractionContentProps,
   RequestPermissions,
-  RequestPermissionsContent
-} from '../types'
-import { PermissionTarget, PermissionType } from '../types'
-import { INTERACTION_RESPONSE_TYPE } from '../types'
+  RequestPermissionsContent,
+} from '../../../types/interaction'
+import { PermissionTarget, PermissionType } from '../../../types/interaction'
+import { INTERACTION_RESPONSE_TYPE } from '../../../types/interaction'
 
 const getPermissionAction = (
   data: RequestPermissionsContent,
@@ -52,7 +52,7 @@ const getDisplayDetails = (data: RequestPermissionsContent) => {
     <div style={{ paddingBottom: 20 }}>
       <p>{requestText}</p>
       <ul style={{ margin: '12px 0' }}>
-        {targets.map(target => (
+        {targets.map((target) => (
           <li key={target} style={{ marginLeft: 12 }}>
             <ChevronLeft
               style={{ marginRight: 6, width: 13, transform: 'scale(-1, 1)' }}
@@ -66,7 +66,7 @@ const getDisplayDetails = (data: RequestPermissionsContent) => {
 }
 
 export const Permissions = ({
-  event
+  event,
 }: InteractionContentProps<RequestPermissions>) => {
   const { service } = useGlobal()
   const message = useMemo(() => {
@@ -80,33 +80,33 @@ export const Permissions = ({
         traceID: event.traceID,
         name: INTERACTION_RESPONSE_TYPE.DECISION,
         data: {
-          approved: decision
-        }
+          approved: decision,
+        },
       })
     } catch (err: unknown) {
       AppToaster.show({
         message: `${err}`,
-        intent: Intent.DANGER
+        intent: Intent.DANGER,
       })
     }
   }
 
   return (
-    <Dialog open={true} title='Wallet permissions'>
+    <Dialog open={true} title="Wallet permissions">
       <div
-        data-testid='wallet-request-permissions'
+        data-testid="wallet-request-permissions"
         style={{ padding: '0 20px 20px' }}
       >
         {message}
         <ButtonGroup inline>
           <Button
-            data-testid='wallet-request-permissions-approve'
+            data-testid="wallet-request-permissions-approve"
             onClick={() => onAccept(true)}
           >
             Approve
           </Button>
           <ButtonUnstyled
-            data-testid='wallet-request-permissions-reject'
+            data-testid="wallet-request-permissions-reject"
             onClick={() => onAccept(false)}
           >
             Cancel

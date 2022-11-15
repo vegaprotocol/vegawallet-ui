@@ -2,12 +2,15 @@ import { useEffect } from 'react'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
-import type { InteractionContentProps, RequestSucceeded } from '../types'
+import type {
+  InteractionContentProps,
+  RequestSucceeded,
+} from '../../../types/interaction'
 
 export const SuccessComponent = ({
   event,
   isResolved,
-  setResolved
+  setResolved,
 }: InteractionContentProps<RequestSucceeded>) => {
   const message = event.data.message
 
@@ -15,7 +18,7 @@ export const SuccessComponent = ({
     if (!isResolved && message) {
       AppToaster.show({
         message,
-        intent: Intent.SUCCESS
+        intent: Intent.SUCCESS,
       })
       setResolved(true)
     }

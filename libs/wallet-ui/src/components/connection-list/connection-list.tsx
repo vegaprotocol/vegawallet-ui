@@ -27,13 +27,13 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
   return (
     <div
       style={{
-        borderBottom: connectionList.length ? `1px solid ${Colors.BLACK}` : ''
+        borderBottom: connectionList.length ? `1px solid ${Colors.BLACK}` : '',
       }}
     >
       {connectionList.length === 0 && (
         <p style={{ margin: '20px 0' }}>No connections established.</p>
       )}
-      {connectionList.map(key => (
+      {connectionList.map((key) => (
         <Fragment key={key}>
           {wallet.connections && (
             <ConnectionItem
@@ -46,7 +46,7 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
       ))}
       <Dialog
         open={!!disconnectHost}
-        title='Disconnect site'
+        title="Disconnect site"
         onChange={() => setDisconnectHost(null)}
       >
         {disconnectHost && (
@@ -59,7 +59,7 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
       </Dialog>
       <Dialog
         open={!!manageHost}
-        title='Update permissions'
+        title="Update permissions"
         onChange={() => setManageHost(null)}
       >
         {manageHost && (

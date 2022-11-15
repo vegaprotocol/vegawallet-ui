@@ -8,7 +8,7 @@ import { useGlobal } from '../contexts/global/global-context'
 
 export const useOpenWallet = () => {
   const navigate = useNavigate()
-  const { dispatch, service, state } = useGlobal()
+  const { dispatch, client, state } = useGlobal()
 
   const open = useCallback(
     async (wallet: string) => {
@@ -17,7 +17,7 @@ export const useOpenWallet = () => {
       if (w?.auth) {
         dispatch({
           type: 'ACTIVATE_WALLET',
-          wallet
+          wallet,
         })
         navigate(`/wallet/${encodeURIComponent(wallet)}`)
         return
@@ -28,32 +28,32 @@ export const useOpenWallet = () => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [_w, { keys = [] }, { permissions }] = await Promise.all([
-          service.WalletApi.DescribeWallet({ wallet, passphrase }),
-          service.WalletApi.ListKeys({ wallet, passphrase }),
-          service.WalletApi.ListPermissions({ wallet, passphrase })
+          client.DescribeWallet({ wallet, passphrase }),
+          client.ListKeys({ wallet, passphrase }),
+          client.ListPermissions({ wallet, passphrase }),
         ])
 
         const keysWithMeta = await Promise.all(
-          keys.map(key =>
-            service.WalletApi.DescribeKey({
+          keys.map((key) =>
+            client.DescribeKey({
               wallet,
               passphrase,
-              publicKey: key.publicKey ?? ''
+              publicKey: key.publicKey ?? '',
             })
           )
         )
 
         const permissionDetails = await Promise.all(
-          Object.keys(permissions).map(async hostname => {
-            const result = await service.WalletApi.DescribePermissions({
+          Object.keys(permissions).map(async (hostname) => {
+            const result = await client.DescribePermissions({
               wallet,
               passphrase,
-              hostname
+              hostname,
             })
             return {
               hostname,
               active: false,
-              permissions: result.permissions
+              permissions: result.permissions,
             }
           })
         )
@@ -61,26 +61,26 @@ export const useOpenWallet = () => {
         dispatch({
           type: 'SET_KEYPAIRS',
           wallet,
-          keypairs: keysWithMeta
+          keypairs: keysWithMeta,
         })
         dispatch({
           type: 'SET_CONNECTIONS',
           wallet,
-          connections: permissionDetails
+          connections: permissionDetails,
         })
         dispatch({
           type: 'ACTIVATE_WALLET',
-          wallet
+          wallet,
         })
         navigate(`/wallet/${encodeURIComponent(wallet)}`)
       } catch (err) {
         AppToaster.show({
           intent: Intent.DANGER,
-          message: `${err}`
+          message: `${err}`,
         })
       }
     },
-    [navigate, state, service, dispatch]
+    [navigate, state, client, dispatch]
   )
 
   return { open }
