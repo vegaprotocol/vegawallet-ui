@@ -2,91 +2,91 @@
 import type { WalletModel } from './'
 import { Identifier } from './'
 
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.CreateWallet,
   params: WalletModel.CreateWalletParams
 ): Promise<WalletModel.CreateWalletResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.ImportWallet,
   params: WalletModel.ImportWalletParams
 ): Promise<WalletModel.ImportWalletResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.DescribeWallet,
   params: WalletModel.DescribeWalletParams
 ): Promise<WalletModel.DescribeWalletResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.ListWallets,
   params: WalletModel.ListWalletsParams
 ): Promise<WalletModel.ListWalletsResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.RenameWallet,
   params: WalletModel.RenameWalletParams
 ): Promise<WalletModel.RenameWalletResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.RemoveWallet,
   params: WalletModel.RemoveWalletParams
 ): Promise<WalletModel.RemoveWalletResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.ListNetworks,
   params: WalletModel.ListNetworksParams
 ): Promise<WalletModel.ListNetworksResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.DescribeNetwork,
   params: WalletModel.DescribeNetworkParams
 ): Promise<WalletModel.DescribeNetworkResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.UpdateNetwork,
   params: WalletModel.UpdateNetworkParams
 ): Promise<WalletModel.UpdateNetworkResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.RemoveNetwork,
   params: WalletModel.RemoveNetworkParams
 ): Promise<WalletModel.RemoveNetworkResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.ImportNetwork,
   params: WalletModel.ImportNetworkParams
 ): Promise<WalletModel.ImportNetworkResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.GenerateKey,
   params: WalletModel.GenerateKeyParams
 ): Promise<WalletModel.GenerateKeyResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.DescribeKey,
   params: WalletModel.DescribeKeyParams
 ): Promise<WalletModel.DescribeKeyResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.ListKeys,
   params: WalletModel.ListKeysParams
 ): Promise<WalletModel.ListKeysResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.AnnotateKey,
   params: WalletModel.AnnotateKeyParams
 ): Promise<WalletModel.AnnotateKeyResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.TaintKey,
   params: WalletModel.TaintKeyParams
 ): Promise<WalletModel.TaintKeyResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.UntaintKey,
   params: WalletModel.UntaintKeyParams
 ): Promise<WalletModel.UntaintKeyResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.DescribePermissions,
   params: WalletModel.DescribePermissionsParams
 ): Promise<WalletModel.DescribePermissionsResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.ListPermissions,
   params: WalletModel.ListPermissionsParams
 ): Promise<WalletModel.ListPermissionsResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.UpdatePermissions,
   params: WalletModel.UpdatePermissionsParams
 ): Promise<WalletModel.UpdatePermissionsResult>
-function MockAPIRequest(
+export function MockAPIRequest(
   id: Identifier.SignMessage,
   params: WalletModel.SignMessageParams
 ): Promise<WalletModel.SignMessageResult>
-function MockAPIRequest(id: Identifier) {
+export function MockAPIRequest(id: Identifier) {
   switch (id) {
     case Identifier.CreateWallet: {
       return Promise.resolve<WalletModel.CreateWalletResult>({
@@ -314,5 +314,3 @@ function MockAPIRequest(id: Identifier) {
     }
   }
 }
-
-export { MockAPIRequest }
