@@ -1,4 +1,3 @@
-import type { WalletAPIRequest } from '@vegaprotocol/wallet-client'
 import type { EVENTS } from '../lib/events'
 import type { RawInteraction, InteractionResponse } from './interaction'
 import type { Logger } from './logger'
