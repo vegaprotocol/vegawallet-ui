@@ -6,7 +6,6 @@
   "targets": {
     "build": {
       "executor": "@nrwl/web:rollup",
-      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/wallet-ui",
         "tsConfig": "libs/wallet-ui/tsconfig.lib.json",
@@ -20,8 +19,25 @@
             "glob": "libs/wallet-ui/README.md",
             "input": ".",
             "output": "."
+          },
+          {
+            "glob": "libs/wallet-ui/src/images",
+            "input": ".",
+            "output": "./src"
           }
         ]
+      }
+    },
+    "pre-publish": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "yarn nx run wallet-ui:build",
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json",
+          "node ./scripts/pre-publish.js dist/libs/wallet-ui"
+        ],
+        "parallel": false
       }
     },
     "lint": {
