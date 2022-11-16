@@ -24,6 +24,18 @@
         ]
       }
     },
+    "pre-publish": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "yarn nx run wallet-client:build",
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-client/tsconfig.lib.json",
+          "node ./scripts/pre-publish.js dist/libs/wallet-client"
+        ],
+        "parallel": false
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

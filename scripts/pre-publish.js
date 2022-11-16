@@ -1,5 +1,15 @@
 const path = require('path')
-const { writeFile, move } = require('fs-extra')
+const { writeFile, move, stat } = require('fs-extra')
+
+const moveIfExists = async (filePath, targetPath) => {
+  try {
+    const info = await stat(filePath)
+
+    if (info.isFile()) {
+      await move(filePath, targetPath)
+    }
+  } catch (err) {}
+}
 
 const getPackageJson = (lib) => {
   if (!lib) {
@@ -20,7 +30,7 @@ async function main(lib) {
       path.join(process.cwd(), lib, 'index.js'),
       path.join(process.cwd(), lib, 'src', 'index.js')
     ),
-    move(
+    moveIfExists(
       path.join(process.cwd(), lib, 'index.css'),
       path.join(process.cwd(), lib, 'src', 'index.css')
     ),
@@ -41,6 +51,7 @@ async function main(lib) {
   ])
   const message = results.reduce((acc, r) => {
     if (r.status === 'rejected') {
+      console.log(r)
       return acc + r.reason
     }
     return acc

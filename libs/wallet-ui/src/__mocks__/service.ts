@@ -1,5 +1,4 @@
 import log from 'loglevel'
-import { MockAPIRequest } from '@vegaprotocol/wallet-client'
 import type { Service } from '../types/service'
 
 const logger = log.getLogger('test')
@@ -70,7 +69,6 @@ export const service: Service = {
     }),
 
   // API
-  SendAPIRequest: MockAPIRequest,
   EventsOn: noop,
   EventsOff: noop,
   RespondToInteraction: () => Promise.resolve(undefined),

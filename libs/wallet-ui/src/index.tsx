@@ -1,8 +1,8 @@
 import './index.css'
-import { useMemo, StrictMode } from 'react'
+import { StrictMode } from 'react'
 import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
-import { WalletClient } from '@vegaprotocol/wallet-client'
+import type { WalletClient } from '@vegaprotocol/wallet-client'
 
 import { AppFrame, AppLoader } from './app-loader'
 import { Button } from './components/button'
@@ -20,18 +20,14 @@ import type { Runtime } from './types/runtime'
 
 export type AppProps = {
   service: Service
+  client: WalletClient
   runtime: Runtime
 }
 
 /**
  * Renders all the providers
  */
-export function App({ service, runtime }: AppProps) {
-  const client = useMemo(
-    () => new WalletClient(service.SendAPIRequest),
-    [service]
-  )
-
+export function App({ service, client, runtime }: AppProps) {
   return (
     <StrictMode>
       <ErrorBoundary
