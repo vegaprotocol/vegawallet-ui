@@ -88,7 +88,6 @@ export type Service = {
   GetCurrentServiceInfo: () => Promise<GetCurrentServiceInfoResponse>
 
   // API
-  SendAPIRequest: WalletAPIRequest
   EventsOn: EventsCallback
   EventsOff: (...name: EVENTS[]) => void
   RespondToInteraction: (arg: InteractionResponse) => Promise<Empty>
