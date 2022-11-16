@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.0
+      - name: Restore node_modules from cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node_modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install root dependencies
+        run: yarn install --frozen-lockfile
+      - name: Prepare Wallet UI
+        run: yarn nx run wallet-client:pre-publish
+      - name: Publish to @vegaprotocol
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          package: dist/libs/wallet-client/package.json
+          access: 'public'
+          greater-version-only: true
