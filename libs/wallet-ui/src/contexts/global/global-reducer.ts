@@ -471,7 +471,7 @@ export function globalReducer(
       return {
         ...state,
         wallets: {
-          ...omit(state.wallets, action.from),
+          ...omit([action.from], state.wallets),
           [action.to]: {
             ...state.wallets[action.from],
             name: action.to,
