@@ -7,8 +7,5 @@ export const useVegaHome = () => {
     return state.config.vegaHome
   }
 
-  return 'Cypress' in window
-    ? // @ts-ignore only injected when running in cypress
-      window.Cypress.env('vegaHome')
-    : ''
+  return ''
 }
