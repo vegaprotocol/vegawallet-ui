@@ -284,13 +284,6 @@ export function createActions(service: Service, client: WalletClient) {
       }
     },
 
-    deactivateWalletAction(wallet: string): GlobalAction {
-      return {
-        type: 'DEACTIVATE_WALLET',
-        wallet,
-      }
-    },
-
     // Network actions
 
     changeNetworkAction(network: string) {
