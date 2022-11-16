@@ -25,4 +25,5 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           package: dist/libs/wallet-ui/package.json
+          access: 'public'
           greater-version-only: true
