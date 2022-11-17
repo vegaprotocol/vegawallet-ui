@@ -26,4 +26,3 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           package: dist/libs/wallet-client/package.json
           access: 'public'
-          greater-version-only: true
