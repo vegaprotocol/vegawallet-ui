@@ -15,6 +15,10 @@
     "node": ">=18.12.0"
   },
   "private": true,
+  "lint-staged": {
+    "*": "yarn nx format:write --uncommitted",
+    "*.{ts,tsx,js,jsx}": "yarn eslint --fix"
+  },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.0.1",
     "@radix-ui/react-checkbox": "^1.0.1",
@@ -35,10 +39,8 @@
     "nanoid": "^4.0.0",
     "node-fetch": "2",
     "ramda": "^0.28.0",
-    "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-copy-to-clipboard": "^5.1.0",
-    "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.1",
     "react-hook-thunk-reducer": "^0.3.0",
     "react-router-dom": "^6.4.3",
@@ -48,14 +50,15 @@
     "zod": "^3.19.1",
     "zod-validation-error": "^0.2.1"
   },
-  "lint-staged": {
-    "*": "yarn nx format:write --uncommitted",
-    "*.{ts,tsx,js,jsx}": "yarn eslint --fix"
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
     "@nrwl/cli": "^15.0.8",
+    "@nrwl/esbuild": "^15.1.1",
     "@nrwl/eslint-plugin-nx": "^15.0.13",
     "@nrwl/jest": "^15.0.8",
     "@nrwl/linter": "^15.0.8",
@@ -84,6 +87,7 @@
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "commitlint": "^17.2.0",
+    "esbuild": "^0.15.14",
     "eslint": "^8.26.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^27.1.3",

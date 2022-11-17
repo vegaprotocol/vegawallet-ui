@@ -5,19 +5,26 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/wallet-client",
         "tsConfig": "libs/wallet-client/tsconfig.lib.json",
         "project": "libs/wallet-client/package.json",
-        "entryFile": "libs/wallet-client/src/index.ts",
-        "external": ["react/jsx-runtime"],
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
-        "compiler": "swc",
+        "main": "libs/wallet-client/src/index.ts",
+        "format": ["esm"],
+        "minify": false,
+        "thirdParty": false,
+        "platform": "browser",
+        "buildableProjectDepsInPackageJsonType": "peerDependencies",
+        "esbuildOptions": {
+          "external": true,
+          "loader": {
+            ".png": "file"
+          }
+        },
         "assets": [
           {
-            "glob": "libs/wallet-client/README.md",
+            "glob": "README.md",
             "input": ".",
             "output": "."
           }
@@ -30,8 +37,7 @@
       "options": {
         "commands": [
           "yarn nx run wallet-client:build",
-          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-client/tsconfig.lib.json",
-          "node ./scripts/pre-publish.js dist/libs/wallet-client"
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-client/tsconfig.lib.json"
         ],
         "parallel": false
       }
