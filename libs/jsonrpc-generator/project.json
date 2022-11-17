@@ -15,7 +15,6 @@
         "minify": false,
         "thirdParty": false,
         "platform": "node",
-        "buildableProjectDepsInPackageJsonType": "peerDependencies",
         "esbuildOptions": {
           "external": true,
           "loader": {
