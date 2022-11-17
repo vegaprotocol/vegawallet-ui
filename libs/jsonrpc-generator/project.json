@@ -5,19 +5,26 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/jsonrpc-generator",
         "tsConfig": "libs/jsonrpc-generator/tsconfig.lib.json",
         "project": "libs/jsonrpc-generator/package.json",
-        "entryFile": "libs/jsonrpc-generator/src/index.ts",
-        "external": ["react/jsx-runtime"],
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
-        "compiler": "swc",
+        "main": "libs/jsonrpc-generator/src/index.ts",
+        "format": ["esm"],
+        "minify": false,
+        "thirdParty": false,
+        "platform": "node",
+        "buildableProjectDepsInPackageJsonType": "peerDependencies",
+        "esbuildOptions": {
+          "external": true,
+          "loader": {
+            ".png": "file"
+          }
+        },
         "assets": [
           {
-            "glob": "libs/jsonrpc-generator/README.md",
+            "glob": "README.md",
             "input": ".",
             "output": "."
           }

@@ -5,25 +5,28 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/wallet-ui",
         "tsConfig": "libs/wallet-ui/tsconfig.lib.json",
         "project": "libs/wallet-ui/package.json",
-        "entryFile": "libs/wallet-ui/src/index.tsx",
-        "external": ["react/jsx-runtime"],
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
-        "compiler": "swc",
+        "main": "libs/wallet-ui/src/index.tsx",
+        "format": ["esm"],
+        "minify": false,
+        "thirdParty": false,
+        "platform": "browser",
+        "buildableProjectDepsInPackageJsonType": "peerDependencies",
+        "esbuildOptions": {
+          "external": true,
+          "loader": {
+            ".png": "file"
+          }
+        },
         "assets": [
           {
-            "glob": "libs/wallet-ui/README.md",
+            "glob": "README.md",
             "input": ".",
             "output": "."
-          },
-          {
-            "glob": "libs/wallet-ui/src/images",
-            "input": ".",
-            "output": "./src"
           }
         ]
       }
@@ -34,8 +37,7 @@
       "options": {
         "commands": [
           "yarn nx run wallet-ui:build",
-          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json",
-          "node ./scripts/pre-publish.js dist/libs/wallet-ui"
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json"
         ],
         "parallel": false
       }
