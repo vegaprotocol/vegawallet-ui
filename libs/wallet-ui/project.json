@@ -13,6 +13,7 @@
         "main": "libs/wallet-ui/src/index.tsx",
         "format": ["esm"],
         "minify": false,
+        "sourcemap": true,
         "thirdParty": false,
         "platform": "browser",
         "esbuildOptions": {
