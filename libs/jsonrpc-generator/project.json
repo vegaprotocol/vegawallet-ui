@@ -14,7 +14,7 @@
         "format": ["esm"],
         "minify": false,
         "thirdParty": false,
-        "platform": "browser",
+        "platform": "node",
         "buildableProjectDepsInPackageJsonType": "peerDependencies",
         "esbuildOptions": {
           "external": true,
