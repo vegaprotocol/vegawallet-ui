@@ -31,6 +31,7 @@ export const LogComponent = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<Log>) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const showMessage = useCallback(
     once((event: Log) => {
       AppToaster.show({
@@ -46,7 +47,7 @@ export const LogComponent = ({
       showMessage(event)
       setResolved(true)
     }
-  }, [isResolved, setResolved, showMessage])
+  }, [event, isResolved, setResolved, showMessage])
 
   return null
 }

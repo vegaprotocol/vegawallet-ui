@@ -13,6 +13,7 @@ export const SuccessComponent = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<RequestSucceeded>) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const showMessage = useCallback(
     once((event: RequestSucceeded) => {
       AppToaster.show({
@@ -28,7 +29,7 @@ export const SuccessComponent = ({
       showMessage(event)
       setResolved(true)
     }
-  }, [event, isResolved, setResolved])
+  }, [event, showMessage, isResolved, setResolved])
 
   return null
 }

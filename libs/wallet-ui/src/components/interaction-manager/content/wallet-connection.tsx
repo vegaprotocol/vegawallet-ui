@@ -20,6 +20,7 @@ export const WalletConnection = ({
 }: InteractionContentProps<RequestWalletConnection>) => {
   const { service } = useGlobal()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleResponse = useCallback(
     once(async (decision: boolean) => {
       try {

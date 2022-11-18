@@ -13,6 +13,7 @@ export const ErrorComponent = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<ErrorOccurred>) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const showMessage = useCallback(
     once((event: ErrorOccurred) => {
       AppToaster.show({
@@ -28,7 +29,7 @@ export const ErrorComponent = ({
       showMessage(event)
       setResolved(true)
     }
-  }, [event, isResolved, setResolved])
+  }, [event, isResolved, setResolved, showMessage])
 
   return null
 }
