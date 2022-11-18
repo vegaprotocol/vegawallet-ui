@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
+import { once } from 'ramda'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
@@ -12,15 +13,23 @@ export const ErrorComponent = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<ErrorOccurred>) => {
-  useEffect(() => {
-    if (!isResolved) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const showMessage = useCallback(
+    once((event: ErrorOccurred) => {
       AppToaster.show({
         message: event.data.error,
         intent: Intent.WARNING,
       })
+    }),
+    []
+  )
+
+  useEffect(() => {
+    if (!isResolved) {
+      showMessage(event)
       setResolved(true)
     }
-  }, [event, isResolved, setResolved])
+  }, [event, isResolved, setResolved, showMessage])
 
   return null
 }

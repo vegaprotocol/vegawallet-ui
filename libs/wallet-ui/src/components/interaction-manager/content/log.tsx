@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
+import { once } from 'ramda'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
@@ -30,15 +31,23 @@ export const LogComponent = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<Log>) => {
-  useEffect(() => {
-    if (!isResolved) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const showMessage = useCallback(
+    once((event: Log) => {
       AppToaster.show({
         message: event.data.message,
         intent: getMessageIntent(event.data.type),
       })
+    }),
+    []
+  )
+
+  useEffect(() => {
+    if (!isResolved) {
+      showMessage(event)
       setResolved(true)
     }
-  }, [event, isResolved, setResolved])
+  }, [event, isResolved, setResolved, showMessage])
 
   return null
 }
