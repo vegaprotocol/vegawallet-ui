@@ -36,9 +36,10 @@ export const WalletEdit = ({ onClose }: WalletEditProps) => {
     (data: FormData) => {
       if (wallet?.name) {
         rename(wallet.name, data.name)
+        onClose()
       }
     },
-    [rename, wallet?.name]
+    [rename, onClose, wallet?.name]
   )
 
   return (

@@ -1,3 +1,3 @@
-import type { Logger as LoggerType } from 'loglevel'
+import type { Logger } from 'loglevel'
 
-export type Logger = LoggerType
+export { Logger }

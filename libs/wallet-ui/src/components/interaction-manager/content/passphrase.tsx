@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
+import { once } from 'ramda'
 
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
@@ -23,12 +24,10 @@ export const Passphrase = ({
 }: InteractionContentProps<RequestPassphrase>) => {
   const { service, client, dispatch } = useGlobal()
 
-  useEffect(() => {
-    const handleResponse = async () => {
+  const handleResponse = useCallback(
+    once(async () => {
       try {
         const passphrase = await requestPassphrase()
-
-        setResolved(true)
 
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
@@ -71,8 +70,6 @@ export const Passphrase = ({
         }
       } catch (err: unknown) {
         if (err === 'dismissed') {
-          setResolved(true)
-
           await service.RespondToInteraction({
             traceID: event.traceID,
             name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
@@ -84,12 +81,16 @@ export const Passphrase = ({
           })
         }
       }
-    }
+    }),
+    []
+  )
 
+  useEffect(() => {
     if (!isResolved) {
       handleResponse()
+      setResolved(true)
     }
-  }, [dispatch, flow, history, service, client, event, isResolved, setResolved])
+  }, [handleResponse, isResolved, setResolved])
 
   return null
 }

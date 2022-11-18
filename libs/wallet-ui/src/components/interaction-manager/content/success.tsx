@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
+import { once } from 'ramda'
 
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
@@ -12,17 +13,22 @@ export const SuccessComponent = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<RequestSucceeded>) => {
-  const message = event.data.message
-
-  useEffect(() => {
-    if (!isResolved && message) {
+  const showMessage = useCallback(
+    once((event: RequestSucceeded) => {
       AppToaster.show({
-        message,
+        message: event.data.message,
         intent: Intent.SUCCESS,
       })
+    }),
+    []
+  )
+
+  useEffect(() => {
+    if (!isResolved) {
+      showMessage(event)
       setResolved(true)
     }
-  }, [event, message, isResolved, setResolved])
+  }, [event, isResolved, setResolved])
 
   return null
 }

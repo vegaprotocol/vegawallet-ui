@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
+import { once } from 'ramda'
 
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
@@ -19,8 +20,8 @@ export const WalletConnection = ({
 }: InteractionContentProps<RequestWalletConnection>) => {
   const { service } = useGlobal()
 
-  useEffect(() => {
-    const handleResponse = async (decision: boolean) => {
+  const handleResponse = useCallback(
+    once(async (decision: boolean) => {
       try {
         await service.RespondToInteraction({
           traceID: event.traceID,
@@ -37,14 +38,16 @@ export const WalletConnection = ({
           intent: Intent.DANGER,
         })
       }
-    }
+    }),
+    []
+  )
 
+  useEffect(() => {
     if (!isResolved) {
-      // automatically accept incoming connections
-      setResolved(true)
       handleResponse(true)
+      setResolved(true)
     }
-  }, [event, service, isResolved, setResolved])
+  }, [isResolved, setResolved, handleResponse])
 
   return null
 }
