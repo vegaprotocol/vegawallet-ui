@@ -1,4 +1,4 @@
-import React from 'react'
+import { useMemo } from 'react'
 import useThunkReducer from 'react-hook-thunk-reducer'
 import type { WalletClient } from '@vegaprotocol/wallet-client'
 
@@ -22,7 +22,7 @@ export function GlobalProvider({
   children,
 }: GlobalProviderProps) {
   const [state, dispatch] = useThunkReducer(globalReducer, initialGlobalState)
-  const actions = React.useMemo(
+  const actions = useMemo(
     () => createActions(service, client),
     [service, client]
   )

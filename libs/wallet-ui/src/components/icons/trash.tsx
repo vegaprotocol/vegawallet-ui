@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { style as defaultStyle } from './style'
 
 export function Trash({ style }: { style?: React.CSSProperties }) {

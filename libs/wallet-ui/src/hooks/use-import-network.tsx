@@ -1,4 +1,4 @@
-import React from 'react'
+import { useMemo, useCallback, useState } from 'react'
 import type { WalletModel } from '@vegaprotocol/wallet-client'
 
 import { AppToaster } from '../components/toaster'
@@ -16,13 +16,14 @@ interface ImportNetworkArgs {
 }
 
 export function useImportNetwork() {
-  const { actions, client, dispatch } = useGlobal()
+  const { actions, client, dispatch, service } = useGlobal()
+  const logger = useMemo(() => service.GetLogger('ImportNetwork'), [service])
   const [status, setStatus] = useFormState()
   const [response, setResponse] =
-    React.useState<WalletModel.DescribeNetworkResult | null>(null)
-  const [error, setError] = React.useState<string | null>(null)
+    useState<WalletModel.DescribeNetworkResult | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const submit = React.useCallback(
+  const submit = useCallback(
     async (values: ImportNetworkArgs) => {
       setStatus(FormStatus.Pending)
       const { name, url, filePath, force } = createImportNetworkArgs(values)
@@ -56,6 +57,7 @@ export function useImportNetwork() {
       } catch (err: unknown) {
         setError(`${err}`)
         setStatus(FormStatus.Error)
+        logger.error(err)
         AppToaster.show({
           message: `${err}`,
           intent: Intent.DANGER,

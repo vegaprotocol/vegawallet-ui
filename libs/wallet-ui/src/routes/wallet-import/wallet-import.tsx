@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Splash } from '../../components/splash'
@@ -12,7 +12,7 @@ export const WalletImport = () => {
   const navigate = useNavigate()
   const { submit, response } = useImportWallet()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (response) {
       navigate(Paths.Home)
     }

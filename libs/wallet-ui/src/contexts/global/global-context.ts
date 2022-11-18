@@ -1,4 +1,4 @@
-import React from 'react'
+import { createContext, useContext } from 'react'
 import type { ThunkDispatch } from 'react-hook-thunk-reducer'
 import type { WalletClient, WalletModel } from '@vegaprotocol/wallet-client'
 
@@ -109,12 +109,12 @@ type GlobalContextShape = {
   client: WalletClient
 }
 
-export const GlobalContext = React.createContext<
-  GlobalContextShape | undefined
->(undefined)
+export const GlobalContext = createContext<GlobalContextShape | undefined>(
+  undefined
+)
 
 export function useGlobal() {
-  const context = React.useContext(GlobalContext)
+  const context = useContext(GlobalContext)
   if (context === undefined) {
     throw new Error('useGlobal must be used within GlobalProvider')
   }
