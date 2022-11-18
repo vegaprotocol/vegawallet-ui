@@ -6,8 +6,6 @@ import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
 import { FormStatus, useFormState } from './use-form-state'
 
-// const logger = createLogger('UseImportNetwork')
-
 interface ImportNetworkArgs {
   name: string
   network: string
@@ -64,7 +62,7 @@ export function useImportNetwork() {
         })
       }
     },
-    [dispatch, setStatus, client, actions]
+    [dispatch, setStatus, client, actions, logger]
   )
 
   return {
