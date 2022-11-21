@@ -3,9 +3,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import type {
+  Features,
+  TelemetryConfig,
   GetVersionResponse,
   NetworkCompatibility,
-} from '../../types/service'
+} from '../../types'
 import { AnchorButton, Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -64,15 +66,26 @@ const getTitle = (subview: Subview) => {
   }
 }
 
-const shouldBeOpen = (
-  networkData?: NetworkCompatibility,
-  telemetryConsentAsked?: boolean
-) => {
-  return telemetryConsentAsked === true && networkData?.isCompatible === false
+type GetShouldOpenProps = {
+  features: Features
+  networkData?: NetworkCompatibility
+  telemetry?: TelemetryConfig
+}
+
+const getShouldOpen = ({
+  features,
+  networkData,
+  telemetry,
+}: GetShouldOpenProps) => {
+  return (
+    telemetry?.consentAsked === true &&
+    networkData?.isCompatible === false &&
+    features.NETWORK_COMPATIBILITY_WARNING === true
+  )
 }
 
 export const NetworkCompatibilityDialog = () => {
-  const { state, service, dispatch, actions } = useGlobal()
+  const { state, service, dispatch, features, actions } = useGlobal()
   const { supportedVersion, networkData } = useMemo(
     () => findNetworkData(state.network, state.version),
     [state.network, state.version]
@@ -82,12 +95,21 @@ export const NetworkCompatibilityDialog = () => {
     return checkList.reduce<string[]>(addCompatibleNetwork, [])
   }, [state.version])
   const [isOpen, setOpen] = useState(
-    shouldBeOpen(networkData, state.config?.telemetry.consentAsked)
+    getShouldOpen({
+      features,
+      networkData,
+      telemetry: state.config?.telemetry,
+    })
   )
   const [subview, setSubview] = useState<Subview>(null)
 
   useEffect(() => {
-    if (shouldBeOpen(networkData, state.config?.telemetry.consentAsked)) {
+    const shouldOpen = getShouldOpen({
+      features,
+      networkData,
+      telemetry: state.config?.telemetry,
+    })
+    if (shouldOpen) {
       setOpen(true)
     }
   }, [supportedVersion, networkData, state.config?.telemetry.consentAsked])

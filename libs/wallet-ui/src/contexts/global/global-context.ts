@@ -10,6 +10,7 @@ import type {
   AppConfig,
 } from '../../types/service'
 import type { Runtime } from '../../types/runtime'
+import type { Features } from '../../types/features'
 import type { GlobalActions } from './global-actions'
 import type { GlobalAction } from './global-reducer'
 
@@ -106,6 +107,7 @@ type GlobalContextShape = {
   dispatch: GlobalDispatch
   service: Service
   runtime: Runtime
+  features: Features
   client: WalletClient
 }
 
