@@ -112,7 +112,7 @@ export const NetworkCompatibilityDialog = () => {
     if (shouldOpen) {
       setOpen(true)
     }
-  }, [supportedVersion, networkData, state.config?.telemetry.consentAsked])
+  }, [supportedVersion, networkData, features, state.config?.telemetry])
 
   useEffect(() => {
     const getVersion = async () => {
