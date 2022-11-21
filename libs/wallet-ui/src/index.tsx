@@ -18,6 +18,7 @@ import { AppRouter } from './routes'
 import type { Service } from './types/service'
 import type { Runtime } from './types/runtime'
 import type { Features } from './types/features'
+export { FeatureMap } from './types/features'
 
 export type AppProps = {
   service: Service
