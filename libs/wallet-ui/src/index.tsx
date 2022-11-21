@@ -17,17 +17,19 @@ import { GlobalProvider } from './contexts/global/global-provider'
 import { AppRouter } from './routes'
 import type { Service } from './types/service'
 import type { Runtime } from './types/runtime'
+import type { Features } from './types/features'
 
 export type AppProps = {
   service: Service
   client: WalletClient
   runtime: Runtime
+  features: Features
 }
 
 /**
  * Renders all the providers
  */
-export function App({ service, client, runtime }: AppProps) {
+export function App({ service, client, runtime, features }: AppProps) {
   return (
     <StrictMode>
       <ErrorBoundary
@@ -39,7 +41,12 @@ export function App({ service, client, runtime }: AppProps) {
           />
         )}
       >
-        <GlobalProvider service={service} client={client} runtime={runtime}>
+        <GlobalProvider
+          service={service}
+          client={client}
+          runtime={runtime}
+          features={features}
+        >
           <Router>
             <AppFrame>
               <Chrome>
