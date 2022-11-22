@@ -16,7 +16,7 @@ interface GlobalProviderProps {
   service: Service
   client: WalletClient
   runtime: Runtime
-  features: Partial<Features>
+  features?: Partial<Features>
   children: React.ReactElement
 }
 

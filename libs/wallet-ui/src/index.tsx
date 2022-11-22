@@ -24,7 +24,7 @@ export type AppProps = {
   service: Service
   client: WalletClient
   runtime: Runtime
-  features: Features
+  features?: Features
 }
 
 /**
