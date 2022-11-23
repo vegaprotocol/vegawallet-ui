@@ -10,6 +10,7 @@ export const TelemetryDialog = () => {
     state: { config },
     actions,
     dispatch,
+    features,
   } = useGlobal()
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -28,7 +29,9 @@ export const TelemetryDialog = () => {
 
   return (
     <Dialog
-      open={config?.telemetry.consentAsked === false}
+      open={
+        config?.telemetry.consentAsked === false && features.TELEMETRY_CHECK
+      }
       title="Report bugs and crashes"
     >
       <form
