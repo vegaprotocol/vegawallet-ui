@@ -11,7 +11,6 @@
         "tsConfig": "libs/wallet-ui/tsconfig.lib.json",
         "project": "libs/wallet-ui/package.json",
         "main": "libs/wallet-ui/src/index.tsx",
-        "additionalEntryPoints": ["libs/wallet-ui/src/__mocks__/index.ts"],
         "format": ["esm"],
         "minify": false,
         "sourcemap": true,
@@ -38,7 +37,8 @@
       "options": {
         "commands": [
           "yarn nx run wallet-ui:build",
-          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json"
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json",
+          "node scripts/patch-package-module.js ./dist/libs/wallet-ui/package.json"
         ],
         "parallel": false
       }
