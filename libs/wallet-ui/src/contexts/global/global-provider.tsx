@@ -3,13 +3,13 @@ import useThunkReducer from 'react-hook-thunk-reducer'
 import type { WalletClient } from '@vegaprotocol/wallet-client'
 
 import type { Service, Runtime, Features } from '../../types'
-import { FeatureMap } from '../../types'
 import { createActions } from './global-actions'
 import { GlobalContext } from './global-context'
 import { globalReducer, initialGlobalState } from './global-reducer'
 
 const DEFAULT_FEATURES: Features = {
-  [FeatureMap.NETWORK_COMPATIBILITY_WARNING]: true,
+  TELEMETRY_CHECK: true,
+  NETWORK_COMPATIBILITY_WARNING: true,
 }
 
 interface GlobalProviderProps {
