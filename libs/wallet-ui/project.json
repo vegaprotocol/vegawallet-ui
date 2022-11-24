@@ -10,6 +10,7 @@
         "outputPath": "dist/libs/wallet-ui",
         "tsConfig": "libs/wallet-ui/tsconfig.lib.json",
         "project": "libs/wallet-ui/package.json",
+        "additionalEntryPoints": ["libs/wallet-ui/src/mocks.ts"],
         "main": "libs/wallet-ui/src/index.tsx",
         "format": ["esm"],
         "minify": false,
