@@ -35,7 +35,20 @@ export function GlobalProvider({
   const features = useMemo(
     () => ({
       ...DEFAULT_FEATURES,
-      partialFeatures,
+      ...(
+        Object.keys(partialFeatures || {}) as Array<
+          keyof typeof partialFeatures
+        >
+      ).reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]:
+            partialFeatures === undefined
+              ? true
+              : partialFeatures[key] === 'true',
+        }),
+        {}
+      ),
     }),
     [partialFeatures]
   )
