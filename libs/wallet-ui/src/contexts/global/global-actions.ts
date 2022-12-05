@@ -153,7 +153,7 @@ export function createActions(service: Service, client: WalletClient) {
 
           const defaultNetworkConfig = defaultNetwork
             ? await client.DescribeNetwork({
-                network: defaultNetwork,
+                name: defaultNetwork,
               })
             : null
 
@@ -306,7 +306,7 @@ export function createActions(service: Service, client: WalletClient) {
             })
           }
 
-          const config = await client.DescribeNetwork({ network })
+          const config = await client.DescribeNetwork({ name: network })
 
           dispatch({
             type: 'CHANGE_NETWORK',
@@ -359,7 +359,7 @@ export function createActions(service: Service, client: WalletClient) {
             })
 
             const updatedNetwork = await client.DescribeNetwork({
-              network: networkConfig.name,
+              name: networkConfig.name,
             })
 
             dispatch({ type: 'UPDATE_NETWORK_CONFIG', config: updatedNetwork })
