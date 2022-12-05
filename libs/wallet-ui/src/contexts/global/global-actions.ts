@@ -72,7 +72,7 @@ const startService = async ({
       })
       await service.StartService({ network: state.network })
     }
-  } catch (err: any) {
+  } catch (err) {
     if (typeof err === 'string' && err.includes('already served')) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
