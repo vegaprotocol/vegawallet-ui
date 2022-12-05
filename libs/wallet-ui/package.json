@@ -1,7 +1,7 @@
 {
   "name": "@vegaprotocol/wallet-ui",
   "author": "Gobalsky Labs Ltd.",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "license": "MIT",
   "main": "./index.js",
   "types": "./src/index.d.ts",

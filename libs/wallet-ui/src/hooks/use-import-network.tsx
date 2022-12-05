@@ -36,7 +36,7 @@ export function useImportNetwork() {
 
         if (res && res.name) {
           const config = await client.DescribeNetwork({
-            network: res.name,
+            name: res.name,
           })
 
           // Update the config

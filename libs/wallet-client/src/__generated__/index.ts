@@ -171,7 +171,7 @@ export namespace WalletModel {
     }
   }
   export interface DescribeNetworkParams {
-    network: string
+    name: string
   }
   export interface UpdateNetworkParams {
     name: string

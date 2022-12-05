@@ -42,7 +42,7 @@ export function useNetworkConfig(name: string | null) {
       if (!name) return
       setLoading(true)
       try {
-        const res = await client.DescribeNetwork({ network: name })
+        const res = await client.DescribeNetwork({ name })
         setConfig(res)
       } catch (err) {
         setError(err as Error)

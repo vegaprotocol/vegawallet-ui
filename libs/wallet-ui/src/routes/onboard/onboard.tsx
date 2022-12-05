@@ -39,7 +39,7 @@ export function Onboard() {
           ? config.defaultNetwork
           : networks[0]
         const defaultNetworkConfig = await client.DescribeNetwork({
-          network: defaultNetwork,
+          name: defaultNetwork,
         })
         dispatch({
           type: 'ADD_NETWORKS',
