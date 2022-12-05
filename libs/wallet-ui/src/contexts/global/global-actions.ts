@@ -73,6 +73,13 @@ const startService = async ({
       await service.StartService({ network: state.network })
     }
   } catch (err) {
+    if (typeof err === 'string' && err.includes('already served')) {
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Started,
+      })
+      return
+    }
     logger.error(err)
     dispatch({
       type: 'SET_SERVICE_STATUS',
