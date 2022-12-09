@@ -1,6 +1,7 @@
 import path from 'path'
 import { readFile, readdir, writeFile, ensureDir, stat, copy } from 'fs-extra'
 import { template } from 'underscore'
+import { matcher } from 'matcher'
 
 // @ts-ignore Typescript refuses to import this file
 import packageJson from '../package.json'
@@ -50,12 +51,17 @@ const generate = async (props: ConfigProps) => {
 
     const json = await requestJson(logger, document)
     const openrpcDocument = DocumentSchema.parse(json)
+    const methodPatterns = methods.length ? methods : ['*']
+    const selectedMethods = matcher(
+      openrpcDocument.methods.map((m) => m.name),
+      methodPatterns
+    )
 
     const documentWithSelectedMethods = {
       ...openrpcDocument,
-      methods: methods
-        ? openrpcDocument.methods.filter((m) => methods.includes(m.name))
-        : openrpcDocument.methods,
+      methods: openrpcDocument.methods.filter((m) =>
+        selectedMethods.includes(m.name)
+      ),
     }
 
     const types = await compileTs(documentWithSelectedMethods)
