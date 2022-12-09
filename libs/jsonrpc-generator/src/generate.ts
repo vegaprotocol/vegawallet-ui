@@ -1,7 +1,7 @@
 import path from 'path'
 import { readFile, readdir, writeFile, ensureDir, stat, copy } from 'fs-extra'
 import { template } from 'underscore'
-import { matcher } from 'matcher'
+import matcher from 'matcher'
 
 // @ts-ignore Typescript refuses to import this file
 import packageJson from '../package.json'
@@ -49,7 +49,8 @@ const generate = async (props: ConfigProps) => {
 
     await Promise.all([ensureDir(outDir), ensureDir(templateDir)])
 
-    const json = await requestJson(logger, document)
+    const parsedDocument = template(document)(process.env)
+    const json = await requestJson(logger, parsedDocument)
     const openrpcDocument = DocumentSchema.parse(json)
     const methodPatterns = methods.length ? methods : ['*']
     const selectedMethods = matcher(

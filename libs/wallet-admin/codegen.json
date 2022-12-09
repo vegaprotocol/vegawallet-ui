@@ -1,6 +1,6 @@
 {
-  "document": "<%= WALLET_CLIENT_SPECS %>",
+  "document": "<%= WALLET_ADMIN_SPECS %>",
   "templateDir": "./template",
   "outDir": "./src/__generated__",
-  "methods": ["client.*"]
+  "methods": ["admin.*"]
 }

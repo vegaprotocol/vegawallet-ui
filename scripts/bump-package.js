@@ -10,7 +10,17 @@ async function main(filePath) {
     JSON.stringify(
       {
         ...json,
-        module: json.main,
+        version: json.version
+          .split('.')
+          .reduce((acc, v, i, arr) => {
+            if (i === arr.length - 1) {
+              acc.push(parseInt(v) + 1)
+              return acc
+            }
+            acc.push(v)
+            return acc
+          }, [])
+          .join('.'),
       },
       null,
       2

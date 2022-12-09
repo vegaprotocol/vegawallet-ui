@@ -6,7 +6,7 @@ A generic implementation of a JSON RPC to typescript generator.
 
 The generator takes the following parameters:
 
-- document (as a flag: `-d, --document <file>`): the openrpc document to use as the source of the generation (url or local file path)
+- document (as a flag: `-d, --document <file>`): the openrpc document to use as the source of the generation (url or local file path) - accepts also underscore template variables which can be pointed to environment variables, like: `"document": "<%= ENV_VAR %>"`
 - outDir (as a flag: `-o, --outDir <dir>`): the target directory to generate the files to
 - templateDir (as a flag: `-t, --templateDir <dir>`): the source directory for the template files
 - methods (as a flag: `--methods <comma separated list>`): a list of method names to use for the generation (ignores the rest from the source document if provided)
