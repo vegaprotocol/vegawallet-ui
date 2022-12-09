@@ -77,7 +77,7 @@ const COMPILE_OPTS = {
 }
 
 export const getMethodName = (method: MethodType) => {
-  return pascalCase(method.name).replace('Admin', '')
+  return pascalCase(method.name).replace('Admin', '').replace('Client', '')
 }
 
 export const getMethodParamsType = (method: MethodType) => {

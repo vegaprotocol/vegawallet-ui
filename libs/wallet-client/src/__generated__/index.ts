@@ -23,34 +23,34 @@ export namespace WalletModel {
   export type SendingMode = 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
 
   export interface Methods {
-    ClientConnectWalletResult?: ClientConnectWalletResult
-    ClientConnectWalletParams?: ClientConnectWalletParams
-    ClientDisconnectWalletResult?: ClientDisconnectWalletResult
-    ClientDisconnectWalletParams?: ClientDisconnectWalletParams
-    ClientGetPermissionsResult?: ClientGetPermissionsResult
-    ClientGetPermissionsParams?: ClientGetPermissionsParams
-    ClientRequestPermissionsResult?: ClientRequestPermissionsResult
-    ClientRequestPermissionsParams?: ClientRequestPermissionsParams
-    ClientListKeysResult?: ClientListKeysResult
-    ClientListKeysParams?: ClientListKeysParams
-    ClientSignTransactionResult?: ClientSignTransactionResult
-    ClientSignTransactionParams?: ClientSignTransactionParams
-    ClientSendTransactionResult?: ClientSendTransactionResult
-    ClientSendTransactionParams?: ClientSendTransactionParams
-    ClientGetChainIdResult?: ClientGetChainIdResult
-    ClientGetChainIdParams?: ClientGetChainIdParams
+    ConnectWalletResult?: ConnectWalletResult
+    ConnectWalletParams?: ConnectWalletParams
+    DisconnectWalletResult?: DisconnectWalletResult
+    DisconnectWalletParams?: DisconnectWalletParams
+    GetPermissionsResult?: GetPermissionsResult
+    GetPermissionsParams?: GetPermissionsParams
+    RequestPermissionsResult?: RequestPermissionsResult
+    RequestPermissionsParams?: RequestPermissionsParams
+    ListKeysResult?: ListKeysResult
+    ListKeysParams?: ListKeysParams
+    SignTransactionResult?: SignTransactionResult
+    SignTransactionParams?: SignTransactionParams
+    SendTransactionResult?: SendTransactionResult
+    SendTransactionParams?: SendTransactionParams
+    GetChainIdResult?: GetChainIdResult
+    GetChainIdParams?: GetChainIdParams
   }
-  export interface ClientConnectWalletResult {
+  export interface ConnectWalletResult {
     token: Token
   }
-  export interface ClientConnectWalletParams {}
-  export interface ClientDisconnectWalletResult {
+  export interface ConnectWalletParams {}
+  export interface DisconnectWalletResult {
     [k: string]: unknown
   }
-  export interface ClientDisconnectWalletParams {
+  export interface DisconnectWalletParams {
     token: Token
   }
-  export interface ClientGetPermissionsResult {
+  export interface GetPermissionsResult {
     permissions: PermissionsSummary
   }
   /**
@@ -59,17 +59,17 @@ export namespace WalletModel {
   export interface PermissionsSummary {
     public_keys: AccessMode
   }
-  export interface ClientGetPermissionsParams {
+  export interface GetPermissionsParams {
     token: Token
   }
-  export interface ClientRequestPermissionsResult {
+  export interface RequestPermissionsResult {
     permissions: PermissionsSummary
   }
-  export interface ClientRequestPermissionsParams {
+  export interface RequestPermissionsParams {
     token: Token
     requestedPermissions: PermissionsSummary
   }
-  export interface ClientListKeysResult {
+  export interface ListKeysResult {
     keys: NamedPublicKey[]
   }
   /**
@@ -79,10 +79,10 @@ export namespace WalletModel {
     name: string
     publicKey: string
   }
-  export interface ClientListKeysParams {
+  export interface ListKeysParams {
     token: Token
   }
-  export interface ClientSignTransactionResult {
+  export interface SignTransactionResult {
     transaction: SignedTransaction
   }
   /**
@@ -105,7 +105,7 @@ export namespace WalletModel {
       nonce: number
     }
   }
-  export interface ClientSignTransactionParams {
+  export interface SignTransactionParams {
     token: Token
     publicKey: PublicKey
     transaction: Transaction
@@ -114,7 +114,7 @@ export namespace WalletModel {
    * The transaction as a JSON object
    */
   export interface Transaction {}
-  export interface ClientSendTransactionResult {
+  export interface SendTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
      *
@@ -133,30 +133,30 @@ export namespace WalletModel {
     transactionHash: string
     transaction: SignedTransaction
   }
-  export interface ClientSendTransactionParams {
+  export interface SendTransactionParams {
     token: Token
     publicKey: PublicKey
     sendingMode: SendingMode
     transaction: Transaction
   }
-  export interface ClientGetChainIdResult {
+  export interface GetChainIdResult {
     /**
      * The chain identifier
      */
     chainID: string
   }
-  export interface ClientGetChainIdParams {}
+  export interface GetChainIdParams {}
 }
 
 export enum Identifier {
-  ClientConnectWallet = 'client.connect_wallet',
-  ClientDisconnectWallet = 'client.disconnect_wallet',
-  ClientGetPermissions = 'client.get_permissions',
-  ClientRequestPermissions = 'client.request_permissions',
-  ClientListKeys = 'client.list_keys',
-  ClientSignTransaction = 'client.sign_transaction',
-  ClientSendTransaction = 'client.send_transaction',
-  ClientGetChainId = 'client.get_chain_id',
+  ConnectWallet = 'client.connect_wallet',
+  DisconnectWallet = 'client.disconnect_wallet',
+  GetPermissions = 'client.get_permissions',
+  RequestPermissions = 'client.request_permissions',
+  ListKeys = 'client.list_keys',
+  SignTransaction = 'client.sign_transaction',
+  SendTransaction = 'client.send_transaction',
+  GetChainId = 'client.get_chain_id',
 }
 
 type Props = {
@@ -197,8 +197,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientConnectWallet = async (
-    params: WalletModel.ClientConnectWalletParams = {},
+  public ConnectWallet = async (
+    params: WalletModel.ConnectWalletParams = {},
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -210,10 +210,10 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientConnectWallet,
+        method: Identifier.ConnectWallet,
         params: params,
       }),
-    }).then((r) => handleResponse<WalletModel.ClientConnectWalletResult>(r))
+    }).then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
   }
 
   /**
@@ -221,8 +221,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientGetChainId = async (
-    params: WalletModel.ClientGetChainIdParams = {},
+  public GetChainId = async (
+    params: WalletModel.GetChainIdParams = {},
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -234,10 +234,10 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientGetChainId,
+        method: Identifier.GetChainId,
         params: params,
       }),
-    }).then((r) => handleResponse<WalletModel.ClientGetChainIdResult>(r))
+    }).then((r) => handleResponse<WalletModel.GetChainIdResult>(r))
   }
 
   /**
@@ -245,8 +245,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientDisconnectWallet = async (
-    params: Omit<WalletModel.ClientDisconnectWalletParams, 'token'>,
+  public DisconnectWallet = async (
+    params: Omit<WalletModel.DisconnectWalletParams, 'token'>,
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -258,13 +258,13 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientDisconnectWallet,
+        method: Identifier.DisconnectWallet,
         params: {
           ...params,
           token: this.token,
         },
       }),
-    }).then((r) => handleResponse<WalletModel.ClientDisconnectWalletResult>(r))
+    }).then((r) => handleResponse<WalletModel.DisconnectWalletResult>(r))
   }
 
   /**
@@ -272,8 +272,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientGetPermissions = async (
-    params: Omit<WalletModel.ClientGetPermissionsParams, 'token'>,
+  public GetPermissions = async (
+    params: Omit<WalletModel.GetPermissionsParams, 'token'>,
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -285,13 +285,13 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientGetPermissions,
+        method: Identifier.GetPermissions,
         params: {
           ...params,
           token: this.token,
         },
       }),
-    }).then((r) => handleResponse<WalletModel.ClientGetPermissionsResult>(r))
+    }).then((r) => handleResponse<WalletModel.GetPermissionsResult>(r))
   }
 
   /**
@@ -299,8 +299,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientRequestPermissions = async (
-    params: Omit<WalletModel.ClientRequestPermissionsParams, 'token'>,
+  public RequestPermissions = async (
+    params: Omit<WalletModel.RequestPermissionsParams, 'token'>,
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -312,15 +312,13 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientRequestPermissions,
+        method: Identifier.RequestPermissions,
         params: {
           ...params,
           token: this.token,
         },
       }),
-    }).then((r) =>
-      handleResponse<WalletModel.ClientRequestPermissionsResult>(r)
-    )
+    }).then((r) => handleResponse<WalletModel.RequestPermissionsResult>(r))
   }
 
   /**
@@ -328,8 +326,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientListKeys = async (
-    params: Omit<WalletModel.ClientListKeysParams, 'token'>,
+  public ListKeys = async (
+    params: Omit<WalletModel.ListKeysParams, 'token'>,
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -341,13 +339,13 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientListKeys,
+        method: Identifier.ListKeys,
         params: {
           ...params,
           token: this.token,
         },
       }),
-    }).then((r) => handleResponse<WalletModel.ClientListKeysResult>(r))
+    }).then((r) => handleResponse<WalletModel.ListKeysResult>(r))
   }
 
   /**
@@ -355,8 +353,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientSignTransaction = async (
-    params: Omit<WalletModel.ClientSignTransactionParams, 'token'>,
+  public SignTransaction = async (
+    params: Omit<WalletModel.SignTransactionParams, 'token'>,
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -368,13 +366,13 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientSignTransaction,
+        method: Identifier.SignTransaction,
         params: {
           ...params,
           token: this.token,
         },
       }),
-    }).then((r) => handleResponse<WalletModel.ClientSignTransactionResult>(r))
+    }).then((r) => handleResponse<WalletModel.SignTransactionResult>(r))
   }
 
   /**
@@ -382,8 +380,8 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public ClientSendTransaction = async (
-    params: Omit<WalletModel.ClientSendTransactionParams, 'token'>,
+  public SendTransaction = async (
+    params: Omit<WalletModel.SendTransactionParams, 'token'>,
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -395,13 +393,13 @@ export class WalletClient {
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
-        method: Identifier.ClientSendTransaction,
+        method: Identifier.SendTransaction,
         params: {
           ...params,
           token: this.token,
         },
       }),
-    }).then((r) => handleResponse<WalletModel.ClientSendTransactionResult>(r))
+    }).then((r) => handleResponse<WalletModel.SendTransactionResult>(r))
   }
 
   /**
