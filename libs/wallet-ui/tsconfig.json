@@ -25,5 +25,10 @@
     {
       "path": "./.storybook/tsconfig.json"
     }
-  ]
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }

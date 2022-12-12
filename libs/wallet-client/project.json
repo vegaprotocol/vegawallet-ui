@@ -10,6 +10,7 @@
         "outputPath": "dist/libs/wallet-client",
         "tsConfig": "libs/wallet-client/tsconfig.lib.json",
         "project": "libs/wallet-client/package.json",
+        "additionalEntryPoints": ["libs/wallet-client/src/mocks.ts"],
         "main": "libs/wallet-client/src/index.ts",
         "format": ["esm"],
         "minify": false,
@@ -82,6 +83,14 @@
       "outputs": [],
       "options": {
         "command": "node ./scripts/bump-package ./libs/wallet-client/package.json"
+      }
+    },
+    "start-mock": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["^generate"],
+      "outputs": [],
+      "options": {
+        "command": "npx ts-node ./libs/wallet-client/src/__generated__/mock.ts"
       }
     }
   }
