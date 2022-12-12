@@ -17,12 +17,12 @@ export type NetworkCompatibility = {
 export type BackendVersionResponse = {
   version: string
   gitHash: string
-  networksCompatibility: NetworkCompatibility[]
 }
 export type GetVersionResponse = {
   version: string
   gitHash: string
   backend?: BackendVersionResponse
+  networksCompatibility?: NetworkCompatibility[]
 }
 export type InitialiseAppArg = {
   vegaHome: string

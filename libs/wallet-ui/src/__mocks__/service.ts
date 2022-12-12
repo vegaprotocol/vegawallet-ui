@@ -16,16 +16,16 @@ export const service: Service = {
     Promise.resolve({
       version: '0.98.0',
       gitHash: '0x0',
+      networksCompatibility: [
+        {
+          network: 'test',
+          isCompatible: false,
+          retrievedVersion: '1.0.0',
+        },
+      ],
       backend: {
         version: '2.0.1',
         gitHash: '0x0',
-        networksCompatibility: [
-          {
-            network: 'test',
-            isCompatible: false,
-            retrievedVersion: '1.0.0',
-          },
-        ],
       },
     }),
 
