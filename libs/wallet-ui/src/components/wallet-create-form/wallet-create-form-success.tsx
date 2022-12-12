@@ -35,7 +35,7 @@ export function WalletCreateFormSuccess({
       <SuccessSection>
         <p data-testid="wallet-version">Wallet version</p>
         <p>
-          <CodeBlock>{response?.wallet?.version}</CodeBlock>
+          <CodeBlock>{response?.wallet?.keyDerivationVersion}</CodeBlock>
         </p>
       </SuccessSection>
       <SuccessSection>
