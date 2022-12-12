@@ -92,7 +92,7 @@ export function MockAPIRequest(id: Identifier) {
       return Promise.resolve<WalletModel.CreateWalletResult>({
         wallet: {
           name: 'my-wallet',
-          version: 2,
+          keyDerivationVersion: 2,
           recoveryPhrase:
             'swing ceiling chaos green put insane ripple desk match tip melt usual shrug turkey renew icon parade veteran lens govern path rough page render',
           filePath: 'some/path/to/my-wallet',
@@ -117,7 +117,7 @@ export function MockAPIRequest(id: Identifier) {
       return Promise.resolve<WalletModel.ImportWalletResult>({
         wallet: {
           name: 'my-wallet',
-          version: 2,
+          keyDerivationVersion: 2,
           filePath: 'some/path/to/my-wallet',
         },
         key: {
@@ -139,7 +139,7 @@ export function MockAPIRequest(id: Identifier) {
     case Identifier.DescribeWallet: {
       return Promise.resolve<WalletModel.DescribeWalletResult>({
         name: 'my-wallet',
-        version: 2,
+        keyDerivationVersion: 2,
         type: 'HD Wallet',
         id: '7ffa36b2fb99d8404e9448f0d2ce944055e64c36d895d1fde044c867bfdf779f',
       })

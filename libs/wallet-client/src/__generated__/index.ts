@@ -68,7 +68,7 @@ export namespace WalletModel {
      */
     wallet: {
       name: string
-      version: number
+      keyDerivationVersion: number
       recoveryPhrase: string
       filePath: string
     }
@@ -105,7 +105,7 @@ export namespace WalletModel {
      */
     wallet: {
       name: string
-      version: number
+      keyDerivationVersion: number
       filePath: string
     }
     /**
@@ -121,11 +121,11 @@ export namespace WalletModel {
     wallet: string
     passphrase: string
     recoveryPhrase: string
-    version: number
+    keyDerivationVersion: number
   }
   export interface DescribeWalletResult {
     name: string
-    version: number
+    keyDerivationVersion: number
     id: string
     type: string
   }
@@ -182,7 +182,7 @@ export namespace WalletModel {
     api: NetworkApiConfig
   }
   export interface RemoveNetworkParams {
-    network: string
+    name: string
   }
   export interface ImportNetworkResult {
     name: string
@@ -441,7 +441,7 @@ export class WalletClient {
   }
 
   /**
-   * Import a wallet with its first key-pair with a recovery phrase and a version.
+   * Import a wallet with its first key-pair with a recovery phrase and a key derivation version.
    */
 
   // tslint:disable-next-line:max-line-length
