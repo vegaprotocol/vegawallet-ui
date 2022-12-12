@@ -36,3 +36,19 @@ WALLET_CLIENT_SPECS=https://...
 ```
 
 NOTE: by default, the code generator should be pointed to ()[https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json]
+
+## Mocks
+
+The wallet client exposes a mock service which you can import and run anywhere:
+
+```
+import { MockWalletService } from '@vegaprotocol/wallet-client/mocks'
+
+const service = new MockWalletService({ port: 1789 })
+
+service.start()
+...
+service.stop()
+```
+
+Alternatively, you can run the `yarn nx run wallet-client:start-mock` from the vegawallet-ui monorepo to start a mock service.

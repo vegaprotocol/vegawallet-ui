@@ -12,7 +12,7 @@
         "project": "libs/wallet-client/package.json",
         "additionalEntryPoints": ["libs/wallet-client/src/mocks.ts"],
         "main": "libs/wallet-client/src/index.ts",
-        "format": ["esm"],
+        "format": ["cjs"],
         "minify": false,
         "thirdParty": false,
         "platform": "browser",
@@ -87,10 +87,10 @@
     },
     "start-mock": {
       "executor": "nx:run-commands",
-      "dependsOn": ["^generate"],
+      "dependsOn": ["^build"],
       "outputs": [],
       "options": {
-        "command": "npx ts-node ./libs/wallet-client/src/__generated__/mock.ts"
+        "command": "node ./scripts/wallet-client-mock.js"
       }
     }
   }
