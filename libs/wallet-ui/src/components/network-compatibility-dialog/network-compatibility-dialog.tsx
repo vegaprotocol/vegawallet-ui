@@ -29,7 +29,7 @@ const findNetworkData = (
 
   return {
     supportedVersion: version.backend.version,
-    networkData: version.backend.networksCompatibility.find(
+    networkData: version.networksCompatibility?.find(
       (n) => n.network === network
     ),
   }
@@ -91,7 +91,7 @@ export const NetworkCompatibilityDialog = () => {
     [state.network, state.version]
   )
   const compatibleNetworksList = useMemo(() => {
-    const checkList = state.version?.backend?.networksCompatibility || []
+    const checkList = state.version?.networksCompatibility || []
     return checkList.reduce<string[]>(addCompatibleNetwork, [])
   }, [state.version])
   const [isOpen, setOpen] = useState(
