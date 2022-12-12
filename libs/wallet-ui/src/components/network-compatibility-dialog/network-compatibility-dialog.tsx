@@ -118,7 +118,6 @@ export const NetworkCompatibilityDialog = () => {
     const getVersion = async () => {
       try {
         const version = await service.GetVersion()
-        console.log(version)
         dispatch({
           type: 'SET_VERSION',
           version,
