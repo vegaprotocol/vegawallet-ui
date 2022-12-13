@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import type { WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { Intent } from '../../config/intent'
 import type { Wallet } from '../../contexts/global/global-context'

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { Colors } from '../../config/colors'
 import { Callout } from '../callout'

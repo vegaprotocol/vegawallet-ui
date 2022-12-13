@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import type { ThunkDispatch } from 'react-hook-thunk-reducer'
-import type { WalletClient, WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletClient, WalletModel } from '@vegaprotocol/wallet-admin'
 
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'

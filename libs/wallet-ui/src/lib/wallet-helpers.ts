@@ -1,4 +1,4 @@
-import type { WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletModel } from '@vegaprotocol/wallet-admin'
 import type { KeyPair, Wallet } from '../contexts/global/global-context'
 import { truncateMiddle } from './truncate-middle'
 

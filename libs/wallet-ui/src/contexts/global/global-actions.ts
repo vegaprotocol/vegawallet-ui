@@ -1,4 +1,4 @@
-import type { WalletModel, WalletClient } from '@vegaprotocol/wallet-client'
+import type { WalletModel, WalletClient } from '@vegaprotocol/wallet-admin'
 
 import type { Service, AppConfig } from '../../types/service'
 import type { Logger } from '../../types/logger'
