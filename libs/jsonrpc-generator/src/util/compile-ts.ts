@@ -1,3 +1,4 @@
+import createMock from 'json-schema-mock'
 import { compile } from 'json-schema-to-typescript'
 import { pascalCase } from 'change-case'
 import { z } from 'zod'
@@ -10,6 +11,12 @@ enum ParamStructure {
 const RefSchema = z.object({
   $ref: z.string(),
 })
+
+export const JsonSchema = z.union([
+  z.object({}).passthrough(),
+  RefSchema,
+  z.boolean(),
+])
 
 const MethodSchema = z.object({
   name: z.string(),
@@ -28,14 +35,14 @@ const MethodSchema = z.object({
       name: z.string(),
       description: z.string().optional(),
       required: z.boolean().optional(),
-      schema: z.union([z.object({}).passthrough(), RefSchema, z.boolean()]),
+      schema: JsonSchema,
     })
   ),
   result: z.object({
     name: z.string(),
     title: z.string().optional(),
     required: z.boolean().optional(),
-    schema: z.union([z.object({}).passthrough(), RefSchema, z.boolean()]),
+    schema: JsonSchema,
   }),
   errors: z.array(RefSchema).optional(),
   examples: z
@@ -96,7 +103,9 @@ export const getMethodParams = (method: MethodType) => {
 }
 
 export const getMethodExample = (method: MethodType) => {
-  const example = method.examples?.[0]
+  const example =
+    method.examples?.[0] ||
+    (method.result.schema ? createMock(method.result.schema) : {})
 
   if (typeof example?.result.value === 'object') {
     return JSON.stringify(example.result.value, null, 2)

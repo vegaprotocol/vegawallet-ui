@@ -16,10 +16,7 @@
         "thirdParty": false,
         "platform": "node",
         "esbuildOptions": {
-          "external": true,
-          "loader": {
-            ".png": "file"
-          }
+          "external": true
         },
         "assets": [
           {
@@ -45,6 +42,13 @@
         "passWithNoTests": true
       }
     },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn tsc --noEmit --traceResolution --project ./libs/wallet-admin/tsconfig.lib.json"
+      }
+    },
     "build-spec": {
       "executor": "nx:run-commands",
       "outputs": [],
@@ -55,8 +59,9 @@
     "run": {
       "executor": "nx:run-commands",
       "outputs": [],
+      "dependsOn": ["build"],
       "options": {
-        "command": "npx ts-node ./libs/jsonrpc-generator/src/index.ts generate"
+        "command": "node ./libs/jsonrpc-generator/src/index.ts generate"
       }
     }
   }
