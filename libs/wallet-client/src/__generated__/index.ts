@@ -2,6 +2,22 @@
 import { nanoid } from 'nanoid'
 
 export namespace WalletModel {
+  /**
+   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
+   */
+  export type Token = string
+  /**
+   * The Vega public key to use.
+   */
+  export type PublicKey = string
+  /**
+   * The chosen mode to send the transaction:
+   * - `TYPE_SYNC` returns the result of running the transaction.
+   * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
+   * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
+   */
+  export type SendingMode = 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
+
   export interface Methods {
     ConnectWalletResult?: ConnectWalletResult
     ConnectWalletParams?: ConnectWalletParams
@@ -31,10 +47,7 @@ export namespace WalletModel {
     [k: string]: unknown
   }
   export interface DisconnectWalletParams {
-    /**
-     * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
-     */
-    token: string
+    token: Token
   }
   export interface GetPermissionsResult {
     /**
@@ -48,10 +61,7 @@ export namespace WalletModel {
     }
   }
   export interface GetPermissionsParams {
-    /**
-     * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
-     */
-    token: string
+    token: Token
   }
   export interface RequestPermissionsResult {
     /**
@@ -65,19 +75,17 @@ export namespace WalletModel {
     }
   }
   export interface RequestPermissionsParams {
+    token: Token
+    requestedPermissions: PermissionsSummary
+  }
+  /**
+   * The description of the permissions a third-party application has.
+   */
+  export interface PermissionsSummary {
     /**
-     * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
+     * The different access modes a permission can have.
      */
-    token: string
-    /**
-     * The description of the permissions a third-party application has.
-     */
-    requestedPermissions: {
-      /**
-       * The different access modes a permission can have.
-       */
-      public_keys?: 'read' | 'none'
-    }
+    public_keys: 'read' | 'none'
   }
   export interface ListKeysResult {
     keys: {
@@ -86,10 +94,7 @@ export namespace WalletModel {
     }[]
   }
   export interface ListKeysParams {
-    /**
-     * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
-     */
-    token: string
+    token: Token
   }
   export interface SignTransactionResult {
     /**
@@ -114,19 +119,14 @@ export namespace WalletModel {
     }
   }
   export interface SignTransactionParams {
-    /**
-     * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
-     */
-    token: string
-    /**
-     * The Vega public key to use.
-     */
-    publicKey: string
-    /**
-     * The transaction as a JSON object
-     */
-    transaction: Record<string, unknown>
+    token: Token
+    publicKey: PublicKey
+    transaction: Transaction
   }
+  /**
+   * The transaction as a JSON object
+   */
+  export interface Transaction {}
   export interface SendTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
@@ -166,25 +166,10 @@ export namespace WalletModel {
     }
   }
   export interface SendTransactionParams {
-    /**
-     * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
-     */
-    token: string
-    /**
-     * The Vega public key to use.
-     */
-    publicKey: string
-    /**
-     * The chosen mode to send the transaction:
-     * - `TYPE_SYNC` returns the result of running the transaction.
-     * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
-     * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
-     */
-    sendingMode: 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
-    /**
-     * The transaction as a JSON object
-     */
-    transaction: Record<string, unknown>
+    token: Token
+    publicKey: PublicKey
+    sendingMode: SendingMode
+    transaction: Transaction
   }
   export interface GetChainIdResult {
     /**

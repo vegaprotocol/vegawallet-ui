@@ -69,7 +69,7 @@ const generate = async (props: ConfigProps) => {
 
     const resolvedDocument = await resolveRefs(documentWithSelectedMethods)
 
-    const types = await compileTs(resolvedDocument)
+    const types = await compileTs(documentWithSelectedMethods)
     await copy(templateDir, outDir)
 
     await pipeFiles({

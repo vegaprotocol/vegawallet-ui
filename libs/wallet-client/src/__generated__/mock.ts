@@ -1,4 +1,4 @@
-import type { Express } from 'express'
+import type { Express } from 'express';
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'

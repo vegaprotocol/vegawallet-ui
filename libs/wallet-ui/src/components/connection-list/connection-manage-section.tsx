@@ -9,7 +9,10 @@ import { RadioGroup } from '../radio-group'
 import { Title } from '../title'
 import type { NormalizedPermissionMap } from './connection-manage'
 
-const AccessModes: Record<string, WalletModel.AccessMode> = {
+const AccessModes: Record<
+  string,
+  WalletModel.Permissions['publicKeys']['access']
+> = {
   Read: 'read',
   None: 'none',
 }

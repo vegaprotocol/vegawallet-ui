@@ -7,10 +7,21 @@ export namespace WalletModel {
   export type ListNetworksParams = []
   export type UpdateNetworkResult = null
   export type RemoveNetworkResult = null
+  /**
+   * The Vega public key to use.
+   */
+  export type PublicKey = string
   export type TaintKeyResult = null
   export type UntaintKeyResult = null
   export type RevokePermissionsResult = null
   export type PurgePermissionsResult = null
+  /**
+   * The chosen mode to send the transaction:
+   * - `TYPE_SYNC` returns the result of running the transaction.
+   * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
+   * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
+   */
+  export type SendingMode = 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
   export type StartServiceResult = null
   export type StopServiceResult = null
   export type CloseConnectionResult = null
@@ -215,20 +226,21 @@ export namespace WalletModel {
     tokenExpiry: string
     port: number
     host: string
-    /**
-     * The API configuration for the network.
-     */
-    api: {
-      grpcConfig?: {
-        hosts: string[]
-        retries: number
-      }
-      graphQLConfig?: {
-        hosts: string[]
-      }
-      restConfig?: {
-        hosts: string[]
-      }
+    api: NetworkApiConfig
+  }
+  /**
+   * The API configuration for the network.
+   */
+  export interface NetworkApiConfig {
+    grpcConfig: {
+      hosts: string[]
+      retries: number
+    }
+    graphQLConfig: {
+      hosts: string[]
+    }
+    restConfig: {
+      hosts: string[]
     }
   }
   export interface RemoveNetworkParams {
@@ -293,10 +305,7 @@ export namespace WalletModel {
   export interface DescribeKeyParams {
     wallet: string
     passphrase: string
-    /**
-     * The Vega public key to use.
-     */
-    publicKey: string
+    publicKey: PublicKey
   }
   export interface ListKeysResult {
     keys: {
@@ -317,10 +326,7 @@ export namespace WalletModel {
   export interface AnnotateKeyParams {
     wallet: string
     passphrase: string
-    /**
-     * The Vega public key to use.
-     */
-    publicKey: string
+    publicKey: PublicKey
     metadata: {
       key: string
       value: string
@@ -340,10 +346,7 @@ export namespace WalletModel {
     wallet: string
     passphrase: string
     isolatedWalletPassphrase: string
-    /**
-     * The Vega public key to use.
-     */
-    publicKey: string
+    publicKey: PublicKey
   }
   export interface RotateKeyResult {
     /**
@@ -382,18 +385,12 @@ export namespace WalletModel {
   export interface TaintKeyParams {
     wallet: string
     passphrase: string
-    /**
-     * The Vega public key to use.
-     */
-    publicKey: string
+    publicKey: PublicKey
   }
   export interface UntaintKeyParams {
     wallet: string
     passphrase: string
-    /**
-     * The Vega public key to use.
-     */
-    publicKey: string
+    publicKey: PublicKey
   }
   export interface DescribePermissionsResult {
     /**
@@ -464,23 +461,24 @@ export namespace WalletModel {
     wallet: string
     passphrase: string
     hostname: string
+    permissions: Permissions
+  }
+  /**
+   * The full description of the permissions a third-party application has.
+   */
+  export interface Permissions {
     /**
-     * The full description of the permissions a third-party application has.
+     * The permissions related to public keys.
      */
-    permissions: {
+    publicKeys: {
       /**
-       * The permissions related to public keys.
+       * The different access modes a permission can have.
        */
-      publicKeys?: {
-        /**
-         * The different access modes a permission can have.
-         */
-        access: 'read' | 'none'
-        /**
-         * The subset of public keys the user selected for this hostname. If empty, the wallet assumes all keys are accessible.
-         */
-        restrictedKeys: string[]
-      }
+      access: 'read' | 'none'
+      /**
+       * The subset of public keys the user selected for this hostname. If empty, the wallet assumes all keys are accessible.
+       */
+      restrictedKeys: string[]
     }
   }
   export interface RevokePermissionsParams {
@@ -502,11 +500,12 @@ export namespace WalletModel {
     chainId: string
     blockHeight: number
     network?: number
-    /**
-     * The transaction as a JSON object
-     */
-    transaction: Record<string, unknown>
+    transaction: Transaction
   }
+  /**
+   * The transaction as a JSON object
+   */
+  export interface Transaction {}
   export interface SignMessageResult {
     encodedSignature: string
   }
@@ -576,18 +575,13 @@ export namespace WalletModel {
     passphrase: string
     pubKey: string
     network?: number
-    /**
-     * The chosen mode to send the transaction:
-     * - `TYPE_SYNC` returns the result of running the transaction.
-     * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
-     * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
-     */
-    sendingMode: 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
-    /**
-     * The transaction as a JSON object
-     */
-    transaction: Record<string, unknown>
+    sendingMode: SendingMode
+    transaction: Transaction1
   }
+  /**
+   * The transaction as a JSON object
+   */
+  export interface Transaction1 {}
   export interface SendRawTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
@@ -643,13 +637,7 @@ export namespace WalletModel {
      * the number of times sending the transaction should be attempted if it fails
      */
     retries: number
-    /**
-     * The chosen mode to send the transaction:
-     * - `TYPE_SYNC` returns the result of running the transaction.
-     * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
-     * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
-     */
-    sendingMode: 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
+    sendingMode: SendingMode
   }
   export interface StartServiceParams {
     network: string

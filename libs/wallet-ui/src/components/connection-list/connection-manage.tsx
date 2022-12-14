@@ -19,7 +19,7 @@ type KeyItem = {
 }
 
 export type NormalizedPermission = {
-  access: WalletModel.AccessMode
+  access: WalletModel.Permissions['publicKeys']['access']
   restrictedKeys: KeyItem[]
 }
 
