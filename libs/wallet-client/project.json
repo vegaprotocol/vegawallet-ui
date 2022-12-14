@@ -82,7 +82,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "node ./scripts/bump-package ./libs/wallet-client/package.json"
+        "command": "node ./scripts/version-package --project=wallet-client"
       }
     },
     "start-mock": {

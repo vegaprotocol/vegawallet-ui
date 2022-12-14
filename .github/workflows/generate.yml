@@ -21,8 +21,10 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Regenerate the wallet admin
         run: yarn nx run wallet-admin:generate
+        with: WALLET_ADMIN_SPECS={{ github.event.data.source }}
       - name: Regenerate the wallet client
         run: yarn nx run wallet-client:generate
+        with: WALLET_CLIENT_SPECS={{ github.event.data.source }}
       - name: Bump the wallet admin
         run: yarn nx run wallet-admin:bump
       - name: Bump the wallet client
@@ -32,10 +34,10 @@ jobs:
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'chore: regenerate wallet libraries'
-          branch: chore/automated-updates
+          commit-message: 'chore: regenerate wallet libraries for v{{ github.event.data.version }}'
+          branch: chore/v{{ github.event.data.version }}-automated-updates
           delete-branch: true
           base: main
-          title: 'chore: automated wallet updates'
+          title: 'chore: v{{ github.event.data.version }} automated wallet updates'
           labels:
           team-reviewers: vegaprotocol/frontend

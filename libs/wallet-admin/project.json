@@ -81,7 +81,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "node ./scripts/bump-package ./libs/wallet-admin/package.json"
+        "command": "node ./scripts/version-package --project=wallet-admin"
       }
     }
   }

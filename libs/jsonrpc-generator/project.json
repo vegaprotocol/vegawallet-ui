@@ -11,7 +11,8 @@
         "tsConfig": "libs/jsonrpc-generator/tsconfig.lib.json",
         "project": "libs/jsonrpc-generator/package.json",
         "main": "libs/jsonrpc-generator/src/index.ts",
-        "format": ["esm"],
+        "format": ["cjs"],
+        "sourcemap": true,
         "minify": false,
         "thirdParty": false,
         "platform": "node",
@@ -46,7 +47,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "yarn tsc --noEmit --traceResolution --project ./libs/wallet-admin/tsconfig.lib.json"
+        "command": "yarn tsc --noEmit --project ./libs/jsonrpc-generator/tsconfig.lib.json"
       }
     },
     "build-spec": {
@@ -61,7 +62,7 @@
       "outputs": [],
       "dependsOn": ["build"],
       "options": {
-        "command": "node ./libs/jsonrpc-generator/src/index.ts generate"
+        "command": "npx ts-node --project ./libs/jsonrpc-generator/tsconfig.json ./libs/jsonrpc-generator/src/index.ts generate"
       }
     }
   }

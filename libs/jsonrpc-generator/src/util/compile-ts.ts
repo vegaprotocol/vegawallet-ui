@@ -1,82 +1,8 @@
-import createMock from 'json-schema-mock'
 import { compile } from 'json-schema-to-typescript'
 import { pascalCase } from 'change-case'
-import { z } from 'zod'
-
-enum ParamStructure {
-  BY_NAME = 'by-name',
-  BY_POSITION = 'by-position',
-}
-
-const RefSchema = z.object({
-  $ref: z.string(),
-})
-
-export const JsonSchema = z.union([
-  z.object({}).passthrough(),
-  RefSchema,
-  z.boolean(),
-])
-
-const MethodSchema = z.object({
-  name: z.string(),
-  summary: z.string(),
-  description: z.string(),
-  tags: z
-    .array(
-      z.object({
-        name: z.string(),
-      })
-    )
-    .optional(),
-  paramStructure: z.nativeEnum(ParamStructure).optional(),
-  params: z.array(
-    z.object({
-      name: z.string(),
-      description: z.string().optional(),
-      required: z.boolean().optional(),
-      schema: JsonSchema,
-    })
-  ),
-  result: z.object({
-    name: z.string(),
-    title: z.string().optional(),
-    required: z.boolean().optional(),
-    schema: JsonSchema,
-  }),
-  errors: z.array(RefSchema).optional(),
-  examples: z
-    .array(
-      z.object({
-        name: z.string(),
-        description: z.string().optional(),
-        params: z.array(z.object({})),
-        result: z.object({
-          name: z.string(),
-          value: z.any(),
-        }),
-      })
-    )
-    .optional(),
-})
-
-export const DocumentSchema = z.object({
-  openrpc: z.string(),
-  info: z.object({
-    version: z.string(),
-    title: z.string(),
-  }),
-  methods: z.array(MethodSchema),
-  components: z
-    .object({
-      schemas: z.object({}).passthrough().optional(),
-      errors: z.object({}).passthrough(),
-    })
-    .optional(),
-})
-
-export type DocumentType = z.infer<typeof DocumentSchema>
-export type MethodType = z.infer<typeof MethodSchema>
+import { clone } from 'ramda'
+import type { DocumentType, MethodType } from './schemas'
+import { createExample } from './example'
 
 const COMPILE_OPTS = {
   additionalProperties: false,
@@ -103,9 +29,7 @@ export const getMethodParams = (method: MethodType) => {
 }
 
 export const getMethodExample = (method: MethodType) => {
-  const example =
-    method.examples?.[0] ||
-    (method.result.schema ? createMock(method.result.schema) : {})
+  const example = createExample(method)
 
   if (typeof example?.result.value === 'object') {
     return JSON.stringify(example.result.value, null, 2)
@@ -206,7 +130,7 @@ const normalizeComponent = (component: Record<string, object> = {}) => {
 }
 
 export const compileTs = async (openrpcDocument: DocumentType) => {
-  const normalizedDocument = normalizeDocument<DocumentType>(openrpcDocument)
+  const normalizedDocument = normalizeDocument<DocumentType>(clone(openrpcDocument))
 
   const schema = normalizedDocument.methods?.reduce<NormalizedDocument>(
     (acc, method) => {

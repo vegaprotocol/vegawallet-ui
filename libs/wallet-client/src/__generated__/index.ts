@@ -2,161 +2,209 @@
 import { nanoid } from 'nanoid'
 
 export namespace WalletModel {
+export interface Methods {
+  ConnectWalletResult?: ConnectWalletResult;
+  ConnectWalletParams?: ConnectWalletParams;
+  DisconnectWalletResult?: DisconnectWalletResult;
+  DisconnectWalletParams?: DisconnectWalletParams;
+  GetPermissionsResult?: GetPermissionsResult;
+  GetPermissionsParams?: GetPermissionsParams;
+  RequestPermissionsResult?: RequestPermissionsResult;
+  RequestPermissionsParams?: RequestPermissionsParams;
+  ListKeysResult?: ListKeysResult;
+  ListKeysParams?: ListKeysParams;
+  SignTransactionResult?: SignTransactionResult;
+  SignTransactionParams?: SignTransactionParams;
+  SendTransactionResult?: SendTransactionResult;
+  SendTransactionParams?: SendTransactionParams;
+  GetChainIdResult?: GetChainIdResult;
+  GetChainIdParams?: GetChainIdParams;
+}
+export interface ConnectWalletResult {
   /**
    * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
    */
-  export type Token = string
+  token: string;
+}
+export interface ConnectWalletParams {}
+export interface DisconnectWalletResult {
+  [k: string]: unknown;
+}
+export interface DisconnectWalletParams {
   /**
-   * The different access modes a permission can have.
+   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
    */
-  export type AccessMode = 'read' | 'none'
+  token: string;
+}
+export interface GetPermissionsResult {
+  /**
+   * The description of the permissions a third-party application has.
+   */
+  permissions: {
+    /**
+     * The different access modes a permission can have.
+     */
+    public_keys: "read" | "none";
+  };
+}
+export interface GetPermissionsParams {
+  /**
+   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
+   */
+  token: string;
+}
+export interface RequestPermissionsResult {
+  /**
+   * The description of the permissions a third-party application has.
+   */
+  permissions: {
+    /**
+     * The different access modes a permission can have.
+     */
+    public_keys: "read" | "none";
+  };
+}
+export interface RequestPermissionsParams {
+  /**
+   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
+   */
+  token: string;
+  /**
+   * The description of the permissions a third-party application has.
+   */
+  requestedPermissions: {
+    /**
+     * The different access modes a permission can have.
+     */
+    public_keys?: "read" | "none";
+  };
+}
+export interface ListKeysResult {
+  keys: {
+    name: string;
+    publicKey: string;
+  }[];
+}
+export interface ListKeysParams {
+  /**
+   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
+   */
+  token: string;
+}
+export interface SignTransactionResult {
+  /**
+   * A transaction that has been signed by the wallet.
+   */
+  transaction: {
+    inputData: string;
+    signature: {
+      value: string;
+      algo: string;
+      version: number;
+    };
+    from: {
+      publicKey?: string;
+      address?: string;
+    };
+    version: number;
+    pow: {
+      tid: string;
+      nonce: number;
+    };
+  };
+}
+export interface SignTransactionParams {
+  /**
+   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
+   */
+  token: string;
   /**
    * The Vega public key to use.
    */
-  export type PublicKey = string
+  publicKey: string;
+  /**
+   * The transaction as a JSON object
+   */
+  transaction: {};
+}
+export interface SendTransactionResult {
+  /**
+   * The date when the API received the request to send the transaction.
+   *
+   * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
+   */
+  receivedAt: string;
+  /**
+   * The date when the transaction has been sent to the network.
+   *
+   * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
+   */
+  sentAt: string;
+  /**
+   * The hash of the transaction. It's used to uniquely identify the transaction and can be used in the block explorer to retrieve it.
+   */
+  transactionHash: string;
+  /**
+   * A transaction that has been signed by the wallet.
+   */
+  transaction: {
+    inputData: string;
+    signature: {
+      value: string;
+      algo: string;
+      version: number;
+    };
+    from: {
+      publicKey?: string;
+      address?: string;
+    };
+    version: number;
+    pow: {
+      tid: string;
+      nonce: number;
+    };
+  };
+}
+export interface SendTransactionParams {
+  /**
+   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
+   */
+  token: string;
+  /**
+   * The Vega public key to use.
+   */
+  publicKey: string;
   /**
    * The chosen mode to send the transaction:
    * - `TYPE_SYNC` returns the result of running the transaction.
    * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
    * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
    */
-  export type SendingMode = 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
-
-  export interface Methods {
-    ConnectWalletResult?: ConnectWalletResult
-    ConnectWalletParams?: ConnectWalletParams
-    DisconnectWalletResult?: DisconnectWalletResult
-    DisconnectWalletParams?: DisconnectWalletParams
-    GetPermissionsResult?: GetPermissionsResult
-    GetPermissionsParams?: GetPermissionsParams
-    RequestPermissionsResult?: RequestPermissionsResult
-    RequestPermissionsParams?: RequestPermissionsParams
-    ListKeysResult?: ListKeysResult
-    ListKeysParams?: ListKeysParams
-    SignTransactionResult?: SignTransactionResult
-    SignTransactionParams?: SignTransactionParams
-    SendTransactionResult?: SendTransactionResult
-    SendTransactionParams?: SendTransactionParams
-    GetChainIdResult?: GetChainIdResult
-    GetChainIdParams?: GetChainIdParams
-  }
-  export interface ConnectWalletResult {
-    token: Token
-  }
-  export interface ConnectWalletParams {}
-  export interface DisconnectWalletResult {
-    [k: string]: unknown
-  }
-  export interface DisconnectWalletParams {
-    token: Token
-  }
-  export interface GetPermissionsResult {
-    permissions: PermissionsSummary
-  }
-  /**
-   * The description of the permissions a third-party application has.
-   */
-  export interface PermissionsSummary {
-    public_keys: AccessMode
-  }
-  export interface GetPermissionsParams {
-    token: Token
-  }
-  export interface RequestPermissionsResult {
-    permissions: PermissionsSummary
-  }
-  export interface RequestPermissionsParams {
-    token: Token
-    requestedPermissions: PermissionsSummary
-  }
-  export interface ListKeysResult {
-    keys: NamedPublicKey[]
-  }
-  /**
-   * The public key with its name.
-   */
-  export interface NamedPublicKey {
-    name: string
-    publicKey: string
-  }
-  export interface ListKeysParams {
-    token: Token
-  }
-  export interface SignTransactionResult {
-    transaction: SignedTransaction
-  }
-  /**
-   * A transaction that has been signed by the wallet.
-   */
-  export interface SignedTransaction {
-    inputData: string
-    signature: {
-      value: string
-      algo: string
-      version: number
-    }
-    from: {
-      publicKey?: string
-      address?: string
-    }
-    version: number
-    pow: {
-      tid: string
-      nonce: number
-    }
-  }
-  export interface SignTransactionParams {
-    token: Token
-    publicKey: PublicKey
-    transaction: Transaction
-  }
+  sendingMode: "TYPE_SYNC" | "TYPE_ASYNC" | "TYPE_COMMIT";
   /**
    * The transaction as a JSON object
    */
-  export interface Transaction {}
-  export interface SendTransactionResult {
-    /**
-     * The date when the API received the request to send the transaction.
-     *
-     * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
-     */
-    receivedAt: string
-    /**
-     * The date when the transaction has been sent to the network.
-     *
-     * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
-     */
-    sentAt: string
-    /**
-     * The hash of the transaction. It's used to uniquely identify the transaction and can be used in the block explorer to retrieve it.
-     */
-    transactionHash: string
-    transaction: SignedTransaction
-  }
-  export interface SendTransactionParams {
-    token: Token
-    publicKey: PublicKey
-    sendingMode: SendingMode
-    transaction: Transaction
-  }
-  export interface GetChainIdResult {
-    /**
-     * The chain identifier
-     */
-    chainID: string
-  }
-  export interface GetChainIdParams {}
+  transaction: {};
+}
+export interface GetChainIdResult {
+  /**
+   * The chain identifier
+   */
+  chainID: string;
+}
+export interface GetChainIdParams {}
+
 }
 
 export enum Identifier {
-  ConnectWallet = 'client.connect_wallet',
-  DisconnectWallet = 'client.disconnect_wallet',
-  GetPermissions = 'client.get_permissions',
-  RequestPermissions = 'client.request_permissions',
-  ListKeys = 'client.list_keys',
-  SignTransaction = 'client.sign_transaction',
-  SendTransaction = 'client.send_transaction',
-  GetChainId = 'client.get_chain_id',
+ConnectWallet = 'client.connect_wallet',
+DisconnectWallet = 'client.disconnect_wallet',
+GetPermissions = 'client.get_permissions',
+RequestPermissions = 'client.request_permissions',
+ListKeys = 'client.list_keys',
+SignTransaction = 'client.sign_transaction',
+SendTransaction = 'client.send_transaction',
+GetChainId = 'client.get_chain_id',
 }
 
 type Props = {
@@ -169,14 +217,14 @@ type Options = {
   id?: string
 }
 
-async function handleResponse<T>(res: Response) {
+async function handleResponse <T>(res: Response) {
   if (!res.ok) {
     throw new Error(res.statusText)
   }
   const { jsonrpc, ...json } = await res.json()
 
   return json as Promise<{
-    result: T
+    result: T,
     id: string
   }>
 }
@@ -186,21 +234,21 @@ export class WalletClient {
   private hostname: string
   private token?: string
 
-  constructor({ hostname, origin, token }: Props) {
+  constructor ({ hostname, origin, token }: Props) {
     this.origin = origin || window.location.origin
     this.hostname = hostname
     this.token = token
   }
 
+  
+
+  
   /**
    * Initiates a connection between a wallet and a third-party application.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ConnectWallet = async (
-    params: WalletModel.ConnectWalletParams = {},
-    options?: Options
-  ) => {
+  public ConnectWallet = async (params: WalletModel.ConnectWalletParams = {} , options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -208,23 +256,20 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.ConnectWallet,
         params: params,
       }),
-    }).then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
+    }).then(r => handleResponse<WalletModel.ConnectWalletResult>(r))
   }
-
+  
   /**
    * Returns the chain ID of the network in use.
    */
 
   // tslint:disable-next-line:max-line-length
-  public GetChainId = async (
-    params: WalletModel.GetChainIdParams = {},
-    options?: Options
-  ) => {
+  public GetChainId = async (params: WalletModel.GetChainIdParams = {} , options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -232,23 +277,22 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.GetChainId,
         params: params,
       }),
-    }).then((r) => handleResponse<WalletModel.GetChainIdResult>(r))
+    }).then(r => handleResponse<WalletModel.GetChainIdResult>(r))
   }
+  
 
+  
   /**
    * Ends the connection between the third-party application and the wallet.
    */
 
   // tslint:disable-next-line:max-line-length
-  public DisconnectWallet = async (
-    params: Omit<WalletModel.DisconnectWalletParams, 'token'>,
-    options?: Options
-  ) => {
+  public DisconnectWallet = async (params: Omit<WalletModel.DisconnectWalletParams, 'token'>, options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -256,26 +300,23 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.DisconnectWallet,
         params: {
           ...params,
           token: this.token,
-        },
+        }
       }),
-    }).then((r) => handleResponse<WalletModel.DisconnectWalletResult>(r))
+    }).then(r => handleResponse<WalletModel.DisconnectWalletResult>(r))
   }
-
+  
   /**
    * Returns the permissions set on the wallet for the third-party application.
    */
 
   // tslint:disable-next-line:max-line-length
-  public GetPermissions = async (
-    params: Omit<WalletModel.GetPermissionsParams, 'token'>,
-    options?: Options
-  ) => {
+  public GetPermissions = async (params: Omit<WalletModel.GetPermissionsParams, 'token'>, options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -283,26 +324,23 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.GetPermissions,
         params: {
           ...params,
           token: this.token,
-        },
+        }
       }),
-    }).then((r) => handleResponse<WalletModel.GetPermissionsResult>(r))
+    }).then(r => handleResponse<WalletModel.GetPermissionsResult>(r))
   }
-
+  
   /**
    * Requests permissions update for the third-party application.
    */
 
   // tslint:disable-next-line:max-line-length
-  public RequestPermissions = async (
-    params: Omit<WalletModel.RequestPermissionsParams, 'token'>,
-    options?: Options
-  ) => {
+  public RequestPermissions = async (params: Omit<WalletModel.RequestPermissionsParams, 'token'>, options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -310,26 +348,23 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.RequestPermissions,
         params: {
           ...params,
           token: this.token,
-        },
+        }
       }),
-    }).then((r) => handleResponse<WalletModel.RequestPermissionsResult>(r))
+    }).then(r => handleResponse<WalletModel.RequestPermissionsResult>(r))
   }
-
+  
   /**
    * Returns the keys the user has allowed the third-party application to have access to.
    */
 
   // tslint:disable-next-line:max-line-length
-  public ListKeys = async (
-    params: Omit<WalletModel.ListKeysParams, 'token'>,
-    options?: Options
-  ) => {
+  public ListKeys = async (params: Omit<WalletModel.ListKeysParams, 'token'>, options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -337,26 +372,23 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.ListKeys,
         params: {
           ...params,
           token: this.token,
-        },
+        }
       }),
-    }).then((r) => handleResponse<WalletModel.ListKeysResult>(r))
+    }).then(r => handleResponse<WalletModel.ListKeysResult>(r))
   }
-
+  
   /**
    * Sign a transaction without sending it.
    */
 
   // tslint:disable-next-line:max-line-length
-  public SignTransaction = async (
-    params: Omit<WalletModel.SignTransactionParams, 'token'>,
-    options?: Options
-  ) => {
+  public SignTransaction = async (params: Omit<WalletModel.SignTransactionParams, 'token'>, options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -364,26 +396,23 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.SignTransaction,
         params: {
           ...params,
           token: this.token,
-        },
+        }
       }),
-    }).then((r) => handleResponse<WalletModel.SignTransactionResult>(r))
+    }).then(r => handleResponse<WalletModel.SignTransactionResult>(r))
   }
-
+  
   /**
    * Send a transaction to the network.
    */
 
   // tslint:disable-next-line:max-line-length
-  public SendTransaction = async (
-    params: Omit<WalletModel.SendTransactionParams, 'token'>,
-    options?: Options
-  ) => {
+  public SendTransaction = async (params: Omit<WalletModel.SendTransactionParams, 'token'>, options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {
@@ -391,25 +420,25 @@ export class WalletClient {
         Origin: this.origin,
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.SendTransaction,
         params: {
           ...params,
           token: this.token,
-        },
+        }
       }),
-    }).then((r) => handleResponse<WalletModel.SendTransactionResult>(r))
+    }).then(r => handleResponse<WalletModel.SendTransactionResult>(r))
   }
+  
 
   /**
    * Returns a list of supported methods
    */
   public ListMethods = async () => {
-    return fetch(`${this.hostname}/api/v2/methods`).then((r) =>
-      handleResponse<{
+    return fetch(`${this.hostname}/api/v2/methods`)
+      .then(r => handleResponse<{
         registeredMethods: string[]
-      }>(r)
-    )
+      }>(r))
   }
 }

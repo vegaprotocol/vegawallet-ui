@@ -9,8 +9,8 @@ import type { ConfigProps } from './util/config'
 import { getConfig } from './util/config'
 import { logger } from './util/logger'
 import { requestJson } from './util/request-json'
+import { resolveRefs } from './util/resolve-refs'
 import {
-  DocumentSchema,
   compileTs,
   getMethodName,
   getMethodExample,
@@ -18,6 +18,7 @@ import {
   getMethodParamsType,
   getMethodResultType,
 } from './util/compile-ts'
+import { DocumentSchema } from './util/schemas'
 
 type PipeProps = {
   dest: string
@@ -65,7 +66,9 @@ const generate = async (props: ConfigProps) => {
       ),
     }
 
-    const types = await compileTs(documentWithSelectedMethods)
+    const resolvedDocument = await resolveRefs(documentWithSelectedMethods)
+
+    const types = await compileTs(resolvedDocument)
     await copy(templateDir, outDir)
 
     await pipeFiles({
@@ -75,7 +78,7 @@ const generate = async (props: ConfigProps) => {
           types,
           version: packageJson.version,
           openrpcDocument,
-          methods: documentWithSelectedMethods.methods,
+          methods: resolvedDocument.methods,
           getMethodName,
           getMethodExample,
           getMethodParamsType,
