@@ -8,17 +8,14 @@ export const createExample = (method: MethodType) => {
   }
 
   return {
-    params: method.params.map(p => ({
+    params: method.params.map((p) => ({
       name: p.name,
-      value: typeof p === 'boolean'
-        ? null
-        : mock(p.schema),
+      value: typeof p === 'boolean' ? null : mock(p.schema),
     })),
     result: {
       name: 'Success',
-      value: typeof method.result === 'boolean'
-        ? null
-        : mock(method.result.schema),
-    }
+      value:
+        typeof method.result === 'boolean' ? null : mock(method.result.schema),
+    },
   }
 }

@@ -42,7 +42,11 @@ async function main() {
   try {
     const options = OptionsSchema.parse(program.opts())
 
-    const packageJsonPath = path.join(ROOT, workspace.projects[options.project], 'package.json')
+    const packageJsonPath = path.join(
+      ROOT,
+      workspace.projects[options.project],
+      'package.json'
+    )
     const packageJson = await getJsonContent(packageJsonPath)
     const defaultNewVersion = patchVersion(packageJson.version)
 
@@ -50,9 +54,12 @@ async function main() {
 
     if (
       options.version &&
-      parseInt(packageJson.version.replace('.', '')) >= parseInt(options.version.replace('.', ''))
+      parseInt(packageJson.version.replace('.', '')) >=
+        parseInt(options.version.replace('.', ''))
     ) {
-      throw new Error(`The version to update to (${options.version}) needs to be bigger than the current one (${packageJson.version}).`)
+      throw new Error(
+        `The version to update to (${options.version}) needs to be bigger than the current one (${packageJson.version}).`
+      )
     }
 
     await writeFile(

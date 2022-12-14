@@ -130,7 +130,9 @@ const normalizeComponent = (component: Record<string, object> = {}) => {
 }
 
 export const compileTs = async (openrpcDocument: DocumentType) => {
-  const normalizedDocument = normalizeDocument<DocumentType>(clone(openrpcDocument))
+  const normalizedDocument = normalizeDocument<DocumentType>(
+    clone(openrpcDocument)
+  )
 
   const schema = normalizedDocument.methods?.reduce<NormalizedDocument>(
     (acc, method) => {
@@ -152,5 +154,6 @@ export const compileTs = async (openrpcDocument: DocumentType) => {
     }
   )
 
-  return compile(schema, '', COMPILE_OPTS)
+  const types = await compile(schema, '', COMPILE_OPTS)
+  return types.replace(new RegExp(': {};', 'g'), ': Record<string, unknown>;')
 }
