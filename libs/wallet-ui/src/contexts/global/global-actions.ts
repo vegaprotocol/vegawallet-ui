@@ -424,7 +424,7 @@ export function createActions(service: Service, client: WalletClient) {
               service,
             })
           }
-          await client.RemoveNetwork({ network })
+          await client.RemoveNetwork({ name: network })
           dispatch({
             type: 'REMOVE_NETWORK',
             network,

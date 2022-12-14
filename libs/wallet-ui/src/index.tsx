@@ -1,5 +1,4 @@
 import './index.css'
-import { StrictMode } from 'react'
 import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
 import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
@@ -32,38 +31,36 @@ export type AppProps = {
  */
 export function App({ service, client, runtime, features }: AppProps) {
   return (
-    <StrictMode>
-      <ErrorBoundary
-        fallback={({ error }) => (
-          <SplashError
-            title="Somthing went wrong"
-            message={error.message}
-            actions={[<Button onClick={runtime.WindowReload}>Reload</Button>]}
-          />
-        )}
+    <ErrorBoundary
+      fallback={({ error }) => (
+        <SplashError
+          title="Somthing went wrong"
+          message={error.message}
+          actions={[<Button onClick={runtime.WindowReload}>Reload</Button>]}
+        />
+      )}
+    >
+      <GlobalProvider
+        service={service}
+        client={client}
+        runtime={runtime}
+        features={features}
       >
-        <GlobalProvider
-          service={service}
-          client={client}
-          runtime={runtime}
-          features={features}
-        >
-          <Router>
-            <AppFrame>
-              <Chrome>
-                <AppLoader>
-                  <AppRouter />
-                  <TelemetryDialog />
-                  <PassphraseModal />
-                  <InteractionManager />
-                  <NetworkCompatibilityDialog />
-                  <Settings />
-                </AppLoader>
-              </Chrome>
-            </AppFrame>
-          </Router>
-        </GlobalProvider>
-      </ErrorBoundary>
-    </StrictMode>
+        <Router>
+          <AppFrame>
+            <Chrome>
+              <AppLoader>
+                <AppRouter />
+                <TelemetryDialog />
+                <PassphraseModal />
+                <InteractionManager />
+                <NetworkCompatibilityDialog />
+                <Settings />
+              </AppLoader>
+            </Chrome>
+          </AppFrame>
+        </Router>
+      </GlobalProvider>
+    </ErrorBoundary>
   )
 }
