@@ -50,8 +50,6 @@ async function main() {
     const packageJson = await getJsonContent(packageJsonPath)
     const defaultNewVersion = patchVersion(packageJson.version)
 
-    console.log(options)
-
     if (
       options.version &&
       parseInt(packageJson.version.replace('.', '')) >=
