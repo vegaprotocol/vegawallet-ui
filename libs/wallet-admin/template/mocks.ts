@@ -7,7 +7,7 @@ export function MockAPIRequest (id: Identifier.<%= getMethodName(method) %>, par
 export function MockAPIRequest (id: Identifier) {
   switch (id) {
     <% methods.forEach((method) => { %>case Identifier.<%= getMethodName(method) %>: {
-      return Promise.resolve<WalletModel.<%= getMethodResultType(method) %>>(<%= getMethodExample(method) %>)
+      return Promise.resolve<WalletModel.<%= getMethodResultType(method) %>>(<%= getMethodResultExample(method) %>)
     }
     <%}) %>
     default: {

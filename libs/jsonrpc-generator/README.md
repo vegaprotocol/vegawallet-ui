@@ -25,7 +25,8 @@ The following variables are exposed in the templates:
 - `openrpcDocument`: the openrpc source document
 - `methods`: the methods selected to generate
 - `getMethodName`: takes a method object, and returns a `pascalCase` string to use as the method name
-- `getMethodExample`: takes a method object, and returns the result example on it if there's one
+- `getMethodResultExample`: takes a method object, and returns the result example on it if there's one
+- `getMethodParamsExample`: takes a method object, and returns the params example on it if there's one
 - `getMethodParamsType`: takes a method object, and returns a `pascalCase` string to use as the method params typing
 - `getMethodResultType`: takes a method object, and returns a `pascalCase` string to use as the method result typing
 - `getMethodParams`: takes a method object, and returns either `params` (if the method paramStructure is 'by-name') or `...params` (if the method paramStructure is 'by-order')

@@ -28,13 +28,27 @@ export const getMethodParams = (method: MethodType) => {
   return `...params`
 }
 
-export const getMethodExample = (method: MethodType) => {
+export const getMethodResultExample = (method: MethodType) => {
+  const example = createExample(method)
+  return JSON.stringify(example.result.value, null, 2)
+}
+
+export const getMethodParamsExample = (method: MethodType) => {
   const example = createExample(method)
 
-  if (typeof example?.result.value === 'object') {
-    return JSON.stringify(example.result.value, null, 2)
+  if (method.paramStructure === 'by-name') {
+    const params = example.params.reduce(
+      (acc, param, i) => ({
+        ...acc,
+        [param.name ?? i]: param.value,
+      }),
+      {}
+    )
+    return JSON.stringify(params, null, 2)
   }
-  return 'undefined'
+
+  const params = example.params?.map((p) => p.value)
+  return JSON.stringify(params, null, 2)
 }
 
 // recursive function, skipping strict doc type definition here

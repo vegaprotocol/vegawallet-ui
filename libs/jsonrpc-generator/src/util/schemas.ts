@@ -47,7 +47,12 @@ const MethodSchema = z.object({
       z.object({
         name: z.string(),
         description: z.string().optional(),
-        params: z.array(z.object({})),
+        params: z.array(
+          z.object({
+            name: z.string(),
+            value: z.any(),
+          })
+        ),
         result: z.object({
           name: z.string(),
           value: z.any(),

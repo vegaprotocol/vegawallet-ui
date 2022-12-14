@@ -42,7 +42,7 @@ export class WalletClient {
     this.token = token
   }
 
-  <% methods.filter(m => m.name === 'client.connet_wallet').forEach((method) => { %>
+  <% methods.filter(m => m.name === 'client.connect_wallet').forEach((method) => { %>
   /**
    * <%= method.summary %>
    */
@@ -64,13 +64,13 @@ export class WalletClient {
     })
       .then(r => handleResponse<WalletModel.<%= getMethodResultType(method) %>>(r))
       .then(r => {
-        this.result.token = r.token
+        this.token = r.result.token
         return r
       })
   }
   <% }) %>
 
-  <% methods.filter(m => m.name !== 'client.connet_wallet' && !m.params.find(p => p.name === 'token')).forEach((method) => { %>
+  <% methods.filter(m => m.name !== 'client.connect_wallet' && !m.params.find(p => p.name === 'token')).forEach((method) => { %>
   /**
    * <%= method.summary %>
    */
@@ -122,10 +122,8 @@ export class WalletClient {
   /**
    * Returns a list of supported methods
    */
-  public ListMethods = async () => {
+  public ListMethods = async (): Promise<{ registeredMethods: string[] }> => {
     return fetch(`${this.hostname}/api/v2/methods`)
-      .then(r => handleResponse<{
-        registeredMethods: string[]
-      }>(r))
+      .then(r => r.json())
   }
 }

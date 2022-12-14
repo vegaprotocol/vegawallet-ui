@@ -260,7 +260,12 @@ export class WalletClient {
         method: Identifier.ConnectWallet,
         params: params,
       }),
-    }).then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
+    })
+      .then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
+      .then((r) => {
+        this.token = r.result.token
+        return r
+      })
   }
 
   /**
@@ -452,11 +457,7 @@ export class WalletClient {
   /**
    * Returns a list of supported methods
    */
-  public ListMethods = async () => {
-    return fetch(`${this.hostname}/api/v2/methods`).then((r) =>
-      handleResponse<{
-        registeredMethods: string[]
-      }>(r)
-    )
+  public ListMethods = async (): Promise<{ registeredMethods: string[] }> => {
+    return fetch(`${this.hostname}/api/v2/methods`).then((r) => r.json())
   }
 }

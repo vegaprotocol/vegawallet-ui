@@ -1,4 +1,4 @@
-import type { Express } from 'express'
+import type { Express } from 'express';
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
@@ -8,10 +8,57 @@ type Props = {
   port: number
 }
 
+const MockParams = {
+  ConnectWallet: {
+    hostname: 'vega.xyz',
+  },
+
+  DisconnectWallet: {
+    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+  },
+
+  GetPermissions: {
+    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+  },
+
+  RequestPermissions: {
+    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+    requestedPermissions: {
+      publicKeys: 'read',
+    },
+  },
+
+  ListKeys: {
+    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+  },
+
+  SignTransaction: {
+    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+    publicKey:
+      '3fd42fd5ceb22d99ac45086f1d82d516118a5cb7ad9a2e096cd78ca2c8960c80',
+    sendingMode: 'TYPE_SYNC',
+    encodedTransaction:
+      'ewogICAgInZvdGVTdWJtaXNzaW9uIjogewogICAgICAgICJwcm9wb3NhbElkIjogImViMmQzOTAyZmRkYTljM2ViNmUzNjlmMjIzNTY4OWI4NzFjNzMyMmNmM2FiMjg0ZGRlM2U5ZGZjMTM4NjNhMTciLAogICAgICAgICJ2YWx1ZSI6ICJWQUxVRV9ZRVMiCiAgICB9Cn0K',
+  },
+
+  SendTransaction: {
+    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+    publicKey:
+      '3fd42fd5ceb22d99ac45086f1d82d516118a5cb7ad9a2e096cd78ca2c8960c80',
+    sendingMode: 'TYPE_SYNC',
+    encodedTransaction:
+      'ewogICAgInZvdGVTdWJtaXNzaW9uIjogewogICAgICAgICJwcm9wb3NhbElkIjogImViMmQzOTAyZmRkYTljM2ViNmUzNjlmMjIzNTY4OWI4NzFjNzMyMmNmM2FiMjg0ZGRlM2U5ZGZjMTM4NjNhMTciLAogICAgICAgICJ2YWx1ZSI6ICJWQUxVRV9ZRVMiCiAgICB9Cn0K',
+  },
+
+  GetChainId: {},
+}
+
 export class MockWalletService {
   private port: number
   private app: Express
   private server: null | ReturnType<Express['listen']>
+
+  public static params = MockParams
 
   constructor({ port }: Props) {
     const app = express()
@@ -24,28 +71,40 @@ export class MockWalletService {
       switch (req.body.method) {
         case Identifier.ConnectWallet: {
           res.send({
-            token:
-              'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+            id: req.body.id,
+            result: {
+              token:
+                'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
+            },
           })
           return
         }
 
         case Identifier.DisconnectWallet: {
-          res.send(null)
+          res.send({
+            id: req.body.id,
+            result: null,
+          })
           return
         }
 
         case Identifier.GetPermissions: {
           res.send({
-            publicKeys: 'read',
+            id: req.body.id,
+            result: {
+              publicKeys: 'read',
+            },
           })
           return
         }
 
         case Identifier.RequestPermissions: {
           res.send({
-            permissions: {
-              publicKeys: 'read',
+            id: req.body.id,
+            result: {
+              permissions: {
+                publicKeys: 'read',
+              },
             },
           })
           return
@@ -53,45 +112,57 @@ export class MockWalletService {
 
         case Identifier.ListKeys: {
           res.send({
-            keys: [
-              {
-                name: 'Key 1',
-                publicKey:
-                  'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
-              },
-              {
-                name: 'Key 2',
-                publicKey:
-                  '988eae323a07f12363c17025c23ee58ea32ac3912398e16bb0b56969f57adc52',
-              },
-            ],
+            id: req.body.id,
+            result: {
+              keys: [
+                {
+                  name: 'Key 1',
+                  publicKey:
+                    'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
+                },
+                {
+                  name: 'Key 2',
+                  publicKey:
+                    '988eae323a07f12363c17025c23ee58ea32ac3912398e16bb0b56969f57adc52',
+                },
+              ],
+            },
           })
           return
         }
 
         case Identifier.SignTransaction: {
           res.send({
-            receivedAt: '2021-02-18T21:54:42.123Z',
-            sentAt: '2021-02-18T21:54:42.123Z',
-            txHash:
-              'E8C167126D1FC8D92898AB9C07C318161DF68753A1316A69ABDC9ADC557723B3',
+            id: req.body.id,
+            result: {
+              receivedAt: '2021-02-18T21:54:42.123Z',
+              sentAt: '2021-02-18T21:54:42.123Z',
+              txHash:
+                'E8C167126D1FC8D92898AB9C07C318161DF68753A1316A69ABDC9ADC557723B3',
+            },
           })
           return
         }
 
         case Identifier.SendTransaction: {
           res.send({
-            receivedAt: '2021-02-18T21:54:42.123Z',
-            sentAt: '2021-02-18T21:54:42.123Z',
-            txHash:
-              'E8C167126D1FC8D92898AB9C07C318161DF68753A1316A69ABDC9ADC557723B3',
+            id: req.body.id,
+            result: {
+              receivedAt: '2021-02-18T21:54:42.123Z',
+              sentAt: '2021-02-18T21:54:42.123Z',
+              txHash:
+                'E8C167126D1FC8D92898AB9C07C318161DF68753A1316A69ABDC9ADC557723B3',
+            },
           })
           return
         }
 
         case Identifier.GetChainId: {
           res.send({
-            chainID: 'test-chain-Thz9c6',
+            id: req.body.id,
+            result: {
+              chainID: 'test-chain-Thz9c6',
+            },
           })
           return
         }

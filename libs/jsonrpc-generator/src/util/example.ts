@@ -4,7 +4,10 @@ import type { MethodType } from './schemas'
 
 export const createExample = (method: MethodType) => {
   if (method.examples?.length) {
-    return method.examples?.[0]
+    return method.examples?.[0] as {
+      params: Array<{ name?: string; value: unknown }>
+      result: { name?: string; value: unknown }
+    }
   }
 
   return {

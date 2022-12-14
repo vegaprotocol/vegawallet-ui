@@ -7,10 +7,18 @@ type Props = {
   port: number
 }
 
+const MockParams = {
+  <% methods.forEach((method) => { %>
+  <%= getMethodName(method) %>: <%= getMethodParamsExample(method) %>,
+  <% }) %>
+}
+
 export class MockWalletService {
   private port: number
   private app: Express
   private server: null | ReturnType<Express['listen']>
+
+  public static params = MockParams
 
   constructor ({ port }: Props) {
     const app = express()
@@ -23,7 +31,10 @@ export class MockWalletService {
       switch (req.body.method) {
       <% methods.forEach((method) => { %>
         case Identifier.<%= getMethodName(method) %>: {
-          res.send(<%= getMethodExample(method) %>)
+          res.send({
+            id: req.body.id,
+            result: <%= getMethodResultExample(method) %>,
+          })
           return
         }
       <% }) %>
