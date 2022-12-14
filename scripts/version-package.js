@@ -29,7 +29,10 @@ async function main() {
   const workspace = await getJsonContent(path.join(ROOT, 'workspace.json'))
 
   const OptionsSchema = z.object({
-    version: z.string().regex(/^\d+.\d+.\d+$/),
+    version: z
+      .string()
+      .regex(/^\d+.\d+.\d+$/)
+      .optional(),
     project: z.enum(Object.keys(workspace.projects)),
   })
 

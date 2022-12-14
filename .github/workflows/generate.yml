@@ -25,10 +25,12 @@ jobs:
       - name: Regenerate the wallet client
         run: yarn nx run wallet-client:generate
         with: WALLET_CLIENT_SPECS={{ github.event.data.source }}
-      - name: Bump the wallet admin
-        run: yarn nx run wallet-admin:bump
-      - name: Bump the wallet client
-        run: yarn nx run wallet-client:bump
+      - name: Bump the library versions
+        run: yarn nx run-many target=bump
+      - name: Update readmes
+        run: |
+          node ./scripts/bump-readme --project=wallet-client --version={{ github.event.data.version }} \
+          node ./scripts/bump-readme --project=wallet-admin --version={{ github.event.data.version }} \
       - name: Format
         run: yarn nx format:write
       - name: Create PR
