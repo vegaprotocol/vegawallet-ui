@@ -1,0 +1,16 @@
+{
+  "name": "@vegaprotocol/wallet-theme",
+  "author": "Gobalsky Labs Ltd.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "./index.js",
+  "types": "./src/index.d.ts",
+  "homepage": "https://github.com/vegaprotocol/vegawallet-ui/tree/develop/libs/wallet-ui",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vegaprotocol/vegawallet-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vegaprotocol/vegawallet-ui/issues"
+  }
+}

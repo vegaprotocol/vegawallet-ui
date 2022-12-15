@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import type { ErrorInfo, ReactNode } from 'react'
 import { Component, useEffect } from 'react'
 
@@ -60,16 +61,12 @@ export function AppFrame({ children }: AppFrameProps) {
   const useVegaBg = state.status === AppStatus.Onboarding
   return (
     <div
-      style={{
-        height: '100%',
-        paddingTop: APP_FRAME_HEIGHT,
-        backgroundSize: 'cover',
-        backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
-        position: 'relative',
-        overflowY: 'auto',
-      }}
       data-testid="app-frame"
-      className={useVegaBg ? 'vega-bg' : undefined}
+      className={classnames('h-full bg-cover relative overflow-y-auto', `pt-${APP_FRAME_HEIGHT / 16}`, {
+         'vega-bg': useVegaBg,
+         'bg-transparent': useVegaBg,
+         'dark:bg-grey-100': !useVegaBg, // Colors.DARK_GRAY_1
+       })}
     >
       <div
         style={{

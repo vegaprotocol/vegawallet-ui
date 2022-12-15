@@ -5,15 +5,6 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "nx run wallet-ui:build-css",
-          "nx run wallet-ui:build-js"
-        ]
-      }
-    },
-    "build-js": {
       "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/wallet-ui",
@@ -29,7 +20,6 @@
         "esbuildOptions": {
           "external": true,
           "loader": {
-            ".css": "file",
             ".png": "file"
           }
         },
@@ -40,12 +30,6 @@
             "output": "."
           }
         ]
-      }
-    },
-    "build-css": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npx tailwindcss -i ./libs/wallet-ui/src/index.css -o ./dist/libs/wallet-ui/index.css"
       }
     },
     "pre-publish": {

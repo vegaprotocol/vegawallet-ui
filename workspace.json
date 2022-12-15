@@ -3,6 +3,7 @@
   "projects": {
     "jsonrpc-generator": "libs/jsonrpc-generator",
     "wallet-client": "libs/wallet-client",
+    "wallet-theme": "libs/wallet-theme",
     "wallet-ui": "libs/wallet-ui"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
