@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-// @ts-ignore Webpack refuses to build this when imported using a default imoprt
+// @ts-ignore Webpack refuses to build this when imported using a default import
 import { useThunkReducer } from 'react-hook-thunk-reducer'
 import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 
