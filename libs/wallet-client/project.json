@@ -10,8 +10,9 @@
         "outputPath": "dist/libs/wallet-client",
         "tsConfig": "libs/wallet-client/tsconfig.lib.json",
         "project": "libs/wallet-client/package.json",
+        "additionalEntryPoints": ["libs/wallet-client/src/mocks.ts"],
         "main": "libs/wallet-client/src/index.ts",
-        "format": ["esm"],
+        "format": ["cjs"],
         "minify": false,
         "thirdParty": false,
         "platform": "browser",
@@ -75,6 +76,21 @@
       "outputs": [],
       "options": {
         "command": "yarn nx run jsonrpc-generator:run --config ./libs/wallet-client/codegen.json"
+      }
+    },
+    "bump": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "node ./scripts/version-package --project=wallet-client"
+      }
+    },
+    "start-mock": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "options": {
+        "command": "node ./scripts/wallet-client-mock.js"
       }
     }
   }

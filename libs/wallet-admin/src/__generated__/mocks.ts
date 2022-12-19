@@ -63,6 +63,14 @@ export function MockAPIRequest(
   params: WalletModel.AnnotateKeyParams
 ): Promise<WalletModel.AnnotateKeyResult>
 export function MockAPIRequest(
+  id: Identifier.IsolateKey,
+  params: WalletModel.IsolateKeyParams
+): Promise<WalletModel.IsolateKeyResult>
+export function MockAPIRequest(
+  id: Identifier.RotateKey,
+  params: WalletModel.RotateKeyParams
+): Promise<WalletModel.RotateKeyResult>
+export function MockAPIRequest(
   id: Identifier.TaintKey,
   params: WalletModel.TaintKeyParams
 ): Promise<WalletModel.TaintKeyResult>
@@ -83,9 +91,57 @@ export function MockAPIRequest(
   params: WalletModel.UpdatePermissionsParams
 ): Promise<WalletModel.UpdatePermissionsResult>
 export function MockAPIRequest(
+  id: Identifier.RevokePermissions,
+  params: WalletModel.RevokePermissionsParams
+): Promise<WalletModel.RevokePermissionsResult>
+export function MockAPIRequest(
+  id: Identifier.PurgePermissions,
+  params: WalletModel.PurgePermissionsParams
+): Promise<WalletModel.PurgePermissionsResult>
+export function MockAPIRequest(
+  id: Identifier.SignTransaction,
+  params: WalletModel.SignTransactionParams
+): Promise<WalletModel.SignTransactionResult>
+export function MockAPIRequest(
   id: Identifier.SignMessage,
   params: WalletModel.SignMessageParams
 ): Promise<WalletModel.SignMessageResult>
+export function MockAPIRequest(
+  id: Identifier.VerifyMessage,
+  params: WalletModel.VerifyMessageParams
+): Promise<WalletModel.VerifyMessageResult>
+export function MockAPIRequest(
+  id: Identifier.SendTransaction,
+  params: WalletModel.SendTransactionParams
+): Promise<WalletModel.SendTransactionResult>
+export function MockAPIRequest(
+  id: Identifier.SendRawTransaction,
+  params: WalletModel.SendRawTransactionParams
+): Promise<WalletModel.SendRawTransactionResult>
+export function MockAPIRequest(
+  id: Identifier.StartService,
+  params: WalletModel.StartServiceParams
+): Promise<WalletModel.StartServiceResult>
+export function MockAPIRequest(
+  id: Identifier.StopService,
+  params: WalletModel.StopServiceParams
+): Promise<WalletModel.StopServiceResult>
+export function MockAPIRequest(
+  id: Identifier.ListConnections,
+  params: WalletModel.ListConnectionsParams
+): Promise<WalletModel.ListConnectionsResult>
+export function MockAPIRequest(
+  id: Identifier.CloseConnection,
+  params: WalletModel.CloseConnectionParams
+): Promise<WalletModel.CloseConnectionResult>
+export function MockAPIRequest(
+  id: Identifier.CloseConnectionsToHostname,
+  params: WalletModel.CloseConnectionsToHostnameParams
+): Promise<WalletModel.CloseConnectionsToHostnameResult>
+export function MockAPIRequest(
+  id: Identifier.CloseConnectionsToWallet,
+  params: WalletModel.CloseConnectionsToWalletParams
+): Promise<WalletModel.CloseConnectionsToWalletResult>
 export function MockAPIRequest(id: Identifier) {
   switch (id) {
     case Identifier.CreateWallet: {
@@ -260,6 +316,20 @@ export function MockAPIRequest(id: Identifier) {
         ],
       })
     }
+    case Identifier.IsolateKey: {
+      return Promise.resolve<WalletModel.IsolateKeyResult>({
+        wallet: 'my-wallet.b5fd9d3c.isolated',
+        filePath: 'some/path/to/my-wallet.b5fd9d3c.isolated',
+      })
+    }
+    case Identifier.RotateKey: {
+      return Promise.resolve<WalletModel.RotateKeyResult>({
+        masterPublicKey:
+          '9df682a3c87d90567f260566a9c223ccbbb7529c38340cf163b8fe199dbf0f2e',
+        encodedTransaction:
+          'CqsBdGVzdC1jaGFpbi1UaHo5YzYACPfdurmpppHlogEQCqp9iAEIAhAPGkA5ODhlYWUzMjNhMDdmMTIzNjNjMTcwMjVjMjNlZTU4ZWEzMmFjMzkxMjM5OGUxNmJiMGI1Njk2OWY1N2FkYzUyIkA4MWFhZjk2NmU4ZjUxNDIzZjBiZDFkOTMzYWQ0NmY5NjJlMjNiY2Q3MTg4ZWQzZmUwZjUzZjRkYThhMzJhOWVlEpMBCoABYzg3NDVkODhlMWQ1YTBhOGE3NGI5YzRmN2QyMzQ3ZmQ5ZDY1NzIwYTQ3ZmYwNWU3YTZmZmYyOTA0NzhmOTU0M2NjM2E4MzJkNjBmYTJiNmY3ZTQ3YWJlMjE0MGIwOTEyNzBlNTAxZTA5MjVjNDg3NzEwMjViOTkyYTg1ZTAxMDQSDHZlZ2EvZWQyNTUxORgBgH0D0j5AOWRmNjgyYTNjODdkOTA1NjdmMjYwNTY2YTljMjIzY2NiYmI3NTI5YzM4MzQwY2YxNjNiOGZlMTk5ZGJmMGYyZQ==',
+      })
+    }
     case Identifier.TaintKey: {
       return Promise.resolve<WalletModel.TaintKeyResult>(null)
     }
@@ -302,11 +372,108 @@ export function MockAPIRequest(id: Identifier) {
         },
       })
     }
+    case Identifier.RevokePermissions: {
+      return Promise.resolve<WalletModel.RevokePermissionsResult>(null)
+    }
+    case Identifier.PurgePermissions: {
+      return Promise.resolve<WalletModel.PurgePermissionsResult>(null)
+    }
+    case Identifier.SignTransaction: {
+      return Promise.resolve<WalletModel.SignTransactionResult>({
+        encodedTransaction: 'string',
+      })
+    }
     case Identifier.SignMessage: {
       return Promise.resolve<WalletModel.SignMessageResult>({
         encodedSignature:
           '6a2Ud6yuNcnOaO8jaiTJJi8dZBQzvNySV2Tt2hD+YhVnz1dNxHGUavU2a1W1z0/1uX0n91x2jWXONMRpiiNODg==',
       })
+    }
+    case Identifier.VerifyMessage: {
+      return Promise.resolve<WalletModel.VerifyMessageResult>({
+        isValid: 'string',
+      })
+    }
+    case Identifier.SendTransaction: {
+      return Promise.resolve<WalletModel.SendTransactionResult>({
+        receivedAt: 'string',
+        sentAt: 'string',
+        transactionHash: 'string',
+        transaction: {
+          inputData: 'string',
+          signature: {
+            value: 'string',
+            algo: 'string',
+            version: 0,
+          },
+          from: {
+            publicKey: 'string',
+            address: 'string',
+          },
+          version: 0,
+          pow: {
+            tid: 'string',
+            nonce: 0,
+          },
+        },
+      })
+    }
+    case Identifier.SendRawTransaction: {
+      return Promise.resolve<WalletModel.SendRawTransactionResult>({
+        receivedAt: 'string',
+        sentAt: 'string',
+        transactionHash: 'string',
+        transaction: {
+          inputData: 'string',
+          signature: {
+            value: 'string',
+            algo: 'string',
+            version: 0,
+          },
+          from: {
+            publicKey: 'string',
+            address: 'string',
+          },
+          version: 0,
+          pow: {
+            tid: 'string',
+            nonce: 0,
+          },
+        },
+      })
+    }
+    case Identifier.StartService: {
+      return Promise.resolve<WalletModel.StartServiceResult>(null)
+    }
+    case Identifier.StopService: {
+      return Promise.resolve<WalletModel.StopServiceResult>(null)
+    }
+    case Identifier.ListConnections: {
+      return Promise.resolve<WalletModel.ListConnectionsResult>({
+        activeConnections: [
+          {
+            hostname: 'console.vega.xyz',
+            wallet: 'my-btc-wallet',
+          },
+          {
+            hostname: 'vega.xyz',
+            wallet: 'my-btc-wallet',
+          },
+          {
+            hostname: 'vega.xyz',
+            wallet: 'my-eth-wallet',
+          },
+        ],
+      })
+    }
+    case Identifier.CloseConnection: {
+      return Promise.resolve<WalletModel.CloseConnectionResult>(null)
+    }
+    case Identifier.CloseConnectionsToHostname: {
+      return Promise.resolve<WalletModel.CloseConnectionsToHostnameResult>(null)
+    }
+    case Identifier.CloseConnectionsToWallet: {
+      return Promise.resolve<WalletModel.CloseConnectionsToWalletResult>(null)
     }
 
     default: {

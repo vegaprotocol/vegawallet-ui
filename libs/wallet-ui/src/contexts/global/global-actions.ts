@@ -1,4 +1,4 @@
-import type { WalletModel, WalletClient } from '@vegaprotocol/wallet-client'
+import type { WalletModel, WalletAdmin } from '@vegaprotocol/wallet-admin'
 
 import type { Service, AppConfig } from '../../types/service'
 import type { Logger } from '../../types/logger'
@@ -92,7 +92,7 @@ const startService = async ({
   }
 }
 
-const getNetworks = async (client: WalletClient, preset?: NetworkPreset) => {
+const getNetworks = async (client: WalletAdmin, preset?: NetworkPreset) => {
   const networks = await client.ListNetworks()
 
   if (preset && (!networks.networks || networks.networks.length === 0)) {
@@ -119,7 +119,7 @@ const getDefaultNetwork = (
   return networks.networks?.[0]
 }
 
-export function createActions(service: Service, client: WalletClient) {
+export function createActions(service: Service, client: WalletAdmin) {
   const logger = service.GetLogger('GlobalActions')
 
   const actions = {

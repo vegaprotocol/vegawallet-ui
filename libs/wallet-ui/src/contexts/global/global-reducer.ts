@@ -1,5 +1,5 @@
 import { omit } from 'ramda'
-import type { WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { indexBy } from '../../lib/index-by'
 import type { NetworkPreset } from '../../lib/networks'

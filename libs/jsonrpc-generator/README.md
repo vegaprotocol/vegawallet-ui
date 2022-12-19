@@ -6,7 +6,7 @@ A generic implementation of a JSON RPC to typescript generator.
 
 The generator takes the following parameters:
 
-- document (as a flag: `-d, --document <file>`): the openrpc document to use as the source of the generation (url or local file path)
+- document (as a flag: `-d, --document <file>`): the openrpc document to use as the source of the generation (url or local file path) - accepts also underscore template variables which can be pointed to environment variables, like: `"document": "<%= ENV_VAR %>"`
 - outDir (as a flag: `-o, --outDir <dir>`): the target directory to generate the files to
 - templateDir (as a flag: `-t, --templateDir <dir>`): the source directory for the template files
 - methods (as a flag: `--methods <comma separated list>`): a list of method names to use for the generation (ignores the rest from the source document if provided)
@@ -25,7 +25,8 @@ The following variables are exposed in the templates:
 - `openrpcDocument`: the openrpc source document
 - `methods`: the methods selected to generate
 - `getMethodName`: takes a method object, and returns a `pascalCase` string to use as the method name
-- `getMethodExample`: takes a method object, and returns the result example on it if there's one
+- `getMethodResultExample`: takes a method object, and returns the result example on it if there's one
+- `getMethodParamsExample`: takes a method object, and returns the params example on it if there's one
 - `getMethodParamsType`: takes a method object, and returns a `pascalCase` string to use as the method params typing
 - `getMethodResultType`: takes a method object, and returns a `pascalCase` string to use as the method result typing
 - `getMethodParams`: takes a method object, and returns either `params` (if the method paramStructure is 'by-name') or `...params` (if the method paramStructure is 'by-order')

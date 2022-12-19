@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { Control, UseFormRegister } from 'react-hook-form'
 import { useFieldArray, useForm } from 'react-hook-form'
-import type { WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { Intent } from '../../config/intent'
 import { LogLevels } from '../../config/log-levels'
