@@ -89,7 +89,6 @@
     },
     "storybook": {
       "executor": "@nrwl/storybook:storybook",
-      "dependsOn": ["build-css"],
       "options": {
         "uiFramework": "@storybook/react",
         "port": 4400,
@@ -106,7 +105,6 @@
     "build-storybook": {
       "executor": "@nrwl/storybook:build",
       "outputs": ["{options.outputPath}"],
-      "dependsOn": ["build-css"],
       "options": {
         "uiFramework": "@storybook/react",
         "outputPath": "dist/storybook/wallet-ui",
