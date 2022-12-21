@@ -35,7 +35,7 @@
       "outputs": [],
       "options": {
         "commands": [
-          "yarn nx run wallet-admin:build",
+          "yarn nx run wallet-admin:build-js",
           "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-admin/tsconfig.lib.json",
           "node scripts/patch-package-module.js ./dist/libs/wallet-admin/package.json"
         ],

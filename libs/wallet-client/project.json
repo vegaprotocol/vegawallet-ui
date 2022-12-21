@@ -36,7 +36,7 @@
       "outputs": [],
       "options": {
         "commands": [
-          "yarn nx run wallet-client:build",
+          "yarn nx run wallet-client:build-js",
           "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-client/tsconfig.lib.json",
           "node scripts/patch-package-module.js ./dist/libs/wallet-client/package.json"
         ],
