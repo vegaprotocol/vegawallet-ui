@@ -33,7 +33,7 @@ export function Toast({
   }
 
   const cancelTimeout = () => {
-    clearTimeout(timeoutRef.current)
+    timeoutRef.current && clearTimeout(timeoutRef.current)
   }
 
   const dismiss = () => {

@@ -9,7 +9,8 @@
       "options": {
         "commands": [
           "nx run wallet-ui:build-css",
-          "nx run wallet-ui:build-js"
+          "nx run wallet-ui:build-js",
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json"
         ]
       }
     },
@@ -21,7 +22,7 @@
         "project": "libs/wallet-ui/package.json",
         "additionalEntryPoints": ["libs/wallet-ui/src/mocks.ts"],
         "main": "libs/wallet-ui/src/index.tsx",
-        "format": ["esm"],
+        "format": ["esm", "cjs"],
         "minify": false,
         "sourcemap": true,
         "thirdParty": false,
@@ -36,8 +37,13 @@
         "assets": [
           {
             "glob": "README.md",
-            "input": ".",
-            "output": "."
+            "input": "libs/wallet-ui",
+            "output": "./"
+          },
+          {
+            "glob": "*.png",
+            "input": "libs/wallet-ui/src/images",
+            "output": "./images"
           }
         ]
       }
@@ -45,7 +51,7 @@
     "build-css": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx tailwindcss -i ./libs/wallet-ui/src/index.css -o ./dist/libs/wallet-ui/index.css"
+        "command": "npx postcss ./libs/wallet-ui/src/index.css --dir ./dist/libs/wallet-ui --config ./libs/wallet-ui"
       }
     },
     "pre-publish": {
@@ -54,7 +60,6 @@
       "options": {
         "commands": [
           "yarn nx run wallet-ui:build",
-          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json",
           "node scripts/patch-package-module.js ./dist/libs/wallet-ui/package.json"
         ],
         "parallel": false
@@ -84,6 +89,7 @@
     },
     "storybook": {
       "executor": "@nrwl/storybook:storybook",
+      "dependsOn": ["build-css"],
       "options": {
         "uiFramework": "@storybook/react",
         "port": 4400,
@@ -100,6 +106,7 @@
     "build-storybook": {
       "executor": "@nrwl/storybook:build",
       "outputs": ["{options.outputPath}"],
+      "dependsOn": ["build-css"],
       "options": {
         "uiFramework": "@storybook/react",
         "outputPath": "dist/storybook/wallet-ui",

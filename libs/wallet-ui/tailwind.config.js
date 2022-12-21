@@ -1,115 +1,104 @@
 /** @type {import('tailwindcss').Config} */
-const { join } = require('path')
+const path = require('path')
 
 module.exports = {
-  content: [
-    join(__dirname, 'src/**/*.{ts,tsx,html,mdx}')
-  ],
+  content: [path.join(__dirname, 'src/**/*.{ts,tsx,html,mdx}')],
   theme: {
     extend: {
+      screens: {
+        xs: '500px',
+        sm: '640px',
+        md: '768px',
+        lg: '960px',
+        xl: '1280px',
+        xxl: '1536px',
+      },
       colors: {
-        red: '#FF261A',
-        green: '#26FF8A',
-        yellow: '#',
-        orange: '#',
-        blue: '#',
-        pink: '#',
-        black: '#101010',
-        white: '#fff',
-        grey: {
-
+        transparent: 'transparent',
+        current: 'currentColor',
+        danger: {
+          DEFAULT: '#FF261A',
         },
-
-
-        primary: '#',
-        secondary: '#',
-
-        text: {
-
+        warning: {
+          DEFAULT: '#FF7A1A',
         },
-
-
-        success: '#',
-        warning: '#',
-        danger: '#',
-      }
+        success: {
+          DEFAULT: '#00F780',
+        },
+        yellow: {
+          DEFAULT: '#D7FB50',
+          dark: '#9BE106',
+        },
+        pink: {
+          DEFAULT: '#FF077F',
+          dark: '#CF0064',
+        },
+        green: {
+          DEFAULT: '#00F780',
+          dark: '#00D46E',
+        },
+        blue: {
+          DEFAULT: '#0075FF',
+          dark: '#0046CD',
+        },
+        purple: {
+          DEFAULT: '#8028FF',
+          dark: '#5D0CD2',
+        },
+        dark: {
+          100: '#161616',
+          200: '#404040',
+          300: '#8B8B8B',
+          400: '#C0C0C0',
+        },
+        light: {
+          100: '#F0F0F0',
+          200: '#D2D2D2',
+          300: '#A7A7A7',
+          400: '#626262',
+        },
+        primary: {
+          DEFAULT: '#48aff8',
+        },
+      },
+      spacing: {
+        1: '2px',
+        2: '6px',
+        3: '10px',
+      },
+      fontFamily: {
+        mono: ['Roboto Mono', 'monospace'],
+        sans: [
+          '"Helvetica Neue"',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Arial',
+          '"Noto Sans"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          '"Noto Color Emoji"',
+        ],
+        alpha: [
+          'AlphaLyrae',
+          '"Helvetica Neue"',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Arial',
+          '"Noto Sans"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          '"Noto Color Emoji"',
+        ],
+      },
     },
   },
   plugins: [],
 }
-
-
-/* Brand colors */
-red: 255,38,26;
-green: 38,255,138;
-yellow: 218,255,13;
-orange: 217,130,43;
-blue: 72,175,240;
-pink: 255,7,127;
-
-none: 110,110,110;
-none-bg: none / 40%;
-primary: blue
-primary-bg: primary / 40%;
-success: 24,181,103;
-success-bg: success / 40%;
-warning: orange;
-warning-bg: warning / 40%;
-danger: 237,21,21;
-danger-bg: danger / 40%;
-
-/* Grayscale */
---black: #101010;
---white: #fff;
---dark-gray1: #1f1f1f;
---dark-gray2: #2a2a2a;
---dark-gray3: #363636;
---dark-gray4: #3f3f3f;
---dark-gray5: #494949;
---gray1: #6e6e6e;
---gray2: #848484;
---gray3: #999;
---gray4: #b5b5b5;
---gray5: #cbcbcb;
---light-gray1: #d7d7d7;
---light-gray2: #e0e0e0;
---light-gray3: #e7e7e7;
---light-gray4: #f0f0f0;
---light-gray5: #f8f8f8;
---text-color: #f8f8f8;
---text-color-deemphasise: #8a9ba8;
---text-color-emphasise: #f5f8fa;
-
-
-
-
-
-VEGA_RED = 'var(--vega-red)',
-VEGA_GREEN = 'var(--vega-green)',
-VEGA_YELLOW = 'var(--vega-yellow)',
-VEGA_ORANGE = 'var(--vega-orange)',
-VEGA_BLUE = 'var(--vega-blue)',
-VEGA_PINK = 'var(--vega-pink)',
-INTENT_SUCCESS = 'var(--intent-success)',
-INTENT_WARNING = 'var(--intent-warning)',
-INTENT_DANGER = 'var(--intent-danger)',
-BLACK = 'var(--black)',
-WHITE = 'var(--white)',
-DARK_GRAY_1 = 'var(--dark-gray1)',
-DARK_GRAY_2 = 'var(--dark-gray2)',
-DARK_GRAY_3 = 'var(--dark-gray3)',
-DARK_GRAY_4 = 'var(--dark-gray4)',
-DARK_GRAY_5 = 'var(--dark-gray5)',
-GRAY_1 = 'var(--gray1)',
-GRAY_2 = 'var(--gray2)',
-GRAY_3 = 'var(--gray3)',
-GRAY_4 = 'var(--gray4)',
-GRAY_5 = 'var(--gray5)',
-LIGHT_GRAY_1 = 'var(--light-gray1)',
-LIGHT_GRAY_2 = 'var(--light-gray2)',
-LIGHT_GRAY_3 = 'var(--light-gray3)',
-LIGHT_GRAY_4 = 'var(--light-gray4)',
-LIGHT_GRAY_5 = 'var(--light-gray5)',
-TEXT_COLOR = 'var(--text-color)',
-TEXT_COLOR_DEEMPHASISE = 'var(--text-color-deemphasise)',
-TEXT_COLOR_EMPHASISE = 'var(--text-color-emphasise)',

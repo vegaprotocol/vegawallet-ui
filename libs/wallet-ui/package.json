@@ -3,7 +3,6 @@
   "author": "Gobalsky Labs Ltd.",
   "version": "0.1.17",
   "license": "MIT",
-  "main": "./index.js",
   "types": "./src/index.d.ts",
   "homepage": "https://github.com/vegaprotocol/vegawallet-ui/tree/develop/libs/wallet-ui",
   "repository": {

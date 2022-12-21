@@ -11,19 +11,14 @@ type BulletListItemProps = LiHTMLAttributes<HTMLLIElement>
 export function BulletListItem({ children, ...props }: BulletListItemProps) {
   return (
     <li {...props}>
-      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+      <div className="flex items-start">
         <svg
           width="11"
           height="11"
           viewBox="0 0 11 11"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          style={{
-            position: 'relative',
-            top: 7,
-            display: 'inline-block',
-            marginRight: 10,
-          }}
+          className="relative top-[7px] inline-block mr-3"
         >
           <rect width="11" height="11" fill="currentColor"></rect>
         </svg>

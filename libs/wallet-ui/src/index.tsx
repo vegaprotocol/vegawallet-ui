@@ -1,7 +1,8 @@
+import './index.css'
 import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
 import type { WalletClient } from '@vegaprotocol/wallet-client'
-import { ThemeContext } from '@vegaprotocol/wallet-theme'
+import { ThemeProvider } from '@vegaprotocol/wallet-theme'
 
 import { AppFrame, AppLoader } from './app-loader'
 import { Button } from './components/button'
@@ -40,7 +41,7 @@ export function App({ service, client, runtime, features }: AppProps) {
         />
       )}
     >
-      <ThemeContext>
+      <ThemeProvider value="dark">
         <GlobalProvider
           service={service}
           client={client}
@@ -62,7 +63,7 @@ export function App({ service, client, runtime, features }: AppProps) {
             </AppFrame>
           </Router>
         </GlobalProvider>
-      </ThemeContext>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }

@@ -7,7 +7,6 @@ import { ServiceLoader } from './components/service-loader'
 import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
-import { Colors } from './config/colors'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
 import type { Logger } from './types/logger'
 
@@ -62,20 +61,22 @@ export function AppFrame({ children }: AppFrameProps) {
   return (
     <div
       data-testid="app-frame"
-      className={classnames('h-full bg-cover relative overflow-y-auto', `pt-${APP_FRAME_HEIGHT / 16}`, {
-         'vega-bg': useVegaBg,
-         'bg-transparent': useVegaBg,
-         'dark:bg-grey-100': !useVegaBg, // Colors.DARK_GRAY_1
-       })}
+      className={classnames(
+        'h-full bg-cover relative overflow-y-auto',
+        `pt-9`,
+        {
+          'vega-bg': useVegaBg,
+          'bg-transparent': useVegaBg,
+          'dark:bg-grey-100 light:bg-grey-400': !useVegaBg,
+        }
+      )}
     >
       <div
+        className={classnames('absolute top-0 left-0 w-full ', `h-9`, {
+          'bg-transparent': useVegaBg,
+          'dark:bg-black light:bg-white': !useVegaBg,
+        })}
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: APP_FRAME_HEIGHT,
-          backgroundColor: useVegaBg ? 'transparent' : Colors.BLACK,
           // The app is frameless by default so this element creates a space at the top of the app
           // which you can click and drag to move the app around.
           // https://wails.io/docs/guides/frameless/
