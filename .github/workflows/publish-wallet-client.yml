@@ -19,7 +19,7 @@ jobs:
       - name: Install root dependencies
         run: yarn install --frozen-lockfile
       - name: Prepare Wallet UI
-        run: yarn nx run wallet-client:pre-publish
+        run: yarn nx run wallet-client:build
       - name: Publish to @vegaprotocol
         uses: JS-DevTools/npm-publish@v1
         with:

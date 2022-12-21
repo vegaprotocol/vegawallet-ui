@@ -4,7 +4,7 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
+    "build-js": {
       "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/wallet-client",
@@ -31,7 +31,7 @@
         ]
       }
     },
-    "pre-publish": {
+    "build": {
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
