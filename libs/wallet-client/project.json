@@ -4,7 +4,7 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
+    "build-js": {
       "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/wallet-client",
@@ -12,7 +12,7 @@
         "project": "libs/wallet-client/package.json",
         "additionalEntryPoints": ["libs/wallet-client/src/mocks.ts"],
         "main": "libs/wallet-client/src/index.ts",
-        "format": ["cjs"],
+        "format": ["esm", "cjs"],
         "minify": false,
         "thirdParty": false,
         "platform": "browser",
@@ -25,19 +25,20 @@
         "assets": [
           {
             "glob": "README.md",
-            "input": ".",
+            "input": "libs/wallet-client",
             "output": "."
           }
         ]
       }
     },
-    "pre-publish": {
+    "build": {
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "commands": [
-          "yarn nx run wallet-client:build",
-          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-client/tsconfig.lib.json"
+          "yarn nx run wallet-client:build-js",
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-client/tsconfig.lib.json",
+          "node scripts/patch-package-module.js ./dist/libs/wallet-client/package.json"
         ],
         "parallel": false
       }

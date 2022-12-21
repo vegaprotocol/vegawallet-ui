@@ -2,6 +2,7 @@ import './index.css'
 import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
 import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
+import { ThemeProvider } from '@vegaprotocol/wallet-theme'
 
 import { AppFrame, AppLoader } from './app-loader'
 import { Button } from './components/button'
@@ -40,27 +41,29 @@ export function App({ service, client, runtime, features }: AppProps) {
         />
       )}
     >
-      <GlobalProvider
-        service={service}
-        client={client}
-        runtime={runtime}
-        features={features}
-      >
-        <Router>
-          <AppFrame>
-            <Chrome>
-              <AppLoader>
-                <AppRouter />
-                <TelemetryDialog />
-                <PassphraseModal />
-                <InteractionManager />
-                <NetworkCompatibilityDialog />
-                <Settings />
-              </AppLoader>
-            </Chrome>
-          </AppFrame>
-        </Router>
-      </GlobalProvider>
+      <ThemeProvider value="dark">
+        <GlobalProvider
+          service={service}
+          client={client}
+          runtime={runtime}
+          features={features}
+        >
+          <Router>
+            <AppFrame>
+              <Chrome>
+                <AppLoader>
+                  <AppRouter />
+                  <TelemetryDialog />
+                  <PassphraseModal />
+                  <InteractionManager />
+                  <NetworkCompatibilityDialog />
+                  <Settings />
+                </AppLoader>
+              </Chrome>
+            </AppFrame>
+          </Router>
+        </GlobalProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }

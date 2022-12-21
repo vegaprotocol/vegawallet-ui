@@ -5,18 +5,6 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "nx run wallet-ui:build-css",
-          "nx run wallet-ui:build-js",
-          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json",
-          "node scripts/patch-package-module.js ./dist/libs/wallet-ui/package.json"
-        ]
-      },
-      "parallel": false
-    },
-    "build-js": {
       "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/wallet-ui",
@@ -24,7 +12,7 @@
         "project": "libs/wallet-ui/package.json",
         "additionalEntryPoints": ["libs/wallet-ui/src/mocks.ts"],
         "main": "libs/wallet-ui/src/index.tsx",
-        "format": ["esm", "cjs"],
+        "format": ["esm"],
         "minify": false,
         "sourcemap": true,
         "thirdParty": false,
@@ -32,28 +20,16 @@
         "esbuildOptions": {
           "external": true,
           "loader": {
-            ".css": "file",
             ".png": "file"
           }
         },
         "assets": [
           {
             "glob": "README.md",
-            "input": "libs/wallet-ui",
-            "output": "./"
-          },
-          {
-            "glob": "*.png",
-            "input": "libs/wallet-ui/src/images",
-            "output": "./images"
+            "input": ".",
+            "output": "."
           }
         ]
-      }
-    },
-    "build-css": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npx postcss ./libs/wallet-ui/src/index.css --dir ./dist/libs/wallet-ui --config ./libs/wallet-ui"
       }
     },
     "lint": {
@@ -76,37 +52,6 @@
       "outputs": [],
       "options": {
         "command": "yarn tsc --noEmit --project ./libs/wallet-ui/tsconfig.json"
-      }
-    },
-    "storybook": {
-      "executor": "@nrwl/storybook:storybook",
-      "options": {
-        "uiFramework": "@storybook/react",
-        "port": 4400,
-        "config": {
-          "configFolder": "libs/wallet-ui/.storybook"
-        }
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
-      }
-    },
-    "build-storybook": {
-      "executor": "@nrwl/storybook:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "uiFramework": "@storybook/react",
-        "outputPath": "dist/storybook/wallet-ui",
-        "config": {
-          "configFolder": "libs/wallet-ui/.storybook"
-        }
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
       }
     },
     "build-spec": {

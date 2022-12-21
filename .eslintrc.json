@@ -89,12 +89,22 @@
       "files": ["*.spec.ts", "*.spec.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript", "plugin:jest/recommended"],
       "rules": {
-        "jest/consistent-test-it": ["error", { "fn": "it" }]
+        "jest/consistent-test-it": [
+          "error",
+          {
+            "fn": "it"
+          }
+        ]
       }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": "*.json",
+      "parser": "jsonc-eslint-parser",
       "rules": {}
     }
   ]

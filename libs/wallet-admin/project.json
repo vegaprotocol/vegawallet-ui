@@ -4,14 +4,14 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
+    "build-js": {
       "executor": "@nrwl/esbuild:esbuild",
       "options": {
         "outputPath": "dist/libs/wallet-admin",
         "tsConfig": "libs/wallet-admin/tsconfig.lib.json",
         "project": "libs/wallet-admin/package.json",
         "main": "libs/wallet-admin/src/index.ts",
-        "format": ["esm"],
+        "format": ["esm", "cjs"],
         "minify": false,
         "thirdParty": false,
         "platform": "browser",
@@ -24,19 +24,20 @@
         "assets": [
           {
             "glob": "README.md",
-            "input": ".",
+            "input": "libs/wallet-admin",
             "output": "."
           }
         ]
       }
     },
-    "pre-publish": {
+    "build": {
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "commands": [
-          "yarn nx run wallet-admin:build",
-          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-admin/tsconfig.lib.json"
+          "yarn nx run wallet-admin:build-js",
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-admin/tsconfig.lib.json",
+          "node scripts/patch-package-module.js ./dist/libs/wallet-admin/package.json"
         ],
         "parallel": false
       }

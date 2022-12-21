@@ -15,6 +15,9 @@ export const Input = forwardRef(
         {...props}
         type={type}
         ref={ref}
+        // @ts-ignore Fix automatic capitalization ifor input fields in desktop app
+        autocorrect="off"
+        autocomplete="off"
         style={{
           ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
           ...style,

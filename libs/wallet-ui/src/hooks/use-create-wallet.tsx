@@ -40,6 +40,10 @@ export function useCreateWallet() {
             intent: Intent.SUCCESS,
           })
           dispatch(actions.addWalletAction(values.wallet, keypair))
+          dispatch({
+            type: 'ACTIVATE_WALLET',
+            wallet: values.wallet,
+          })
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
         }
