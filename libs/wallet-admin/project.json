@@ -1,0 +1,89 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/wallet-admin/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/esbuild:esbuild",
+      "options": {
+        "outputPath": "dist/libs/wallet-admin",
+        "tsConfig": "libs/wallet-admin/tsconfig.lib.json",
+        "project": "libs/wallet-admin/package.json",
+        "main": "libs/wallet-admin/src/index.ts",
+        "format": ["esm"],
+        "minify": false,
+        "thirdParty": false,
+        "platform": "browser",
+        "esbuildOptions": {
+          "external": true,
+          "loader": {
+            ".png": "file"
+          }
+        },
+        "assets": [
+          {
+            "glob": "README.md",
+            "input": "libs/wallet-admin",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "pre-publish": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "yarn nx run wallet-admin:build",
+          "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-admin/tsconfig.lib.json",
+          "node scripts/patch-package-module.js ./dist/libs/wallet-admin/package.json"
+        ],
+        "parallel": false
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/wallet-admin/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/wallet-admin"],
+      "options": {
+        "jestConfig": "libs/wallet-admin/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn tsc --noEmit --project ./libs/wallet-admin/tsconfig.json"
+      }
+    },
+    "build-spec": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn tsc --project ./libs/wallet-admin/tsconfig.spec.json"
+      }
+    },
+    "generate": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn nx run jsonrpc-generator:run --config ./libs/wallet-admin/codegen.json"
+      }
+    },
+    "bump": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "node ./scripts/version-package --project=wallet-admin"
+      }
+    }
+  }
+}

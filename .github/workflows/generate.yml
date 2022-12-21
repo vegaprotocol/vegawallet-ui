@@ -1,0 +1,45 @@
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - webhook
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.0
+      - name: Restore node_modules from cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: node_modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install root dependencies
+        run: yarn install --frozen-lockfile
+      - name: Regenerate the wallet admin
+        run: yarn nx run wallet-admin:generate
+        with: WALLET_ADMIN_SPECS={{ github.event.data.source }}
+      - name: Regenerate the wallet client
+        run: yarn nx run wallet-client:generate
+        with: WALLET_CLIENT_SPECS={{ github.event.data.source }}
+      - name: Bump the library versions
+        run: yarn nx run-many target=bump
+      - name: Update readmes
+        run: |
+          node ./scripts/bump-readme --project=wallet-client --version={{ github.event.data.version }} \
+          node ./scripts/bump-readme --project=wallet-admin --version={{ github.event.data.version }} \
+      - name: Format
+        run: yarn nx format:write
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: 'chore: regenerate wallet libraries for v{{ github.event.data.version }}'
+          branch: chore/v{{ github.event.data.version }}-automated-updates
+          delete-branch: true
+          base: main
+          title: 'chore: v{{ github.event.data.version }} automated wallet updates'
+          labels:
+          team-reviewers: vegaprotocol/frontend

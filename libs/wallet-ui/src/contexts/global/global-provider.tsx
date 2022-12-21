@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-// @ts-ignore Webpack refuses to build this when imported using a default imoprt
+// @ts-ignore Webpack refuses to build this when imported using a default import
 import { useThunkReducer } from 'react-hook-thunk-reducer'
-import type { WalletClient } from '@vegaprotocol/wallet-client'
+import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 
 import type { Service, Runtime, Features } from '../../types'
 import { createActions } from './global-actions'
@@ -15,7 +15,7 @@ const DEFAULT_FEATURES: Features = {
 
 interface GlobalProviderProps {
   service: Service
-  client: WalletClient
+  client: WalletAdmin
   runtime: Runtime
   features?: Partial<Features>
   children: React.ReactElement

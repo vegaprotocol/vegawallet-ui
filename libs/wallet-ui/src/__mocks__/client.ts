@@ -1,3 +1,3 @@
-import { WalletClient, MockAPIRequest } from '@vegaprotocol/wallet-client'
+import { WalletAdmin, MockAPIRequest } from '@vegaprotocol/wallet-admin'
 
-export const client = new WalletClient(MockAPIRequest)
+export const client = new WalletAdmin(MockAPIRequest)

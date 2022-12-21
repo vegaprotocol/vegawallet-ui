@@ -3,13 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "declaration": true,
-    "declarationDir": ".",
-    "types": ["node"]
+    "declarationDir": "."
   },
-  "files": [
-    "../../node_modules/@nrwl/react/typings/cssmodule.d.ts",
-    "../../node_modules/@nrwl/react/typings/image.d.ts"
-  ],
   "exclude": [
     "**/*.spec.ts",
     "**/*.test.ts",
@@ -20,6 +15,5 @@
     "**/*.spec.jsx",
     "**/*.test.jsx",
     "jest.config.ts"
-  ],
-  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
+  ]
 }

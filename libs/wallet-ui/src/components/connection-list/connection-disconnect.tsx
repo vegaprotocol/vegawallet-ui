@@ -14,7 +14,7 @@ export const Disconnect = ({
   hostname,
   onClose,
 }: DisconnectDialogProps) => {
-  // TODO: add service.WalletClient.DisconnectWallet({...}) when made available
+  // TODO: add client.DisconnectWallet({...}) when made available
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleDisconnect = () => {}
 

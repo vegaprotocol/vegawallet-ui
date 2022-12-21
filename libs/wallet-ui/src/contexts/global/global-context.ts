@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import type { ThunkDispatch } from 'react-hook-thunk-reducer'
-import type { WalletClient, WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletAdmin, WalletModel } from '@vegaprotocol/wallet-admin'
 
 import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
@@ -108,7 +108,7 @@ type GlobalContextShape = {
   service: Service
   runtime: Runtime
   features: Features
-  client: WalletClient
+  client: WalletAdmin
 }
 
 export const GlobalContext = createContext<GlobalContextShape | undefined>(

@@ -1,7 +1,7 @@
 import './index.css'
 import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
-import type { WalletClient } from '@vegaprotocol/wallet-client'
+import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 import { ThemeProvider } from '@vegaprotocol/wallet-theme'
 
 import { AppFrame, AppLoader } from './app-loader'
@@ -22,7 +22,7 @@ export { FeatureMap } from './types/features'
 
 export type AppProps = {
   service: Service
-  client: WalletClient
+  client: WalletAdmin
   runtime: Runtime
   features?: Features
 }

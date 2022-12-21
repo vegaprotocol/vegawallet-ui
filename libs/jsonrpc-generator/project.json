@@ -11,15 +11,13 @@
         "tsConfig": "libs/jsonrpc-generator/tsconfig.lib.json",
         "project": "libs/jsonrpc-generator/package.json",
         "main": "libs/jsonrpc-generator/src/index.ts",
-        "format": ["esm"],
+        "format": ["cjs"],
+        "sourcemap": true,
         "minify": false,
         "thirdParty": false,
         "platform": "node",
         "esbuildOptions": {
-          "external": true,
-          "loader": {
-            ".png": "file"
-          }
+          "external": true
         },
         "assets": [
           {
@@ -45,6 +43,13 @@
         "passWithNoTests": true
       }
     },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn tsc --noEmit --project ./libs/jsonrpc-generator/tsconfig.lib.json"
+      }
+    },
     "build-spec": {
       "executor": "nx:run-commands",
       "outputs": [],
@@ -55,8 +60,9 @@
     "run": {
       "executor": "nx:run-commands",
       "outputs": [],
+      "dependsOn": ["build"],
       "options": {
-        "command": "npx ts-node ./libs/jsonrpc-generator/src/index.ts generate"
+        "command": "npx ts-node --project ./libs/jsonrpc-generator/tsconfig.json ./libs/jsonrpc-generator/src/index.ts generate"
       }
     }
   }

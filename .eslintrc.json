@@ -81,6 +81,7 @@
             "disallowTypeAnnotations": true
           }
         ],
+        "@typescript-eslint/no-empty-interface": "off",
         "curly": ["error", "multi-line"]
       }
     },

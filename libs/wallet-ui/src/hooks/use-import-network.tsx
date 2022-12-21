@@ -1,5 +1,5 @@
 import { useMemo, useCallback, useState } from 'react'
-import type { WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'

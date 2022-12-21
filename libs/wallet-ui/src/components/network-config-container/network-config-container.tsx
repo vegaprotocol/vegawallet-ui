@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import type { ReactElement } from 'react'
-import type { WalletModel } from '@vegaprotocol/wallet-client'
+import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { useGlobal } from '../../contexts/global/global-context'
 
