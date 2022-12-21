@@ -5,7 +5,7 @@ export function BreakText({
   children: React.ReactNode
 }) {
   return (
-    <span className={`max-w-${200 / 16} break-words`} {...rest}>
+    <span className={`max-w-[200px] break-words`} {...rest}>
       {children}
     </span>
   )
