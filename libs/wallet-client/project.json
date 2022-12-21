@@ -12,7 +12,7 @@
         "project": "libs/wallet-client/package.json",
         "additionalEntryPoints": ["libs/wallet-client/src/mocks.ts"],
         "main": "libs/wallet-client/src/index.ts",
-        "format": ["cjs"],
+        "format": ["esm", "cjs"],
         "minify": false,
         "thirdParty": false,
         "platform": "browser",
