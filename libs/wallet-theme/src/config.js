@@ -10,6 +10,8 @@ module.exports = {
   colors: {
     transparent: 'transparent',
     current: 'currentColor',
+    black: '#101010',
+    white: '#fff',
     danger: {
       DEFAULT: '#FF261A',
     },
@@ -50,6 +52,9 @@ module.exports = {
       200: '#D2D2D2',
       300: '#A7A7A7',
       400: '#626262',
+    },
+    neutral: {
+      DEFAULT: '#6E6E6E',
     },
     primary: {
       DEFAULT: '#48aff8',

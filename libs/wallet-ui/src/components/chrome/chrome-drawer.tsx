@@ -1,7 +1,7 @@
+import classnames from 'classnames'
 import { animated, config, useSpring } from 'react-spring'
 
 import { APP_FRAME_HEIGHT } from '../../app-loader'
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { DRAWER_HEIGHT } from '.'
 import { DrawerContent } from './drawer-content'
@@ -26,14 +26,13 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
 
   return (
     <animated.div
-      className="vega-border-image"
-      style={{
-        translateY: styles.y,
-        background: Colors.BLACK,
-        borderTop: '3px solid',
-        height: height - APP_FRAME_HEIGHT,
-        overflowY: state.drawerState.isOpen ? 'auto' : 'hidden',
-      }}
+      className={classnames(
+        'vega-border-image bg-black border-t-[3px]',
+        `h-[${height - APP_FRAME_HEIGHT}px] translate-y-[${styles.y}px]`,
+        {
+          'overflow-y-hidden': state.drawerState.isOpen,
+        }
+      )}
     >
       <DrawerContent />
     </animated.div>

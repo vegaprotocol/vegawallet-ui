@@ -1,5 +1,5 @@
 export const Intent = {
-  NONE: 'none' as const,
+  NONE: 'neutral' as const,
   PRIMARY: 'primary' as const,
   SUCCESS: 'success' as const,
   WARNING: 'warning' as const,

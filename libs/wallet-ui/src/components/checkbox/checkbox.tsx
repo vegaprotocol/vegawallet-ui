@@ -3,7 +3,6 @@ import type { ReactNode } from 'react'
 import type { Control, Path, FieldValues } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
-import { Colors } from '../../config/colors'
 import { Tick } from '../icons/tick'
 
 type CheckboxProps<T extends FieldValues> = {
@@ -23,16 +22,16 @@ export function Checkbox<T extends FieldValues>({
       control={control}
       render={({ field }) => {
         return (
-          <div style={wrapper}>
+          <div className="flex items-center gap-[10px]">
             <CheckboxPrimitive.Root
               checked={!!field.value}
               onCheckedChange={field.onChange}
               name={name}
               id={name}
-              style={box}
+              className="inline-flex items-center justify-center w-[16px] h-[16px] bg-dark-200"
             >
-              <CheckboxPrimitive.Indicator style={boxInner}>
-                <Tick style={{ width: 10, height: 10 }} />
+              <CheckboxPrimitive.Indicator className="flex items-center justify-center w-[10px] h-[10px] text-white">
+                <Tick className="w-[10px] h-[10px]" />
               </CheckboxPrimitive.Indicator>
             </CheckboxPrimitive.Root>
             <label htmlFor={name}>{label}</label>
@@ -41,28 +40,4 @@ export function Checkbox<T extends FieldValues>({
       }}
     />
   )
-}
-
-const wrapper = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-}
-
-const box = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: 16,
-  height: 16,
-  background: Colors.DARK_GRAY_5,
-}
-
-const boxInner = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: 10,
-  height: 10,
-  color: Colors.WHITE,
 }

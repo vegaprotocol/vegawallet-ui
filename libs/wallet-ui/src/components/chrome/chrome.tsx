@@ -1,4 +1,4 @@
-import { Colors } from '../../config/colors'
+import classnames from 'classnames'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useWindowSize } from '../../hooks/use-window-size'
 import { ChromeDrawer } from './chrome-drawer'
@@ -16,37 +16,25 @@ export function Chrome({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div
-        className={!useVegaBg ? 'vega-border-image' : undefined}
-        style={{
-          position: 'relative',
-          display: 'block',
-          paddingBottom:
-            state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT,
-          height: '100%',
-          backgroundColor: useVegaBg ? 'transparent' : Colors.DARK_GRAY_1,
-          backgroundSize: 'cover',
-          borderTop: useVegaBg ? undefined : '3px solid',
-        }}
+        className={classnames('relative block h-full bg-cover', {
+          'vega-border-image': !useVegaBg,
+          'border-t-[3px]': !useVegaBg,
+          'bg-dark-100': !useVegaBg,
+          [`pb-[${DRAWER_HEIGHT}px]`]: state.status === AppStatus.Initialised,
+        })}
       >
-        <main
-          style={{
-            height: '100%',
-            overflowY: 'auto',
-          }}
-        >
-          {children}
-        </main>
+        <main className="h-full overflow-y-auto">{children}</main>
       </div>
       {state.status === AppStatus.Initialised && (
         <div
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            transition: 'bottom 0.2s',
-            height: state.status !== AppStatus.Initialised ? 0 : DRAWER_HEIGHT,
-          }}
+          className={classnames(
+            'fixed bottom-o left-0 w-full transition-all duration-200',
+            {
+              [`h-[${DRAWER_HEIGHT}px]`]:
+                state.status === AppStatus.Initialised,
+              'h-0': state.status !== AppStatus.Initialised,
+            }
+          )}
         >
           <ChromeDrawer height={height} />
         </div>
