@@ -53,7 +53,7 @@ export const Home = () => {
   }
 
   return (
-    <div data-testid="wallet-home" style={{ padding: 20 }}>
+    <div data-testid="wallet-home" className="p-[20px]">
       <Title
         style={{
           margin: '0 0 30px 0',

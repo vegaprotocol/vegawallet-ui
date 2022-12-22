@@ -59,6 +59,7 @@ module.exports = {
     primary: {
       DEFAULT: '#48aff8',
     },
+    overlay: 'rgba(54, 54, 54, 0.8)',
   },
   spacing: {
     1: '2px',

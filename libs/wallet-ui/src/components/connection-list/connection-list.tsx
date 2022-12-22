@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { Fragment, useCallback, useState } from 'react'
 
 import { Colors } from '../../config/colors'
@@ -25,13 +26,9 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
   }, [setManageHost])
 
   return (
-    <div
-      style={{
-        borderBottom: connectionList.length ? `1px solid ${Colors.BLACK}` : '',
-      }}
-    >
+    <div className={connectionList.length ? 'border-b-1 border-black' : ''}>
       {connectionList.length === 0 && (
-        <p style={{ margin: '20px 0' }}>No connections established.</p>
+        <p className="my-[20px]">No connections established.</p>
       )}
       {connectionList.map((key) => (
         <Fragment key={key}>

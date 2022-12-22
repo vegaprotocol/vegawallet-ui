@@ -35,7 +35,7 @@ export const ChangeNetwork = ({
   }, [networks])
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ padding: 20 }}>
+    <form onSubmit={handleSubmit(onSubmit)} className="p-[20px]">
       <RadioGroup
         name="network"
         control={control}

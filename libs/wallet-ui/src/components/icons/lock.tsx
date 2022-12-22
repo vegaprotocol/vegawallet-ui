@@ -1,11 +1,11 @@
-import type { CSSProperties } from 'react'
+import classnames from 'classnames'
 
-import { style as defaultStyle } from './style'
+import { className as defaultClassName } from './style'
 
-export function Lock({ style }: { style?: CSSProperties }) {
+export function Lock({ className }: { className?: string }) {
   return (
     <svg
-      style={{ ...defaultStyle, fill: 'currentColor', ...style }}
+      className={classnames(defaultClassName, className)}
       viewBox="0 0 16 16"
       xmlns="http://www.w3.org/2000/svg"
     >

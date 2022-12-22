@@ -50,7 +50,7 @@ export function UpdateKeypairDialog() {
   return (
     <Dialog open={state.isUpdateKeyModalOpen} title="Update key">
       <PublicKey publicKey={keypair.publicKey} />
-      <div style={{ padding: '0 20px 20px' }}>
+      <div className="px-[20px] pb-[20px]">
         <UpdateKeyForm keypair={keypair} wallet={wallet} />
       </div>
     </Dialog>

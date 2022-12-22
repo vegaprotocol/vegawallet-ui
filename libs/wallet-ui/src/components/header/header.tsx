@@ -3,7 +3,6 @@ import type { ReactNode } from 'react'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { ChevronLeft } from '../../components/icons/chevron-left'
 import { Title } from '../../components/title'
-import { Colors } from '../../config/colors'
 
 interface HeaderProps {
   breadcrumb?: ReactNode
@@ -14,32 +13,22 @@ interface HeaderProps {
 
 export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
   return (
-    <div style={{ padding: 20 }}>
+    <div className="p-[20px]">
       {breadcrumb && onBack && (
         <ButtonUnstyled
           data-testid="back"
           onClick={onBack}
-          style={{
-            display: 'flex',
-            gap: 10,
-            alignItems: 'center',
-            textDecoration: 'none',
-          }}
+          className="flex gap-[10px] items-center no-underline"
         >
-          <ChevronLeft style={{ width: 14 }} />
-          <Title style={{ color: Colors.WHITE, margin: 0 }}>{breadcrumb}</Title>
+          <ChevronLeft className="w-[14px]" />
+          <Title className="text-white m-0">{breadcrumb}</Title>
         </ButtonUnstyled>
       )}
       <div>
         <Title
           element="h1"
           data-testid="header-title"
-          style={{
-            color: Colors.WHITE,
-            fontSize: 32,
-            textTransform: 'none',
-            letterSpacing: 0,
-          }}
+          className="text-white text-3xl no-underline tracking-normal"
         >
           {title}
         </Title>

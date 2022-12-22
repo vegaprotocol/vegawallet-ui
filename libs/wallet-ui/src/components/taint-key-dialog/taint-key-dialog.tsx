@@ -29,7 +29,7 @@ export const TaintKeyDialog = () => {
       open={state.isTaintKeyModalOpen}
       title={keypair.isTainted ? 'Untaint key' : 'Taint key'}
     >
-      <div data-testid="keypair-taint" style={{ padding: '0 20px 20px' }}>
+      <div data-testid="keypair-taint" className="px-[20px] pb-[20px]">
         {keypair.isTainted && (
           <div style={{ marginBottom: 20 }}>
             <p style={{ marginBottom: 10 }}>

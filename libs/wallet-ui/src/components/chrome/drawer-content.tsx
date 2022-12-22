@@ -81,10 +81,10 @@ export function DrawerContent() {
           >
             <ButtonUnstyled
               data-testid="back"
-              style={{ textDecoration: 'none' }}
+              className="no-underline"
               onClick={() => setView(DrawerPanel.Network)}
             >
-              <ChevronLeft style={{ width: 14, marginRight: 6 }} />
+              <ChevronLeft className="w-[14px] mr-[6px]" />
               Back
             </ButtonUnstyled>
           </DrawerHead>
@@ -108,7 +108,7 @@ export function DrawerContent() {
           >
             <ButtonUnstyled
               data-testid="back"
-              style={{ textDecoration: 'none' }}
+              className="no-underline"
               onClick={() => setView(DrawerPanel.Manage)}
             >
               Back
@@ -133,7 +133,7 @@ export function DrawerContent() {
           >
             <ButtonUnstyled
               data-testid="back"
-              style={{ textDecoration: 'none' }}
+              className="no-underline"
               onClick={() => setView(DrawerPanel.Manage)}
             >
               Back
@@ -156,5 +156,5 @@ interface DrawerContentWrapperProps {
 }
 
 function DrawerContentWrapper({ children }: DrawerContentWrapperProps) {
-  return <div style={{ padding: 20 }}>{children}</div>
+  return <div className="p-[20px]">{children}</div>
 }

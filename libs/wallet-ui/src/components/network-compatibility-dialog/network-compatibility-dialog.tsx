@@ -178,7 +178,7 @@ export const NetworkCompatibilityDialog = () => {
       title={title}
     >
       {subview === null && (
-        <div style={{ padding: 20 }}>
+        <div className="p-[20px]">
           <p style={{ marginBottom: 12 }}>
             Your selected network "<code>{networkData.network}</code>" is
             running on Vega <code>{networkData.retrievedVersion}</code>, however

@@ -41,7 +41,7 @@ const getDisplayDetails = (data: RequestPermissionsContent) => {
 
   if (targets.length === 1) {
     return (
-      <p style={{ paddingBottom: 20 }}>
+      <p className="pb-[20px]">
         {requestText}{' '}
         {getPermissionAction(data, targets[0], data.permissions[targets[0]])}
       </p>
@@ -49,13 +49,14 @@ const getDisplayDetails = (data: RequestPermissionsContent) => {
   }
 
   return (
-    <div style={{ paddingBottom: 20 }}>
+    <div className="pb-[20px]">
       <p>{requestText}</p>
-      <ul style={{ margin: '12px 0' }}>
+      <ul className="my-[12px] mx-0">
         {targets.map((target) => (
-          <li key={target} style={{ marginLeft: 12 }}>
+          <li key={target} className="ml-[12px]">
             <ChevronLeft
-              style={{ marginRight: 6, width: 13, transform: 'scale(-1, 1)' }}
+              className="mr-[6px] w-[13px]"
+              style={{ transform: 'scale(-1, 1)' }}
             />
             {getPermissionAction(data, target, data.permissions[target])}
           </li>
@@ -95,7 +96,7 @@ export const Permissions = ({
     <Dialog open={true} title="Wallet permissions">
       <div
         data-testid="wallet-request-permissions"
-        style={{ padding: '0 20px 20px' }}
+        className="px-[20px] pb-[20px]"
       >
         {message}
         <ButtonGroup inline>

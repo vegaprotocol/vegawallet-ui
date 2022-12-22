@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import type { ReactNode, CSSProperties } from 'react'
 
-import { Colors, IntentColors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 
 interface FormGroupProps {
@@ -18,39 +18,18 @@ export function FormGroup({
   label,
   labelFor,
   helperText,
-  style,
+  className,
   intent = Intent.NONE,
 }: FormGroupProps) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0 0 8px 0',
-        ...style,
-      }}
-    >
+    <div className={classnames('flex flex-col mb-[8px]', className)}>
       <label htmlFor={labelFor}>{label}</label>
-      <div
-        style={{
-          position: 'relative',
-          marginTop: 5,
-          paddingBottom: 21,
-        }}
-      >
+      <div className="relative mt-[5px] pb-[21px]">
         {children}
         {helperText && (
           <div
             data-testid="helper-text"
-            style={{
-              marginTop: 5,
-              fontSize: 14,
-              color:
-                // if no intent is provided, use deemphasises text to help visual hierarchy
-                intent === 'none'
-                  ? Colors.TEXT_COLOR_DEEMPHASISE
-                  : IntentColors[intent],
-            }}
+            className={classnames('mt-[5px] text-sm', `text-${intent}`)}
           >
             {helperText}
           </div>

@@ -16,16 +16,9 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
 
   return (
     <>
-      <Title style={{ marginTop: 0 }}>Network</Title>
+      <Title className="mt-0">Network</Title>
       {networks.length ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 20,
-          }}
-        >
+        <div className="flex items-center justify-between mb-[20px]">
           <NetworkSwitcher />
           <ButtonUnstyled
             data-testid="manage-networks"

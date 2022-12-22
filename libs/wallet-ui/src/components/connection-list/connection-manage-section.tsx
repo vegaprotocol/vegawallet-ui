@@ -33,17 +33,13 @@ export const PermissionSection = ({
   })
 
   return (
-    <div
-      style={{
-        padding: `20px 0`,
-      }}
-    >
+    <div className="py-[20px]">
       <Controller
         name={`${accessType}.access`}
         control={control}
         render={({ field }) => (
           <>
-            <Title style={{ margin: '20px 0' }}>{title}</Title>
+            <Title className="py-[20px]">{title}</Title>
             <RadioGroup
               name={`${accessType}.access`}
               control={control}
@@ -59,17 +55,9 @@ export const PermissionSection = ({
                   key={field.id}
                   name={`${accessType}.restrictedKeys.${index}.value`}
                   label={
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Title style={{ margin: '0 12px 0 0' }}>
-                        {field.name}
-                      </Title>
-                      (<code>{truncateMiddle(field.key)}</code>)
+                    <div className="flex items-center cursor-pointer">
+                      <Title className="pr-[12px]">{field.name}</Title>(
+                      <code>{truncateMiddle(field.key)}</code>)
                     </div>
                   }
                   control={control}

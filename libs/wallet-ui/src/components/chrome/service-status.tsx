@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-import { Colors } from '../../config/colors'
-import { Fonts } from '../../config/fonts'
 import { Intent } from '../../config/intent'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -61,16 +59,10 @@ export function ServiceStatus() {
   switch (serviceStatus) {
     case ServiceState.Started: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle background={Colors.VEGA_GREEN} />
+        <div data-testid="service-status" className="whitespace-nowrap">
+          <StatusCircle background="bg-green" />
           Wallet Service:{' '}
-          <span
-            style={{
-              fontFamily: Fonts.MONO,
-              background: Colors.DARK_GRAY_4,
-              padding: '1px 5px',
-            }}
-          >
+          <span className="font-mono bg-dark-200 py-[1px] px-[5px]">
             {network}
           </span>{' '}
           on <code>{serviceUrl}</code>
@@ -79,8 +71,8 @@ export function ServiceStatus() {
     }
     case ServiceState.Stopped: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle background={Colors.VEGA_RED} />
+        <div data-testid="service-status" className="whitespace-nowrap">
+          <StatusCircle background="bg-red" />
           <span>
             Wallet Service: Not running.{' '}
             <ButtonUnstyled onClick={startService}>
@@ -92,24 +84,24 @@ export function ServiceStatus() {
     }
     case ServiceState.Loading: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
+        <div data-testid="service-status" className="whitespace-nowrap">
+          <StatusCircle blinking background="bg-orange" />
           <span className="loading">Wallet Service: Loading</span>
         </div>
       )
     }
     case ServiceState.Stopping: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
+        <div data-testid="service-status" className="whitespace-nowrap">
+          <StatusCircle blinking background="bg-orange" />
           <span className="loading">Wallet Service: Stopping</span>
         </div>
       )
     }
     case ServiceState.Unhealthy: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
+        <div data-testid="service-status" className="whitespace-nowrap">
+          <StatusCircle blinking background="bg-orange" />
           <span>
             Wallet Service: Unhealthy{' '}
             <ButtonUnstyled onClick={restartService}>Restart</ButtonUnstyled>
@@ -119,8 +111,8 @@ export function ServiceStatus() {
     }
     case ServiceState.Unreachable: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle blinking background={Colors.VEGA_ORANGE} />
+        <div data-testid="service-status" className="whitespace-nowrap">
+          <StatusCircle blinking background="bg-orange" />
           <span className="loading">
             Wallet Service: Not reachable, retrying
           </span>
@@ -129,8 +121,8 @@ export function ServiceStatus() {
     }
     case ServiceState.Error: {
       return (
-        <div data-testid="service-status" style={{ whiteSpace: 'nowrap' }}>
-          <StatusCircle background={Colors.VEGA_RED} />
+        <div data-testid="service-status" className="whitespace-nowrap">
+          <StatusCircle background="bg-red" />
           <span>
             Wallet Service: Failed to start.{' '}
             <ButtonUnstyled onClick={startService}>

@@ -99,7 +99,7 @@ export const WalletSelection = ({
       <form
         onSubmit={handleSubmit(handleApprove)}
         data-testid="wallet-selection-modal"
-        style={{ padding: '0 20px 20px' }}
+        className="px-[20px] pb-[20px]"
       >
         <p
           style={{

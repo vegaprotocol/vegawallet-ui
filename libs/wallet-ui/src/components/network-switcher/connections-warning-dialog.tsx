@@ -44,14 +44,14 @@ export const ConnectionsWarningDialog = ({
       }
       onChange={setOpen}
     >
-      <div style={{ padding: 20 }}>
+      <div className="p-[20px]">
         <WarningPrompt wallets={activeConnections} />
         <p>
           Switching networks will result in losing these connections, and having
           to reconnect the dApps to your wallets.
         </p>
       </div>
-      <ButtonGroup inline style={{ padding: 20 }}>
+      <ButtonGroup inline className="p-[20px]">
         <Button onClick={onConfirm}>Switch</Button>
         <ButtonUnstyled onClick={() => setOpen(false)}>Cancel</ButtonUnstyled>
       </ButtonGroup>

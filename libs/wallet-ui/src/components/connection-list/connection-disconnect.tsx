@@ -20,14 +20,14 @@ export const Disconnect = ({
 
   return (
     <div>
-      <div style={{ padding: 20 }}>
+      <div className="p-[20px]">
         <p>
           Are you sure you want to disconnect your wallet{' '}
           <code>{wallet.name}</code> from <code>{hostname}</code>? You may lose
           site functionality.
         </p>
       </div>
-      <ButtonGroup inline style={{ padding: 20 }}>
+      <ButtonGroup inline className="p-[20px]">
         <Button onClick={handleDisconnect}>Disconnect</Button>
         <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
       </ButtonGroup>

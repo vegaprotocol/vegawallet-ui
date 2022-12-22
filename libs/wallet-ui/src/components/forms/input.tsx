@@ -1,13 +1,14 @@
+import classnames from 'classnames'
 import type { ForwardedRef, InputHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 
-import { getDefaultStyles } from './styles'
+import { getDefaultClassName } from './styles'
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>
 
 export const Input = forwardRef(
   (
-    { style, type = 'text', ...props }: InputProps,
+    { className, type = 'text', ...props }: InputProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -18,10 +19,10 @@ export const Input = forwardRef(
         // @ts-ignore Fix automatic capitalization ifor input fields in desktop app
         autocorrect="off"
         autocomplete="off"
-        style={{
-          ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
-          ...style,
-        }}
+        className={classnames(
+          getDefaultClassName({ hasError: props['aria-invalid'] === 'true' }),
+          className
+        )}
       />
     )
   }

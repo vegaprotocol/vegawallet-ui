@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import type { AnchorHTMLAttributes } from 'react'
 
 interface ExternalLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -5,7 +6,7 @@ interface ExternalLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 export function ExternalLink({
-  style,
+  className,
   href,
   children,
   ...props
@@ -16,7 +17,7 @@ export function ExternalLink({
       href={href}
       target="_blank"
       rel="noreferrer noopener"
-      style={{ textDecoration: 'underline', cursor: 'pointer', ...style }}
+      className={classnames('underline cursor-pointer', className)}
     >
       {children}
     </a>

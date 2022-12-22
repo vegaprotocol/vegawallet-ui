@@ -1,8 +1,6 @@
 import * as DropdownPrimitive from '@radix-ui/react-dropdown-menu'
 import type { ReactNode, CSSProperties } from 'react'
 
-import { Colors } from '../../config/colors'
-
 interface DropdownMenuProps {
   trigger: ReactNode
   content: ReactNode
@@ -18,7 +16,7 @@ export function DropdownMenu({ trigger, content }: DropdownMenuProps) {
       <DropdownPrimitive.Content
         align="start"
         sideOffset={10}
-        style={{ background: Colors.DARK_GRAY_3, padding: 10 }}
+        className="bg-dark-200 p-[10px]"
       >
         {content}
       </DropdownPrimitive.Content>

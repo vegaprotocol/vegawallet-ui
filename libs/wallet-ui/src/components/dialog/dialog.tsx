@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import * as DialogPrimitives from '@radix-ui/react-dialog'
 import type { ReactNode } from 'react'
 import { animated, config, useTransition } from 'react-spring'
@@ -34,30 +35,24 @@ export function Dialog({
               <>
                 <DialogPrimitives.Overlay forceMount={true} asChild={true}>
                   <animated.div
-                    style={{
-                      position: 'fixed',
-                      top: 0,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                      height: '100%',
-                      background: 'rgba(54, 54, 54 ,0.8)',
-                      opacity: styles.opacity,
-                    }}
+                    className="fixed top-0 right-0 bottom-0 left-0 h-full bg-overlay"
+                    style={{ opacity: styles.opacity }}
                     data-wails-drag
                   />
                 </DialogPrimitives.Overlay>
                 <DialogPrimitives.Content forceMount={true} asChild={true}>
                   <animated.div
+                    className={classnames(
+                      'fixed bg-black top-[30px] overflow-y-auto shadow',
+                      'max-h-[calc(100vh_-_60px)]',
+                      {
+                        'left-[10%]': size === 'lg',
+                        'w-[80%]': size === 'lg',
+                        'left-[calc(50%_-_170px)]': size !== 'lg',
+                        'w-[375px]': size !== 'lg',
+                      }
+                    )}
                     style={{
-                      background: 'black',
-                      width: size === 'lg' ? '80%' : 375,
-                      position: 'fixed',
-                      top: 30,
-                      left: size === 'lg' ? '10%' : 'calc(50% - 170px)',
-                      boxShadow: '3px 3px 5px rgb(0,0,0,0.3)',
-                      overflowY: 'auto',
-                      maxHeight: 'calc(100vh - 60px)',
                       translateY: styles.y,
                       opacity: styles.opacity,
                     }}

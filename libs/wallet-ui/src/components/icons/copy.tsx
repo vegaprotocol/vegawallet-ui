@@ -1,10 +1,13 @@
-import type { CSSProperties } from 'react'
+import classnames from 'classnames'
 
-import { style as defaultStyle } from './style'
+import { className as defaultClassName } from './style'
 
-export function Copy({ style }: { style?: CSSProperties }) {
+export function Copy({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 11 11" style={{ ...defaultStyle, ...style }}>
+    <svg
+      viewBox="0 0 11 11"
+      className={classnames(defaultClassName, className)}
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"

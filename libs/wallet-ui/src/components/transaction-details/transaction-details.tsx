@@ -94,7 +94,7 @@ export const TransactionDetails = ({
   return (
     <div>
       {sectionList.map(({ key, value }, index) => (
-        <div key={index} style={{ padding: '0 20px 20px' }}>
+        <div key={index} className="px-[20px] pb-[20px]">
           {key && <Title style={{ margin: '0 0 12px' }}>{key}</Title>}
           {value}
         </div>

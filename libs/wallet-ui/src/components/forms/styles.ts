@@ -1,17 +1,18 @@
-import type { CSSProperties } from 'react'
+import classnames from 'classnames'
 
-import { Colors } from '../../config/colors'
-
-export const getDefaultStyles = ({
+export const getDefaultClassName = ({
   hasError = false,
 }: {
   hasError?: boolean
-}): CSSProperties => ({
-  appearance: 'none',
-  display: 'block',
-  width: '100%',
-  background: 'transparent',
-  border: `1px solid ${hasError ? Colors.VEGA_RED : Colors.WHITE}`,
-  padding: '7px 10px',
-  outlineColor: hasError ? Colors.VEGA_RED : Colors.WHITE,
-})
+}) => {
+  return classnames(
+    'block appearance-none w-full bg-transparent',
+    'py-[7px] px-[10px] border-1',
+    {
+      'outline-red': hasError,
+      'outline-white': !hasError,
+      'border-red': hasError,
+      'border-white': !hasError,
+    }
+  )
+}

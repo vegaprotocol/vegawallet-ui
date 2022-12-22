@@ -26,7 +26,7 @@ export const RemoveWallet = ({ onClose }: RemoveWalletProps) => {
   }
 
   return (
-    <div style={{ padding: '0 20px 20px' }}>
+    <div className="px-[20px] pb-[20px]">
       <h2 style={{ marginBottom: 15 }}>
         Are you sure you want to remove "{wallet.name}"?
       </h2>
