@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import type { HTMLAttributes } from 'react'
 import { isValidElement, cloneElement, Children } from 'react'
 
@@ -7,42 +8,37 @@ interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   inline?: boolean
 }
 
-const getItemStyles = (isInline?: boolean) =>
-  isInline
-    ? undefined
-    : {
-        flexGrow: 1,
-        flexBasis: 0,
-      }
-
 export function ButtonGroup({
   children,
   orientation = 'horizontal',
   inline,
-  style,
+  className,
   ...props
 }: ButtonGroupProps) {
   return (
     <div
       {...props}
-      style={{
-        display: 'flex',
-        justifyContent: 'start',
-        flexDirection: orientation === 'horizontal' ? 'row' : 'column',
-        alignItems: orientation === 'horizontal' ? 'center' : undefined,
-        gap: 20,
-        ...style,
-      }}
+      className={classnames(
+        'flex justify-start gap-[20px]',
+        {
+          'flex-row': orientation === 'horizontal',
+          'flex-col': orientation !== 'horizontal',
+          'items-center': orientation === 'horizontal',
+        },
+        className
+      )}
     >
       {Children.map(children, (child) => {
         if (isValidElement(child)) {
-          const styles = getItemStyles(inline)
           return cloneElement(child, {
             // @ts-ignore Doesn't know what type the child styles are
-            style: {
-              ...styles,
-              ...child.props.style,
-            },
+            className: classnames(
+              {
+                grow: inline,
+                'basis-0': inline,
+              },
+              child.props.className
+            ),
           })
         }
 
