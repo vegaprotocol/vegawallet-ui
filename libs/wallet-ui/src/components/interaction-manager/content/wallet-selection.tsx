@@ -101,14 +101,7 @@ export const WalletSelection = ({
         data-testid="wallet-selection-modal"
         className="px-[20px] pb-[20px]"
       >
-        <p
-          style={{
-            marginBottom: 20,
-            border: `1px solid ${Colors.VEGA_PINK}`,
-            padding: 20,
-            textAlign: 'center',
-          }}
-        >
+        <p className="mb-[20px] p-[20px] text-center border border-pink">
           <strong>{event.data.hostname}</strong> is requesting access to a
           wallet
         </p>
@@ -117,15 +110,8 @@ export const WalletSelection = ({
           and may allow access to your public keys and allow you to approve
           transactions depending on your wallet permissions.
         </p>
-        <div style={{ marginTop: 20 }}>Select a wallet to connect to:</div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            margin: '20px 0 32px',
-          }}
-        >
+        <div className="mt-[20px]">Select a wallet to connect to:</div>
+        <div className="flex flex-col gap-[12px] mt-[20px] mb-[32px]">
           <RadioGroup
             name="wallet"
             rules={{
@@ -136,11 +122,7 @@ export const WalletSelection = ({
               value: w,
               label: w,
             }))}
-            itemStyle={{
-              padding: 10,
-              borderTop: `1px solid ${Colors.DARK_GRAY_1}`,
-              width: '100%',
-            }}
+            itemClass="p-[10px] border-t-dark-100 w-full"
           />
         </div>
         <ButtonGroup inline>

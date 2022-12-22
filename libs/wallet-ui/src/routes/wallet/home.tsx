@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 
@@ -29,22 +30,16 @@ type TabTitlesProps = {
 
 const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
   return (
-    <div style={{ display: 'flex', gap: 20 }}>
+    <div className="flex gap-[20px]">
       {Object.values(Tabs).map((tab) => (
         <Title
           key={tab}
           element="h2"
           onClick={() => setTab(tab)}
-          style={{
-            cursor: 'pointer',
-            marginTop: 0,
-            paddingBottom: 4,
-            borderBottom: `2px solid ${
-              tab === activeTab ? Colors.WHITE : 'transparent'
-            }`,
-            color:
-              tab === activeTab ? Colors.WHITE : Colors.TEXT_COLOR_DEEMPHASISE,
-          }}
+          className={classnames('cursor-pointer mt-0 pb-[4px] border-b-2', {
+            'border-transparent text-deemphasise': tab !== activeTab,
+            'border-white text-white': tab === activeTab,
+          })}
         >
           {tab}
         </Title>
@@ -71,26 +66,19 @@ export function WalletList() {
         title={
           <>
             {wallet.name}
-            <ButtonGroup
-              inline
-              style={{
-                display: 'inline-flex',
-                marginLeft: 20,
-                gap: 12,
-              }}
-            >
+            <ButtonGroup inline className="inline-flex ml-[20px] gap-[12px]">
               <ButtonUnstyled
-                style={{ textDecoration: 'none' }}
+                className="no-underline"
                 onClick={() => setEditing(true)}
               >
-                <Edit style={{ width: 16 }} />
+                <Edit className="w-[16px]" />
               </ButtonUnstyled>
               <ButtonUnstyled
                 data-testid="remove-wallet"
-                style={{ textDecoration: 'none' }}
+                className="no-underline"
                 onClick={() => setRemoving(true)}
               >
-                <Trash style={{ width: 16 }} />
+                <Trash className="w-[16px]" />
               </ButtonUnstyled>
             </ButtonGroup>
           </>
@@ -104,7 +92,7 @@ export function WalletList() {
           navigate('/')
         }}
       />
-      <div style={{ padding: 20, paddingTop: 0 }}>
+      <div className="pb-[20px] px-[20px] pt-0">
         <TabTitles activeTab={tab} setTab={setTab} />
         {tab === Tabs.KEYPAIRS && (
           <KeypairList

@@ -7,19 +7,17 @@ export function Spinner() {
       height="20"
       strokeWidth="10"
       viewBox="0 0 50 50"
+      className="block w-[24px] h-[24px]"
       style={{
-        width: 24,
-        height: 24,
         animation: 'rotate 2s linear infinite',
-        display: 'block',
       }}
     >
       <circle
         style={{
-          stroke: 'currentcolor',
-          strokeLinecap: 'square',
           animation: 'dash 1.5s ease-in-out infinite',
         }}
+        stroke="currentColor"
+        strokeLinecap="square"
         cx="25"
         cy="25"
         r="20"

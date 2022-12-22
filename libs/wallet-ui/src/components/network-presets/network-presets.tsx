@@ -16,12 +16,7 @@ const hasImportedTestNetworks = (
   }, false)
 }
 
-const itemStyles = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  margin: '12px 0',
-}
+const itemStyles = 'flex items-center justify-center my-[12px]'
 
 type NetworkPresetItemProps = {
   preset: NetworkPreset
@@ -39,9 +34,9 @@ const NetworkPresetItem = ({
   const isImported = state.networks.find((n) => n === preset.name)
 
   return (
-    <div style={itemStyles}>
+    <div className={itemStyles}>
       <div>{preset.name}</div>
-      <div style={{ display: 'flex', gap: 12 }}>
+      <div className="flex gap-[12px]">
         {!isImported && (
           <Button
             data-testid={`import-network-${preset.name}`}
@@ -142,7 +137,7 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
       {!showTestNetworks && (
         <ButtonUnstyled
           data-testid="show-test-networks"
-          style={{ margin: '20px 0 0' }}
+          className="m-0 mt-[20px]"
           onClick={() => setShowTestNetworks(!showTestNetworks)}
         >
           Show test networks
@@ -150,9 +145,9 @@ export function NetworkPresets({ setEditView }: NetworkPresetsProps) {
       )}
       {myNetworks.length > 0 && <Title>My Networks</Title>}
       {myNetworks.map((network) => (
-        <div key={network} style={itemStyles}>
+        <div key={network} className={itemStyles}>
           <div>{network}</div>
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div className="flex gap-[12px]">
             <Button
               data-testid={`remove-network-${network}`}
               onClick={() => {

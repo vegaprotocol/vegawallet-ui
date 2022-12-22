@@ -101,8 +101,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
           message={
             <span>
               Make sure you don't already have an application running on machine
-              on port{' '}
-              <code style={{ display: 'inline' }}>:{networkConfig.port}</code>.
+              on port <code className="inline">:{networkConfig.port}</code>.
               Reload the application, or change your network port.
             </span>
           }

@@ -38,7 +38,7 @@ export const ConnectionsWarningDialog = ({
       open={isOpen && activeConnections.length > 0}
       title={
         <>
-          <Warning style={{ width: 20, marginRight: 12 }} />
+          <Warning className="w-[20px] mr-[12px]" />
           Warning
         </>
       }

@@ -29,21 +29,13 @@ export function Transactions() {
         }}
       />
       <PublicKey publicKey={keypair.publicKey} />
-      <div style={{ padding: 20, paddingTop: 0 }} data-testid="keypair-home">
-        <div
-          style={{
-            display: 'flex',
-            gap: 20,
-            margin: '20px 0',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Title style={{ margin: 0 }}>Current session transactions</Title>
+      <div className="pt-0 px-[20px] pb-[20px]" data-testid="keypair-home">
+        <div className="flex items-center justify-between gap-[20px] my-[20px]">
+          <Title className="m-0">Current session transactions</Title>
           {explorerUrl && (
             <ExternalLink href={`${explorerUrl}/parties/${keypair.publicKey}`}>
               View full history
-              <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
+              <ArrowTopRight className="w-[13px] ml-[6px]" />
             </ExternalLink>
           )}
         </div>

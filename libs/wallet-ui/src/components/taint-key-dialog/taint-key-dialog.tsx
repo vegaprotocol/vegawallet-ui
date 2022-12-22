@@ -31,20 +31,18 @@ export const TaintKeyDialog = () => {
     >
       <div data-testid="keypair-taint" className="px-[20px] pb-[20px]">
         {keypair.isTainted && (
-          <div style={{ marginBottom: 20 }}>
-            <p style={{ marginBottom: 10 }}>
-              This key has been marked as tainted.
-            </p>
-            <p style={{ border: `1px solid ${Colors.VEGA_PINK}`, padding: 20 }}>
-              <Warning style={{ width: '13', marginRight: 6 }} />
+          <div className="mb-[20px]">
+            <p className="mb-[10px]">This key has been marked as tainted.</p>
+            <p className="border boreder-pink p-[20px]">
+              <Warning className="w-[13px] mr-[6px]" />
               If your key has been compromised or leaked, you should not untaint
               it as you will be exposing your assets.
             </p>
           </div>
         )}
         {!keypair.isTainted && (
-          <div style={{ marginBottom: 20 }}>
-            <p style={{ marginBottom: 10 }}>
+          <div className="mb-[20px]">
+            <p className="mb-[10px]">
               Tainting a key pair marks it as unsafe to use and ensures it will
               not be used to sign transactions. This mechanism is useful when
               the key pair has been compromised.
@@ -54,7 +52,7 @@ export const TaintKeyDialog = () => {
         )}
       </div>
       <PublicKey publicKey={keypair.publicKey} />
-      <div style={{ padding: '32px 20px 20px' }}>
+      <div className="pt-[32px] px-[20px] pb-[20px]">
         <ButtonGroup inline>
           <Button
             data-testid="taint-action"

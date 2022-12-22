@@ -63,31 +63,24 @@ export function Onboard() {
 
     return (
       <>
-        <p style={{ marginBottom: 20 }}>Existing wallets found</p>
+        <p className="mb-[20px]">Existing wallets found</p>
         <ButtonGroup>
           <Button loading={isLoading} onClick={handleImportExistingWallet}>
             Use existing
           </Button>
         </ButtonGroup>
-        <p style={{ margin: '20px 0' }}>OR</p>
+        <p className="my-[20px]">OR</p>
       </>
     )
   }
 
   return (
-    <div
-      style={{
-        width: '545px',
-        margin: 'auto',
-        textAlign: 'center',
-        paddingTop: 82,
-      }}
-    >
-      <Title style={{ margin: '0 0 30px 0', color: Colors.WHITE }}>
+    <div className="w-[545px] m-auto text-center pt-[82px]">
+      <Title className="m-0 mb-[30px] text-white">
         <Vega />
       </Title>
       {renderExistingMessage()}
-      <ButtonGroup orientation="vertical" style={{ marginBottom: 20 }}>
+      <ButtonGroup orientation="vertical" className="mb-[20px]">
         <Button
           data-testid="create-new-wallet"
           onClick={() => navigate('/wallet-create')}

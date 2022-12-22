@@ -1,44 +1,36 @@
-import { Colors } from '../../config/colors'
+import classnames from 'classnames'
 import type { Transaction } from '../../lib/transactions'
 import { TransactionStatus as TransactionStatusTypes } from '../../lib/transactions'
-
-const statusStyles = {
-  display: 'inline-block',
-  color: Colors.WHITE,
-  padding: '0.25rem 0.5rem',
-  margin: '0.5rem 0.5rem 0.5rem 0',
-  borderRadius: 2,
-}
 
 const getTransactionInfo = (status?: TransactionStatusTypes) => {
   switch (status) {
     case TransactionStatusTypes.SUCCESS: {
       return {
-        background: Colors.INTENT_SUCCESS,
+        background: 'bg-success',
         text: 'Approved',
       }
     }
     case TransactionStatusTypes.FAILURE: {
       return {
-        background: Colors.INTENT_DANGER,
+        background: 'bg-danger',
         text: 'Failed',
       }
     }
     case TransactionStatusTypes.REJECTED: {
       return {
-        background: Colors.INTENT_DANGER,
+        background: 'bg-danger',
         text: 'Rejected',
       }
     }
     case TransactionStatusTypes.PENDING: {
       return {
-        background: Colors.GRAY_1,
+        background: 'bg-neutral',
         text: 'Pending',
       }
     }
     default: {
       return {
-        background: Colors.GRAY_1,
+        background: 'bg-neutral',
         text: 'Unknown',
       }
     }
@@ -52,5 +44,14 @@ type TransactionStatusProps = {
 export const TransactionStatus = ({ transaction }: TransactionStatusProps) => {
   const { background, text } = getTransactionInfo(transaction.status)
 
-  return <span style={{ ...statusStyles, background }}>{text}</span>
+  return (
+    <span
+      className={classnames(
+        'inline-block text-white py-[4px] px-[8px] m-[8px] mb-0 rounded-sm',
+        background
+      )}
+    >
+      {text}
+    </span>
+  )
 }

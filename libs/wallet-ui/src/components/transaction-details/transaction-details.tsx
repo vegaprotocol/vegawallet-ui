@@ -40,7 +40,7 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
       value: explorerUrl ? (
         <ExternalLink href={`${explorerUrl}/blocks/${transaction.blockHeight}`}>
           {transaction.blockHeight}
-          <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
+          <ArrowTopRight className="w-[13px] ml-[6px]" />
         </ExternalLink>
       ) : (
         transaction.blockHeight
@@ -69,7 +69,7 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
   rows.push({
     key: 'Transaction details',
     value: (
-      <CodeBlock style={{ fontSize: 12, marginBottom: 0 }}>
+      <CodeBlock className="text-xs mb-0">
         <pre data-testid="transaction-payload">
           {JSON.stringify(transaction.payload, null, 2)}
         </pre>
@@ -95,7 +95,7 @@ export const TransactionDetails = ({
     <div>
       {sectionList.map(({ key, value }, index) => (
         <div key={index} className="px-[20px] pb-[20px]">
-          {key && <Title style={{ margin: '0 0 12px' }}>{key}</Title>}
+          {key && <Title className="m-0 mb-[12px]">{key}</Title>}
           {value}
         </div>
       ))}

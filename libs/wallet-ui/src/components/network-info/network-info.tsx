@@ -22,7 +22,7 @@ export function NetworkInfo() {
       <NodeList items={config.api?.restConfig?.hosts ?? []} />
       <Title>Application Settings</Title>
       <KeyValueTable
-        style={{ fontSize: 16 }}
+        className="text-base"
         rows={[
           {
             key: 'Wallet Service URL',

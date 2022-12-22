@@ -16,13 +16,7 @@ export function Tooltip({ trigger, content, isOpen }: TooltipProps) {
         <TooltipPrimitive.Trigger asChild={true}>
           {trigger}
         </TooltipPrimitive.Trigger>
-        <TooltipPrimitive.Content
-          style={{
-            background: Colors.WHITE,
-            padding: '5px 10px',
-            color: Colors.DARK_GRAY_1,
-          }}
-        >
+        <TooltipPrimitive.Content className="bg-white py-[5px] px-[10px] text-dark-100">
           <TooltipPrimitive.Arrow fill={Colors.WHITE} />
           {content}
         </TooltipPrimitive.Content>

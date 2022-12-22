@@ -40,12 +40,7 @@ export const SignMessageDialog = () => {
       <div data-testid="keypair-sign" className="px-[20px] pb-[20px]">
         {signedData ? (
           <>
-            <div
-              style={{
-                color: Colors.WHITE,
-                marginBottom: 32,
-              }}
-            >
+            <div className="text-white mb-[32px]">
               <CopyWithTooltip text={signedData}>
                 <BreakText>{signedData}</BreakText>
               </CopyWithTooltip>
@@ -72,7 +67,7 @@ export const SignMessageDialog = () => {
           </>
         ) : (
           <form onSubmit={handleSubmit(sign)}>
-            <p style={{ marginBottom: 32 }}>
+            <p className="mb-[32px]">
               Type a message and press sign to get a verifiable link to prove
               your identity from this key.
             </p>

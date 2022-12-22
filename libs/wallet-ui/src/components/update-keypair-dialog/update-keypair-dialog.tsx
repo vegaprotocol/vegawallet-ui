@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { useCallback } from 'react'
 import type { DropResult } from 'react-beautiful-dnd'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
@@ -21,23 +22,9 @@ import { PublicKey } from '../public-key'
 const notName = (value: string) =>
   value === 'name' ? 'Name is already in use' : true
 
-const rowStyles = {
-  width: '100%',
-  display: 'grid',
-  gridTemplateColumns: '20px 1fr 1fr auto',
-  gap: 12,
-}
+const rowClass = 'w-full grid gap-[12px] grid-cols-[20px_1fr_1fr_auto]'
 
-const cellStyles = {
-  display: 'flex',
-  alignItems: 'center',
-  height: 40,
-  marginTop: 5,
-}
-
-const underlined = {
-  textDecoration: 'underline',
-}
+const cellClass = 'flex items-center h-[40px] mt-[5px]'
 
 export function UpdateKeypairDialog() {
   const { state } = useGlobal()
@@ -115,7 +102,7 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                style={{ marginTop: '1rem' }}
+                className="mt-[16px]"
               >
                 <div>
                   <FormGroup
@@ -136,7 +123,7 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                     />
                   </FormGroup>
                   {fields.length > 1 && (
-                    <span style={{ visibility: 'hidden' }}>Remove</span>
+                    <span className="invisible">Remove</span>
                   )}
                 </div>
                 {fields
@@ -148,35 +135,28 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                       index={index + 1}
                     >
                       {(provided) => {
-                        const draggerBarStyle = {
-                          width: 20,
-                          height: 1,
-                          background: Colors.WHITE,
-                          margin: '3px 0',
-                        }
                         return (
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
-                            <div style={rowStyles}>
+                            <div className={rowClass}>
                               <div
                                 data-testid="metadata-row-indicator"
-                                style={{
-                                  ...cellStyles,
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}
+                                className={classnames(
+                                  cellClass,
+                                  'flex-col justify-center'
+                                )}
                               >
                                 {Array(3)
                                   .fill(0)
                                   .map((_, i) => (
                                     <span
                                       key={i}
-                                      style={draggerBarStyle}
+                                      className={classnames(
+                                        'w-[20px] h-[1px] bg-white my-[3px]'
+                                      )}
                                     ></span>
                                   ))}
                               </div>
@@ -229,7 +209,7 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
                               </FormGroup>
                               <button
                                 data-testid="metadata-remove"
-                                style={{ ...cellStyles, ...underlined }}
+                                className={classnames(cellClass, 'underline')}
                                 onClick={() => remove(index + 1)}
                               >
                                 Remove
@@ -246,16 +226,16 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
           )}
         </Droppable>
       </DragDropContext>
-      <div style={{ margin: '1.5rem 0', display: 'none' }}>
+      <div className="my-[12px] hidden">
         <button
           data-testid="metadata-add"
-          style={underlined}
+          className="underline"
           onClick={() => append({ key: '', value: '' })}
         >
           Add metadata
         </button>
       </div>
-      <div style={{ display: 'flex', marginTop: 0, gap: 20 }}>
+      <div className="flex mt-0 gap-[20px]">
         <Button data-testid="metadata-submit" disabled={loading} type="submit">
           Update
         </Button>

@@ -44,10 +44,10 @@ export const ChangeNetwork = ({
           required: Validation.REQUIRED,
         }}
       />
-      <ButtonUnstyled onClick={onAddNetwork} style={{ marginTop: 12 }}>
+      <ButtonUnstyled onClick={onAddNetwork} className="mt-[12px]">
         Add network
       </ButtonUnstyled>
-      <ButtonGroup inline style={{ padding: '20px 0' }}>
+      <ButtonGroup inline className="py-[20px]">
         <Button type="submit">Select network</Button>
         <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>
       </ButtonGroup>

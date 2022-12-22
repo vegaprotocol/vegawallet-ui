@@ -56,6 +56,8 @@ module.exports = {
     neutral: {
       DEFAULT: '#6E6E6E',
     },
+    emphasise: '#F5F8fA',
+    deemphasise: '#8A9BA8',
     primary: {
       DEFAULT: '#48aff8',
     },
@@ -65,6 +67,24 @@ module.exports = {
     1: '2px',
     2: '6px',
     3: '10px',
+  },
+  fontSize: {
+    xs: '12px',
+    sm: '14px',
+    base: '16px',
+    xl: '20xp',
+    '2xl': '24px',
+    '3xl': '28px',
+    '4xl': '32px',
+  },
+  letterSpacing: {
+    tightest: '-.075em',
+    tighter: '-.05em',
+    tight: '-.025em',
+    normal: '0',
+    wide: '.025em',
+    wider: '.05em',
+    widest: '.3em',
   },
   fontFamily: {
     mono: ['Roboto Mono', 'monospace'],

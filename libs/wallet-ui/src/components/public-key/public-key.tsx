@@ -9,9 +9,9 @@ type PublicKeyProps = {
 
 export const PublicKey = ({ publicKey }: PublicKeyProps) => {
   return (
-    <div style={{ padding: '0 20px' }}>
-      <Title style={{ margin: '0 0 6px' }}>Public key</Title>
-      <div style={{ color: Colors.WHITE }}>
+    <div className="px-[20px]">
+      <Title className="m-0 mb-[6px]">Public key</Title>
+      <div className="text-white">
         <CopyWithTooltip text={publicKey ?? ''}>
           <BreakText data-testid="public-key">{publicKey}</BreakText>
         </CopyWithTooltip>

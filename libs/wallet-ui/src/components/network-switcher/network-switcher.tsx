@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import { useCallback, useMemo, useState } from 'react'
 
-import { Colors } from '../../config/colors'
 import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
@@ -54,16 +54,10 @@ export const NetworkSwitcher = () => {
         trigger={
           <Button
             data-testid="network-select"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 5,
-              minWidth: 75,
-            }}
+            className="flex justify-between items-center gap-[5px] min-w-[75px]"
           >
             <span>{state.network}</span>
-            <DropdownArrow style={{ width: 13, height: 13, marginLeft: 10 }} />
+            <DropdownArrow className="w-[13px] h-[13px] ml-[10px]" />
           </Button>
         }
         content={
@@ -72,18 +66,14 @@ export const NetworkSwitcher = () => {
               <DropdownItem key={network}>
                 <ButtonUnstyled
                   data-testid={`select-${network}`}
-                  style={{
-                    width: '100%',
-                    padding: '10px 15px',
-                    lineHeight: 1,
-                    textAlign: 'left',
-                    textDecoration:
-                      network === selectedNetwork ? 'underline' : 'none',
-                    color:
-                      network === selectedNetwork
-                        ? Colors.WHITE
-                        : Colors.TEXT_COLOR_DEEMPHASISE,
-                  }}
+                  className={classnames(
+                    'w-full py-[10px] px-[10px] leading-none text-left',
+                    {
+                      underline: network === selectedNetwork,
+                      'text-white': network === selectedNetwork,
+                      'text-deemphasise': network !== selectedNetwork,
+                    }
+                  )}
                   onClick={() => {
                     handleNetworkChange(network)
                   }}

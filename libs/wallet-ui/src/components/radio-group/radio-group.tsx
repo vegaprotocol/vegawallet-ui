@@ -1,9 +1,8 @@
+import classnames from 'classnames'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import type { ComponentProps } from 'react'
 import type { Control, Path, FieldValues } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
-
-import { Colors } from '../../config/colors'
 
 type RadioGroupProps<T extends FieldValues> = {
   name: Path<T>
@@ -12,7 +11,7 @@ type RadioGroupProps<T extends FieldValues> = {
   control: Control<T>
   rules?: ComponentProps<typeof Controller>['rules']
   orientation?: 'vertical' | 'horizontal'
-  itemStyle?: React.CSSProperties
+  itemClass?: string
 }
 
 export function RadioGroup<T extends FieldValues>({
@@ -20,17 +19,9 @@ export function RadioGroup<T extends FieldValues>({
   control,
   rules,
   options,
-  itemStyle,
+  itemClass,
   orientation = 'vertical',
 }: RadioGroupProps<T>) {
-  const rootStyle =
-    orientation === 'horizontal'
-      ? {
-          display: 'grid',
-          gridTemplateColumns: Array(options.length).fill('1fr').join(' '),
-        }
-      : {}
-
   return (
     <Controller
       name={name}
@@ -43,16 +34,29 @@ export function RadioGroup<T extends FieldValues>({
             onValueChange={field.onChange}
             name={field.name}
             orientation={orientation}
-            style={rootStyle}
+            className={classnames({
+              grid: orientation === 'horizontal',
+              [`grid-cols-[${Array(options.length).fill('1fr').join('_')}]`]:
+                orientation === 'horizontal',
+            })}
           >
             {options.map((o) => (
-              <div key={o.value} style={{ ...wrapper, ...itemStyle }}>
+              <div
+                key={o.value}
+                className={classnames(
+                  'flex items-center gap-[10px]',
+                  itemClass
+                )}
+              >
                 <RadioGroupPrimitive.Item
                   value={o.value}
                   id={o.value}
-                  style={circle}
+                  className={classnames(
+                    'inline-flex items-center justify-center bg-dark-300',
+                    'rounded-full w-[16px] h-[16px]'
+                  )}
                 >
-                  <RadioGroupPrimitive.Indicator style={circleInner} />
+                  <RadioGroupPrimitive.Indicator className="w-[8px] h-[8px] bg-white rounded-full" />
                 </RadioGroupPrimitive.Item>
                 <label htmlFor={o.value}>{o.label}</label>
               </div>
@@ -62,27 +66,4 @@ export function RadioGroup<T extends FieldValues>({
       }}
     />
   )
-}
-
-const wrapper = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-}
-
-const circle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: 16,
-  height: 16,
-  borderRadius: '100%',
-  background: Colors.DARK_GRAY_5,
-}
-
-const circleInner = {
-  width: 8,
-  height: 8,
-  background: Colors.WHITE,
-  borderRadius: '100%',
 }
