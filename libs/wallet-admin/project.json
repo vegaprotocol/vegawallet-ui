@@ -32,14 +32,13 @@
     },
     "build": {
       "executor": "nx:run-commands",
-      "outputs": [],
       "options": {
+        "parallel": false,
         "commands": [
           "yarn nx run wallet-admin:build-js",
           "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-admin/tsconfig.lib.json",
           "node scripts/patch-package-module.js ./dist/libs/wallet-admin/package.json"
-        ],
-        "parallel": false
+        ]
       }
     },
     "lint": {
