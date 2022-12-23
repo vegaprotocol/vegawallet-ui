@@ -26,7 +26,7 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
   }, [setManageHost])
 
   return (
-    <div className={connectionList.length ? 'border-b-1 border-black' : ''}>
+    <div className={connectionList.length ? 'border-b border-black' : ''}>
       {connectionList.length === 0 && (
         <p className="my-[20px]">No connections established.</p>
       )}

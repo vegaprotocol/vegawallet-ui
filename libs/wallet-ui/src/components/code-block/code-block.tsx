@@ -11,7 +11,7 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
       {...props}
       className={classnames(
         'block font-mono bg-transparent overflow-auto',
-        'py-[10px] pr-[30px] pl-[15px] border-1 border-white',
+        'py-[10px] pr-[30px] pl-[15px] border border-white',
         className
       )}
     >

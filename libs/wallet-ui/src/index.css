@@ -2,9 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@import './styles/_reset.css';
-@import './styles/_colors.css';
-@import './styles/_fonts.css';
 @import './styles/_animations.css';
 
 html,

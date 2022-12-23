@@ -22,9 +22,9 @@ type GetBaseClassOptions = {
 const getButtonClass = ({ hover, disabled, loading }: GetBaseClassOptions) => {
   return classnames(
     'text-base uppercase no-underline cursor-pointer',
-    'min-w-[145px] border-1 border-current rounded-sm',
+    'min-w-[145px] border border-current rounded-sm',
     'transition-colors duration-300 ease-in-out',
-    'pt-[7px] px-[7px] border-current',
+    'py-[7px] px-[7px] border-current',
     {
       'bg-white': hover,
       'bg-transparent': !hover,

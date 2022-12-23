@@ -18,7 +18,7 @@ export const ConnectionItem = ({
     <div
       className={classnames(
         'flex justify-between items-center gap-[20px]',
-        'py-[20px] px-0 border-t-1 border-black'
+        'py-[20px] px-0 border-t border-black'
       )}
     >
       <div className="min-w-0 basis-1/2">

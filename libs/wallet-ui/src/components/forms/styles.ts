@@ -7,7 +7,7 @@ export const getDefaultClassName = ({
 }) => {
   return classnames(
     'block appearance-none w-full bg-transparent',
-    'py-[7px] px-[10px] border-1',
+    'py-[7px] px-[10px] border',
     {
       'outline-red': hasError,
       'outline-white': !hasError,
