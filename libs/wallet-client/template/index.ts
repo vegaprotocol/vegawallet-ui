@@ -99,7 +99,7 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public <%= getMethodName(method) %> = async (<%= getMethodParams(method) %>: Omit<WalletModel.<%= getMethodParamsType(method) %>, 'token'><% if (!method.params || !method.params.length) { %> = {} <% } %>, options?: Options) => {
+  public <%= getMethodName(method) %> = async (<%= getMethodParams(method) %>: Omit<WalletModel.<%= getMethodParamsType(method) %>, 'token'><% if (!method.params || !method.params.length || (method.params.length === 1 && method.params[0].name === 'token')) { %> = {} <% } %>, options?: Options) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
       method: 'POST',
       headers: {

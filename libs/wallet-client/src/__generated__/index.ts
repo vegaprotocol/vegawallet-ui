@@ -283,7 +283,7 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public DisconnectWallet = async (
-    params: Omit<WalletModel.DisconnectWalletParams, 'token'>,
+    params: Omit<WalletModel.DisconnectWalletParams, 'token'> = {},
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -310,7 +310,7 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public GetPermissions = async (
-    params: Omit<WalletModel.GetPermissionsParams, 'token'>,
+    params: Omit<WalletModel.GetPermissionsParams, 'token'> = {},
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
@@ -364,7 +364,7 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public ListKeys = async (
-    params: Omit<WalletModel.ListKeysParams, 'token'>,
+    params: Omit<WalletModel.ListKeysParams, 'token'> = {},
     options?: Options
   ) => {
     return fetch(`${this.hostname}/api/v2/requests`, {
