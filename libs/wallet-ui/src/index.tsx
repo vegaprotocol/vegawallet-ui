@@ -27,6 +27,8 @@ export type AppProps = {
   features?: Features
 }
 
+const ROOT = 'wallet-ui'
+
 /**
  * Renders all the providers
  */
@@ -48,20 +50,22 @@ export function App({ service, client, runtime, features }: AppProps) {
           runtime={runtime}
           features={features}
         >
-          <Router>
-            <AppFrame>
-              <Chrome>
-                <AppLoader>
-                  <AppRouter />
-                  <TelemetryDialog />
-                  <PassphraseModal />
-                  <InteractionManager />
-                  <NetworkCompatibilityDialog />
-                  <Settings />
-                </AppLoader>
-              </Chrome>
-            </AppFrame>
-          </Router>
+          <div id={ROOT} className="text-black dark:text-white">
+            <Router>
+              <AppFrame>
+                <Chrome>
+                  <AppLoader>
+                    <AppRouter />
+                    <TelemetryDialog />
+                    <PassphraseModal />
+                    <InteractionManager />
+                    <NetworkCompatibilityDialog />
+                    <Settings />
+                  </AppLoader>
+                </Chrome>
+              </AppFrame>
+            </Router>
+          </div>
         </GlobalProvider>
       </ThemeProvider>
     </ErrorBoundary>
