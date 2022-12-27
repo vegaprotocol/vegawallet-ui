@@ -10,7 +10,7 @@ export enum Identifier {
 <%}) %>}
 
 type Props = {
-  hostname: string
+  address: string
   origin?: string
   token?: string
 }
@@ -33,7 +33,7 @@ async function handleResponse <T>(res: Response) {
 
 export class WalletClient {
   // The wallet service address to connect to
-  private address: string
+  private walletAddress: string
   // The dApp address which wants to connect
   private origin?: string
   // The stored connection token
