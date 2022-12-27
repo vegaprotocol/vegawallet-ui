@@ -59,7 +59,10 @@ export class WalletClient {
         jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.<%= getMethodName(method) %>,
-        params: params,
+        params: {
+          hostname: this.hostname,
+          ...params,
+        },
       }),
     })
       .then(r => handleResponse<WalletModel.<%= getMethodResultType(method) %>>(r))

@@ -243,7 +243,10 @@ export class WalletClient {
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
         method: Identifier.ConnectWallet,
-        params: params,
+        params: {
+          hostname: this.hostname,
+          ...params,
+        },
       }),
     })
       .then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
