@@ -28,7 +28,7 @@ export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
         <Title
           element="h1"
           data-testid="header-title"
-          className="text-white text-4xl no-underline tracking-normal"
+          className="text-2xl lg:text-3xl no-underline tracking-normal"
         >
           {title}
         </Title>

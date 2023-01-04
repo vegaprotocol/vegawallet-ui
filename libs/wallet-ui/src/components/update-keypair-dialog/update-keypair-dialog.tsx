@@ -4,7 +4,6 @@ import type { DropResult } from 'react-beautiful-dnd'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useFieldArray, useForm } from 'react-hook-form'
 
-import { Colors } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import type { KeyPair, Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'

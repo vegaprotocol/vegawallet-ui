@@ -7,7 +7,6 @@ import { Header } from '../../../components/header'
 import { EyeOff } from '../../../components/icons/eye-off'
 import { PublicKey } from '../../../components/public-key'
 import { Title } from '../../../components/title'
-import { Colors } from '../../../config/colors'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 

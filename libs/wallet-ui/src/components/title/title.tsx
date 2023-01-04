@@ -11,7 +11,7 @@ interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
 }
 
 const secondaryTitleStyles = classnames(
-  'text-white text-sm mt-[30px] mb-[20px]',
+  'text-white text-sm my-[20px]',
   'uppercase leading-tight tracking-widest'
 )
 

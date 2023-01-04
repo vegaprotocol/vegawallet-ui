@@ -1,4 +1,3 @@
-import './index.css'
 import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
 import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
@@ -50,7 +49,7 @@ export function App({ service, client, runtime, features }: AppProps) {
           runtime={runtime}
           features={features}
         >
-          <div id={ROOT} className="text-black dark:text-white">
+          <div id={ROOT} className="text-black dark:text-white font-sans">
             <Router>
               <AppFrame>
                 <Chrome>

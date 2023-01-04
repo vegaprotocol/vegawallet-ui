@@ -1,4 +1,3 @@
-import { Colors } from '../../config/colors'
 import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'

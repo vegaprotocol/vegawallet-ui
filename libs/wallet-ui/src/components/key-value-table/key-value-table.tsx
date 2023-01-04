@@ -2,8 +2,6 @@ import classnames from 'classnames'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { Fragment } from 'react'
 
-import { Colors } from '../../config/colors'
-
 interface KeyValueTableProps extends HTMLAttributes<HTMLDListElement> {
   rows: Array<{ key: ReactNode; value: ReactNode; dataTestId?: string }>
 }

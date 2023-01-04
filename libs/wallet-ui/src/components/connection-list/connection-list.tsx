@@ -1,7 +1,5 @@
-import classnames from 'classnames'
 import { Fragment, useCallback, useState } from 'react'
 
-import { Colors } from '../../config/colors'
 import type { Wallet } from '../../contexts/global/global-context'
 import { Dialog } from '../dialog'
 import { Disconnect } from './connection-disconnect'

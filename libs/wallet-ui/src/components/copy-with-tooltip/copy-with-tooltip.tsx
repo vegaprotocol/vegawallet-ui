@@ -37,7 +37,7 @@ export function CopyWithTooltip({ children, text }: CopyWithtooltipProps) {
           trigger={
             <span className="cursor-pointer">
               {children}
-              <Copy className="w-[13px] mr-[6px]" />
+              <Copy className="w-[13px] ml-[6px]" />
             </span>
           }
           content="Copied"

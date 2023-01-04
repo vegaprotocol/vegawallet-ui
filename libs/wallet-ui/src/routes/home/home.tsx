@@ -72,12 +72,12 @@ export const Home = () => {
         })}
       >
         <ButtonGroup className="mb-[20px]">
-          <Link to="/wallet-create">
+          <Link className="flex-1" to="/wallet-create">
             <Button data-testid="create-new-wallet" className="w-full">
               Create wallet
             </Button>
           </Link>
-          <Link to="/wallet-import">
+          <Link className="flex-1" to="/wallet-import">
             <Button data-testid="import-wallet" className="w-full">
               Import wallet
             </Button>

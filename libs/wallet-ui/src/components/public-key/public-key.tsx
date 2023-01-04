@@ -1,4 +1,3 @@
-import { Colors } from '../../config/colors'
 import { BreakText } from '../break-text'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 import { Title } from '../title'

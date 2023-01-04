@@ -14,7 +14,6 @@ import { KeypairList } from '../../components/keypair-list'
 import { RemoveWallet } from '../../components/remove-wallet'
 import { Title } from '../../components/title'
 import { WalletEdit } from '../../components/wallet-edit'
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
 

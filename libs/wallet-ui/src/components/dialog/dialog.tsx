@@ -40,7 +40,11 @@ export function Dialog({
                     data-wails-drag
                   />
                 </DialogPrimitives.Overlay>
-                <DialogPrimitives.Content forceMount={true} asChild={true}>
+                <DialogPrimitives.Content
+                  forceMount={true}
+                  asChild={true}
+                  className="text-black dark:text-white font-sans"
+                >
                   <animated.div
                     className={classnames(
                       'fixed bg-black top-[30px] overflow-y-auto shadow',

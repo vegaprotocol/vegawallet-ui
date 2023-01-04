@@ -1,4 +1,3 @@
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useTaint } from '../../hooks/use-taint'

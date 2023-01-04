@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useSign } from '../../hooks/use-sign'

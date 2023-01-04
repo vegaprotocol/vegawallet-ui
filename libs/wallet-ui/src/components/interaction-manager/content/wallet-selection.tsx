@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 
-import { Colors } from '../../../config/colors'
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { Validation } from '../../../lib/form-validation'
