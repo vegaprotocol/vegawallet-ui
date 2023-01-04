@@ -192,7 +192,7 @@ export enum Identifier {
 }
 
 type Props = {
-  hostname: string
+  address: string
   origin?: string
   token?: string
 }
@@ -214,13 +214,16 @@ async function handleResponse<T>(res: Response) {
 }
 
 export class WalletClient {
-  private origin: string
-  private hostname: string
+  // The wallet service address to connect to
+  private walletAddress: string
+  // The dApp address which wants to connect
+  private origin?: string
+  // The stored connection token
   private token?: string
 
-  constructor({ hostname, origin, token }: Props) {
-    this.origin = origin || window.location.origin
-    this.hostname = hostname
+  constructor({ address, origin, token }: Props) {
+    this.origin = origin || window.location.host
+    this.walletAddress = address
     this.token = token
   }
 
@@ -233,17 +236,19 @@ export class WalletClient {
     params: WalletModel.ConnectWalletParams = {},
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: options?.id || nanoid(),
         method: Identifier.ConnectWallet,
-        params: params,
+        params: {
+          hostname: this.origin,
+          ...params,
+        },
       }),
     })
       .then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
@@ -262,11 +267,10 @@ export class WalletClient {
     params: WalletModel.GetChainIdParams = {},
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -283,14 +287,13 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public DisconnectWallet = async (
-    params: Omit<WalletModel.DisconnectWalletParams, 'token'>,
+    params: Omit<WalletModel.DisconnectWalletParams, 'token'> = {},
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -310,14 +313,13 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public GetPermissions = async (
-    params: Omit<WalletModel.GetPermissionsParams, 'token'>,
+    params: Omit<WalletModel.GetPermissionsParams, 'token'> = {},
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -340,11 +342,10 @@ export class WalletClient {
     params: Omit<WalletModel.RequestPermissionsParams, 'token'>,
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -364,14 +365,13 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public ListKeys = async (
-    params: Omit<WalletModel.ListKeysParams, 'token'>,
+    params: Omit<WalletModel.ListKeysParams, 'token'> = {},
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -394,11 +394,10 @@ export class WalletClient {
     params: Omit<WalletModel.SignTransactionParams, 'token'>,
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -421,11 +420,10 @@ export class WalletClient {
     params: Omit<WalletModel.SendTransactionParams, 'token'>,
     options?: Options
   ) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -443,6 +441,6 @@ export class WalletClient {
    * Returns a list of supported methods
    */
   public ListMethods = async (): Promise<{ registeredMethods: string[] }> => {
-    return fetch(`${this.hostname}/api/v2/methods`).then((r) => r.json())
+    return fetch(`${this.walletAddress}/api/v2/methods`).then((r) => r.json())
   }
 }

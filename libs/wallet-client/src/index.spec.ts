@@ -20,14 +20,14 @@ afterEach(() => {
 
 describe('Wallet Client', () => {
   it('can connect to a wallet', async () => {
-    const client = new WalletClient({ hostname: HOSTNAME })
+    const client = new WalletClient({ address: HOSTNAME })
     const { result } = await client.ConnectWallet()
     const token = result.token
     expect(typeof token).toBe('string')
   })
 
   it('returns a supported list of methods', async () => {
-    const client = new WalletClient({ hostname: HOSTNAME })
+    const client = new WalletClient({ address: HOSTNAME })
 
     const { registeredMethods } = await client.ListMethods()
     expect(registeredMethods).toEqual(Object.values(Identifier))

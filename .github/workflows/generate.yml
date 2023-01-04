@@ -41,5 +41,5 @@ jobs:
           delete-branch: true
           base: main
           title: 'chore: v{{ github.event.data.version }} automated wallet updates'
-          labels:
+          labels: wallet-ui
           team-reviewers: vegaprotocol/frontend

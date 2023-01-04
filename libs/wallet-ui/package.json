@@ -1,7 +1,7 @@
 {
   "name": "@vegaprotocol/wallet-ui",
   "author": "Gobalsky Labs Ltd.",
-  "version": "0.1.17",
+  "version": "0.1.19",
   "license": "MIT",
   "types": "./index.d.ts",
   "homepage": "https://github.com/vegaprotocol/vegawallet-ui/tree/develop/libs/wallet-ui",

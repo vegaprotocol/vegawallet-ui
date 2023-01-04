@@ -10,7 +10,7 @@ export enum Identifier {
 <%}) %>}
 
 type Props = {
-  hostname: string
+  address: string
   origin?: string
   token?: string
 }
@@ -32,13 +32,16 @@ async function handleResponse <T>(res: Response) {
 }
 
 export class WalletClient {
-  private origin: string
-  private hostname: string
+  // The wallet service address to connect to
+  private walletAddress: string
+  // The dApp address which wants to connect
+  private origin?: string
+  // The stored connection token
   private token?: string
 
-  constructor ({ hostname, origin, token }: Props) {
-    this.origin = origin || window.location.origin
-    this.hostname = hostname
+  constructor ({ address, origin, token }: Props) {
+    this.origin = origin || window.location.host
+    this.walletAddress = address
     this.token = token
   }
 
@@ -49,17 +52,19 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public <%= getMethodName(method) %> = async (<%= getMethodParams(method) %>: WalletModel.<%= getMethodParamsType(method) %><% if (!method.params || !method.params.length) { %> = {} <% } %>, options?: Options) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
         id: options?.id || nanoid(),
         method: Identifier.<%= getMethodName(method) %>,
-        params: params,
+        params: {
+          hostname: this.origin,
+          ...params,
+        },
       }),
     })
       .then(r => handleResponse<WalletModel.<%= getMethodResultType(method) %>>(r))
@@ -77,11 +82,10 @@ export class WalletClient {
 
   // tslint:disable-next-line:max-line-length
   public <%= getMethodName(method) %> = async (<%= getMethodParams(method) %>: WalletModel.<%= getMethodParamsType(method) %><% if (!method.params || !method.params.length) { %> = {} <% } %>, options?: Options) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
@@ -99,12 +103,11 @@ export class WalletClient {
    */
 
   // tslint:disable-next-line:max-line-length
-  public <%= getMethodName(method) %> = async (<%= getMethodParams(method) %>: Omit<WalletModel.<%= getMethodParamsType(method) %>, 'token'><% if (!method.params || !method.params.length) { %> = {} <% } %>, options?: Options) => {
-    return fetch(`${this.hostname}/api/v2/requests`, {
+  public <%= getMethodName(method) %> = async (<%= getMethodParams(method) %>: Omit<WalletModel.<%= getMethodParamsType(method) %>, 'token'><% if (!method.params || !method.params.length || (method.params.length === 1 && method.params[0].name === 'token')) { %> = {} <% } %>, options?: Options) => {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: this.origin,
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
@@ -123,7 +126,7 @@ export class WalletClient {
    * Returns a list of supported methods
    */
   public ListMethods = async (): Promise<{ registeredMethods: string[] }> => {
-    return fetch(`${this.hostname}/api/v2/methods`)
+    return fetch(`${this.walletAddress}/api/v2/methods`)
       .then(r => r.json())
   }
 }
