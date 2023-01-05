@@ -33,7 +33,7 @@ export const enum Colors {
 }
 
 export const IntentColors: { [i in Intent]: string } = {
-  none: 'inherit',
+  neutral: 'inherit',
   primary: 'inherit',
   success: Colors.INTENT_SUCCESS,
   warning: Colors.INTENT_WARNING,
@@ -41,7 +41,7 @@ export const IntentColors: { [i in Intent]: string } = {
 }
 
 export const IntentBackgrounds: { [i in Intent]: string } = {
-  none: 'var(--intent-none-bg)',
+  neutral: 'var(--intent-none-bg)',
   primary: 'var(--intent-primary-bg)',
   success: 'var(--intent-success-bg)',
   warning: 'var(--intent-warning-bg)',

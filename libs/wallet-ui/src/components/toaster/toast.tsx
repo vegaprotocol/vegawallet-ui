@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import { useEffect, useRef } from 'react'
 
-import { Colors, IntentBackgrounds } from '../../config/colors'
 import { Intent } from '../../config/intent'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Cross } from '../icons/cross'
@@ -53,22 +53,15 @@ export function Toast({
 
   return (
     <div
-      style={{
-        background: Colors.BLACK,
-        borderRadius: 2,
-        maxWidth: '90vw',
-        overflow: 'hidden',
-        pointerEvents: 'all', // Re enable pointer events as overlay container disables
-      }}
+      className={classnames(
+        'bg-black rounded-sm max-w-[90vw]',
+        'overflow-hidden pointer-events-auto'
+      )}
       data-testid="toast"
     >
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
-        style={{
-          position: 'relative',
-          padding: '10px 45px 10px 15px',
-          background: IntentBackgrounds[intent],
-        }}
+        className={`relative py-[10px] pr-[45px] pl-[15px] bg-${intent}`}
         role="alert"
         onBlur={startTimeout}
         onFocus={cancelTimeout}
@@ -77,13 +70,13 @@ export function Toast({
         /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
         tabIndex={0}
       >
-        <span style={{ wordBreak: 'break-word' }}>{message}</span>
+        <span className="break-words">{message}</span>
         <ButtonUnstyled
           data-testid="close"
           onClick={dismiss}
-          style={{ position: 'absolute', top: 0, right: 0 }}
+          className="absolute top-0 right-0"
         >
-          <Cross style={{ width: 40, height: 40 }} />
+          <Cross className="w-[40px] h-[40px]" />
         </ButtonUnstyled>
       </div>
     </div>

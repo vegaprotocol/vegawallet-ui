@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
-import { Colors } from '../../config/colors'
 import { Callout } from '../callout'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
@@ -23,8 +22,8 @@ export function WalletCreateFormSuccess({
       <SuccessSection>
         <Callout
           title="Warning"
-          icon={<Warning style={{ width: 15, height: 15 }} />}
-          style={{ color: Colors.BLACK, background: Colors.WHITE }}
+          icon={<Warning className="w-[15px] h-[15px]" />}
+          className="text-black bg-white"
           data-testid="recovery-phrase-warning"
         >
           <p data-testid="wallet-warning">
@@ -42,14 +41,11 @@ export function WalletCreateFormSuccess({
       </SuccessSection>
       <SuccessSection>
         <p>Recovery phrase</p>
-        <p
-          style={{ position: 'relative' }}
-          data-testid="wallet-recovery-phrase"
-        >
+        <p className="relative" data-testid="wallet-recovery-phrase">
           <CodeBlock data-testid="recovery-phrase">
             {response?.wallet?.recoveryPhrase}
           </CodeBlock>
-          <span style={{ position: 'absolute', top: 7, right: 10 }}>
+          <span className="absolute top-[7px] right-[10px]">
             <CopyWithTooltip text={response?.wallet?.recoveryPhrase ?? ''} />
           </span>
         </p>
@@ -60,5 +56,5 @@ export function WalletCreateFormSuccess({
 }
 
 function SuccessSection({ children }: { children: ReactNode }) {
-  return <div style={{ marginBottom: 20 }}>{children}</div>
+  return <div className="mb-[20px]">{children}</div>
 }

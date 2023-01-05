@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import classnames from 'classnames'
 import { useMemo } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 
@@ -9,27 +9,10 @@ import { DRAWER_HEIGHT } from '../../components/chrome'
 import { Lock } from '../../components/icons/lock'
 import { OpenLock } from '../../components/icons/open-lock'
 import { Title } from '../../components/title'
-import { Colors } from '../../config/colors'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
-
-const itemStyles = {
-  display: 'flex',
-  alignItem: 'center',
-  justifyContent: 'space-between',
-  borderTop: `1px solid ${Colors.BLACK}`,
-  padding: `18px 0`,
-  textDecoration: 'none',
-  width: '100%',
-}
-
-const actionStyles: CSSProperties = {
-  position: 'fixed',
-  bottom: DRAWER_HEIGHT,
-  left: 0,
-}
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -41,8 +24,6 @@ export const Home = () => {
     dispatch,
   } = useGlobal()
 
-  const actionWrapperStyles = wallets.length ? actionStyles : undefined
-
   const walletsList = useMemo(
     () => Object.values(wallets).sort(sortWallet),
     [wallets]
@@ -53,41 +34,30 @@ export const Home = () => {
   }
 
   return (
-    <div data-testid="wallet-home" style={{ padding: 20 }}>
-      <Title
-        style={{
-          margin: '0 0 30px 0',
-          color: Colors.WHITE,
-        }}
-      >
-        Wallets
-      </Title>
-      <div
-        style={{
-          paddingBottom: 144,
-          width: '100%',
-        }}
-      >
+    <div data-testid="wallet-home" className="p-[20px]">
+      <Title className="m-0 mb-[30px] text-white">Wallets</Title>
+      <div className="pb-[144px] w-full">
         <div
-          style={{
-            borderBottom: `${walletsList.length > 0 ? '1' : '0'}px solid ${
-              Colors.BLACK
-            }`,
-          }}
+          className={`border-b-${
+            walletsList.length > 0 ? '1' : '0'
+          } border-black`}
         >
           {walletsList.map((w) => (
             <ButtonUnstyled
-              style={itemStyles}
+              className={classnames(
+                'w-full flex items-center justify-between no-underline',
+                'border-t border-black py-[18px]'
+              )}
               onClick={() => open(w.name)}
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
               key={w.name}
             >
               <div>{w.name}</div>
-              <div style={{ color: Colors.GRAY_1 }}>
+              <div className="text-neutral">
                 {w.auth ? (
-                  <OpenLock style={{ width: 20, margin: '0 20px' }} />
+                  <OpenLock className="w-[20px] mx-[20px]" />
                 ) : (
-                  <Lock style={{ width: 20, margin: '0 20px' }} />
+                  <Lock className="w-[20px] mx-[20px]" />
                 )}
               </div>
             </ButtonUnstyled>
@@ -95,22 +65,20 @@ export const Home = () => {
         </div>
       </div>
       <div
-        style={{
-          textAlign: 'center',
-          padding: 20,
-          width: '100%',
-          backgroundColor: Colors.DARK_GRAY_1,
-          ...actionWrapperStyles,
-        }}
+        className={classnames('text-center p-[20px] w-full bg-dark-100', {
+          fixed: wallets.length,
+          [`bottom-[${DRAWER_HEIGHT}px]`]: wallets.length,
+          'left-0': wallets.length,
+        })}
       >
-        <ButtonGroup style={{ marginBottom: 20 }}>
-          <Link to="/wallet-create">
-            <Button data-testid="create-new-wallet" style={{ width: '100%' }}>
+        <ButtonGroup className="mb-[20px]">
+          <Link className="flex-1" to="/wallet-create">
+            <Button data-testid="create-new-wallet" className="w-full">
               Create wallet
             </Button>
           </Link>
-          <Link to="/wallet-import">
-            <Button data-testid="import-wallet" style={{ width: '100%' }}>
+          <Link className="flex-1" to="/wallet-import">
+            <Button data-testid="import-wallet" className="w-full">
               Import wallet
             </Button>
           </Link>

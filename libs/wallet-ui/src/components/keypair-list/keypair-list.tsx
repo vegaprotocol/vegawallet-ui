@@ -1,7 +1,6 @@
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { EyeOff } from '../../components/icons/eye-off'
-import { Colors } from '../../config/colors'
 import type { Wallet } from '../../contexts/global/global-context'
 
 type KeypairListProps = {
@@ -11,11 +10,7 @@ type KeypairListProps = {
 
 export const KeypairList = ({ wallet, onClick }: KeypairListProps) => {
   return (
-    <div
-      style={{
-        borderBottom: wallet.keypairs ? `1px solid ${Colors.BLACK}` : '',
-      }}
-    >
+    <div className={wallet.keypairs ? 'border-b border-black' : ''}>
       {Object.keys(wallet.keypairs || {}).map((key) => {
         if (!wallet.keypairs) {
           return null
@@ -26,21 +21,18 @@ export const KeypairList = ({ wallet, onClick }: KeypairListProps) => {
           <div
             data-testid="wallet-keypair"
             key={publicKey}
-            style={{
-              borderTop: `1px solid ${Colors.BLACK}`,
-              padding: '20px 0',
-            }}
+            className="border-t border-black py-[20px]"
           >
             <div>
               <ButtonUnstyled
                 data-testid={`wallet-keypair-${publicKey}`}
                 onClick={() => onClick(publicKey)}
               >
-                {isTainted && <EyeOff style={{ width: 13, marginRight: 6 }} />}
+                {isTainted && <EyeOff className="w-[13px] mr-[6px]" />}
                 {name}
               </ButtonUnstyled>
             </div>
-            <div style={{ color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+            <div className="text-deemphasise">
               <CopyWithTooltip text={publicKey ?? ''}>
                 <span>{publicKeyShort}</span>
               </CopyWithTooltip>

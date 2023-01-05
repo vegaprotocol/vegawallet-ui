@@ -1,33 +1,43 @@
+import classnames from 'classnames'
 import type {
-  CSSProperties,
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   ForwardedRef,
   MouseEvent as ReactMouseEvent,
 } from 'react'
-import { forwardRef, useState, useMemo } from 'react'
+import { forwardRef, useState } from 'react'
 
-import { Colors } from '../../config/colors'
 import { Spinner } from '../spinner'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean
 }
 
-const getColor = ({
-  hover,
-  disabled,
-}: {
+type GetBaseClassOptions = {
   hover: boolean
   disabled?: boolean
-}): Colors => {
-  if (disabled) {
-    return Colors.GRAY_3
-  }
-  if (hover) {
-    return Colors.BLACK
-  }
-  return Colors.WHITE
+  loading?: boolean
+}
+
+const getButtonClass = ({ hover, disabled, loading }: GetBaseClassOptions) => {
+  return classnames(
+    'text-base uppercase no-underline cursor-pointer',
+    'min-w-[145px] border border-current rounded-sm',
+    'transition-colors duration-300 ease-in-out',
+    'py-[7px] px-[7px] border-current',
+    {
+      'bg-white': hover,
+      'bg-transparent': !hover,
+      'text-dark-300': disabled,
+      'text-black': !disabled && hover,
+      'text-white': !disabled && !hover,
+      'pointer-events-none': disabled || loading,
+    }
+  )
+}
+
+const getButtonSpanClass = () => {
+  return 'flex justify-center items-center gap-[5px]'
 }
 
 export const Button = forwardRef(
@@ -55,28 +65,6 @@ export const Button = forwardRef(
       }
     }
 
-    const color = useMemo(
-      () =>
-        getColor({
-          hover,
-          disabled: props.disabled,
-        }),
-      [hover, props.disabled]
-    )
-
-    const style: CSSProperties = {
-      background: hover ? Colors.WHITE : 'transparent',
-      color,
-      border: `1px solid ${props.disabled ? Colors.GRAY_3 : Colors.WHITE}`,
-      borderRadius: 2,
-      cursor: 'pointer',
-      fontSize: 16,
-      padding: '7px 17px',
-      textTransform: 'uppercase',
-      minWidth: 145,
-      transition: 'all .3s ease',
-    }
-
     return (
       <button
         ref={ref}
@@ -85,16 +73,12 @@ export const Button = forwardRef(
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         disabled={loading ? true : props.disabled}
-        style={{ ...style, ...props.style }}
+        className={classnames(
+          getButtonClass({ hover, loading, disabled: props.disabled }),
+          props.className
+        )}
       >
-        <span
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 5,
-          }}
-        >
+        <span className={getButtonSpanClass()}>
           {loading ? <Spinner /> : children}
         </span>
       </button>
@@ -139,30 +123,6 @@ export const AnchorButton = forwardRef(
       }
     }
 
-    const color = useMemo(
-      () =>
-        getColor({
-          hover,
-          disabled: disabled,
-        }),
-      [hover, disabled]
-    )
-
-    const style: CSSProperties = {
-      background: hover ? Colors.WHITE : 'transparent',
-      color,
-      border: `1px solid ${disabled ? Colors.GRAY_3 : Colors.WHITE}`,
-      borderRadius: 2,
-      cursor: 'pointer',
-      fontSize: 16,
-      padding: '7px 17px',
-      textTransform: 'uppercase',
-      textDecoration: 'none',
-      minWidth: 145,
-      transition: 'all .3s ease',
-      pointerEvents: disabled || loading ? 'none' : 'initial',
-    }
-
     return (
       <a
         ref={ref}
@@ -171,16 +131,12 @@ export const AnchorButton = forwardRef(
         {...props}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{ ...style, ...props.style }}
+        className={classnames(
+          getButtonClass({ hover, loading, disabled }),
+          props.className
+        )}
       >
-        <span
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 5,
-          }}
-        >
+        <span className={getButtonSpanClass()}>
           {loading ? <Spinner /> : children}
         </span>
       </a>

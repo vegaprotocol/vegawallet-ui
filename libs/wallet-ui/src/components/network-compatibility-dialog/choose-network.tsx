@@ -35,7 +35,7 @@ export const ChangeNetwork = ({
   }, [networks])
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ padding: 20 }}>
+    <form onSubmit={handleSubmit(onSubmit)} className="p-[20px]">
       <RadioGroup
         name="network"
         control={control}
@@ -44,10 +44,10 @@ export const ChangeNetwork = ({
           required: Validation.REQUIRED,
         }}
       />
-      <ButtonUnstyled onClick={onAddNetwork} style={{ marginTop: 12 }}>
+      <ButtonUnstyled onClick={onAddNetwork} className="mt-[12px]">
         Add network
       </ButtonUnstyled>
-      <ButtonGroup inline style={{ padding: '20px 0' }}>
+      <ButtonGroup inline className="py-[20px]">
         <Button type="submit">Select network</Button>
         <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>
       </ButtonGroup>

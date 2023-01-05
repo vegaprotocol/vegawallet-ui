@@ -113,14 +113,14 @@ export const Transaction = ({
 
   return (
     <Dialog open={true} size="lg" title={title}>
-      <div style={{ padding: '0 20px 20px' }}>
+      <div className="px-[20px] pb-[20px]">
         <p>
           <code>{transaction.hostname}</code> requested to use your key to{' '}
           {description} from <code>{transaction.wallet}</code>.
         </p>
       </div>
       <TransactionDetails transaction={transaction} />
-      <div style={{ padding: 20 }}>
+      <div className="p-[20px]">
         <ButtonGroup>
           <Button
             data-testid="transaction-request-approve"

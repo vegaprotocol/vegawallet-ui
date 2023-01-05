@@ -1,4 +1,3 @@
-import { Colors } from '../../config/colors'
 import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
@@ -20,14 +19,14 @@ const TransactionId = ({
   const explorerUrl = useExplorerUrl()
 
   if (!transaction.txHash) {
-    return <span style={{ visibility: 'hidden' }}>No id</span>
+    return <span className="invisible">No id</span>
   }
 
   if (explorerUrl) {
     return (
       <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
         {truncateMiddle(transaction.txHash)}
-        <ArrowTopRight style={{ width: 13, marginLeft: 6 }} />
+        <ArrowTopRight className="w-[13px] ml-[6px]" />
       </ExternalLink>
     )
   }
@@ -40,29 +39,15 @@ export const TransactionItem = ({
   viewDetails,
 }: TransactionItemProps) => {
   return (
-    <div
-      style={{ borderBottom: `1px solid ${Colors.BLACK}`, padding: '20px 0' }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+    <div className="border-b border-black py-[20px]">
+      <div className="flex items-center justify-between">
         <ButtonUnstyled onClick={viewDetails}>
           <TransactionStatus transaction={transaction} />
           {TRANSACTION_TITLES[transaction.type]}
         </ButtonUnstyled>
         <div>
           <TransactionId transaction={transaction} />
-          <div
-            style={{
-              textAlign: 'right',
-              color: Colors.TEXT_COLOR_DEEMPHASISE,
-              fontSize: 14,
-            }}
-          >
+          <div className="text-right text-deemphasise text-sm">
             {formatDate(transaction.receivedAt)}
           </div>
         </div>

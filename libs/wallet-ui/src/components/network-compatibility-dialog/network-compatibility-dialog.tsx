@@ -58,7 +58,7 @@ const getTitle = (subview: Subview) => {
     default: {
       return (
         <>
-          <Warning style={{ width: 20, marginRight: 12 }} />
+          <Warning className="w-[20px] mr-[12px]" />
           Incompatible network
         </>
       )
@@ -178,25 +178,25 @@ export const NetworkCompatibilityDialog = () => {
       title={title}
     >
       {subview === null && (
-        <div style={{ padding: 20 }}>
-          <p style={{ marginBottom: 12 }}>
+        <div className="p-[20px]">
+          <p className="mb-[20px]">
             Your selected network "<code>{networkData.network}</code>" is
             running on Vega <code>{networkData.retrievedVersion}</code>, however
             this app only supports networks running{' '}
             <code>{supportedVersion}</code>.
           </p>
           {compatibleNetworksList.length > 0 && (
-            <p style={{ marginBottom: 12 }}>
+            <p className="mb-[20px]">
               Download a compatible release or change network to continue.
             </p>
           )}
           {compatibleNetworksList.length === 0 && (
-            <p style={{ marginBottom: 12 }}>
+            <p className="mb-[20px]">
               Download a compatible release or add a compatible network to
               continue.
             </p>
           )}
-          <ButtonGroup inline style={{ padding: `20px 0` }}>
+          <ButtonGroup inline className="py-[20px]">
             <AnchorButton
               data-testid="network-compatibility-release"
               href="https://github.com/vegaprotocol/vegawallet-desktop/releases"

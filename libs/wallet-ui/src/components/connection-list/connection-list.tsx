@@ -1,6 +1,5 @@
 import { Fragment, useCallback, useState } from 'react'
 
-import { Colors } from '../../config/colors'
 import type { Wallet } from '../../contexts/global/global-context'
 import { Dialog } from '../dialog'
 import { Disconnect } from './connection-disconnect'
@@ -25,13 +24,9 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
   }, [setManageHost])
 
   return (
-    <div
-      style={{
-        borderBottom: connectionList.length ? `1px solid ${Colors.BLACK}` : '',
-      }}
-    >
+    <div className={connectionList.length ? 'border-b border-black' : ''}>
       {connectionList.length === 0 && (
-        <p style={{ margin: '20px 0' }}>No connections established.</p>
+        <p className="my-[20px]">No connections established.</p>
       )}
       {connectionList.map((key) => (
         <Fragment key={key}>

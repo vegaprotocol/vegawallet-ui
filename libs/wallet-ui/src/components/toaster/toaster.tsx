@@ -119,12 +119,8 @@ function ToasterAnimationHandler({
     return (
       <animated.div
         key={t.id}
-        style={{
-          position: 'absolute',
-          overflow: 'hidden',
-          paddingTop: 15,
-          ...styles,
-        }}
+        className="absolute overflow-hidden pt-[15px]"
+        style={styles}
       >
         <ToastComponent key={t.id} onDismiss={handleDismiss} {...t} />
       </animated.div>

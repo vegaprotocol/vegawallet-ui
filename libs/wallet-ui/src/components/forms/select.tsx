@@ -1,38 +1,36 @@
+import classnames from 'classnames'
 import type { ForwardedRef, SelectHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 
-import { Colors } from '../../config/colors'
-import { getDefaultStyles } from './styles'
+import { getDefaultClassName } from './styles'
 
 type SelectProps = SelectHTMLAttributes<HTMLSelectElement>
 
 const CARET_SIZE = 5
 
 export const Select = forwardRef(
-  ({ style, ...props }: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
+  (
+    { className, ...props }: SelectProps,
+    ref: ForwardedRef<HTMLSelectElement>
+  ) => {
     return (
-      <div style={{ position: 'relative' }}>
+      <div className="relative">
         <select
           {...props}
           ref={ref}
-          style={{
-            ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
-            ...style,
-            paddingRight: 20,
-          }}
+          className={classnames(
+            getDefaultClassName({ hasError: props['aria-invalid'] === 'true' }),
+            'pr-[20px]',
+            className
+          )}
         />
         <span
-          style={{
-            position: 'absolute',
-            display: 'block',
-            top: `calc(50% - ${CARET_SIZE / 2}px)`,
-            right: 10,
-            width: 0,
-            height: 0,
-            borderTop: `${CARET_SIZE}px solid ${Colors.WHITE}`,
-            borderRight: `${CARET_SIZE}px solid transparent`,
-            borderLeft: `${CARET_SIZE}px solid transparent`,
-          }}
+          className={classnames(
+            'block absolute w-0 h-0',
+            `right-[10px] top-[calc(50%_-_${CARET_SIZE / 2}px)]`,
+            'border-x-transparent border-t-white',
+            `border-t-[${CARET_SIZE}px] border-r-[${CARET_SIZE}px] border-l-[${CARET_SIZE}px]`
+          )}
         />
       </div>
     )

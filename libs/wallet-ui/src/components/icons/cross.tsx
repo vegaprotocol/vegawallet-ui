@@ -1,10 +1,13 @@
-import type { CSSProperties } from 'react'
+import classnames from 'classnames'
 
-import { style as defaultStyle } from './style'
+import { className as defaultClassName } from './style'
 
-export function Cross({ style }: { style?: CSSProperties }) {
+export function Cross({ className }: { className?: string }) {
   return (
-    <svg style={{ ...defaultStyle, ...style }} viewBox="0 0 45 45">
+    <svg
+      className={classnames(defaultClassName, className)}
+      viewBox="0 0 45 45"
+    >
       <path d="M14 14L30 30" stroke="currentColor" strokeWidth="1.3"></path>
       <path d="M30 14L14 30" stroke="currentColor" strokeWidth="1.3"></path>
     </svg>

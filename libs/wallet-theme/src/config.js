@@ -10,6 +10,8 @@ module.exports = {
   colors: {
     transparent: 'transparent',
     current: 'currentColor',
+    black: '#101010',
+    white: '#fff',
     danger: {
       DEFAULT: '#FF261A',
     },
@@ -22,6 +24,9 @@ module.exports = {
     yellow: {
       DEFAULT: '#D7FB50',
       dark: '#9BE106',
+    },
+    orange: {
+      DEFAULT: '#D9822B',
     },
     pink: {
       DEFAULT: '#FF077F',
@@ -51,14 +56,38 @@ module.exports = {
       300: '#A7A7A7',
       400: '#626262',
     },
+    neutral: {
+      DEFAULT: '#6E6E6E',
+    },
+    emphasise: '#F5F8fA',
+    deemphasise: '#8A9BA8',
     primary: {
       DEFAULT: '#48aff8',
     },
+    overlay: 'rgba(54, 54, 54, 0.8)',
   },
   spacing: {
     1: '2px',
     2: '6px',
     3: '10px',
+  },
+  fontSize: {
+    xs: '12px',
+    sm: '14px',
+    base: '16px',
+    xl: '20xp',
+    '2xl': '24px',
+    '3xl': '28px',
+    '4xl': '32px',
+  },
+  letterSpacing: {
+    tightest: '-.075em',
+    tighter: '-.05em',
+    tight: '-.025em',
+    normal: '0',
+    wide: '.025em',
+    wider: '.05em',
+    widest: '.3em',
   },
   fontFamily: {
     mono: ['Roboto Mono', 'monospace'],

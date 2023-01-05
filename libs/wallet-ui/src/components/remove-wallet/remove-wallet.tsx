@@ -26,11 +26,11 @@ export const RemoveWallet = ({ onClose }: RemoveWalletProps) => {
   }
 
   return (
-    <div style={{ padding: '0 20px 20px' }}>
-      <h2 style={{ marginBottom: 15 }}>
+    <div className="px-[20px] pb-[20px]">
+      <h2 className="mb-[15px]">
         Are you sure you want to remove "{wallet.name}"?
       </h2>
-      <p style={{ marginBottom: 15 }}>
+      <p className="mb-[15px]">
         Doing so will remove this wallet from your list of wallets. You will
         only be able to recover assets or re-add your wallet if you have a back
         up phrase.

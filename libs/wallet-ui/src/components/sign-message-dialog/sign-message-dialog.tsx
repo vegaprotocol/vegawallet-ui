@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 
-import { Colors } from '../../config/colors'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useSign } from '../../hooks/use-sign'
@@ -37,15 +36,10 @@ export const SignMessageDialog = () => {
       open={state.isSignMessageModalOpen}
       title={signedData ? 'Signed message' : 'Sign message'}
     >
-      <div data-testid="keypair-sign" style={{ padding: '0 20px 20px' }}>
+      <div data-testid="keypair-sign" className="px-[20px] pb-[20px]">
         {signedData ? (
           <>
-            <div
-              style={{
-                color: Colors.WHITE,
-                marginBottom: 32,
-              }}
-            >
+            <div className="text-white mb-[32px]">
               <CopyWithTooltip text={signedData}>
                 <BreakText>{signedData}</BreakText>
               </CopyWithTooltip>
@@ -72,7 +66,7 @@ export const SignMessageDialog = () => {
           </>
         ) : (
           <form onSubmit={handleSubmit(sign)}>
-            <p style={{ marginBottom: 32 }}>
+            <p className="mb-[32px]">
               Type a message and press sign to get a verifiable link to prove
               your identity from this key.
             </p>

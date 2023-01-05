@@ -1,4 +1,3 @@
-import './index.css'
 import { ErrorBoundary } from '@sentry/react'
 import { HashRouter as Router } from 'react-router-dom'
 import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
@@ -27,6 +26,8 @@ export type AppProps = {
   features?: Features
 }
 
+const ROOT = 'wallet-ui'
+
 /**
  * Renders all the providers
  */
@@ -48,20 +49,22 @@ export function App({ service, client, runtime, features }: AppProps) {
           runtime={runtime}
           features={features}
         >
-          <Router>
-            <AppFrame>
-              <Chrome>
-                <AppLoader>
-                  <AppRouter />
-                  <TelemetryDialog />
-                  <PassphraseModal />
-                  <InteractionManager />
-                  <NetworkCompatibilityDialog />
-                  <Settings />
-                </AppLoader>
-              </Chrome>
-            </AppFrame>
-          </Router>
+          <div id={ROOT} className="text-black dark:text-white font-sans">
+            <Router>
+              <AppFrame>
+                <Chrome>
+                  <AppLoader>
+                    <AppRouter />
+                    <TelemetryDialog />
+                    <PassphraseModal />
+                    <InteractionManager />
+                    <NetworkCompatibilityDialog />
+                    <Settings />
+                  </AppLoader>
+                </Chrome>
+              </AppFrame>
+            </Router>
+          </div>
         </GlobalProvider>
       </ThemeProvider>
     </ErrorBoundary>

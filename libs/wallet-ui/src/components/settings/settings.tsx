@@ -108,7 +108,7 @@ const SettingsForm = ({
     <form
       onSubmit={handleSubmit(onSubmit)}
       data-testid="settings-form"
-      style={{ padding: 20 }}
+      className="p-[20px]"
     >
       <FormGroup
         label="Wallet directory"

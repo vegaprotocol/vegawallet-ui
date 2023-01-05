@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button } from '../../../components/button'
@@ -6,7 +7,6 @@ import { Header } from '../../../components/header'
 import { EyeOff } from '../../../components/icons/eye-off'
 import { PublicKey } from '../../../components/public-key'
 import { Title } from '../../../components/title'
-import { Colors } from '../../../config/colors'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 
@@ -33,17 +33,14 @@ export function KeyPairHome() {
       {keypair.isTainted && (
         <div
           data-testid="keypair-taint-notification"
-          style={{
-            display: 'flex',
-            gap: 12,
-            alignItems: 'center',
-            padding: 20,
-            border: `1px solid ${Colors.VEGA_PINK}`,
-            margin: '20px 20px 12px',
-          }}
+          className={classnames(
+            'flex gap-[12px] items-center',
+            'p-[20px] mt-[20px] mx-[20px] mb-[12px]',
+            'border border-pink'
+          )}
         >
           <div>
-            <EyeOff style={{ width: 24 }} />
+            <EyeOff className="w-[24px]" />
           </div>
           <div>
             This key is marked as unsafe to use.{' '}
@@ -59,12 +56,12 @@ export function KeyPairHome() {
           </div>
         </div>
       )}
-      <div style={{ padding: '20px 20px 48px' }} data-testid="keypair-home">
-        <Title style={{ marginTop: 0 }}>Actions</Title>
-        <div style={{ padding: '6px 0' }}>
+      <div className="pt-[20px] px-[20px] pb-[48px]" data-testid="keypair-home">
+        <Title className="mt-0">Actions</Title>
+        <div className="py-[6px]">
           <div>
             <Button
-              style={{ marginBottom: 8 }}
+              className="mb-[8px]"
               data-testid="keypair-sign"
               onClick={() =>
                 dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: true })
@@ -73,15 +70,15 @@ export function KeyPairHome() {
               Sign a message
             </Button>
           </div>
-          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+          <p className="mb-[20px] text-deemphasise">
             Verify your identity by providing a verifiable link from this key.
           </p>
         </div>
         {!keypair.isTainted && (
-          <div style={{ padding: '6px 0' }}>
+          <div className="pt-[6px]">
             <div>
               <Button
-                style={{ marginBottom: 8 }}
+                className="mb-[8px]"
                 data-testid="keypair-taint-toggle"
                 onClick={() =>
                   dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
@@ -90,18 +87,16 @@ export function KeyPairHome() {
                 Taint key
               </Button>
             </div>
-            <p
-              style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}
-            >
+            <p className="mb-[20px] text-deemphasise">
               Mark as unsafe to use to ensure this key will not be used to sign
               transactions.
             </p>
           </div>
         )}
-        <div style={{ padding: '6px 0' }}>
+        <div className="py-[6px]">
           <div>
             <Button
-              style={{ marginBottom: 8 }}
+              className="mb-[8px]"
               data-testid="keypair-transactions"
               onClick={() =>
                 navigate(`/wallet/${wallet}/keypair/${pubkey}/transactions`)
@@ -110,14 +105,14 @@ export function KeyPairHome() {
               View transactions
             </Button>
           </div>
-          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+          <p className="mb-[20px] text-deemphasise">
             See transactions you have approved or rejected.
           </p>
         </div>
-        <div style={{ padding: '6px 0' }}>
+        <div className="py-[6px]">
           <div>
             <Button
-              style={{ marginBottom: 8 }}
+              className="mb-[8px]"
               data-testid="keypair-update"
               onClick={() =>
                 dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: true })
@@ -126,7 +121,7 @@ export function KeyPairHome() {
               Update key
             </Button>
           </div>
-          <p style={{ marginBottom: 20, color: Colors.TEXT_COLOR_DEEMPHASISE }}>
+          <p className="mb-[20px] text-deemphasise">
             Update / change the key name.
           </p>
         </div>

@@ -1,14 +1,14 @@
-import type { CSSProperties } from 'react'
+import classnames from 'classnames'
 
-import { style as defaultStyle } from './style'
+import { className as defaultClassName } from './style'
 
-export function Vega({ style }: { style?: CSSProperties }) {
+export function Vega({ className }: { className?: string }) {
   return (
     <svg
       width="111"
       height="24"
       fill="none"
-      style={{ ...defaultStyle, ...style }}
+      className={classnames(defaultClassName, className)}
     >
       <path
         fill="currentColor"

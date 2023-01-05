@@ -1,11 +1,11 @@
-import type { CSSProperties } from 'react'
+import classnames from 'classnames'
 
-import { style as defaultStyle } from './style'
+import { className as defaultClassName } from './style'
 
-export function DropdownArrow({ style }: { style?: CSSProperties }) {
+export function DropdownArrow({ className }: { className?: string }) {
   return (
     <svg
-      style={{ ...defaultStyle, fill: 'transparent', ...style }}
+      className={classnames(defaultClassName, 'fill-transparent', className)}
       viewBox="0 0 13 14"
       xmlns="http://www.w3.org/2000/svg"
     >

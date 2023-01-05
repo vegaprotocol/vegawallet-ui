@@ -1,7 +1,6 @@
+import classnames from 'classnames'
 import type { HTMLAttributes } from 'react'
-import type { ReactNode, CSSProperties } from 'react'
-
-import { Colors } from '../../config/colors'
+import type { ReactNode } from 'react'
 
 type Variant = 'main' | 'secondary'
 
@@ -11,24 +10,14 @@ interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
   element?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
 
-const secondaryTitleStyles = {
-  fontSize: 15,
-  color: Colors.TEXT_COLOR_DEEMPHASISE,
-  margin: '30px 0 20px 0',
-  textTransform: 'uppercase',
-  letterSpacing: '0.3em',
-  lineHeight: 1.2,
-} as CSSProperties
+const secondaryTitleStyles = classnames(
+  'text-white text-sm my-[20px]',
+  'uppercase leading-tight tracking-widest'
+)
 
-const mainTitleStyles = {
-  fontSize: 28,
-  margin: 0,
-  padding: 20,
-  color: Colors.WHITE,
-  lineHeight: 1.2,
-}
+const mainTitleStyles = 'text-white text-3xl m-0 p-[20px] leading-tight'
 
-const getVariantStyles = (variant: Variant): CSSProperties => {
+const getVariantClassName = (variant: Variant): string => {
   switch (variant) {
     case 'main': {
       return mainTitleStyles
@@ -37,24 +26,21 @@ const getVariantStyles = (variant: Variant): CSSProperties => {
       return secondaryTitleStyles
     }
     default: {
-      return {}
+      return ''
     }
   }
 }
 
 export const Title = ({
   children,
-  style,
+  className,
   variant = 'secondary',
   ...rest
 }: HeaderProps) => {
   return (
     <h1
       {...rest}
-      style={{
-        ...getVariantStyles(variant),
-        ...style,
-      }}
+      className={classnames(getVariantClassName(variant), className)}
     >
       {children}
     </h1>

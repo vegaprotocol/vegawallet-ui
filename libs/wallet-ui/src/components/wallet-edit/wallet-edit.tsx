@@ -43,7 +43,7 @@ export const WalletEdit = ({ onClose }: WalletEditProps) => {
   )
 
   return (
-    <form style={{ padding: 20 }} onSubmit={handleSubmit(onSubmit)}>
+    <form className="p-[20px]" onSubmit={handleSubmit(onSubmit)}>
       <FormGroup
         label="Name"
         labelFor="name"

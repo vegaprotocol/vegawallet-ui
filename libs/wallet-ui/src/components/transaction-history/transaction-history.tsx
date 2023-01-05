@@ -38,7 +38,7 @@ export const TransactionHistory = () => {
         onChange={(open) => setTransaction(open ? transaction : null)}
       >
         {transaction && <TransactionDetails transaction={transaction} />}
-        <ButtonGroup inline style={{ padding: 20 }}>
+        <ButtonGroup inline className="p-[20px]">
           {explorerUrl && transaction?.txHash && (
             <AnchorButton
               href={`${explorerUrl}/txs/${transaction.txHash}`}

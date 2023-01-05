@@ -1,8 +1,6 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import type { ReactElement, ReactNode } from 'react'
 
-import { Colors } from '../../config/colors'
-
 interface TooltipProps {
   trigger: ReactElement
   content: ReactNode
@@ -16,14 +14,8 @@ export function Tooltip({ trigger, content, isOpen }: TooltipProps) {
         <TooltipPrimitive.Trigger asChild={true}>
           {trigger}
         </TooltipPrimitive.Trigger>
-        <TooltipPrimitive.Content
-          style={{
-            background: Colors.WHITE,
-            padding: '5px 10px',
-            color: Colors.DARK_GRAY_1,
-          }}
-        >
-          <TooltipPrimitive.Arrow fill={Colors.WHITE} />
+        <TooltipPrimitive.Content className="bg-white py-[5px] px-[10px] text-dark-100">
+          <TooltipPrimitive.Arrow className="fill-white" />
           {content}
         </TooltipPrimitive.Content>
       </TooltipPrimitive.Root>

@@ -1,7 +1,7 @@
+import classnames from 'classnames'
 import type { ReactNode, HTMLAttributes } from 'react'
 import { Children, cloneElement } from 'react'
 
-import { IntentBackgrounds } from '../../config/colors'
 import { Intent } from '../../config/intent'
 
 interface CalloutProps extends HTMLAttributes<HTMLDivElement> {
@@ -19,18 +19,18 @@ export function Callout({
   style,
   ...htmlProps
 }: CalloutProps) {
-  const defaultStyle = {
-    display: 'flex',
-    gap: 15,
-    background: IntentBackgrounds[intent],
-    padding: '15px 20px',
-  }
   const childrenLength = Children.toArray(children).length
   return (
-    <div style={{ ...defaultStyle, ...style }} {...htmlProps}>
+    <div
+      className={classnames(
+        'flex gap-[15px] py-[15px] px-[20px]',
+        `bg-${intent}`
+      )}
+      {...htmlProps}
+    >
       {icon && <span>{icon}</span>}
       <div className="callout__content">
-        {title && <h4 style={{ marginTop: 0, color: 'inherit' }}>{title}</h4>}
+        {title && <h4 className="mt-0 text-inherit">{title}</h4>}
         {Children.map(children, (child, i) => {
           return cloneElement(child as React.ReactElement, {
             style: {

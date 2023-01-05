@@ -1,6 +1,5 @@
+import classnames from 'classnames'
 import { useEffect, useState } from 'react'
-
-import { Colors } from '../../config/colors'
 
 export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
   const [, forceRender] = useState(false)
@@ -13,38 +12,21 @@ export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
   }, [])
 
   return (
-    <div
-      data-testid="splash-loader"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: 50,
-          height: 50,
-          marginBottom: 20,
-        }}
-      >
+    <div data-testid="splash-loader" className="flex flex-col items-center">
+      <div className="flex flex-wrap w-[50px] h-[50px] mb-[20px]">
         {new Array(25).fill(null).map((_, i) => {
           return (
             <div
               key={i}
-              style={{
-                width: 10,
-                height: 10,
-                background: Colors.WHITE,
-                opacity: Math.random() > 0.75 ? 1 : 0,
-              }}
+              className={classnames(
+                'w-[10px] h-[10px] bg-white',
+                `opacity-[${Math.random() > 0.75 ? 1 : 0}]`
+              )}
             />
           )
         })}
       </div>
-      <div style={{ color: Colors.WHITE, fontSize: 20 }}>{text}</div>
+      <div className="text-white text-xl">{text}</div>
     </div>
   )
 }

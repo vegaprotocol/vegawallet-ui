@@ -162,13 +162,10 @@ function HostEditor({ name, control, register }: NodeEditorProps) {
 
   return (
     <FormGroup>
-      <ul style={{ marginBottom: 10 }}>
+      <ul className="mb-[10px]">
         {fields.map((field, i) => {
           return (
-            <li
-              key={field.id}
-              style={{ display: 'flex', gap: 10, marginBottom: 5 }}
-            >
+            <li key={field.id} className="flex gap-[10px] mb-[5px]">
               <Input
                 data-testid="node-list"
                 type="text"

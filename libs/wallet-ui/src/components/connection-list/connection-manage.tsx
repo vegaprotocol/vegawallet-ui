@@ -158,7 +158,7 @@ export const ManagePermissions = ({
 
   return (
     <form onSubmit={handleSubmit(onUpdate)}>
-      <div style={{ padding: 20 }}>
+      <div className="p-[20px]">
         <p>
           <code>{hostname}</code> has access to the following operations in the
           wallet "<code>{wallet.name}</code>":
@@ -169,7 +169,7 @@ export const ManagePermissions = ({
           ))}
         </div>
       </div>
-      <ButtonGroup inline style={{ padding: `0 20px 20px` }}>
+      <ButtonGroup inline className="px-[20px] pb-[20px]">
         <Button type="submit">Update</Button>
         <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
       </ButtonGroup>

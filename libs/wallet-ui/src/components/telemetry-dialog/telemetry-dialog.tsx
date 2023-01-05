@@ -37,12 +37,12 @@ export const TelemetryDialog = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         data-testid="telemetry-option-form"
-        style={{ padding: '0 20px 20px' }}
+        className="px-[20px] pb-[20px]"
       >
-        <p style={{ marginBottom: '1em' }}>
+        <p className="mb-[16px]">
           Selecting yes will help developers improve the software
         </p>
-        <div style={{ marginBottom: '1em' }}>
+        <div className="mb-[16px]">
           <RadioGroup
             name="consent"
             control={control}

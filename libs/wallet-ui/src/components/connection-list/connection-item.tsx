@@ -1,4 +1,4 @@
-import { Colors } from '../../config/colors'
+import classnames from 'classnames'
 import type { Connection } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { StatusCircle } from '../status-circle'
@@ -16,40 +16,23 @@ export const ConnectionItem = ({
 }: ConnectionItemProps) => {
   return (
     <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: 20,
-        padding: '20px 0',
-        borderTop: `1px solid ${Colors.BLACK}`,
-      }}
+      className={classnames(
+        'flex justify-between items-center gap-[20px]',
+        'py-[20px] px-0 border-t border-black'
+      )}
     >
-      <div
-        style={{
-          minWidth: 0,
-          flexBasis: '50%',
-        }}
-      >
-        <code
-          style={{
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
+      <div className="min-w-0 basis-1/2">
+        <code className="whitespace-nowrap overflow-hidden text-ellipsis">
           <StatusCircle
             blinking={connection.active}
-            background={
-              connection.active ? Colors.VEGA_GREEN : Colors.VEGA_ORANGE
-            }
+            background={connection.active ? 'bg-green' : 'bg-orange'}
           />
           {connection.hostname}
         </code>
       </div>
-      <div style={{ display: 'flex', gap: 20 }}>
+      <div className="flex gap-[20px]">
         <ButtonUnstyled onClick={onManage}>Manage</ButtonUnstyled>
-        <ButtonUnstyled style={{ display: 'none' }} onClick={onDisconnect}>
+        <ButtonUnstyled className="hidden" onClick={onDisconnect}>
           Disconnect
         </ButtonUnstyled>
       </div>

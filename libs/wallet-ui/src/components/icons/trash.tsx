@@ -1,9 +1,10 @@
-import { style as defaultStyle } from './style'
+import classnames from 'classnames'
+import { className as defaultClassName } from './style'
 
-export function Trash({ style }: { style?: React.CSSProperties }) {
+export function Trash({ className }: { className?: string }) {
   return (
     <svg
-      style={{ ...defaultStyle, fill: 'currentColor', ...style }}
+      className={classnames(defaultClassName, 'fill-transparent', className)}
       viewBox="0 0 16 16"
       xmlns="http://www.w3.org/2000/svg"
     >

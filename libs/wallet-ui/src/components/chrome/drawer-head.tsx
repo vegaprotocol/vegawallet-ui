@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import { useState } from 'react'
 
-import { Colors } from '../../config/colors'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Title } from '../title'
@@ -23,20 +23,14 @@ export function DrawerHead({
 }: DrawerHeadProps) {
   return (
     <div
-      style={{
-        height,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '10px 20px 10px 20px',
-        borderBottom: `1px solid ${Colors.DARK_GRAY_3}`,
-        fontSize: 14,
-      }}
+      className={classnames(
+        'flex justify-between items-center py-[10px] px-[20px]',
+        'border-b-1 border-dark-200 text-sm',
+        `h-[${height}px]`
+      )}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-        {children}
-      </div>
-      {title && <Title style={{ margin: 0 }}>{title}</Title>}
+      <div className="flex flex-col gap-[5px]">{children}</div>
+      {title && <Title className="m-0">{title}</Title>}
       <div>
         <DrawerToggle isOpen={isOpen} setOpen={setOpen} />
       </div>
@@ -57,23 +51,18 @@ function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
       data-testid="network-drawer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 45,
-        height: 45,
-        borderRadius: '50%',
-        background: hover ? Colors.DARK_GRAY_2 : 'transparent',
-      }}
+      className={classnames(
+        'flex items-center justify-center rounded w-[45px] h-[45px]',
+        {
+          'bg-dark-100': hover,
+        }
+      )}
       onClick={() => setOpen(!isOpen)}
     >
       <DropdownArrow
-        style={{
-          width: 16,
-          height: 16,
-          transform: isOpen ? '' : 'rotate(180deg)',
-        }}
+        className={classnames('w-[16px] h-[16px]', {
+          'rotate-180': !isOpen,
+        })}
       />
     </ButtonUnstyled>
   )

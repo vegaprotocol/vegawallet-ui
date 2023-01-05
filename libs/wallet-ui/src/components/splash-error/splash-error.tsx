@@ -14,12 +14,12 @@ type SplashErrorProps = {
 export const SplashError = ({ title, message, actions }: SplashErrorProps) => {
   return (
     <Splash>
-      <div style={{ textAlign: 'center' }}>
-        <Warning style={{ margin: 20, width: 28 }} />
+      <div className="text-center">
+        <Warning className="m-[20px] w-[28px]" />
         <Title variant="main">{title || 'Error'}</Title>
       </div>
-      <p style={{ margin: 20 }}>{message}</p>
-      <ButtonGroup style={{ margin: 20 }}>{actions}</ButtonGroup>
+      <p className="m-[20px]">{message}</p>
+      <ButtonGroup className="m-[20px]">{actions}</ButtonGroup>
     </Splash>
   )
 }

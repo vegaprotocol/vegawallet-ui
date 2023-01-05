@@ -1,25 +1,25 @@
+import classnames from 'classnames'
 import type { ForwardedRef, TextareaHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 
-import { getDefaultStyles } from './styles'
+import { getDefaultClassName } from './styles'
 
 type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>
 
 export const Textarea = forwardRef(
   (
-    { style, ...props }: TextareaProps,
+    { className, ...props }: TextareaProps,
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
     return (
       <textarea
         {...props}
         ref={ref}
-        style={{
-          ...getDefaultStyles({ hasError: props['aria-invalid'] === 'true' }),
-          minHeight: 200,
-          resize: 'vertical',
-          ...style,
-        }}
+        className={classnames(
+          getDefaultClassName({ hasError: props['aria-invalid'] === 'true' }),
+          'min-h-[200px] resize-y',
+          className
+        )}
       />
     )
   }
