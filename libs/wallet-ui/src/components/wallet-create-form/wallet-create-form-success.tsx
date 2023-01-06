@@ -15,8 +15,7 @@ export function WalletCreateFormSuccess({
   response,
   callToAction,
 }: WalletCreateFormSuccessProps) {
-  // @ts-ignore Hack - wallet returns crap defs, fix this to be response.wallet.keyDerivationVersion
-  const version = response?.wallet?.version
+  const version = response?.wallet?.keyDerivationVersion
   return (
     <>
       <SuccessSection>
