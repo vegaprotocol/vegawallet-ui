@@ -16,7 +16,7 @@ const hasImportedTestNetworks = (
   }, false)
 }
 
-const itemStyles = 'flex items-center justify-center my-[12px]'
+const itemStyles = 'flex items-center justify-between my-[12px]'
 
 type NetworkPresetItemProps = {
   preset: NetworkPreset
