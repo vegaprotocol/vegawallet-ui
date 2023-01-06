@@ -49,7 +49,10 @@ export function App({ service, client, runtime, features }: AppProps) {
           runtime={runtime}
           features={features}
         >
-          <div id={ROOT} className="text-black dark:text-white font-sans">
+          <div
+            id={ROOT}
+            className="h-full text-black dark:text-white font-sans"
+          >
             <Router>
               <AppFrame>
                 <Chrome>
