@@ -34,10 +34,14 @@ export function RadioGroup<T extends FieldValues>({
             onValueChange={field.onChange}
             name={field.name}
             orientation={orientation}
+            style={{
+              gridTemplateColumns:
+                orientation === 'horizontal'
+                  ? Array(options.length).fill('1fr').join(' ')
+                  : undefined,
+            }}
             className={classnames({
               grid: orientation === 'horizontal',
-              [`grid-cols-[${Array(options.length).fill('1fr').join('_')}]`]:
-                orientation === 'horizontal',
             })}
           >
             {options.map((o) => (

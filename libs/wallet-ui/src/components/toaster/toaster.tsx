@@ -36,7 +36,7 @@ export class Toaster extends Component<Readonly<any>, ToasterState> {
 
   public static create() {
     const container = document.createElement('div')
-    container.className = 'toaster-container'
+    container.className = 'toaster-container text-white font-sans'
     container.style.display = 'flex'
     container.style.alignItems = 'center'
     container.style.flexFlow = 'column nowrap'
