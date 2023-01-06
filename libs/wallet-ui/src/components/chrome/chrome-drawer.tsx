@@ -24,8 +24,6 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
     config: { ...config.default, duration: 170 },
   })
 
-  console.log(styles.y)
-
   return (
     <animated.div
       style={{
