@@ -27,6 +27,11 @@ const client = new WalletClient({
 })
 ```
 
+## Error handling
+
+1. The client will check if there is an error property on the response body and will throw an `WalletClientError` instance wrapping the error info, and expose a code property with the jsonrpc code, and a message based on the jsonrpc message and data properties, as defined in [specification](https://www.jsonrpc.org/specification).
+2. If there is a network error / any sort of server error, the client will wrap it into a `WalletHttpError`, which will have a code property with the relevant http error code, and the message will the the http response status text.
+
 ## Generating the client
 
 Run `yarn nx run wallet-client:generate` to regenerate the client from the API specs. If you run this locally, the generator will need an environment variable pointing to an openrpc specs file (remote through http or a local file path) to use that as the source of for the wallet client.
@@ -35,7 +40,7 @@ Run `yarn nx run wallet-client:generate` to regenerate the client from the API s
 WALLET_CLIENT_SPECS=https://...
 ```
 
-NOTE: by default, the code generator should be pointed to ()[https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json]
+NOTE: by default, the code generator should be pointed to [wallet API openrpc definition](https://raw.githubusercontent.com/vegaprotocol/vega/develop/wallet/api/openrpc.json)
 
 ## Mocks
 

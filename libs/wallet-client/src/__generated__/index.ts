@@ -201,16 +201,55 @@ type Options = {
   id?: string
 }
 
-async function handleResponse<T>(res: Response) {
-  if (!res.ok) {
-    throw new Error(res.statusText)
-  }
-  const { jsonrpc, ...json } = await res.json()
+type ResponseError = {
+  code: number
+  message: string
+  data: string
+}
 
-  return json as Promise<{
-    result: T
-    id: string
-  }>
+export class WalletClientError extends Error {
+  public code: number
+
+  constructor(response: ResponseError) {
+    const message = response.data
+      ? `${response.message}: ${response.data}`
+      : response.message
+
+    super(message)
+    this.code = response.code
+  }
+}
+
+export class WalletHttpError extends Error {
+  public code: number
+
+  constructor(code: number, message: string) {
+    super(message)
+    this.code = code
+  }
+}
+
+async function handleResponse<T>(res: Response) {
+  try {
+    const { jsonrpc, error, ...json } = await res.json()
+
+    if (error) {
+      throw new WalletClientError(error)
+    }
+
+    return json as Promise<{
+      result: T
+      id: string
+    }>
+  } catch (err) {
+    if (err instanceof WalletClientError) {
+      throw err
+    }
+    if (!res.ok) {
+      throw new WalletHttpError(res.status, res.statusText)
+    }
+    throw err
+  }
 }
 
 export class WalletClient {
