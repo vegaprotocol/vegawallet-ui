@@ -18,10 +18,10 @@ export const SplashLoader = ({ text = 'Loading' }: { text?: string }) => {
           return (
             <div
               key={i}
-              className={classnames(
-                'w-[10px] h-[10px] bg-white',
-                `opacity-[${Math.random() > 0.75 ? 1 : 0}]`
-              )}
+              style={{
+                opacity: Math.random() > 0.75 ? 1 : 0,
+              }}
+              className={classnames('w-[10px] h-[10px] bg-white')}
             />
           )
         })}

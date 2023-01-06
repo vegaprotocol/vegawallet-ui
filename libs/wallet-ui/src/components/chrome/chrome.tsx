@@ -20,20 +20,18 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           'vega-border-image': !useVegaBg,
           'border-t-[3px]': !useVegaBg,
           'bg-dark-100': !useVegaBg,
-          [`pb-[${DRAWER_HEIGHT}px]`]: state.status === AppStatus.Initialised,
+          'pb-[70px]': state.status === AppStatus.Initialised,
         })}
       >
         <main className="h-full overflow-y-auto">{children}</main>
       </div>
       {state.status === AppStatus.Initialised && (
         <div
+          style={{
+            height: state.status === AppStatus.Initialised ? DRAWER_HEIGHT : 0,
+          }}
           className={classnames(
-            'fixed bottom-o left-0 w-full transition-all duration-200',
-            {
-              [`h-[${DRAWER_HEIGHT}px]`]:
-                state.status === AppStatus.Initialised,
-              'h-0': state.status !== AppStatus.Initialised,
-            }
+            'fixed bottom-0 left-0 w-full transition-all duration-200'
           )}
         >
           <ChromeDrawer height={height} />

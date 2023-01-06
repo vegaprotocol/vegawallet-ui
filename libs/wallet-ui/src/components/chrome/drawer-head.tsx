@@ -23,10 +23,10 @@ export function DrawerHead({
 }: DrawerHeadProps) {
   return (
     <div
+      style={{ height }}
       className={classnames(
         'flex justify-between items-center py-[10px] px-[20px]',
-        'border-b-1 border-dark-200 text-sm',
-        `h-[${height}px]`
+        'border-b-1 border-dark-200 text-sm'
       )}
     >
       <div className="flex flex-col gap-[5px]">{children}</div>

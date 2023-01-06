@@ -24,15 +24,17 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
     config: { ...config.default, duration: 170 },
   })
 
+  console.log(styles.y)
+
   return (
     <animated.div
-      className={classnames(
-        'vega-border-image bg-black border-t-[3px]',
-        `h-[${height - APP_FRAME_HEIGHT}px] translate-y-[${styles.y}px]`,
-        {
-          'overflow-y-hidden': state.drawerState.isOpen,
-        }
-      )}
+      style={{
+        height: height - APP_FRAME_HEIGHT,
+        translateY: styles.y,
+      }}
+      className={classnames('vega-border-image bg-black border-t-[3px]', {
+        'overflow-y-hidden': state.drawerState.isOpen,
+      })}
     >
       <DrawerContent />
     </animated.div>

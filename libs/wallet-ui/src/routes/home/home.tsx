@@ -5,7 +5,6 @@ import { Link, Navigate } from 'react-router-dom'
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
-import { DRAWER_HEIGHT } from '../../components/chrome'
 import { Lock } from '../../components/icons/lock'
 import { OpenLock } from '../../components/icons/open-lock'
 import { Title } from '../../components/title'
@@ -67,7 +66,7 @@ export const Home = () => {
       <div
         className={classnames('text-center p-[20px] w-full bg-dark-100', {
           fixed: wallets.length,
-          [`bottom-[${DRAWER_HEIGHT}px]`]: wallets.length,
+          [`bottom-[70px]`]: wallets.length,
           'left-0': wallets.length,
         })}
       >

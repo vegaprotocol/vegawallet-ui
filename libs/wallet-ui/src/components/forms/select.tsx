@@ -6,8 +6,6 @@ import { getDefaultClassName } from './styles'
 
 type SelectProps = SelectHTMLAttributes<HTMLSelectElement>
 
-const CARET_SIZE = 5
-
 export const Select = forwardRef(
   (
     { className, ...props }: SelectProps,
@@ -27,9 +25,9 @@ export const Select = forwardRef(
         <span
           className={classnames(
             'block absolute w-0 h-0',
-            `right-[10px] top-[calc(50%_-_${CARET_SIZE / 2}px)]`,
+            `right-[10px] top-[calc(50%_-_2px)]`,
             'border-x-transparent border-t-white',
-            `border-t-[${CARET_SIZE}px] border-r-[${CARET_SIZE}px] border-l-[${CARET_SIZE}px]`
+            `border-t-[5px] border-r-[5px] border-l-[5px]`
           )}
         />
       </div>
