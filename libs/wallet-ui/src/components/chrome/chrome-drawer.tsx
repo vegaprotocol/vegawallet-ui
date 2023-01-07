@@ -32,6 +32,7 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
       }}
       className={classnames('vega-border-image bg-black border-t-[3px]', {
         'overflow-y-hidden': !state.drawerState.isOpen,
+        'overflow-y-scroll': state.drawerState.isOpen,
       })}
     >
       <DrawerContent />
