@@ -13,13 +13,16 @@ module.exports = {
     black: '#101010',
     white: '#fff',
     danger: {
-      DEFAULT: '#FF261A',
+      DEFAULT: '#A90900',
+      light: '#FF261A',
     },
     warning: {
-      DEFAULT: '#FF7A1A',
+      DEFAULT: '#D75200',
+      light: '#FF7A1A',
     },
     success: {
-      DEFAULT: '#00F780',
+      DEFAULT: '#00944d',
+      light: '#00F780',
     },
     yellow: {
       DEFAULT: '#D7FB50',

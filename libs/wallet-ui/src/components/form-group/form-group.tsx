@@ -29,7 +29,7 @@ export function FormGroup({
         {helperText && (
           <div
             data-testid="helper-text"
-            className={classnames('mt-[5px] text-sm', `text-${intent}`)}
+            className={classnames('mt-[5px] text-sm', `text-${intent}-light`)}
           >
             {helperText}
           </div>
