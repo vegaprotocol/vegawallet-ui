@@ -43,7 +43,7 @@ export function Dialog({
                 <DialogPrimitives.Content
                   forceMount={true}
                   asChild={true}
-                  className="text-black dark:text-white font-sans"
+                  className="text-white font-sans"
                 >
                   <animated.div
                     className={classnames(

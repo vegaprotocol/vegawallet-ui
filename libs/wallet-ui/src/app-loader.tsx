@@ -67,14 +67,14 @@ export function AppFrame({ children }: AppFrameProps) {
         {
           'vega-bg': useVegaBg,
           'bg-transparent': useVegaBg,
-          'dark:bg-grey-100 light:bg-grey-400': !useVegaBg,
+          'bg-grey-100': !useVegaBg,
         }
       )}
     >
       <div
         className={classnames('absolute top-0 left-0 w-full ', `h-9`, {
           'bg-transparent': useVegaBg,
-          'dark:bg-black light:bg-white': !useVegaBg,
+          'bg-black': !useVegaBg,
         })}
         style={{
           // The app is frameless by default so this element creates a space at the top of the app
