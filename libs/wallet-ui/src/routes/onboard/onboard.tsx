@@ -64,7 +64,11 @@ export function Onboard() {
       <>
         <p className="mb-[20px]">Existing wallets found</p>
         <ButtonGroup>
-          <Button loading={isLoading} onClick={handleImportExistingWallet}>
+          <Button
+            loading={isLoading}
+            className="w-full"
+            onClick={handleImportExistingWallet}
+          >
             Use existing
           </Button>
         </ButtonGroup>
