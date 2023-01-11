@@ -23,10 +23,6 @@ export namespace WalletModel {
     ConnectWalletParams?: ConnectWalletParams
     DisconnectWalletResult?: DisconnectWalletResult
     DisconnectWalletParams?: DisconnectWalletParams
-    GetPermissionsResult?: GetPermissionsResult
-    GetPermissionsParams?: GetPermissionsParams
-    RequestPermissionsResult?: RequestPermissionsResult
-    RequestPermissionsParams?: RequestPermissionsParams
     ListKeysResult?: ListKeysResult
     ListKeysParams?: ListKeysParams
     SignTransactionResult?: SignTransactionResult
@@ -48,44 +44,6 @@ export namespace WalletModel {
   }
   export interface DisconnectWalletParams {
     token: Token
-  }
-  export interface GetPermissionsResult {
-    /**
-     * The description of the permissions a third-party application has.
-     */
-    permissions: {
-      /**
-       * The different access modes a permission can have.
-       */
-      public_keys: 'read' | 'none'
-    }
-  }
-  export interface GetPermissionsParams {
-    token: Token
-  }
-  export interface RequestPermissionsResult {
-    /**
-     * The description of the permissions a third-party application has.
-     */
-    permissions: {
-      /**
-       * The different access modes a permission can have.
-       */
-      public_keys: 'read' | 'none'
-    }
-  }
-  export interface RequestPermissionsParams {
-    token: Token
-    requestedPermissions: PermissionsSummary
-  }
-  /**
-   * The description of the permissions a third-party application has.
-   */
-  export interface PermissionsSummary {
-    /**
-     * The different access modes a permission can have.
-     */
-    public_keys: 'read' | 'none'
   }
   export interface ListKeysResult {
     keys: {
@@ -183,8 +141,6 @@ export namespace WalletModel {
 export enum Identifier {
   ConnectWallet = 'client.connect_wallet',
   DisconnectWallet = 'client.disconnect_wallet',
-  GetPermissions = 'client.get_permissions',
-  RequestPermissions = 'client.request_permissions',
   ListKeys = 'client.list_keys',
   SignTransaction = 'client.sign_transaction',
   SendTransaction = 'client.send_transaction',
@@ -251,6 +207,31 @@ async function handleResponse<T>(res: Response) {
     throw err
   }
 }
+
+export type WalletClientHandler = ((
+  id: Identifier.ConnectWallet,
+  params: WalletModel.ConnectWalletParams
+) => Promise<WalletModel.ConnectWalletResult>) &
+  ((
+    id: Identifier.DisconnectWallet,
+    params: WalletModel.DisconnectWalletParams
+  ) => Promise<WalletModel.DisconnectWalletResult>) &
+  ((
+    id: Identifier.ListKeys,
+    params: WalletModel.ListKeysParams
+  ) => Promise<WalletModel.ListKeysResult>) &
+  ((
+    id: Identifier.SignTransaction,
+    params: WalletModel.SignTransactionParams
+  ) => Promise<WalletModel.SignTransactionResult>) &
+  ((
+    id: Identifier.SendTransaction,
+    params: WalletModel.SendTransactionParams
+  ) => Promise<WalletModel.SendTransactionResult>) &
+  ((
+    id: Identifier.GetChainId,
+    params: WalletModel.GetChainIdParams
+  ) => Promise<WalletModel.GetChainIdResult>)
 
 export class WalletClient {
   // The wallet service address to connect to
@@ -344,58 +325,6 @@ export class WalletClient {
         },
       }),
     }).then((r) => handleResponse<WalletModel.DisconnectWalletResult>(r))
-  }
-
-  /**
-   * Returns the permissions set on the wallet for the third-party application.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public GetPermissions = async (
-    params: Omit<WalletModel.GetPermissionsParams, 'token'> = {},
-    options?: Options
-  ) => {
-    return fetch(`${this.walletAddress}/api/v2/requests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: options?.id || nanoid(),
-        method: Identifier.GetPermissions,
-        params: {
-          ...params,
-          token: this.token,
-        },
-      }),
-    }).then((r) => handleResponse<WalletModel.GetPermissionsResult>(r))
-  }
-
-  /**
-   * Requests permissions update for the third-party application.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public RequestPermissions = async (
-    params: Omit<WalletModel.RequestPermissionsParams, 'token'>,
-    options?: Options
-  ) => {
-    return fetch(`${this.walletAddress}/api/v2/requests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: options?.id || nanoid(),
-        method: Identifier.RequestPermissions,
-        params: {
-          ...params,
-          token: this.token,
-        },
-      }),
-    }).then((r) => handleResponse<WalletModel.RequestPermissionsResult>(r))
   }
 
   /**

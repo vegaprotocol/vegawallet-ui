@@ -1,6 +1,6 @@
 # @vegaprotocol/wallet-client
 
-Wallet client for the `client` namespace of the [Vega wallet API v0.65.1](https://github.com/vegaprotocol/vega/tree/develop/wallet/api) based on its [openrpc specs](https://github.com/vegaprotocol/vega/blob/develop/wallet/api/openrpc.json).
+Wallet client for the `client` namespace of the [Vega wallet API v0.66.1](https://github.com/vegaprotocol/vega/tree/develop/wallet/api) based on its [openrpc specs](https://github.com/vegaprotocol/vega/blob/develop/wallet/api/openrpc.json).
 
 ## Usage
 

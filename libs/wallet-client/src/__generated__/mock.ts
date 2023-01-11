@@ -17,17 +17,6 @@ const MockParams = {
     token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
   },
 
-  GetPermissions: {
-    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
-  },
-
-  RequestPermissions: {
-    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
-    requestedPermissions: {
-      publicKeys: 'read',
-    },
-  },
-
   ListKeys: {
     token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
   },
@@ -84,28 +73,6 @@ export class MockWalletService {
           res.send({
             id: req.body.id,
             result: null,
-          })
-          return
-        }
-
-        case Identifier.GetPermissions: {
-          res.send({
-            id: req.body.id,
-            result: {
-              publicKeys: 'read',
-            },
-          })
-          return
-        }
-
-        case Identifier.RequestPermissions: {
-          res.send({
-            id: req.body.id,
-            result: {
-              permissions: {
-                publicKeys: 'read',
-              },
-            },
           })
           return
         }

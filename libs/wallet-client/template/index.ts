@@ -70,6 +70,10 @@ async function handleResponse <T>(res: Response) {
   }
 }
 
+export type WalletClientHandler = <% methods.forEach((method) => { %>
+  & ((id: Identifier.<%= getMethodName(method) %>, params: WalletModel.<%= getMethodParamsType(method) %>) => Promise<WalletModel.<%= getMethodResultType(method) %>>)<%
+  }) %>
+
 export class WalletClient {
   // The wallet service address to connect to
   private walletAddress: string
