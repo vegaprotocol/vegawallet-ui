@@ -44,7 +44,7 @@ export const useKeypairUpdate = (
           publicKey: pubKey,
         })
 
-        dispatch(actions.updateKeyPairAction(wallet, keypair))
+        dispatch({ type: 'UPDATE_KEYPAIR', wallet, keypair })
         dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: false })
 
         AppToaster.show({

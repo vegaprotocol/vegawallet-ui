@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 
 import { Intent } from '../../../config/intent'
 import { useGlobal } from '../../../contexts/global/global-context'
+import { useOpenWallet } from '../../../hooks/use-open-wallet'
 import { Validation } from '../../../lib/form-validation'
 import { Button } from '../../button'
 import { ButtonGroup } from '../../button-group'
@@ -21,6 +22,7 @@ export const WalletSelection = ({
   isResolved,
   setResolved,
 }: InteractionContentProps<RequestWalletSelection>) => {
+  const { getWalletData } = useOpenWallet()
   const { service, client, dispatch } = useGlobal()
   const {
     control,
@@ -33,6 +35,15 @@ export const WalletSelection = ({
   const handleApprove = async ({ wallet }: { wallet: string }) => {
     if (!isResolved) {
       const passphrase = await requestPassphrase()
+
+      try {
+        await getWalletData(wallet, passphrase)
+      } catch (err) {
+        AppToaster.show({
+          intent: Intent.DANGER,
+          message: `${err}`,
+        })
+      }
 
       try {
         await service.RespondToInteraction({

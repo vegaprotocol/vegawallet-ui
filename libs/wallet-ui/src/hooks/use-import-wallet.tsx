@@ -43,7 +43,11 @@ export function useImportWallet() {
             publicKey: resp.key.publicKey,
           })
 
-          dispatch(actions.addWalletAction(values.wallet, keypair))
+          dispatch({
+            type: 'ADD_WALLET',
+            wallet: values.wallet,
+            key: keypair,
+          })
           AppToaster.show({
             message: `Wallet imported to: ${resp.wallet.filePath}`,
             intent: Intent.SUCCESS,

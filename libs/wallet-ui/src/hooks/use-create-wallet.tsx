@@ -39,7 +39,11 @@ export function useCreateWallet() {
             message: 'Wallet created!',
             intent: Intent.SUCCESS,
           })
-          dispatch(actions.addWalletAction(values.wallet, keypair))
+          dispatch({
+            type: 'ADD_WALLET',
+            wallet: values.wallet,
+            key: keypair,
+          })
           dispatch({
             type: 'ACTIVATE_WALLET',
             wallet: values.wallet,

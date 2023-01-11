@@ -37,7 +37,7 @@ export const useTaint = (
         publicKey,
       })
 
-      dispatch(actions.updateKeyPairAction(wallet, keypair))
+      dispatch({ type: 'UPDATE_KEYPAIR', wallet, keypair })
 
       setLoading(false)
       AppToaster.show({
@@ -67,7 +67,7 @@ export const useTaint = (
         publicKey,
       })
 
-      dispatch(actions.updateKeyPairAction(wallet, keypair))
+      dispatch({ type: 'UPDATE_KEYPAIR', wallet, keypair })
 
       setLoading(false)
       AppToaster.show({
