@@ -49,7 +49,7 @@ export const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, client, logger, actions, publicKey, wallet])
+  }, [dispatch, client, logger, publicKey, wallet])
 
   const untaint = useCallback(async () => {
     setLoading(true)
@@ -79,7 +79,7 @@ export const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, client, logger, actions, publicKey, wallet])
+  }, [dispatch, client, logger, publicKey, wallet])
 
   return {
     loading,

@@ -59,7 +59,7 @@ export const useOpenWallet = () => {
         wallet,
       })
     },
-    [state, client, dispatch]
+    [client, dispatch]
   )
 
   const open = useCallback(
@@ -87,7 +87,7 @@ export const useOpenWallet = () => {
         })
       }
     },
-    [getWalletData, navigate, state, client, dispatch]
+    [getWalletData, state, navigate, dispatch]
   )
 
   return { open, getWalletData }
