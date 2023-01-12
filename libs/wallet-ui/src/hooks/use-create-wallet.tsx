@@ -8,7 +8,7 @@ import { useVegaHome } from './use-vega-home'
 
 export function useCreateWallet() {
   const vegaHome = useVegaHome()
-  const { actions, service, client, dispatch, state } = useGlobal()
+  const { service, client, dispatch, state } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseCreateWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.CreateWalletResult | null>(null)
@@ -39,7 +39,11 @@ export function useCreateWallet() {
             message: 'Wallet created!',
             intent: Intent.SUCCESS,
           })
-          dispatch(actions.addWalletAction(values.wallet, keypair))
+          dispatch({
+            type: 'ADD_WALLET',
+            wallet: values.wallet,
+            key: keypair,
+          })
           dispatch({
             type: 'ACTIVATE_WALLET',
             wallet: values.wallet,
@@ -52,7 +56,7 @@ export function useCreateWallet() {
         logger.error(err)
       }
     },
-    [dispatch, actions, logger, service, client, state.status, vegaHome]
+    [dispatch, logger, service, client, state.status, vegaHome]
   )
 
   return {

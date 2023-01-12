@@ -34,7 +34,7 @@ export function PassphraseModal() {
   // Register handler.open to open the passphrase modal
   useEffect(() => {
     handler.open = () => {
-      dispatch(actions.setPassphraseModalAction(true))
+      dispatch({ type: 'SET_PASSPHRASE_MODAL', open: true })
     }
   }, [dispatch, actions])
 
@@ -44,13 +44,13 @@ export function PassphraseModal() {
 
     // Show spinner and prevent modal closing before route change which causes
     // causes some slight jankiness.
-    dispatch(actions.setPassphraseModalAction(false))
+    dispatch({ type: 'SET_PASSPHRASE_MODAL', open: false })
     setLoading(false)
   }
 
   function close() {
     handler.close()
-    dispatch(actions.setPassphraseModalAction(false))
+    dispatch({ type: 'SET_PASSPHRASE_MODAL', open: false })
     setLoading(false)
   }
 

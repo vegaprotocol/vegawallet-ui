@@ -220,13 +220,6 @@ export function createActions(service: Service, client: WalletAdmin) {
       }
     },
 
-    addWalletAction(
-      wallet: string,
-      key: WalletModel.DescribeKeyResult
-    ): GlobalAction {
-      return { type: 'ADD_WALLET', wallet, key }
-    },
-
     addKeypairAction(wallet: string) {
       return async (dispatch: GlobalDispatch) => {
         logger.debug('AddKeyPair')
@@ -258,13 +251,6 @@ export function createActions(service: Service, client: WalletAdmin) {
       }
     },
 
-    updateKeyPairAction(
-      wallet: string,
-      keypair: WalletModel.DescribeKeyResult
-    ): GlobalAction {
-      return { type: 'UPDATE_KEYPAIR', wallet, keypair }
-    },
-
     setDrawerAction(
       isOpen: boolean,
       panel?: DrawerPanel | null,
@@ -277,17 +263,6 @@ export function createActions(service: Service, client: WalletAdmin) {
           panel: panel ?? DrawerPanel.Network,
           editingNetwork: editingNetwork ?? null,
         },
-      }
-    },
-
-    setPassphraseModalAction(open: boolean): GlobalAction {
-      return { type: 'SET_PASSPHRASE_MODAL', open }
-    },
-
-    changeWalletAction(wallet: string): GlobalAction {
-      return {
-        type: 'CHANGE_WALLET',
-        wallet,
       }
     },
 

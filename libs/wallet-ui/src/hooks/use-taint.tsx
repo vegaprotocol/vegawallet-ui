@@ -37,7 +37,7 @@ export const useTaint = (
         publicKey,
       })
 
-      dispatch(actions.updateKeyPairAction(wallet, keypair))
+      dispatch({ type: 'UPDATE_KEYPAIR', wallet, keypair })
 
       setLoading(false)
       AppToaster.show({
@@ -49,7 +49,7 @@ export const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, client, logger, actions, publicKey, wallet])
+  }, [dispatch, client, logger, publicKey, wallet])
 
   const untaint = useCallback(async () => {
     setLoading(true)
@@ -67,7 +67,7 @@ export const useTaint = (
         publicKey,
       })
 
-      dispatch(actions.updateKeyPairAction(wallet, keypair))
+      dispatch({ type: 'UPDATE_KEYPAIR', wallet, keypair })
 
       setLoading(false)
       AppToaster.show({
@@ -79,7 +79,7 @@ export const useTaint = (
       AppToaster.show({ message: `${err}`, intent: Intent.DANGER })
       logger.error(err)
     }
-  }, [dispatch, client, logger, actions, publicKey, wallet])
+  }, [dispatch, client, logger, publicKey, wallet])
 
   return {
     loading,
