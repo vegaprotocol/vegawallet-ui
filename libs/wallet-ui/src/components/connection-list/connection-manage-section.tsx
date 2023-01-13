@@ -75,7 +75,7 @@ export const PermissionSection = ({
       setPermissionType(value)
       setAllFields(value === 'some')
     },
-    [fields, setAllFields, setPermissionType]
+    [setAllFields, setPermissionType]
   )
 
   const handleCheckedChange = useCallback(
