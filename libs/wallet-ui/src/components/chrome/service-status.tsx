@@ -12,9 +12,10 @@ export function ServiceStatus() {
     dispatch,
     state: { network, networkConfig, serviceStatus },
   } = useGlobal()
-  const serviceUrl = networkConfig
-    ? `http://${networkConfig.host}:${networkConfig.port}`
-    : ''
+  const serviceUrl =
+    service.TYPE === 'http' && networkConfig
+      ? `http://${networkConfig.host}:${networkConfig.port}`
+      : ''
 
   const startService = useCallback(async () => {
     if (network) {
@@ -65,7 +66,11 @@ export function ServiceStatus() {
           <span className="font-mono bg-dark-200 py-[1px] px-[5px]">
             {network}
           </span>{' '}
-          on <code>{serviceUrl}</code>
+          {serviceUrl && (
+            <>
+              on <code>{serviceUrl}</code>
+            </>
+          )}
         </div>
       )
     }
