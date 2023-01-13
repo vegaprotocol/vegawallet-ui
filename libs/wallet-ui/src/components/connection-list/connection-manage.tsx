@@ -59,7 +59,9 @@ const compileDefaultValues = (
               acc.push({
                 key,
                 name: keypair.name,
-                value: p.restrictedKeys?.includes(key) ? false : true,
+                value: p.restrictedKeys?.length
+                  ? p.restrictedKeys.includes(key)
+                  : true,
               })
             }
             return acc
@@ -90,7 +92,7 @@ const compileSubmissionData = (
           p.access === 'none'
             ? []
             : p.restrictedKeys.reduce<string[]>((acc, item) => {
-                if (!item.value) {
+                if (item.value) {
                   acc.push(item.key)
                 }
                 return acc
@@ -117,7 +119,7 @@ export const ManagePermissions = ({
       compileDefaultValues(wallet, wallet.connections?.[hostname]?.permissions),
     [wallet, hostname]
   )
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, setValue } = useForm({
     defaultValues: {
       ...permissions,
     },
@@ -135,6 +137,8 @@ export const ManagePermissions = ({
           hostname,
           permissions,
         })
+
+        console.log(permissions)
 
         dispatch({
           type: 'SET_PERMISSONS',
@@ -165,7 +169,20 @@ export const ManagePermissions = ({
         </p>
         <div>
           {permissionAccessKeys.map((key) => (
-            <PermissionSection key={key} accessType={key} control={control} />
+            <PermissionSection
+              key={key}
+              accessType={key}
+              control={control}
+              setAllFields={(value: boolean) =>
+                setValue(
+                  'publicKeys.restrictedKeys',
+                  permissions.publicKeys.restrictedKeys.map((field) => ({
+                    ...field,
+                    value,
+                  }))
+                )
+              }
+            />
           ))}
         </div>
       </div>
