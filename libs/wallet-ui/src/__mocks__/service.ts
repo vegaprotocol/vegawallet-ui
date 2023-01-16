@@ -7,6 +7,8 @@ const logger = log.getLogger('test')
 const noop = () => {}
 
 export const service: Service = {
+  TYPE: 'http',
+
   GetLatestRelease: () =>
     Promise.resolve({
       version: '0.99.0',
