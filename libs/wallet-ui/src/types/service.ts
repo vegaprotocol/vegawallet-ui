@@ -2,9 +2,13 @@ import type { EVENTS } from '../lib/events'
 import type { RawInteraction, InteractionResponse } from './interaction'
 import type { Logger } from './logger'
 
-export type GetCurrentServiceInfoResponse = {
+export type GetHTTPServiceInfoResponse = {
   url: string
   logFilePath: string
+  isRunning: boolean
+  latestHealthState: string
+}
+export type GetBrowserServiceInfoResponse = {
   isRunning: boolean
   latestHealthState: string
 }
@@ -62,6 +66,8 @@ type EventsCallbackArgs =
 type EventsCallback = (...args: EventsCallbackArgs) => void
 
 export type Service = {
+  TYPE: 'http' | 'browser'
+
   // Version
   GetLatestRelease: () => Promise<LatestRelease>
   GetVersion: () => Promise<GetVersionResponse>
@@ -84,7 +90,9 @@ export type Service = {
   // Service
   StartService: (arg: StartServiceArg) => Promise<Empty>
   StopService: () => Promise<Empty>
-  GetCurrentServiceInfo: () => Promise<GetCurrentServiceInfoResponse>
+  GetCurrentServiceInfo: () => Promise<
+    GetHTTPServiceInfoResponse | GetBrowserServiceInfoResponse
+  >
 
   // API
   EventsOn: EventsCallback
