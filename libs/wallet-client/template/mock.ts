@@ -28,6 +28,8 @@ export class MockWalletService {
     app.use(cors())
 
     app.post(`/api/v2/requests`, (req, res) => {
+      res.set('Authorization', 'VWT token')
+      
       switch (req.body.method) {
       <% methods.forEach((method) => { %>
         case Identifier.<%= getMethodName(method) %>: {

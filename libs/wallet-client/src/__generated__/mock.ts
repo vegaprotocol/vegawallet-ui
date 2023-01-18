@@ -1,4 +1,4 @@
-import type { Express } from 'express'
+import type { Express } from 'express';
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
@@ -50,6 +50,8 @@ export class MockWalletService {
     app.use(cors())
 
     app.post(`/api/v2/requests`, (req, res) => {
+      res.set('Authorization', 'VWT token')
+
       switch (req.body.method) {
         case Identifier.ConnectWallet: {
           res.send({
