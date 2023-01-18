@@ -82,6 +82,8 @@ export class WalletClient {
   private origin?: string
   // The stored connection token
   private token?: string | null
+  // The token updater callback to update / save tokens
+  private onTokenChange: (token: string | null) => void
 
   constructor ({ address, origin, token, onTokenChange }: Props) {
     this.origin = origin || window.location.host
