@@ -20,13 +20,16 @@ afterEach(() => {
 
 describe('Wallet Client', () => {
   it('can connect to a wallet', async () => {
-    const client = new WalletClient({ address: HOSTNAME })
+    const onTokenChange = jest.fn()
+    const client = new WalletClient({ address: HOSTNAME, onTokenChange })
     const { result } = await client.ConnectWallet()
     expect(result).toBe('null')
+    expect(onTokenChange).toHaveBeenCalledWith('VWT token')
   })
 
   it('returns a supported list of methods', async () => {
-    const client = new WalletClient({ address: HOSTNAME })
+    const onTokenChange = jest.fn()
+    const client = new WalletClient({ address: HOSTNAME, onTokenChange })
 
     const { registeredMethods } = await client.ListMethods()
     expect(registeredMethods).toEqual(Object.values(Identifier))

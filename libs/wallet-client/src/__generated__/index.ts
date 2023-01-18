@@ -136,6 +136,7 @@ type Props = {
   address: string
   origin?: string
   token?: string
+  onTokenChange: (token: string | null) => void
 }
 
 type Options = {
@@ -225,11 +226,14 @@ export class WalletClient {
   private origin?: string
   // The stored connection token
   private token?: string | null
+  // The token updater callback to update / save tokens
+  private onTokenChange: (token: string | null) => void
 
-  constructor({ address, origin, token }: Props) {
+  constructor({ address, origin, token, onTokenChange }: Props) {
     this.origin = origin || window.location.host
     this.walletAddress = address
     this.token = token
+    this.onTokenChange = onTokenChange
   }
 
   /**
@@ -258,6 +262,7 @@ export class WalletClient {
     })
       .then((r) => {
         this.token = r.headers.get('Authorization')
+        this.onTokenChange(this.token)
         return r
       })
       .then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
