@@ -2,10 +2,7 @@
 import { nanoid } from 'nanoid'
 
 export namespace WalletModel {
-  /**
-   * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
-   */
-  export type Token = string
+  export type ConnectWalletResult = null
   /**
    * The Vega public key to use.
    */
@@ -14,7 +11,7 @@ export namespace WalletModel {
    * The chosen mode to send the transaction:
    * - `TYPE_SYNC` returns the result of running the transaction.
    * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
-   * - `TYPE_COMMIT` waits until the transaction is committed in a block or until some timeout is reached or returns return right away if the transaction is not valid.
+   * - `TYPE_COMMIT` waits until the transaction is committed in a block, or until some timeout is reached, or returns return right away if the transaction is not valid.
    */
   export type SendingMode = 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
 
@@ -32,28 +29,18 @@ export namespace WalletModel {
     GetChainIdResult?: GetChainIdResult
     GetChainIdParams?: GetChainIdParams
   }
-  export interface ConnectWalletResult {
-    /**
-     * A unique connection token randomly generated for each new connection. It's used to access the protected methods.
-     */
-    token: string
-  }
   export interface ConnectWalletParams {}
   export interface DisconnectWalletResult {
     [k: string]: unknown
   }
-  export interface DisconnectWalletParams {
-    token: Token
-  }
+  export interface DisconnectWalletParams {}
   export interface ListKeysResult {
     keys: {
       name: string
       publicKey: string
     }[]
   }
-  export interface ListKeysParams {
-    token: Token
-  }
+  export interface ListKeysParams {}
   export interface SignTransactionResult {
     /**
      * A transaction that has been signed by the wallet.
@@ -77,7 +64,6 @@ export namespace WalletModel {
     }
   }
   export interface SignTransactionParams {
-    token: Token
     publicKey: PublicKey
     transaction: Transaction
   }
@@ -124,7 +110,6 @@ export namespace WalletModel {
     }
   }
   export interface SendTransactionParams {
-    token: Token
     publicKey: PublicKey
     sendingMode: SendingMode
     transaction: Transaction
@@ -279,6 +264,98 @@ export class WalletClient {
   }
 
   /**
+   * Ends the connection between the third-party application and the wallet.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public DisconnectWallet = async (
+    params: WalletModel.DisconnectWalletParams = {},
+    options?: Options
+  ) => {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: options?.id || nanoid(),
+        method: Identifier.DisconnectWallet,
+        params: params,
+      }),
+    }).then((r) => handleResponse<WalletModel.DisconnectWalletResult>(r))
+  }
+
+  /**
+   * Returns the keys the user has allowed the third-party application to have access to.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public ListKeys = async (
+    params: WalletModel.ListKeysParams = {},
+    options?: Options
+  ) => {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: options?.id || nanoid(),
+        method: Identifier.ListKeys,
+        params: params,
+      }),
+    }).then((r) => handleResponse<WalletModel.ListKeysResult>(r))
+  }
+
+  /**
+   * Sign a transaction without sending it.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public SignTransaction = async (
+    params: WalletModel.SignTransactionParams,
+    options?: Options
+  ) => {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: options?.id || nanoid(),
+        method: Identifier.SignTransaction,
+        params: params,
+      }),
+    }).then((r) => handleResponse<WalletModel.SignTransactionResult>(r))
+  }
+
+  /**
+   * Send a transaction to the network.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public SendTransaction = async (
+    params: WalletModel.SendTransactionParams,
+    options?: Options
+  ) => {
+    return fetch(`${this.walletAddress}/api/v2/requests`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: options?.id || nanoid(),
+        method: Identifier.SendTransaction,
+        params: params,
+      }),
+    }).then((r) => handleResponse<WalletModel.SendTransactionResult>(r))
+  }
+
+  /**
    * Returns the chain ID of the network in use.
    */
 
@@ -299,110 +376,6 @@ export class WalletClient {
         params: params,
       }),
     }).then((r) => handleResponse<WalletModel.GetChainIdResult>(r))
-  }
-
-  /**
-   * Ends the connection between the third-party application and the wallet.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public DisconnectWallet = async (
-    params: Omit<WalletModel.DisconnectWalletParams, 'token'> = {},
-    options?: Options
-  ) => {
-    return fetch(`${this.walletAddress}/api/v2/requests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: options?.id || nanoid(),
-        method: Identifier.DisconnectWallet,
-        params: {
-          ...params,
-          token: this.token,
-        },
-      }),
-    }).then((r) => handleResponse<WalletModel.DisconnectWalletResult>(r))
-  }
-
-  /**
-   * Returns the keys the user has allowed the third-party application to have access to.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public ListKeys = async (
-    params: Omit<WalletModel.ListKeysParams, 'token'> = {},
-    options?: Options
-  ) => {
-    return fetch(`${this.walletAddress}/api/v2/requests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: options?.id || nanoid(),
-        method: Identifier.ListKeys,
-        params: {
-          ...params,
-          token: this.token,
-        },
-      }),
-    }).then((r) => handleResponse<WalletModel.ListKeysResult>(r))
-  }
-
-  /**
-   * Sign a transaction without sending it.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public SignTransaction = async (
-    params: Omit<WalletModel.SignTransactionParams, 'token'>,
-    options?: Options
-  ) => {
-    return fetch(`${this.walletAddress}/api/v2/requests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: options?.id || nanoid(),
-        method: Identifier.SignTransaction,
-        params: {
-          ...params,
-          token: this.token,
-        },
-      }),
-    }).then((r) => handleResponse<WalletModel.SignTransactionResult>(r))
-  }
-
-  /**
-   * Send a transaction to the network.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public SendTransaction = async (
-    params: Omit<WalletModel.SendTransactionParams, 'token'>,
-    options?: Options
-  ) => {
-    return fetch(`${this.walletAddress}/api/v2/requests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: options?.id || nanoid(),
-        method: Identifier.SendTransaction,
-        params: {
-          ...params,
-          token: this.token,
-        },
-      }),
-    }).then((r) => handleResponse<WalletModel.SendTransactionResult>(r))
   }
 
   /**
