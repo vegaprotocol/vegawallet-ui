@@ -22,8 +22,7 @@ describe('Wallet Client', () => {
   it('can connect to a wallet', async () => {
     const client = new WalletClient({ address: HOSTNAME })
     const { result } = await client.ConnectWallet()
-    const token = result.token
-    expect(typeof token).toBe('string')
+    expect(result).toBe(null)
   })
 
   it('returns a supported list of methods', async () => {

@@ -224,7 +224,7 @@ export class WalletClient {
   // The dApp address which wants to connect
   private origin?: string
   // The stored connection token
-  private token?: string
+  private token?: string | null
 
   constructor({ address, origin, token }: Props) {
     this.origin = origin || window.location.host
@@ -256,11 +256,11 @@ export class WalletClient {
         },
       }),
     })
-      .then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
       .then((r) => {
-        this.token = r.result.token
+        this.token = r.headers.get('Authorization')
         return r
       })
+      .then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))
   }
 
   /**
@@ -276,6 +276,7 @@ export class WalletClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: this.token ?? '',
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -299,6 +300,7 @@ export class WalletClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: this.token ?? '',
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -322,6 +324,7 @@ export class WalletClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: this.token ?? '',
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -345,6 +348,7 @@ export class WalletClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: this.token ?? '',
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
@@ -368,6 +372,7 @@ export class WalletClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: this.token ?? '',
       },
       body: JSON.stringify({
         jsonrpc: '2.0',
