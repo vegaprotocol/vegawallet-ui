@@ -231,6 +231,7 @@ export class WalletClient {
     this.origin = origin || window.location.host
     this.walletAddress = address
     this.token = token
+    this.onTokenChange = onTokenChange
   }
 
   /**
@@ -259,7 +260,7 @@ export class WalletClient {
     })
       .then((r) => {
         this.token = r.headers.get('Authorization')
-        onTokenChange(this.token)
+        this.onTokenChange(this.token)
         return r
       })
       .then((r) => handleResponse<WalletModel.ConnectWalletResult>(r))

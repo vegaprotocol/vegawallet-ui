@@ -87,6 +87,7 @@ export class WalletClient {
     this.origin = origin || window.location.host
     this.walletAddress = address
     this.token = token
+    this.onTokenChange = onTokenChange
   }
 
   <% methods.filter(m => m.name === 'client.connect_wallet').forEach((method) => { %>
@@ -113,7 +114,7 @@ export class WalletClient {
     })
       .then(r => {
         this.token = r.headers.get('Authorization')
-        onTokenChange(this.token)
+        this.onTokenChange(this.token)
         return r
       })
       .then(r => handleResponse<WalletModel.<%= getMethodResultType(method) %>>(r))
