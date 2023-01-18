@@ -20,7 +20,7 @@ type KeyItem = {
 
 export type NormalizedPermission = {
   access: WalletModel.Permissions['publicKeys']['access']
-  restrictedKeys: KeyItem[]
+  allowedKeys: KeyItem[]
 }
 
 export type NormalizedPermissionMap = Record<
@@ -53,13 +53,13 @@ const compileDefaultValues = (
         ...acc,
         [key]: {
           access: p.access,
-          restrictedKeys: keyList.reduce<KeyItem[]>((acc, key) => {
+          allowedKeys: keyList.reduce<KeyItem[]>((acc, key) => {
             const keypair = wallet.keypairs[key]
             if (!keypair.isTainted) {
               acc.push({
                 key,
                 name: keypair.name,
-                value: p.restrictedKeys?.includes(key) ? false : true,
+                value: p.allowedKeys?.includes(key) ? false : true,
               })
             }
             return acc
@@ -86,10 +86,10 @@ const compileSubmissionData = (
       ...acc,
       [key]: {
         access: p.access,
-        restrictedKeys:
+        allowedKeys:
           p.access === 'none'
             ? []
-            : p.restrictedKeys.reduce<string[]>((acc, item) => {
+            : p.allowedKeys.reduce<string[]>((acc, item) => {
                 if (!item.value) {
                   acc.push(item.key)
                 }

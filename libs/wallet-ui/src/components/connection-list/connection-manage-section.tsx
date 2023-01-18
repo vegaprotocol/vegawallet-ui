@@ -28,7 +28,7 @@ export const PermissionSection = ({
 }: PermissionSectionProps) => {
   const title = sentenceCase(accessType)
   const { fields } = useFieldArray({
-    name: `${accessType}.restrictedKeys`,
+    name: `${accessType}.allowedKeys`,
     control,
   })
 
@@ -53,7 +53,7 @@ export const PermissionSection = ({
               fields.map((field, index) => (
                 <Checkbox
                   key={field.id}
-                  name={`${accessType}.restrictedKeys.${index}.value`}
+                  name={`${accessType}.allowedKeys.${index}.value`}
                   label={
                     <div className="flex items-center cursor-pointer">
                       <Title className="pr-[12px]">{field.name}</Title>(
