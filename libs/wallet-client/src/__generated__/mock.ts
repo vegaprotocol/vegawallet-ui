@@ -13,25 +13,18 @@ const MockParams = {
     hostname: 'vega.xyz',
   },
 
-  DisconnectWallet: {
-    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
-  },
+  DisconnectWallet: {},
 
-  ListKeys: {
-    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
-  },
+  ListKeys: {},
 
   SignTransaction: {
-    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
     publicKey:
       '3fd42fd5ceb22d99ac45086f1d82d516118a5cb7ad9a2e096cd78ca2c8960c80',
     sendingMode: 'TYPE_SYNC',
-    encodedTransaction:
-      'ewogICAgInZvdGVTdWJtaXNzaW9uIjogewogICAgICAgICJwcm9wb3NhbElkIjogImViMmQzOTAyZmRkYTljM2ViNmUzNjlmMjIzNTY4OWI4NzFjNzMyMmNmM2FiMjg0ZGRlM2U5ZGZjMTM4NjNhMTciLAogICAgICAgICJ2YWx1ZSI6ICJWQUxVRV9ZRVMiCiAgICB9Cn0K',
+    transaction: {},
   },
 
   SendTransaction: {
-    token: 'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
     publicKey:
       '3fd42fd5ceb22d99ac45086f1d82d516118a5cb7ad9a2e096cd78ca2c8960c80',
     sendingMode: 'TYPE_SYNC',
@@ -57,14 +50,13 @@ export class MockWalletService {
     app.use(cors())
 
     app.post(`/api/v2/requests`, (req, res) => {
+      res.set('Authorization', 'VWT token')
+
       switch (req.body.method) {
         case Identifier.ConnectWallet: {
           res.send({
             id: req.body.id,
-            result: {
-              token:
-                'hZKSx0snBvikp2NGMJdKPHU5qvloSeqpqbJg6BsMwCcqX4iZvvy99BV2l13oeyEG',
-            },
+            result: 'null',
           })
           return
         }

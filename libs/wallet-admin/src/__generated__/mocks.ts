@@ -11,6 +11,10 @@ export function MockAPIRequest(
   params: WalletModel.ImportWalletParams
 ): Promise<WalletModel.ImportWalletResult>
 export function MockAPIRequest(
+  id: Identifier.UpdatePassphrase,
+  params: WalletModel.UpdatePassphraseParams
+): Promise<WalletModel.UpdatePassphraseResult>
+export function MockAPIRequest(
   id: Identifier.DescribeWallet,
   params: WalletModel.DescribeWalletParams
 ): Promise<WalletModel.DescribeWalletResult>
@@ -192,6 +196,9 @@ export function MockAPIRequest(id: Identifier) {
         },
       })
     }
+    case Identifier.UpdatePassphrase: {
+      return Promise.resolve<WalletModel.UpdatePassphraseResult>(null)
+    }
     case Identifier.DescribeWallet: {
       return Promise.resolve<WalletModel.DescribeWalletResult>({
         name: 'my-wallet',
@@ -341,7 +348,7 @@ export function MockAPIRequest(id: Identifier) {
         permissions: {
           publicKeys: {
             access: 'read',
-            restrictedKeys: [
+            allowedKeys: [
               'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
             ],
           },
@@ -365,7 +372,7 @@ export function MockAPIRequest(id: Identifier) {
         permissions: {
           publicKeys: {
             access: 'read',
-            restrictedKeys: [
+            allowedKeys: [
               'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
             ],
           },
