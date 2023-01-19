@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 import { useCallback } from 'react'
 import type { Control, FieldArrayWithId } from 'react-hook-form'
 import { Controller, useFieldArray } from 'react-hook-form'
