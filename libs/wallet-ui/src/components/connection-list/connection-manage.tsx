@@ -166,7 +166,7 @@ export const ManagePermissions = ({
     <form onSubmit={handleSubmit(onUpdate)}>
       <div className="p-[20px]">
         <p>
-          <code>{hostname}</code> has access to the following operations in the
+          <code>{hostname}</code> has access to the following actions in the
           wallet "<code>{wallet.name}</code>":
         </p>
         <div>

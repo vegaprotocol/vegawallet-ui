@@ -26,7 +26,7 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
   return (
     <div className={connectionList.length ? 'border-b border-black' : ''}>
       {connectionList.length === 0 && (
-        <p className="my-[20px] mb-[10px]">No connections established.</p>
+        <p className="my-[20px]">No connections established.</p>
       )}
       {connectionList.map((key) => (
         <Fragment key={key}>

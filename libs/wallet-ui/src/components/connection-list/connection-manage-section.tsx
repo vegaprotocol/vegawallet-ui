@@ -89,7 +89,7 @@ export const PermissionSection = ({
             />
             {field.value === 'read' && (
               <div className="py-[16px]">
-                <p>You must select at least one key</p>
+                <p className="mb-[10px]">You must select at least one key</p>
                 {fields.map((field, index) => (
                   <div key={field.id} className="flex items-center gap-[10px]">
                     <CheckboxPrimitive.Root
