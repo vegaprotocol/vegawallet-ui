@@ -18,18 +18,21 @@ type KeyItem = {
   value: boolean
 }
 
-type Permission = 'none' | 'read' | 'read-all'
+export type Permission = 'none' | 'read' | 'read-all'
 
 export type NormalizedPermission = {
-  access: 'none' | 'read' | 'read-all'
+  access: Permission
   allowedKeys: KeyItem[]
 }
 
-export type NormalizedPermissionMap = Record<Permission, NormalizedPermission>
+export type NormalizedPermissionMap = Record<
+  keyof WalletModel.Permissions,
+  NormalizedPermission
+>
 
 type CompileResult = {
   permissions: NormalizedPermissionMap
-  permissionAccessKeys: Array<Permission>
+  permissionAccessKeys: Array<keyof WalletModel.Permissions>
 }
 
 const compileDefaultValues = (
@@ -62,7 +65,10 @@ const compileDefaultValues = (
       return {
         ...acc,
         [key]: {
-          access: p.access,
+          access:
+            p.allowedKeys?.length && p.access === 'read'
+              ? 'read-all'
+              : p.access,
           allowedKeys,
         },
       }
@@ -79,15 +85,15 @@ const compileDefaultValues = (
 const compileSubmissionData = (
   formData: NormalizedPermissionMap
 ): WalletModel.Permissions => {
-  const dataKeys = Object.keys(formData) as Array<Permission>
+  const dataKeys = Object.keys(formData) as Array<keyof WalletModel.Permissions>
   return dataKeys.reduce<WalletModel.Permissions>((acc, key) => {
-    const p = formData[key]
+    const p = formData[key] as NormalizedPermission
     return {
       ...acc,
       [key]: {
-        access: p.access,
+        access: p.access === 'read-all' ? 'read' : p.access,
         allowedKeys:
-          p.access === 'none'
+          p.access === 'none' || p.access === 'read-all'
             ? []
             : p.allowedKeys.reduce<string[]>((acc, item) => {
                 if (item.value) {

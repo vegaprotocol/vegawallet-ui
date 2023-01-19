@@ -1,12 +1,12 @@
 import classnames from 'classnames'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
-import type { ComponentProps } from 'react'
+import type { ReactNode, ComponentProps } from 'react'
 import type { Control, Path, FieldValues } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 type RadioGroupProps<T extends FieldValues> = {
   name: Path<T>
-  options: Array<{ value: string; label: string }>
+  options: Array<{ value: string; label: string | ReactNode }>
   // TODO: Figure out how best to type the control prop, it should be form generic
   control: Control<T>
   rules?: ComponentProps<typeof Controller>['rules']

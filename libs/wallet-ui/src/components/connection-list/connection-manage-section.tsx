@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useCallback } from 'react'
 import type { Control, FieldArrayWithId } from 'react-hook-form'
 import { Controller, useFieldArray } from 'react-hook-form'
@@ -8,14 +9,17 @@ import { truncateMiddle } from '../../lib/truncate-middle'
 import { Tick } from '../icons/tick'
 import { RadioGroup } from '../radio-group'
 import { Title } from '../title'
-import type { NormalizedPermissionMap } from './connection-manage'
+import type { NormalizedPermissionMap, Permission } from './connection-manage'
 
-const AccessModes: Record<
-  string,
-  WalletModel.Permissions['publicKeys']['access']
-> = {
-  'Read your key pairs': 'read',
-  None: 'none',
+const LabelMapping: Record<Permission, string | ReactNode> = {
+  none: <p className="py-[10px]">None</p>,
+  'read-all': (
+    <span className="py-[10px]">
+      <p>Allow access to all keys</p>
+      <p className="text-xs">Including any you create in the future</p>
+    </span>
+  ),
+  read: <p className="py-[10px]">Allow access to specific keys</p>,
 }
 
 type FieldItem = FieldArrayWithId<
@@ -42,21 +46,12 @@ const isLastItemAboutToBeUnchecked = (
 export const PermissionSection = ({
   accessType,
   control,
-  isAllFieldsChecked,
-  setAllFields,
 }: PermissionSectionProps) => {
   const title = 'Permitted actions'
   const { fields, update } = useFieldArray({
     name: `${accessType}.allowedKeys`,
     control,
   })
-
-  const handlePermissionTypeChange = useCallback(
-    (value: boolean) => {
-      setAllFields(value)
-    },
-    [setAllFields]
-  )
 
   const handleCheckedChange = useCallback(
     (
@@ -75,7 +70,7 @@ export const PermissionSection = ({
   )
 
   return (
-    <div className="pb-[20px]">
+    <div>
       <Controller
         name={`${accessType}.access`}
         control={control}
@@ -85,34 +80,16 @@ export const PermissionSection = ({
             <RadioGroup
               name={`${accessType}.access`}
               control={control}
-              options={Object.keys(AccessModes).map((label) => ({
-                label,
-                value: AccessModes[label],
-              }))}
+              options={(Object.keys(LabelMapping) as Permission[]).map(
+                (key) => ({
+                  label: LabelMapping[key],
+                  value: key,
+                })
+              )}
             />
-            {field.value !== 'none' && (
-              <>
-                <div className="flex items-center gap-[10px]">
-                  <CheckboxPrimitive.Root
-                    id={`permission-${accessType}-all`}
-                    name={`permission-${accessType}-all`}
-                    checked={isAllFieldsChecked}
-                    onCheckedChange={(value) =>
-                      handlePermissionTypeChange(!!value)
-                    }
-                    className="inline-flex items-center justify-center w-[16px] h-[16px] bg-dark-200"
-                  >
-                    <CheckboxPrimitive.Indicator>
-                      <Tick className="w-[10px] h-[10px]" />
-                    </CheckboxPrimitive.Indicator>
-                  </CheckboxPrimitive.Root>
-                  <label htmlFor={`permission-${accessType}-all`}>
-                    <div className="mt-[20px] cursor-pointer">
-                      <Title className="my-0 pr-[12px]">All</Title>
-                      <p>including any you create in the future</p>
-                    </div>
-                  </label>
-                </div>
+            {field.value === 'read' && (
+              <div className="py-[16px]">
+                <p>You must select at least one key</p>
                 {fields.map((field, index) => (
                   <div key={field.id} className="flex items-center gap-[10px]">
                     <CheckboxPrimitive.Root
@@ -130,13 +107,13 @@ export const PermissionSection = ({
                     </CheckboxPrimitive.Root>
                     <label htmlFor={field.name}>
                       <div className="flex items-center cursor-pointer">
-                        <Title className="pr-[12px]">{field.name}</Title>(
+                        <Title className="my-0 pr-[12px]">{field.name}</Title>(
                         <code>{truncateMiddle(field.key)}</code>)
                       </div>
                     </label>
                   </div>
                 ))}
-              </>
+              </div>
             )}
           </>
         )}
