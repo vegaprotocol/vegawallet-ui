@@ -1,9 +1,6 @@
-import { useState, useCallback } from 'react'
-import classnames from 'classnames'
-import { sentenceCase } from 'change-case'
+import { useCallback } from 'react'
 import type { Control, FieldArrayWithId } from 'react-hook-form'
 import { Controller, useFieldArray } from 'react-hook-form'
-import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
@@ -23,32 +20,16 @@ const AccessModes: Record<
 
 type FieldItem = FieldArrayWithId<
   NormalizedPermissionMap,
-  'publicKeys.restrictedKeys',
+  'publicKeys.allowedKeys',
   'id'
 >
 
 type PermissionSectionProps = {
+  isAllFieldsChecked: boolean
   accessType: keyof WalletModel.Permissions
   control: Control<NormalizedPermissionMap>
   setAllFields: (value: boolean) => void
 }
-
-type PermissionType = 'all' | 'some'
-type PermissionOption = {
-  value: PermissionType
-  label: string
-}
-
-const PERMISSON_KEY_OPTIONS: PermissionOption[] = [
-  {
-    value: 'all',
-    label: 'All my key pairs',
-  },
-  {
-    value: 'some',
-    label: 'Some key pairs',
-  },
-]
 
 const isLastItemAboutToBeUnchecked = (
   current: FieldItem,
@@ -61,21 +42,20 @@ const isLastItemAboutToBeUnchecked = (
 export const PermissionSection = ({
   accessType,
   control,
+  isAllFieldsChecked,
   setAllFields,
 }: PermissionSectionProps) => {
-  const title = sentenceCase(accessType)
+  const title = 'Permitted actions'
   const { fields, update } = useFieldArray({
-    name: `${accessType}.restrictedKeys`,
+    name: `${accessType}.allowedKeys`,
     control,
   })
-  const [permissionType, setPermissionType] = useState<PermissionType>('all')
 
   const handlePermissionTypeChange = useCallback(
-    (value: PermissionType) => {
-      setPermissionType(value)
-      setAllFields(value === 'some')
+    (value: boolean) => {
+      setAllFields(value)
     },
-    [setAllFields, setPermissionType]
+    [setAllFields]
   )
 
   const handleCheckedChange = useCallback(
@@ -112,58 +92,52 @@ export const PermissionSection = ({
             />
             {field.value !== 'none' && (
               <>
-                <Title>For which key pairs</Title>
-                <RadioGroupPrimitive.RadioGroup
-                  value={permissionType}
-                  name="permission-type"
-                  orientation="vertical"
-                  onValueChange={(value) =>
-                    handlePermissionTypeChange(value as PermissionType)
-                  }
-                >
-                  {PERMISSON_KEY_OPTIONS.map((o) => (
-                    <div key={o.value} className="flex items-center gap-[10px]">
-                      <RadioGroupPrimitive.Item
-                        value={o.value}
-                        id={o.value}
-                        className={classnames(
-                          'inline-flex items-center justify-center bg-dark-300',
-                          'rounded-full w-[16px] h-[16px]'
-                        )}
-                      >
-                        <RadioGroupPrimitive.Indicator className="w-[8px] h-[8px] bg-white rounded-full" />
-                      </RadioGroupPrimitive.Item>
-                      <label htmlFor={o.value}>{o.label}</label>
-                    </div>
-                  ))}
-                </RadioGroupPrimitive.RadioGroup>
-              </>
-            )}
-            {field.value !== 'none' &&
-              permissionType === 'some' &&
-              fields.map((field, index) => (
-                <div key={field.id} className="flex items-center gap-[10px]">
+                <div className="flex items-center gap-[10px]">
                   <CheckboxPrimitive.Root
-                    checked={!!field.value}
+                    id={`permission-${accessType}-all`}
+                    name={`permission-${accessType}-all`}
+                    checked={isAllFieldsChecked}
                     onCheckedChange={(value) =>
-                      handleCheckedChange(index, field, value)
+                      handlePermissionTypeChange(!!value)
                     }
-                    name={`${accessType}.restrictedKeys.${index}.value`}
-                    id={field.id}
                     className="inline-flex items-center justify-center w-[16px] h-[16px] bg-dark-200"
                   >
-                    <CheckboxPrimitive.Indicator className="flex items-center justify-center w-[10px] h-[10px] text-white">
+                    <CheckboxPrimitive.Indicator>
                       <Tick className="w-[10px] h-[10px]" />
                     </CheckboxPrimitive.Indicator>
                   </CheckboxPrimitive.Root>
-                  <label htmlFor={field.name}>
-                    <div className="flex items-center cursor-pointer">
-                      <Title className="pr-[12px]">{field.name}</Title>(
-                      <code>{truncateMiddle(field.key)}</code>)
+                  <label htmlFor={`permission-${accessType}-all`}>
+                    <div className="mt-[20px] cursor-pointer">
+                      <Title className="my-0 pr-[12px]">All</Title>
+                      <p>including any you create in the future</p>
                     </div>
                   </label>
                 </div>
-              ))}
+                {fields.map((field, index) => (
+                  <div key={field.id} className="flex items-center gap-[10px]">
+                    <CheckboxPrimitive.Root
+                      checked={!!field.value}
+                      onCheckedChange={(value) =>
+                        handleCheckedChange(index, field, value)
+                      }
+                      name={`${accessType}.allowedKeys.${index}.value`}
+                      id={field.id}
+                      className="inline-flex items-center justify-center w-[16px] h-[16px] bg-dark-200"
+                    >
+                      <CheckboxPrimitive.Indicator className="flex items-center justify-center w-[10px] h-[10px] text-white">
+                        <Tick className="w-[10px] h-[10px]" />
+                      </CheckboxPrimitive.Indicator>
+                    </CheckboxPrimitive.Root>
+                    <label htmlFor={field.name}>
+                      <div className="flex items-center cursor-pointer">
+                        <Title className="pr-[12px]">{field.name}</Title>(
+                        <code>{truncateMiddle(field.key)}</code>)
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </>
+            )}
           </>
         )}
       />

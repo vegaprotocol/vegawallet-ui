@@ -18,19 +18,18 @@ type KeyItem = {
   value: boolean
 }
 
+type Permission = 'none' | 'read' | 'read-all'
+
 export type NormalizedPermission = {
-  access: WalletModel.Permissions['publicKeys']['access']
-  restrictedKeys: KeyItem[]
+  access: 'none' | 'read' | 'read-all'
+  allowedKeys: KeyItem[]
 }
 
-export type NormalizedPermissionMap = Record<
-  keyof WalletModel.Permissions,
-  NormalizedPermission
->
+export type NormalizedPermissionMap = Record<Permission, NormalizedPermission>
 
 type CompileResult = {
   permissions: NormalizedPermissionMap
-  permissionAccessKeys: Array<keyof WalletModel.Permissions>
+  permissionAccessKeys: Array<Permission>
 }
 
 const compileDefaultValues = (
@@ -49,23 +48,22 @@ const compileDefaultValues = (
   const permissions = permissionAccessKeys.reduce<NormalizedPermissionMap>(
     (acc, key) => {
       const p = walletPermissions[key]
+      const allowedKeys = keyList.reduce<KeyItem[]>((acc, key) => {
+        const keypair = wallet.keypairs[key]
+        if (!keypair.isTainted) {
+          acc.push({
+            key,
+            name: keypair.name,
+            value: p.allowedKeys?.length ? p.allowedKeys.includes(key) : true,
+          })
+        }
+        return acc
+      }, [])
       return {
         ...acc,
         [key]: {
           access: p.access,
-          restrictedKeys: keyList.reduce<KeyItem[]>((acc, key) => {
-            const keypair = wallet.keypairs[key]
-            if (!keypair.isTainted) {
-              acc.push({
-                key,
-                name: keypair.name,
-                value: p.restrictedKeys?.length
-                  ? p.restrictedKeys.includes(key)
-                  : true,
-              })
-            }
-            return acc
-          }, []),
+          allowedKeys,
         },
       }
     },
@@ -81,17 +79,17 @@ const compileDefaultValues = (
 const compileSubmissionData = (
   formData: NormalizedPermissionMap
 ): WalletModel.Permissions => {
-  const dataKeys = Object.keys(formData) as Array<keyof WalletModel.Permissions>
+  const dataKeys = Object.keys(formData) as Array<Permission>
   return dataKeys.reduce<WalletModel.Permissions>((acc, key) => {
     const p = formData[key]
     return {
       ...acc,
       [key]: {
         access: p.access,
-        restrictedKeys:
+        allowedKeys:
           p.access === 'none'
             ? []
-            : p.restrictedKeys.reduce<string[]>((acc, item) => {
+            : p.allowedKeys.reduce<string[]>((acc, item) => {
                 if (item.value) {
                   acc.push(item.key)
                 }
@@ -138,8 +136,6 @@ export const ManagePermissions = ({
           permissions,
         })
 
-        console.log(permissions)
-
         dispatch({
           type: 'SET_PERMISSONS',
           wallet: wallet.name,
@@ -171,14 +167,17 @@ export const ManagePermissions = ({
           {permissionAccessKeys.map((key) => (
             <PermissionSection
               key={key}
+              isAllFieldsChecked={
+                permissions.publicKeys.allowedKeys.length === 0
+              }
               accessType={key}
               control={control}
               setAllFields={(value: boolean) =>
                 setValue(
-                  'publicKeys.restrictedKeys',
-                  permissions.publicKeys.restrictedKeys.map((field) => ({
+                  'publicKeys.allowedKeys',
+                  permissions.publicKeys.allowedKeys.map((field) => ({
                     ...field,
-                    value,
+                    value: !value,
                   }))
                 )
               }
