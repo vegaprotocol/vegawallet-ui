@@ -29,6 +29,7 @@ type FieldItem = FieldArrayWithId<
 >
 
 type PermissionSectionProps = {
+  title?: ReactNode
   isAllFieldsChecked: boolean
   accessType: keyof WalletModel.Permissions
   control: Control<NormalizedPermissionMap>
@@ -44,10 +45,10 @@ const isLastItemAboutToBeUnchecked = (
 }
 
 export const PermissionSection = ({
+  title,
   accessType,
   control,
 }: PermissionSectionProps) => {
-  const title = 'Permitted actions'
   const { fields, update } = useFieldArray({
     name: `${accessType}.allowedKeys`,
     control,
@@ -76,7 +77,7 @@ export const PermissionSection = ({
         control={control}
         render={({ field }) => (
           <>
-            <Title>{title}</Title>
+            {title}
             <RadioGroup
               name={`${accessType}.access`}
               control={control}

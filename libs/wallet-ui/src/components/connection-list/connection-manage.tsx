@@ -165,14 +165,16 @@ export const ManagePermissions = ({
   return (
     <form onSubmit={handleSubmit(onUpdate)}>
       <div className="p-[20px]">
-        <p>
-          <code>{hostname}</code> has access to the following actions in the
-          wallet "<code>{wallet.name}</code>":
-        </p>
         <div>
           {permissionAccessKeys.map((key) => (
             <PermissionSection
               key={key}
+              title={
+                <p className="mb-[20px]">
+                  Choose how much access <code>{hostname}</code> has to the keys
+                  in the wallet "<code>{wallet.name}</code>":
+                </p>
+              }
               isAllFieldsChecked={
                 permissions.publicKeys.allowedKeys.length === 0
               }
