@@ -18,8 +18,10 @@ type KeyItem = {
   value: boolean
 }
 
+export type Permission = 'none' | 'read' | 'read-all'
+
 export type NormalizedPermission = {
-  access: WalletModel.Permissions['publicKeys']['access']
+  access: Permission
   allowedKeys: KeyItem[]
 }
 
@@ -49,21 +51,22 @@ const compileDefaultValues = (
   const permissions = permissionAccessKeys.reduce<NormalizedPermissionMap>(
     (acc, key) => {
       const p = walletPermissions[key]
+      const allowedKeys = keyList
+        .filter((key) => wallet.keypairs[key].isTainted)
+        .map((key) => ({
+          key,
+          name: wallet.keypairs[key].name,
+          value: p.allowedKeys?.length ? p.allowedKeys.includes(key) : true,
+        }))
+
       return {
         ...acc,
         [key]: {
-          access: p.access,
-          allowedKeys: keyList.reduce<KeyItem[]>((acc, key) => {
-            const keypair = wallet.keypairs[key]
-            if (!keypair.isTainted) {
-              acc.push({
-                key,
-                name: keypair.name,
-                value: p.allowedKeys?.includes(key) ? false : true,
-              })
-            }
-            return acc
-          }, []),
+          access:
+            p.allowedKeys?.length && p.access === 'read'
+              ? 'read-all'
+              : p.access,
+          allowedKeys,
         },
       }
     },
@@ -81,16 +84,16 @@ const compileSubmissionData = (
 ): WalletModel.Permissions => {
   const dataKeys = Object.keys(formData) as Array<keyof WalletModel.Permissions>
   return dataKeys.reduce<WalletModel.Permissions>((acc, key) => {
-    const p = formData[key]
+    const p = formData[key] as NormalizedPermission
     return {
       ...acc,
       [key]: {
-        access: p.access,
+        access: p.access === 'read-all' ? 'read' : p.access,
         allowedKeys:
-          p.access === 'none'
+          p.access === 'none' || p.access === 'read-all'
             ? []
             : p.allowedKeys.reduce<string[]>((acc, item) => {
-                if (!item.value) {
+                if (item.value) {
                   acc.push(item.key)
                 }
                 return acc
@@ -159,13 +162,19 @@ export const ManagePermissions = ({
   return (
     <form onSubmit={handleSubmit(onUpdate)}>
       <div className="p-[20px]">
-        <p>
-          <code>{hostname}</code> has access to the following operations in the
-          wallet "<code>{wallet.name}</code>":
-        </p>
         <div>
           {permissionAccessKeys.map((key) => (
-            <PermissionSection key={key} accessType={key} control={control} />
+            <PermissionSection
+              key={key}
+              title={
+                <p className="mb-[20px]">
+                  Choose how much access <code>{hostname}</code> has to the keys
+                  in the wallet "<code>{wallet.name}</code>":
+                </p>
+              }
+              accessType={key}
+              control={control}
+            />
           ))}
         </div>
       </div>

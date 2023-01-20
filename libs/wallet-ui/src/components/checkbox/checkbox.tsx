@@ -9,12 +9,14 @@ type CheckboxProps<T extends FieldValues> = {
   name: Path<T>
   control: Control<T>
   label: ReactNode
+  disabled?: boolean
 }
 
 export function Checkbox<T extends FieldValues>({
   name,
   control,
   label,
+  disabled,
 }: CheckboxProps<T>) {
   return (
     <Controller
@@ -25,6 +27,7 @@ export function Checkbox<T extends FieldValues>({
           <div className="flex items-center gap-[10px]">
             <CheckboxPrimitive.Root
               checked={!!field.value}
+              disabled={disabled}
               onCheckedChange={field.onChange}
               name={name}
               id={name}

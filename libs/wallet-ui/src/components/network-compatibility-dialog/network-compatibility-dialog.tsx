@@ -217,14 +217,12 @@ export const NetworkCompatibilityDialog = () => {
               <Button onClick={() => setSubview('add')}>Add network</Button>
             )}
           </ButtonGroup>
-          <ButtonGroup inline>
-            <ButtonUnstyled
-              data-testid="network-compatibility-continue"
-              onClick={() => setOpen(false)}
-            >
-              Continue with existing network
-            </ButtonUnstyled>
-          </ButtonGroup>
+          <ButtonUnstyled
+            data-testid="network-compatibility-continue"
+            onClick={() => setOpen(false)}
+          >
+            Continue with existing network
+          </ButtonUnstyled>
         </div>
       )}
       {subview === 'add' && (
