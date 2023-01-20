@@ -30,10 +30,8 @@ type FieldItem = FieldArrayWithId<
 
 type PermissionSectionProps = {
   title?: ReactNode
-  isAllFieldsChecked: boolean
   accessType: keyof WalletModel.Permissions
   control: Control<NormalizedPermissionMap>
-  setAllFields: (value: boolean) => void
 }
 
 const isLastItemAboutToBeUnchecked = (

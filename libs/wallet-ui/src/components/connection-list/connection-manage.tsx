@@ -123,7 +123,7 @@ export const ManagePermissions = ({
       compileDefaultValues(wallet, wallet.connections?.[hostname]?.permissions),
     [wallet, hostname]
   )
-  const { control, handleSubmit, setValue } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       ...permissions,
     },
@@ -175,20 +175,8 @@ export const ManagePermissions = ({
                   in the wallet "<code>{wallet.name}</code>":
                 </p>
               }
-              isAllFieldsChecked={
-                permissions.publicKeys.allowedKeys.length === 0
-              }
               accessType={key}
               control={control}
-              setAllFields={(value: boolean) =>
-                setValue(
-                  'publicKeys.allowedKeys',
-                  permissions.publicKeys.allowedKeys.map((field) => ({
-                    ...field,
-                    value: !value,
-                  }))
-                )
-              }
             />
           ))}
         </div>
