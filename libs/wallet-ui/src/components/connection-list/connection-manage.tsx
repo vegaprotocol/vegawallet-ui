@@ -46,13 +46,14 @@ const compileDefaultValues = (
   const permissionAccessKeys = Object.keys(walletPermissions) as Array<
     keyof WalletModel.Permissions
   >
+
   const keyList = Object.keys(wallet.keypairs)
 
   const permissions = permissionAccessKeys.reduce<NormalizedPermissionMap>(
     (acc, key) => {
       const p = walletPermissions[key]
       const allowedKeys = keyList
-        .filter((key) => wallet.keypairs[key].isTainted)
+        .filter((key) => !wallet.keypairs[key].isTainted)
         .map((key) => ({
           key,
           name: wallet.keypairs[key].name,
