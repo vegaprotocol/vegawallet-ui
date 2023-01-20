@@ -51,17 +51,14 @@ const compileDefaultValues = (
   const permissions = permissionAccessKeys.reduce<NormalizedPermissionMap>(
     (acc, key) => {
       const p = walletPermissions[key]
-      const allowedKeys = keyList.reduce<KeyItem[]>((acc, key) => {
-        const keypair = wallet.keypairs[key]
-        if (!keypair.isTainted) {
-          acc.push({
-            key,
-            name: keypair.name,
-            value: p.allowedKeys?.length ? p.allowedKeys.includes(key) : true,
-          })
-        }
-        return acc
-      }, [])
+      const allowedKeys = keyList
+        .filter((key) => wallet.keypairs[key].isTainted)
+        .map((key) => ({
+          key,
+          name: wallet.keypairs[key].name,
+          value: p.allowedKeys?.length ? p.allowedKeys.includes(key) : true,
+        }))
+
       return {
         ...acc,
         [key]: {
