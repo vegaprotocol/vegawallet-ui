@@ -64,7 +64,7 @@ const compileDefaultValues = (
         ...acc,
         [key]: {
           access:
-            p.allowedKeys?.length && p.access === 'read'
+            p.allowedKeys?.length === 0 && p.access === 'read'
               ? 'read-all'
               : p.access,
           allowedKeys,
