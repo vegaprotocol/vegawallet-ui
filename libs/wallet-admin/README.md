@@ -1,6 +1,6 @@
 # @vegaprotocol/wallet-admin
 
-Wallet client for the `admin` namespace of the [Vega wallet API v0.67.0](https://github.com/vegaprotocol/vega/tree/develop/wallet/api) based on its [openrpc specs](https://github.com/vegaprotocol/vega/blob/develop/wallet/api/openrpc.json).
+Wallet client for the `admin` namespace of the [Vega wallet API v0.67.3](https://github.com/vegaprotocol/vega/tree/develop/wallet/api) based on its [openrpc specs](https://github.com/vegaprotocol/vega/blob/develop/wallet/api/openrpc.json).
 
 ## Usage
 

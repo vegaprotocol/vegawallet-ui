@@ -150,14 +150,12 @@ type ResponseError = {
 }
 
 export class WalletClientError extends Error {
+  public title: string
   public code: number
 
   constructor(response: ResponseError) {
-    const message = response.data
-      ? `${response.message}: ${response.data}`
-      : response.message
-
-    super(message)
+    super(response.data)
+    this.title = response.message
     this.code = response.code
   }
 }
