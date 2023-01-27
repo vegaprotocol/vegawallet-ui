@@ -53,7 +53,7 @@ export type AppConfig = {
   telemetry: TelemetryConfig
 }
 
-type Empty = undefined | Error
+type Empty = void | undefined | Error
 
 type EventsCallbackArgs =
   | [EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => void]
@@ -78,6 +78,7 @@ export type Service = {
   UpdateAppConfig: (arg: AppConfig) => Promise<Empty>
 
   // Initialization
+  StartupBackend: () => Promise<Empty>
   InitialiseApp: (arg: InitialiseAppArg) => Promise<Empty>
   IsAppInitialised: () => Promise<boolean>
 

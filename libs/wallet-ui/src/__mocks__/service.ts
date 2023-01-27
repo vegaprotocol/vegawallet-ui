@@ -9,6 +9,8 @@ const noop = () => {}
 export const service: Service = {
   TYPE: 'http',
 
+  StartupBackend: () => Promise.resolve(undefined),
+
   GetLatestRelease: () =>
     Promise.resolve({
       version: '0.99.0',

@@ -18,6 +18,7 @@ import { AppStatus, DrawerPanel, ServiceState } from './global-context'
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
+  initError: null,
   version: null,
   config: null,
 
@@ -231,6 +232,7 @@ export function globalReducer(
     case 'INIT_APP': {
       return {
         ...state,
+        initError: null,
         config: action.config,
         wallets: action.wallets.reduce(
           (acc, name) => ({
@@ -255,6 +257,7 @@ export function globalReducer(
       return {
         ...state,
         status: AppStatus.Failed,
+        initError: action.message ?? null,
       }
     }
     case 'COMPLETE_ONBOARD': {
