@@ -75,6 +75,7 @@ export interface Wallet {
 
 export interface GlobalState {
   status: AppStatus
+  initError: string | null
   version: GetVersionResponse | null
   config: AppConfig | null
 

@@ -15,7 +15,7 @@ import type { Logger } from './types/logger'
  */
 export function AppLoader({ children }: { children?: ReactNode }) {
   const {
-    state: { status },
+    state: { status, initError },
     runtime,
     actions,
     dispatch,
@@ -37,7 +37,7 @@ export function AppLoader({ children }: { children?: ReactNode }) {
   if (status === AppStatus.Failed) {
     return (
       <SplashError
-        message="Failed to initialise"
+        message={initError ?? 'Failed to initialise'}
         actions={<Button onClick={() => runtime.WindowReload()}>Reload</Button>}
       />
     )

@@ -128,6 +128,7 @@ export function createActions(service: Service, client: WalletAdmin) {
         try {
           logger.debug('StartApp')
 
+          await service.StartupBackend()
           const isInit = await service.IsAppInitialised()
 
           if (!isInit) {
@@ -175,7 +176,13 @@ export function createActions(service: Service, client: WalletAdmin) {
             presetNetworksInternal: presetsInternal,
           })
         } catch (err) {
-          dispatch({ type: 'INIT_APP_FAILED' })
+          const message =
+            err instanceof Error
+              ? err.message
+              : typeof err === 'string'
+              ? err
+              : undefined
+          dispatch({ type: 'INIT_APP_FAILED', message })
           logger.error(err)
         }
       }
