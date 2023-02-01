@@ -72,7 +72,9 @@ export interface RequestTransactionSuccessContent {
 export interface RequestTransactionFailureContent {
   tx: string
   deserializedInputData: string
-  error: string
+  error: {
+    Message: string
+  }
   sentAt: string
 }
 

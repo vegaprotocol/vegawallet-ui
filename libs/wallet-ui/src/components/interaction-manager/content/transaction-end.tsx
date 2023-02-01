@@ -61,7 +61,7 @@ const parseEvent = (event: TransactionEvent) => {
         : null,
     error:
       event.name === INTERACTION_TYPE.TRANSACTION_FAILED
-        ? event.data.error
+        ? event.data.error.Message
         : undefined,
   }
 }
