@@ -22,6 +22,7 @@ type ServiceAction = {
 const stopService = async ({ logger, service, dispatch }: ServiceAction) => {
   logger.debug('StopService')
   const { isRunning } = await service.GetCurrentServiceInfo()
+
   if (!isRunning) {
     dispatch({
       type: 'SET_SERVICE_STATUS',
@@ -73,7 +74,7 @@ const startService = async ({
       await service.StartService({ network: state.network })
     }
   } catch (err) {
-    if (typeof err === 'string' && err.includes('already served')) {
+    if (typeof err === 'string' && err.includes('already running')) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Started,
