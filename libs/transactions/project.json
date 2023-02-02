@@ -17,14 +17,6 @@
         "lintFilePatterns": ["libs/transactions/**/*.{ts,tsx,js,jsx}"]
       }
     },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/transactions"],
-      "options": {
-        "jestConfig": "libs/transactions/jest.config.ts",
-        "passWithNoTests": true
-      }
-    },
     "typecheck": {
       "executor": "nx:run-commands",
       "outputs": [],
