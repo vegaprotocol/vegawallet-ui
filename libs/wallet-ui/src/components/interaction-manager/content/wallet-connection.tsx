@@ -26,7 +26,7 @@ export const WalletConnection = ({
       try {
         await service.RespondToInteraction({
           traceID: event.traceID,
-          name: INTERACTION_RESPONSE_TYPE.WALLET_CONNECTION_DECISION,
+          name: 'WALLET_CONNECTION_DECISION',
           data: {
             connectionApproval: decision
               ? CONNECTION_RESPONSE.APPROVED_ONCE

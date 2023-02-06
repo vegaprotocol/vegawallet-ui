@@ -33,7 +33,7 @@ export const Passphrase = ({
         // @ts-ignore: wails generates the wrong type signature for this handler
         await service.RespondToInteraction({
           traceID: event.traceID,
-          name: INTERACTION_RESPONSE_TYPE.ENTERED_PASSPHRASE,
+          name: 'ENTERED_PASSPHRASE',
           data: {
             passphrase,
           },
@@ -42,14 +42,10 @@ export const Passphrase = ({
         if (flow === EVENT_FLOW_TYPE.PERMISSION_REQUEST) {
           const source = history.find(
             (interaction) =>
-              interaction.event.name ===
-              INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
+              interaction.event.name === 'REQUEST_PERMISSIONS_REVIEW'
           )
 
-          if (
-            source &&
-            source.event.name === INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW
-          ) {
+          if (source && source.event.name === 'REQUEST_PERMISSIONS_REVIEW') {
             const { wallet, hostname } = source?.event.data || {}
 
             const { permissions } = await client.DescribePermissions({
@@ -73,7 +69,7 @@ export const Passphrase = ({
         if (err === 'dismissed') {
           await service.RespondToInteraction({
             traceID: event.traceID,
-            name: INTERACTION_RESPONSE_TYPE.CANCEL_REQUEST,
+            name: 'CANCEL_REQUEST',
           })
         } else {
           AppToaster.show({

@@ -47,7 +47,7 @@ const parseTx = (tx: string) => {
 }
 
 const parseEvent = (event: TransactionEvent) => {
-  const isSuccess = event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
+  const isSuccess = event.name === 'TRANSACTION_SUCCEEDED'
   const txData = parseTx(event.data.tx)
   const inputData = parseInputData(event.data.deserializedInputData)
 
@@ -55,12 +55,9 @@ const parseEvent = (event: TransactionEvent) => {
     ...txData,
     ...inputData,
     status: isSuccess ? TransactionStatus.SUCCESS : TransactionStatus.FAILURE,
-    txHash:
-      event.name === INTERACTION_TYPE.TRANSACTION_SUCCEEDED
-        ? event.data.txHash
-        : null,
+    txHash: event.name === 'TRANSACTION_SUCCEEDED' ? event.data.txHash : null,
     error:
-      event.name === INTERACTION_TYPE.TRANSACTION_FAILED
+      event.name === 'TRANSACTION_FAILED'
         ? event.data.error.Message
         : undefined,
   }
@@ -91,8 +88,7 @@ export const TransactionEnd = ({
   const source = useMemo(
     () =>
       history.find(
-        ({ event }) =>
-          event.name === INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING
+        ({ event }) => event.name === 'REQUEST_TRANSACTION_REVIEW_FOR_SENDING'
       ) as Interaction<RequestTransactionReview> | null,
     [history]
   )

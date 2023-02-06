@@ -92,7 +92,7 @@ export const Transaction = ({
 
       await service.RespondToInteraction({
         traceID: event.traceID,
-        name: INTERACTION_RESPONSE_TYPE.DECISION,
+        name: 'DECISION',
         data: {
           approved: decision,
         },

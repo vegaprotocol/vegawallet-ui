@@ -12,14 +12,16 @@ import type {
   InteractionContentProps,
   RequestPermissions,
   RequestPermissionsContent,
+  PermissionTargetType,
+  PermissionTypes,
 } from '../../../types/interaction'
 import { PermissionTarget, PermissionType } from '../../../types/interaction'
 import { INTERACTION_RESPONSE_TYPE } from '../../../types/interaction'
 
 const getPermissionAction = (
   data: RequestPermissionsContent,
-  target: PermissionTarget,
-  type: PermissionType
+  target: PermissionTargetType,
+  type: PermissionTypes
 ) => {
   switch (`${type}:${target}`) {
     case `${PermissionType.READ}:${PermissionTarget.PUBLIC_KEYS}`: {
@@ -32,7 +34,7 @@ const getPermissionAction = (
 }
 
 const getDisplayDetails = (data: RequestPermissionsContent) => {
-  const targets = Object.keys(data.permissions) as PermissionTarget[]
+  const targets = Object.keys(data.permissions) as PermissionTargetType[]
   const requestText = (
     <>
       <strong>{data.hostname}</strong> is requesting

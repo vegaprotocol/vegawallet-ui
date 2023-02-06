@@ -19,6 +19,8 @@ import type { Runtime } from './types/runtime'
 import type { Features } from './types/features'
 export { FeatureMap } from './types/features'
 
+export * from './types'
+
 export type AppProps = {
   service: Service
   client: WalletAdmin

@@ -11,6 +11,7 @@ import { TransactionEnd } from './content/transaction-end'
 import { WalletConnection } from './content/wallet-connection'
 import { WalletSelection } from './content/wallet-selection'
 import type {
+  EventFlowType,
   Interaction,
   InteractionContentProps,
   RawInteraction,
@@ -29,7 +30,7 @@ const InteractionItem = ({
   const [isResolved, setResolved] = useState(false)
 
   switch (event.name) {
-    case INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW: {
+    case 'REQUEST_WALLET_CONNECTION_REVIEW': {
       return (
         <WalletConnection
           event={event}
@@ -41,7 +42,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.REQUEST_WALLET_SELECTION: {
+    case 'REQUEST_WALLET_SELECTION': {
       return (
         <WalletSelection
           event={event}
@@ -53,7 +54,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW: {
+    case 'REQUEST_PERMISSIONS_REVIEW': {
       return (
         <Permissions
           event={event}
@@ -65,7 +66,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING: {
+    case 'REQUEST_TRANSACTION_REVIEW_FOR_SENDING': {
       return (
         <Transaction
           event={event}
@@ -77,7 +78,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.TRANSACTION_SUCCEEDED: {
+    case 'TRANSACTION_SUCCEEDED': {
       return (
         <TransactionEnd
           event={event}
@@ -89,7 +90,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.TRANSACTION_FAILED: {
+    case 'TRANSACTION_FAILED': {
       return (
         <TransactionEnd
           event={event}
@@ -101,7 +102,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.REQUEST_PASSPHRASE: {
+    case 'REQUEST_PASSPHRASE': {
       return (
         <Passphrase
           event={event}
@@ -113,7 +114,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.REQUEST_SUCCEEDED: {
+    case 'REQUEST_SUCCEEDED': {
       return (
         <SuccessComponent
           event={event}
@@ -125,7 +126,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.ERROR_OCCURRED: {
+    case 'ERROR_OCCURRED': {
       return (
         <ErrorComponent
           event={event}
@@ -137,7 +138,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.LOG: {
+    case 'LOG': {
       return (
         <LogComponent
           event={event}
@@ -149,7 +150,7 @@ const InteractionItem = ({
         />
       )
     }
-    case INTERACTION_TYPE.INTERACTION_SESSION_ENDED: {
+    case 'INTERACTION_SESSION_ENDED': {
       return (
         <SessionEndComponent
           event={event}
@@ -168,7 +169,7 @@ const InteractionItem = ({
 }
 
 const getEventFlowType = (events: Interaction[]) => {
-  return events.reduce<EVENT_FLOW_TYPE | undefined>((acc, interaction) => {
+  return events.reduce<EventFlowType | undefined>((acc, interaction) => {
     switch (interaction.event.name) {
       case INTERACTION_TYPE.REQUEST_WALLET_CONNECTION_REVIEW: {
         return acc || EVENT_FLOW_TYPE.WALLET_CONNECTION

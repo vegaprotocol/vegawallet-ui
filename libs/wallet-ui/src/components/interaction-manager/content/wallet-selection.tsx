@@ -48,7 +48,7 @@ export const WalletSelection = ({
       try {
         await service.RespondToInteraction({
           traceID: event.traceID,
-          name: INTERACTION_RESPONSE_TYPE.SELECTED_WALLET,
+          name: 'SELECTED_WALLET',
           data: {
             wallet,
             passphrase,
