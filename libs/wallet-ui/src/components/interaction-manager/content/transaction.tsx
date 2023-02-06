@@ -14,7 +14,6 @@ import type {
   InteractionContentProps,
   RequestTransactionReview,
 } from '../../../types/interaction'
-import { INTERACTION_RESPONSE_TYPE } from '../../../types/interaction'
 
 export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
   [TransactionKeys.UNKNOWN]: 'Unknown transaction',

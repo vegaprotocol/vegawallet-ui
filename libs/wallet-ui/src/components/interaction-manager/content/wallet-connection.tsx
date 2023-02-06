@@ -8,10 +8,7 @@ import type {
   InteractionContentProps,
   RequestWalletConnection,
 } from '../../../types/interaction'
-import {
-  CONNECTION_RESPONSE,
-  INTERACTION_RESPONSE_TYPE,
-} from '../../../types/interaction'
+import { CONNECTION_RESPONSE } from '../../../types/interaction'
 
 export const WalletConnection = ({
   event,
