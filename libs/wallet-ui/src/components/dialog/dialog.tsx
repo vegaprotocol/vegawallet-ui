@@ -36,7 +36,14 @@ export function Dialog({
                 <DialogPrimitives.Overlay forceMount={true} asChild={true}>
                   <animated.div
                     className="fixed top-0 right-0 bottom-0 left-0 h-full bg-overlay"
-                    style={{ opacity: styles.opacity }}
+                    style={{
+                      // The app is frameless by default so this element creates a space at the top of the app
+                      // which you can click and drag to move the app around.
+                      // https://wails.io/docs/guides/frameless/
+                      // @ts-ignore: Allow custom css property for wails
+                      '--wails-draggable': 'drag',
+                      opacity: styles.opacity,
+                    }}
                     data-wails-drag
                   />
                 </DialogPrimitives.Overlay>
