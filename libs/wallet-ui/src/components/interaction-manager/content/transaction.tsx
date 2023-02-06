@@ -14,7 +14,6 @@ import type {
   InteractionContentProps,
   RequestTransactionReview,
 } from '../../../types/interaction'
-import { INTERACTION_RESPONSE_TYPE } from '../../../types/interaction'
 
 export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
   [TransactionKeys.UNKNOWN]: 'Unknown transaction',
@@ -92,7 +91,7 @@ export const Transaction = ({
 
       await service.RespondToInteraction({
         traceID: event.traceID,
-        name: INTERACTION_RESPONSE_TYPE.DECISION,
+        name: 'DECISION',
         data: {
           approved: decision,
         },
