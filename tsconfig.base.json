@@ -19,6 +19,7 @@
       "@vegaprotocol/jsconrpc-generator": [
         "libs/jsconrpc-generator/src/index.ts"
       ],
+      "@vegaprotocol/transactions": ["libs/transactions/src/index.ts"],
       "@vegaprotocol/wallet-admin": ["libs/wallet-admin/src/index.ts"],
       "@vegaprotocol/wallet-client": ["libs/wallet-client/src/index.ts"],
       "@vegaprotocol/wallet-theme": ["libs/wallet-theme/src/index.tsx"],

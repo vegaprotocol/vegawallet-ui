@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "jsonrpc-generator": "libs/jsonrpc-generator",
+    "transactions": "libs/transactions",
     "wallet-admin": "libs/wallet-admin",
     "wallet-client": "libs/wallet-client",
     "wallet-theme": "libs/wallet-theme",

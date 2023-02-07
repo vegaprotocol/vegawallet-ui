@@ -16,7 +16,7 @@ It takes an executor as an argument, which is an async function, expected to ret
 
 ## Generating the client
 
-Run `yarn nx run wallet-admin:generate` to regenerate the client from the API specs. If you run this locally, the generator will need an environment variable pointing to an openrpc specs file (remote through http or a local file path) to use that as the source of for the wallet client.
+Run `yarn nx run wallet-admin:generate` to regenerate the client from the API specs. If you run this locally, the generator will need an environment variable pointing to an openrpc specs file (a remote url or a local file path) to use that as the source of for the wallet client.
 
 ```
 WALLET_ADMIN_SPECS=https://...
