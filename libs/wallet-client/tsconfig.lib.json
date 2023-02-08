@@ -4,7 +4,7 @@
     "outDir": "../../dist",
     "declaration": true,
     "declarationDir": "../../dist",
-    "types": ["node"]
+    "types": ["chrome", "firefox-webext-browser"]
   },
   "files": [],
   "exclude": [
