@@ -14,10 +14,6 @@
     "noFallthroughCasesInSwitch": true,
     "types": ["chrome", "firefox-webext-browser"]
   },
-  "files": [
-    "../../node_modules/@types/chrome/index.d.ts",
-    "../../node_modules/@types/firefix-webext-browser/index.d.ts"
-  ],
   "exclude": ["./template/*"],
   "references": [
     {
