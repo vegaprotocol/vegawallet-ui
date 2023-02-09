@@ -3,7 +3,8 @@ import { WalletModel, Identifier } from '../model'
 import { Connector } from './interface'
 
 export type ConnectorBrowserProps = {
-  extensionId: string
+  firefoxId: string
+  chromeId: string
 }
 
 type Platform = 'chrome' | 'firefox'
@@ -18,6 +19,17 @@ const getPlatform = () => {
   }
 
   throw new Error('Unsupported platform, cannot find "browser" or "chrome" in the global namespace.')
+}
+
+const getExtensionId = (platform: Platform, { firefoxId, chromeId }: ConnectorBrowserProps) => {
+  switch (platform) {
+    case 'firefox': {
+      return firefoxId
+    }
+    case 'chrome': {
+      return chromeId
+    }
+  }
 }
 
 type RequestProps<Req> = {
@@ -62,10 +74,10 @@ export class ConnectorBrowser implements Connector {
   private platform: Platform
   private extensionId: string
   
-  constructor({ extensionId }: ConnectorBrowserProps) {
+  constructor({ firefoxId, chromeId }: ConnectorBrowserProps) {
     this.origin = window.location.hostname
     this.platform = getPlatform()
-    this.extensionId = extensionId
+    this.extensionId = getExtensionId(this.platform, { firefoxId, chromeId })
   }
 
   <% methods.forEach((method) => { %>
