@@ -111,11 +111,39 @@
         }
       }
     },
-    "build-spec": {
-      "executor": "nx:run-commands",
-      "outputs": [],
+    "build-test": {
+      "executor": "@nrwl/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "command": "yarn tsc --project ./libs/wallet-ui/tsconfig.spec.json"
+        "outputPath": "libs/wallet-ui/test",
+        "main": "libs/wallet-ui/test/index.tsx",
+        "tsConfig": "libs/wallet-ui/tsconfig.lib.json",
+        "format": [ "cjs"],
+        "deleteOutputPath": false,
+        "minify": false,
+        "sourcemap": true,
+        "thirdParty": true,
+        "platform": "browser",
+        "esbuildOptions": {
+          "external": true,
+          "loader": {
+            ".png": "file"
+          }
+        },
+        "assets": [
+          {
+            "glob": "*.png",
+            "input": "libs/wallet-ui/src/images",
+            "output": "./images"
+          }
+        ]
+      }
+    },
+    "serve-test": {
+      "executor": "@nrwl/web:file-server",
+      "options": {
+        "port": 3000,
+        "buildTarget": "wallet-ui:build-test"
       }
     }
   }
