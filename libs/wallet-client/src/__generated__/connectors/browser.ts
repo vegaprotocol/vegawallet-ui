@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import type { WalletModel} from '../model';
+import type { WalletModel } from '../model'
 import { Identifier } from '../model'
 import type { Connector } from './interface'
 
