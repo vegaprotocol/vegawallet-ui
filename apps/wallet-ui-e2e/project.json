@@ -7,7 +7,7 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/wallet-ui-e2e/cypress.config.js",
-        "devServerTarget": "wallet-ui:serve"
+        "devServerTarget": "wallet-ui:serve:test"
       }
     },
     "lint": {
