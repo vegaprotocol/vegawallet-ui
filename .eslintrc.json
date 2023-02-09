@@ -56,7 +56,6 @@
     },
     {
       "files": ["*.jsx", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript", "plugin:jest/recommended"],
       "rules": {
         "react/jsx-no-useless-fragment": [
           "error",
