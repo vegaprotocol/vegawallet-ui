@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "wallet-mock": "apps/wallet-mock",
     "jsonrpc-generator": "libs/jsonrpc-generator",
     "transactions": "libs/transactions",
     "wallet-admin": "libs/wallet-admin",
