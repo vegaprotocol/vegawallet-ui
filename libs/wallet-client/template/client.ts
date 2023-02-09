@@ -1,4 +1,3 @@
-import { Connector } from './connectors/interface'
 import { ConnectorBrowser, ConnectorBrowserProps } from './connectors/browser'
 import { ConnectorHttp, ConnectorHttpProps } from './connectors/http'
 import { WalletModel } from './model'

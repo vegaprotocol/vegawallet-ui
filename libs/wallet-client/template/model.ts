@@ -1,3 +1,5 @@
+import { Transaction as VegaTransaction } from '@vegaprotocol/transaction'
+
 export namespace WalletModel {
   <%= types.replace('export interface Transaction {}', 'export type Transaction = VegaTransaction') %>
   }

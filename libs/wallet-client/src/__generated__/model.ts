@@ -1,3 +1,5 @@
+import type { Transaction as VegaTransaction } from '@vegaprotocol/transaction'
+
 export namespace WalletModel {
   export type ConnectWalletResult = null
   /**

@@ -1,4 +1,3 @@
-import { Connector } from './connectors/interface'
 import type { ConnectorBrowserProps } from './connectors/browser'
 import { ConnectorBrowser } from './connectors/browser'
 import type { ConnectorHttpProps } from './connectors/http'
