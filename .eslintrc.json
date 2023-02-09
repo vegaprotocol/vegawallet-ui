@@ -51,7 +51,12 @@
             "ul": ["list"],
             "ol": ["list"]
           }
-        ],
+        ]
+      }
+    },
+    {
+      "files": ["*.jsx", "*.tsx"],
+      "rules": {
         "react/jsx-no-useless-fragment": [
           "error",
           {
