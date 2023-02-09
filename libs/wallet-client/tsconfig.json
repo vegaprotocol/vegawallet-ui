@@ -12,7 +12,11 @@
     "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["chrome", "firefox-webext-browser"]
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../../node_modules/chrome",
+      "../../node_modules/firefox-webext-browser"
+    ]
   },
   "exclude": ["./template/*"],
   "references": [

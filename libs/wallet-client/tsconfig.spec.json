@@ -1,7 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "../../dist/out-tsc",
+    "declaration": true,
+    "declarationDir": "../../dist",
     "module": "commonjs",
     "types": ["jest", "node", "@testing-library/jest-dom"]
   },
