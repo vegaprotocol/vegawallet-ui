@@ -1,12 +1,12 @@
-const { defineConfig } = require('cypress');
+const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
   projectId: '',
 
   e2e: {
     setupNodeEvents(on, config) {
-      require('@cypress/grep/src/plugin')(config);
-      return config;
+      require('@cypress/grep/src/plugin')(config)
+      return config
     },
     baseUrl: 'http://localhost:3000',
     fileServerFolder: '.',
@@ -29,4 +29,4 @@ module.exports = defineConfig({
     grepFilterSpecs: true,
     grepOmitFiltered: true,
   },
-});
+})

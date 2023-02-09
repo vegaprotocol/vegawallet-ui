@@ -12,8 +12,5 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-
-import '@vegaprotocol/cypress';
-import './common.functions.js';
-import registerCypressGrep from '@cypress/grep';
-registerCypressGrep();
+import registerCypressGrep from '@cypress/grep'
+registerCypressGrep()
