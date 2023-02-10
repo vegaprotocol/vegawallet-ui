@@ -12,11 +12,11 @@ export type ConnectorBrowserProps = {
 type Platform = 'chrome' | 'firefox'
 
 const getPlatform = () => {
-  if (typeof globalThis.browser?.runtime !== 'undefined') {
+  if (navigator.userAgent.includes('Firefox')) {
     return 'firefox'
   }
 
-  if (typeof globalThis.chrome?.runtime !== 'undefined') {
+  if (navigator.userAgent.includes('Chrome')) {
     return 'chrome'
   }
 
@@ -60,6 +60,9 @@ function handleExtensionRequest<Req, Res>({
 }: RequestProps<Req>) {
   switch (platform) {
     case 'chrome': {
+      if (!chrome.runtime) {
+        throw new Error('No browser extension detected.')
+      }
       return chrome.runtime.sendMessage<Request<Req>, Res>(extensionId, {
         id: nanoid(),
         method,
