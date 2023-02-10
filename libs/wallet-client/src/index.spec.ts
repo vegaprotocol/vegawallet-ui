@@ -70,7 +70,6 @@ describe('Wallet Client', () => {
       })
 
       it('can connect to a wallet', async () => {
-        const onTokenChange = jest.fn()
         const client = new WalletClient({
           type: 'browser',
           firefoxId: 'TEST_FIREFOX_ID',
@@ -101,7 +100,6 @@ describe('Wallet Client', () => {
       })
 
       it('can connect to a wallet', async () => {
-        const onTokenChange = jest.fn()
         const client = new WalletClient({
           type: 'browser',
           firefoxId: 'TEST_FIREFOX_ID',
