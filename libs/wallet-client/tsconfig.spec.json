@@ -6,7 +6,13 @@
     "declaration": true,
     "declarationDir": "../../dist",
     "module": "commonjs",
-    "types": ["jest", "node", "@testing-library/jest-dom"]
+    "types": [
+      "jest",
+      "node",
+      "@testing-library/jest-dom",
+      "chrome",
+      "firefox-webext-browser"
+    ]
   },
   "include": [
     "**/*.test.ts",

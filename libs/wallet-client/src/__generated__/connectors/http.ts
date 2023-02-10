@@ -32,13 +32,17 @@ export class WalletClientError extends Error {
 
 async function handleHTTPResponse<T>(res: Response) {
   try {
-    const { jsonrpc, error, ...json } = await res.json()
+    const { error, result } = await res.json()
 
     if (error) {
       throw new WalletClientError(error)
     }
 
-    return json as Promise<T>
+    if (result === 'null') {
+      return null as unknown as Promise<T>
+    }
+
+    return result as Promise<T>
   } catch (err) {
     if (err instanceof WalletClientError) {
       throw err

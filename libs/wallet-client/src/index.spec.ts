@@ -7,21 +7,8 @@ const HOSTNAME = `http://localhost:${PORT}`
 
 const service = new MockWalletService({ port: PORT })
 
-declare global {
-  interface browser {
-    runtime: Runtime
-  }
-  interface chrome {
-    runtime: Runtime
-  }
-}
-
-type Runtime = {
-  sendMessage: () => void
-}
-
 const mockRuntime = {
-  sendMessage: jest.fn(),
+  sendMessage: jest.fn().mockImplementation(() => Promise.resolve(null)),
 }
 
 // @ts-ignore imported fetch type is different from the one sitting in the types of jest dom
@@ -46,7 +33,7 @@ describe('Wallet Client', () => {
         onTokenChange,
       })
       const result = await client.ConnectWallet()
-      expect(result).toBe('null')
+      expect(result).toBe(null)
       expect(onTokenChange).toHaveBeenCalledWith('VWT token')
     })
 
@@ -64,16 +51,21 @@ describe('Wallet Client', () => {
   })
 
   describe('Browser', () => {
+    beforeEach(() => {
+      mockRuntime.sendMessage.mockClear()
+    })
+
     describe('Chrome', () => {
       beforeEach(() => {
-        // @ts-ignore ts fails to recognise this
+        // @ts-ignore Typescript doesn't allow this override
         global.chrome = {
-          runtime: mockRuntime,
+          // @ts-ignore To prevent mocking the whole runtime object
+          runtime: mockRuntime as typeof chrome.runtime,
         }
       })
 
       afterEach(() => {
-        // @ts-ignore ts fails to recognise this
+        // @ts-ignore Typescript doesn't allow this override
         global.chrome = undefined
       })
 
@@ -84,22 +76,27 @@ describe('Wallet Client', () => {
           firefoxId: 'TEST_FIREFOX_ID',
           chromeId: 'TEST_CHROME_ID',
         })
-        const { result } = await client.ConnectWallet()
-        expect(result).toBe('null')
-        expect(onTokenChange).toHaveBeenCalledWith('VWT token')
+        const result = await client.ConnectWallet()
+        expect(result).toBe(undefined)
+        expect(mockRuntime.sendMessage).toHaveBeenCalledTimes(1)
+        const [arg1, arg2] = mockRuntime.sendMessage.mock.calls[0]
+        expect(arg1).toBe('TEST_CHROME_ID')
+        expect(arg2.method).toBe(Identifier.ConnectWallet)
+        expect(arg2.params).toEqual({})
       })
     })
 
     describe('Firefox', () => {
       beforeEach(() => {
-        // @ts-ignore ts fails to recognise this
+        // @ts-ignore Typescript doesn't allow this override
         globalThis.browser = {
+          // @ts-ignore To prevent mocking the whole runtime object
           runtime: mockRuntime,
         }
       })
 
       afterEach(() => {
-        // @ts-ignore ts fails to recognise this
+        // @ts-ignore Typescript doesn't allow this override
         globalThis.browser = undefined
       })
 
@@ -111,8 +108,12 @@ describe('Wallet Client', () => {
           chromeId: 'TEST_CHROME_ID',
         })
         const result = await client.ConnectWallet()
-        expect(result).toBe('null')
-        expect(onTokenChange).toHaveBeenCalledWith('VWT token')
+        expect(result).toBe(undefined)
+        expect(mockRuntime.sendMessage).toHaveBeenCalledTimes(1)
+        const [arg1, arg2] = mockRuntime.sendMessage.mock.calls[0]
+        expect(arg1).toBe('TEST_FIREFOX_ID')
+        expect(arg2.method).toBe(Identifier.ConnectWallet)
+        expect(arg2.params).toEqual({})
       })
     })
   })

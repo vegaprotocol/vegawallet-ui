@@ -11,12 +11,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "typeRoots": [
-      "../../node_modules/@types",
-      "../../node_modules/chrome",
-      "../../node_modules/firefox-webext-browser"
-    ]
+    "noFallthroughCasesInSwitch": true
   },
   "exclude": ["./template/*"],
   "references": [

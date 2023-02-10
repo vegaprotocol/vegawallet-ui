@@ -19,5 +19,5 @@
     "jest.config.ts",
     "template/*"
   ],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["../transactions/src/**/*.ts", "**/*.ts", "**/*.tsx"]
 }
