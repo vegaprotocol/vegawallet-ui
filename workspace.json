@@ -5,6 +5,7 @@
     "transactions": "libs/transactions",
     "wallet-admin": "libs/wallet-admin",
     "wallet-client": "libs/wallet-client",
+    "wallet-mock": "apps/wallet-mock",
     "wallet-theme": "libs/wallet-theme",
     "wallet-ui": "libs/wallet-ui"
   },
