@@ -17,7 +17,7 @@
   "private": true,
   "lint-staged": {
     "*": "yarn nx format:write --uncommitted",
-    "*.{ts,tsx,js,jsx}": "yarn nx affected:lint --fix --max-warnings=0"
+    "*.{ts,tsx,js,jsx}": "yarn nx affected:lint --uncommitted --fix --max-warnings=0"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "9.1.0",

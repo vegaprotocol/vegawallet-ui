@@ -1,31 +1,12 @@
 import { nanoid } from 'nanoid'
-import { WalletModel, ResponseError, Identifier } from '../model'
+import { WalletModel, Identifier } from '../model'
 import { Connector } from './interface'
+import { WalletClientError, WalletHttpError } from '../errors'
 
 export type ConnectorHttpProps = {
   address: string
   token?: string
   onTokenChange: (token: string | null) => void
-}
-
-export class WalletHttpError extends Error {
-  public code: number
-
-  constructor (code: number, message: string) {
-    super(message)
-    this.code = code
-  }
-}
-
-export class WalletClientError extends Error {
-  public title: string
-  public code: number
-
-  constructor (response: ResponseError) {
-    super(response.data)
-    this.title = response.message
-    this.code = response.code
-  }
 }
 
 async function handleHTTPResponse <T>(res: Response) {
