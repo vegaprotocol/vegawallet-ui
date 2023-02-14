@@ -6,8 +6,6 @@ import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
-import type { NetworkPreset } from '../../lib/networks'
-import { fetchNetworkPreset } from '../../lib/networks'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
@@ -93,23 +91,6 @@ const startService = async ({
   }
 }
 
-const getNetworks = async (client: WalletAdmin, preset?: NetworkPreset) => {
-  const networks = await client.ListNetworks()
-
-  if (preset && (!networks.networks || networks.networks.length === 0)) {
-    await client.ImportNetwork({
-      name: preset.name,
-      url: preset.configFileUrl,
-      filePath: '',
-      overwrite: true,
-    })
-
-    return client.ListNetworks()
-  }
-
-  return networks
-}
-
 const getDefaultNetwork = (
   config: AppConfig,
   networks: WalletModel.ListNetworksResult
@@ -142,11 +123,7 @@ export function createActions(service: Service, client: WalletAdmin) {
           // else continue with app setup, get wallets/networks
           logger.debug('InitApp')
 
-          const [config, presets, presetsInternal] = await Promise.all([
-            service.GetAppConfig(),
-            fetchNetworkPreset(DataSources.NETWORKS, logger),
-            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger),
-          ])
+          const config = await service.GetAppConfig()
 
           if (config.telemetry.enabled) {
             service.EnableTelemetry()
@@ -155,7 +132,7 @@ export function createActions(service: Service, client: WalletAdmin) {
           // should now have an app config
           const [wallets, networks] = await Promise.all([
             client.ListWallets(),
-            getNetworks(client, presets[0]),
+            client.ListNetworks(),
           ])
 
           const defaultNetwork = getDefaultNetwork(config, networks)
@@ -173,8 +150,6 @@ export function createActions(service: Service, client: WalletAdmin) {
             network: defaultNetwork ?? '',
             networks: networks.networks ?? [],
             networkConfig: defaultNetworkConfig,
-            presetNetworks: presets,
-            presetNetworksInternal: presetsInternal,
           })
         } catch (err) {
           const message =

@@ -2,7 +2,6 @@ import { omit } from 'ramda'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { indexBy } from '../../lib/index-by'
-import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type { AppConfig, GetVersionResponse } from '../../types/service'
@@ -29,8 +28,6 @@ export const initialGlobalState: GlobalState = {
   // Network
   network: null,
   networks: [],
-  presets: [],
-  presetsInternal: [],
   networkConfig: null,
   serviceStatus: ServiceState.Stopped,
 
@@ -55,8 +52,6 @@ export type GlobalAction =
       network: string
       networks: string[]
       networkConfig: WalletModel.DescribeNetworkResult | null
-      presetNetworks: NetworkPreset[]
-      presetNetworksInternal: NetworkPreset[]
     }
   | {
       type: 'INIT_APP_FAILED'
@@ -175,14 +170,6 @@ export type GlobalAction =
       config: WalletModel.DescribeNetworkResult | null
     }
   | {
-      type: 'SET_PRESETS'
-      presets: NetworkPreset[]
-    }
-  | {
-      type: 'SET_PRESETS_INTERNAL'
-      presets: NetworkPreset[]
-    }
-  | {
       type: 'CHANGE_NETWORK'
       network: string
       config: WalletModel.DescribeNetworkResult
@@ -248,8 +235,6 @@ export function globalReducer(
         network: action.network,
         networks: action.networks,
         networkConfig: action.networkConfig,
-        presets: action.presetNetworks,
-        presetsInternal: action.presetNetworksInternal,
         status: AppStatus.Initialised,
       }
     }
@@ -535,18 +520,6 @@ export function globalReducer(
         network: action.network,
         networks: action.networks.sort(),
         networkConfig: action.config,
-      }
-    }
-    case 'SET_PRESETS': {
-      return {
-        ...state,
-        presets: action.presets,
-      }
-    }
-    case 'SET_PRESETS_INTERNAL': {
-      return {
-        ...state,
-        presetsInternal: action.presets,
       }
     }
     case 'CHANGE_NETWORK': {

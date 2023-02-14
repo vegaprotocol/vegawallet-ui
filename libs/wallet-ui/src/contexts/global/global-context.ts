@@ -2,7 +2,6 @@ import { createContext, useContext } from 'react'
 import type { ThunkDispatch } from 'react-hook-thunk-reducer'
 import type { WalletAdmin, WalletModel } from '@vegaprotocol/wallet-admin'
 
-import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import type {
   Service,
@@ -86,8 +85,6 @@ export interface GlobalState {
   // Network
   network: string | null
   networks: string[]
-  presets: NetworkPreset[]
-  presetsInternal: NetworkPreset[]
   networkConfig: WalletModel.DescribeNetworkResult | null
   serviceStatus: ServiceState
 
