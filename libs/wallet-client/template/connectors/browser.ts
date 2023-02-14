@@ -63,11 +63,28 @@ function handleExtensionRequest <Req, Res> ({
       })
     }
     case 'firefox': {
-      return browser.runtime.sendMessage(extensionId, {
-        id: nanoid(),
-        method,
-        params,
-      }) as Promise<Res>
+      return new Promise<Res>((resolve, reject) => {
+        const id =  nanoid()
+        const handler = (event: MessageEvent) => {
+          if (event.data && event.data?.id === id) {
+            window.removeEventListener('message', handler)
+            if (event.data.error) {
+              return reject(event.data.error)
+            }
+            resolve(event.data.data)
+          }
+        }
+        window.addEventListener('message', handler)
+
+        window.postMessage({
+          extensionId,
+          data: {
+            id,
+            method,
+            params,
+          },
+        })
+      })
     }
   }
 }
