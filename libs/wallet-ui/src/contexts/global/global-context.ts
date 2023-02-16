@@ -35,12 +35,13 @@ export enum DrawerPanel {
   Manage,
   Edit,
   Add,
+  View,
 }
 
 export type DrawerState = {
   isOpen: boolean
   panel: DrawerPanel | null
-  editingNetwork: string | null
+  selectedNetwork: string | null
 }
 
 export const enum PermissionTarget {

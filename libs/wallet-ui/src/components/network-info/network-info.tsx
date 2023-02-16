@@ -2,12 +2,16 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { NodeList } from '../node-list'
 import { Title } from '../title'
 
-export function NetworkInfo() {
+type NetworkInfoProps = {
+  network: string | null
+}
+
+export function NetworkInfo({ network }: NetworkInfoProps) {
   const {
     service,
-    state: { currentNetwork, networks },
+    state: { networks },
   } = useGlobal()
-  const config = currentNetwork && networks[currentNetwork]
+  const config = network && networks[network]
 
   if (!config) {
     return null

@@ -37,7 +37,7 @@ export const initialGlobalState: GlobalState = {
   drawerState: {
     isOpen: false,
     panel: DrawerPanel.Network,
-    editingNetwork: null,
+    selectedNetwork: null,
   },
   isPassphraseModalOpen: false,
   isSignMessageModalOpen: false,

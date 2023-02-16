@@ -286,14 +286,14 @@ export function createActions(service: Service, client: WalletAdmin) {
     setDrawerAction(
       isOpen: boolean,
       panel?: DrawerPanel | null,
-      editingNetwork?: string
+      selectedNetwork?: string
     ): GlobalAction {
       return {
         type: 'SET_DRAWER',
         state: {
           isOpen,
           panel: panel ?? DrawerPanel.Network,
-          editingNetwork: editingNetwork ?? null,
+          selectedNetwork: selectedNetwork ?? null,
         },
       }
     },

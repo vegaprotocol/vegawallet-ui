@@ -8,17 +8,18 @@ import { Title } from '../title'
 
 const itemStyles = 'flex items-center justify-between my-[12px]'
 
-type NetworkPresetItemProps = {
+type NetworkListItemProps = {
   network: WalletModel.DescribeNetworkResult
   onEdit: () => void
   onRemove: () => void
+  onView: () => void
 }
 
 const NetworkListItem = ({
   network,
   onEdit,
   onRemove,
-}: NetworkPresetItemProps) => {
+}: NetworkListItemProps) => {
   const { state } = useGlobal()
   const { submit } = useImportNetwork()
 
@@ -41,7 +42,8 @@ const NetworkListItem = ({
 }
 
 interface NetworkListProps {
-  setEditView: (network: string) => void
+  setEditPanel: (network: string) => void
+  setViewPanel: (network: string) => void
 }
 
 type CompiledNetworks = {
@@ -84,7 +86,7 @@ const compileNetworks = (
   )
 }
 
-export function NetworkList({ setEditView }: NetworkListProps) {
+export function NetworkList({ setViewPanel, setEditPanel }: NetworkListProps) {
   const {
     state: { networks },
   } = useGlobal()
@@ -101,25 +103,27 @@ export function NetworkList({ setEditView }: NetworkListProps) {
           key={config.name}
           type="mainnet"
           config={config}
-          setEditView={setEditView}
+          setViewPanel={setViewPanel}
+          setEditPanel={setEditPanel}
         />
       ))}
       {testnet.length > 0 && <Title>Test Networks</Title>}
       {testnet.map((config) => (
         <NetworkRow
           key={config.name}
-          type="mainnet"
+          type="testnet"
           config={config}
-          setEditView={setEditView}
+          setViewPanel={setViewPanel}
+          setEditPanel={setEditPanel}
         />
       ))}
       {myNetworks.length > 0 && <Title>My Networks</Title>}
       {myNetworks.map((config) => (
         <NetworkRow
           key={config.name}
-          type="mainnet"
           config={config}
-          setEditView={setEditView}
+          setViewPanel={setViewPanel}
+          setEditPanel={setEditPanel}
         />
       ))}
     </>
@@ -131,12 +135,30 @@ type NetworkRowProps = NetworkListProps & {
   config: WalletModel.DescribeNetworkResult
 }
 
-const NetworkRow = ({ config, type, setEditView }: NetworkRowProps) => {
+const NetworkRow = ({
+  config,
+  type,
+  setEditPanel,
+  setViewPanel,
+}: NetworkRowProps) => {
   const { actions, dispatch } = useGlobal()
 
   return (
     <div key={config.name} className={itemStyles}>
       <div>{config.name}</div>
+
+      {type && (
+        <div className="flex gap-[12px]">
+          <Button
+            data-testid={`view-network-${config.name}`}
+            onClick={() => {
+              setViewPanel(config.name)
+            }}
+          >
+            View
+          </Button>
+        </div>
+      )}
 
       {!type && (
         <div className="flex gap-[12px]">
@@ -151,7 +173,7 @@ const NetworkRow = ({ config, type, setEditView }: NetworkRowProps) => {
           <Button
             data-testid={`edit-network-${config.name}`}
             onClick={() => {
-              setEditView(config.name)
+              setEditPanel(config.name)
             }}
           >
             Edit

@@ -111,23 +111,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
             </span>
           }
           actions={
-            <>
-              <Button onClick={() => runtime.WindowReload()}>Reload</Button>
-              <Button
-                onClick={() =>
-                  dispatch({
-                    type: 'SET_DRAWER',
-                    state: {
-                      isOpen: true,
-                      panel: DrawerPanel.Edit,
-                      editingNetwork: currentNetwork,
-                    },
-                  })
-                }
-              >
-                Change port
-              </Button>
-            </>
+            <Button onClick={() => runtime.WindowReload()}>Reload</Button>
           }
         />
       </Chrome>
