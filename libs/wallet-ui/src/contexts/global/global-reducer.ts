@@ -2,7 +2,6 @@ import { omit } from 'ramda'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { indexBy } from '../../lib/index-by'
-import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type { AppConfig, GetVersionResponse } from '../../types/service'
@@ -27,18 +26,18 @@ export const initialGlobalState: GlobalState = {
   wallets: {},
 
   // Network
-  network: null,
-  networks: [],
-  presets: [],
-  presetsInternal: [],
-  networkConfig: null,
+  currentNetwork: null,
+  networks: {},
+
+  // Service
   serviceStatus: ServiceState.Stopped,
+  httpServiceUrl: null,
 
   // UI
   drawerState: {
     isOpen: false,
     panel: DrawerPanel.Network,
-    editingNetwork: null,
+    selectedNetwork: null,
   },
   isPassphraseModalOpen: false,
   isSignMessageModalOpen: false,
@@ -52,11 +51,8 @@ export type GlobalAction =
       type: 'INIT_APP'
       config: AppConfig
       wallets: string[]
-      network: string
-      networks: string[]
-      networkConfig: WalletModel.DescribeNetworkResult | null
-      presetNetworks: NetworkPreset[]
-      presetNetworksInternal: NetworkPreset[]
+      currentNetwork: string | null
+      networks: Record<string, WalletModel.DescribeNetworkResult>
     }
   | {
       type: 'INIT_APP_FAILED'
@@ -170,22 +166,11 @@ export type GlobalAction =
   // Network
   | {
       type: 'SET_NETWORKS'
-      network: string | null
-      networks: string[]
-      config: WalletModel.DescribeNetworkResult | null
-    }
-  | {
-      type: 'SET_PRESETS'
-      presets: NetworkPreset[]
-    }
-  | {
-      type: 'SET_PRESETS_INTERNAL'
-      presets: NetworkPreset[]
+      networks: Record<string, WalletModel.DescribeNetworkResult>
     }
   | {
       type: 'CHANGE_NETWORK'
       network: string
-      config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'UPDATE_NETWORK_CONFIG'
@@ -193,22 +178,24 @@ export type GlobalAction =
     }
   | {
       type: 'ADD_NETWORK'
-      network: string
       config: WalletModel.DescribeNetworkResult
     }
   | {
       type: 'ADD_NETWORKS'
-      networks: string[]
-      network: string
-      networkConfig: WalletModel.DescribeNetworkResult
+      networks: Record<string, WalletModel.DescribeNetworkResult>
     }
   | {
       type: 'REMOVE_NETWORK'
       network: string
     }
+  // Service
   | {
       type: 'SET_SERVICE_STATUS'
       status: ServiceState
+    }
+  | {
+      type: 'SET_SERVICE_URL'
+      url: string
     }
   | {
       type: 'ADD_TRANSACTION'
@@ -218,6 +205,7 @@ export type GlobalAction =
       type: 'UPDATE_TRANSACTION'
       transaction: Transaction
     }
+  // Connections
   | {
       type: 'ADD_CONNECTION'
       connection: Connection
@@ -245,11 +233,8 @@ export function globalReducer(
           }),
           {}
         ),
-        network: action.network,
+        currentNetwork: action.currentNetwork,
         networks: action.networks,
-        networkConfig: action.networkConfig,
-        presets: action.presetNetworks,
-        presetsInternal: action.presetNetworksInternal,
         status: AppStatus.Initialised,
       }
     }
@@ -282,7 +267,7 @@ export function globalReducer(
       return {
         ...state,
         status: AppStatus.Onboarding,
-        networks: action.existing.networks || state.networks,
+        initNetworks: action.existing.networks,
         wallets: action.existing.wallets.reduce(
           (acc, w) => ({
             ...acc,
@@ -532,75 +517,49 @@ export function globalReducer(
     case 'SET_NETWORKS': {
       return {
         ...state,
-        network: action.network,
-        networks: action.networks.sort(),
-        networkConfig: action.config,
-      }
-    }
-    case 'SET_PRESETS': {
-      return {
-        ...state,
-        presets: action.presets,
-      }
-    }
-    case 'SET_PRESETS_INTERNAL': {
-      return {
-        ...state,
-        presetsInternal: action.presets,
+        networks: action.networks,
       }
     }
     case 'CHANGE_NETWORK': {
       return {
         ...state,
-        network: action.network,
-        networkConfig: action.config,
+        currentNetwork: action.network,
       }
     }
+    case 'ADD_NETWORK':
     case 'UPDATE_NETWORK_CONFIG': {
       return {
         ...state,
-        networkConfig: action.config,
-      }
-    }
-    case 'ADD_NETWORK': {
-      const networks = [
-        ...state.networks.filter((n) => n !== action.network),
-        action.network,
-      ].sort()
-      const changeToNewNetwork =
-        state.networks === null || state.networks.length === 0
-      const network = changeToNewNetwork ? action.network : state.network
-      const config = changeToNewNetwork ? action.config : state.networkConfig
-      return {
-        ...state,
-        network,
-        networks,
-        networkConfig: config,
+        networks: {
+          ...state.networks,
+          [action.config.name]: action.config,
+        },
       }
     }
     case 'ADD_NETWORKS': {
-      const newNetworks = action.networks.filter(
-        (n) => state.networks.indexOf(n) < 0
-      )
       return {
         ...state,
-        networks: [...state.networks, ...newNetworks],
-        network: action.network,
-        networkConfig: action.networkConfig,
+        networks: { ...state.networks, ...action.networks },
       }
     }
     case 'REMOVE_NETWORK': {
       return {
         ...state,
-        network: null,
-        networks: state.networks.filter((n) => n !== action.network),
-        networkConfig: null,
+        currentNetwork:
+          action.network === state.currentNetwork ? null : state.currentNetwork,
+        networks: omit([action.network], state.networks),
       }
     }
     case 'SET_SERVICE_STATUS': {
       return {
         ...state,
         serviceStatus: action.status,
+      }
+    }
+    case 'SET_SERVICE_URL': {
+      return {
+        ...state,
+        httpServiceUrl: action.url,
       }
     }
     case 'ADD_TRANSACTION':

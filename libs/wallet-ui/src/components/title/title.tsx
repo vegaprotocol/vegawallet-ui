@@ -7,7 +7,7 @@ type Variant = 'main' | 'secondary'
 interface HeaderProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode
   variant?: Variant
-  element?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  element?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p'
 }
 
 const secondaryTitleStyles = classnames(
@@ -35,14 +35,60 @@ export const Title = ({
   children,
   className,
   variant = 'secondary',
+  element = 'h2',
   ...rest
 }: HeaderProps) => {
-  return (
-    <h1
-      {...rest}
-      className={classnames(getVariantClassName(variant), className)}
-    >
-      {children}
-    </h1>
-  )
+  const styles = classnames(getVariantClassName(variant), className)
+
+  switch (element) {
+    case 'h1': {
+      return (
+        <h1 {...rest} className={styles}>
+          {children}
+        </h1>
+      )
+    }
+    case 'h2': {
+      return (
+        <h2 {...rest} className={styles}>
+          {children}
+        </h2>
+      )
+    }
+    case 'h3': {
+      return (
+        <h3 {...rest} className={styles}>
+          {children}
+        </h3>
+      )
+    }
+    case 'h4': {
+      return (
+        <h4 {...rest} className={styles}>
+          {children}
+        </h4>
+      )
+    }
+    case 'h5': {
+      return (
+        <h5 {...rest} className={styles}>
+          {children}
+        </h5>
+      )
+    }
+    case 'h6': {
+      return (
+        <h6 {...rest} className={styles}>
+          {children}
+        </h6>
+      )
+    }
+    default: {
+      return (
+        <p {...rest} className={styles}>
+          {children}
+        </p>
+      )
+    }
+  }
 }

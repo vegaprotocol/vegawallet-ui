@@ -1,64 +1,16 @@
-import { useMemo } from 'react'
-import type { WalletModel } from '@vegaprotocol/wallet-admin'
-
 import { useGlobal } from '../../contexts/global/global-context'
-import { KeyValueTable } from '../key-value-table'
 import { NodeList } from '../node-list'
 import { Title } from '../title'
-import type { Service } from '../../types/service'
 
-type AppSettingsField = {
-  key: string
-  value: string
-  dataTestId: string
+type NetworkInfoProps = {
+  network: string | null
 }
 
-const compileAppSettings = (
-  service: Service,
-  config: WalletModel.DescribeNetworkResult | null
-) => {
-  const settings: AppSettingsField[] = []
-
-  if (!config) {
-    return settings
-  }
-
-  if (service.TYPE === 'http') {
-    settings.push({
-      key: 'Wallet Service URL',
-      value: `http://${config.host}:${config.port}`,
-      dataTestId: 'service-url',
-    })
-  }
-
-  if (config.logLevel) {
-    settings.push({
-      key: 'Log level',
-      value: config.logLevel,
-      dataTestId: 'network-log-level',
-    })
-  }
-
-  if (config.tokenExpiry) {
-    settings.push({
-      key: 'Token expiry',
-      value: config.tokenExpiry,
-      dataTestId: 'token-expiry',
-    })
-  }
-
-  return settings
-}
-
-export function NetworkInfo() {
+export function NetworkInfo({ network }: NetworkInfoProps) {
   const {
-    service,
-    state: { networkConfig: config },
+    state: { networks },
   } = useGlobal()
-  const appSettings = useMemo(
-    () => compileAppSettings(service, config),
-    [service, config]
-  )
+  const config = network && networks[network]
 
   if (!config) {
     return null
@@ -66,18 +18,48 @@ export function NetworkInfo() {
 
   return (
     <>
+      {config.apps.console && (
+        <>
+          <Title>Console dApp URL</Title>
+          <a
+            href={config.apps.console}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {config.apps.console}
+          </a>
+        </>
+      )}
+      {config.apps.explorer && (
+        <>
+          <Title>Explorer dApp URL</Title>
+          <a
+            href={config.apps.explorer}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {config.apps.explorer}
+          </a>
+        </>
+      )}
+      {config.apps.tokenDApp && (
+        <>
+          <Title>Token dApp URL</Title>
+          <a
+            href={config.apps.tokenDApp}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {config.apps.tokenDApp}
+          </a>
+        </>
+      )}
       <Title>gRPC Nodes</Title>
       <NodeList items={config.api?.grpcConfig?.hosts ?? []} />
       <Title>GraphQL Nodes</Title>
       <NodeList items={config.api?.graphQLConfig?.hosts ?? []} />
       <Title>REST Nodes</Title>
       <NodeList items={config.api?.restConfig?.hosts ?? []} />
-      {appSettings.length > 0 && (
-        <>
-          <Title>Application Settings</Title>
-          <KeyValueTable className="text-base" rows={appSettings} />
-        </>
-      )}
     </>
   )
 }

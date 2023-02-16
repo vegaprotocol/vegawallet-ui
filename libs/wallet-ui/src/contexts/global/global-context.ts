@@ -2,7 +2,6 @@ import { createContext, useContext } from 'react'
 import type { ThunkDispatch } from 'react-hook-thunk-reducer'
 import type { WalletAdmin, WalletModel } from '@vegaprotocol/wallet-admin'
 
-import type { NetworkPreset } from '../../lib/networks'
 import type { Transaction } from '../../lib/transactions'
 import type {
   Service,
@@ -36,12 +35,13 @@ export enum DrawerPanel {
   Manage,
   Edit,
   Add,
+  View,
 }
 
 export type DrawerState = {
   isOpen: boolean
   panel: DrawerPanel | null
-  editingNetwork: string | null
+  selectedNetwork: string | null
 }
 
 export const enum PermissionTarget {
@@ -84,12 +84,13 @@ export interface GlobalState {
   wallets: Record<string, Wallet>
 
   // Network
-  network: string | null
-  networks: string[]
-  presets: NetworkPreset[]
-  presetsInternal: NetworkPreset[]
-  networkConfig: WalletModel.DescribeNetworkResult | null
+  currentNetwork: string | null
+  networks: Record<string, WalletModel.DescribeNetworkResult>
+  initNetworks?: string[]
+
+  // Service
   serviceStatus: ServiceState
+  httpServiceUrl: null | string
 
   // UI
   drawerState: DrawerState

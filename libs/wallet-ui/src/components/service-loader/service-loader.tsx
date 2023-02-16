@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { Intent } from '../../config/intent'
-import {
-  DrawerPanel,
-  ServiceState,
-  useGlobal,
-} from '../../contexts/global/global-context'
+import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { EVENTS } from '../../lib/events'
 import { Button } from '../button'
 import { Chrome } from '../chrome'
@@ -20,7 +16,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
   const [serviceError, setServiceError] = useState<string | null>(null)
 
   const {
-    state: { serviceStatus, network, networkConfig },
+    state: { serviceStatus, httpServiceUrl },
     actions,
     service,
     runtime,
@@ -42,6 +38,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
 
   useEffect(() => {
     service.EventsOn(EVENTS.SERVICE_HEALTHY, () => {
+      console.log('service.EventsOn(EVENTS.SERVICE_HEALTHY')
       setServiceError(null)
       dispatch({
         type: 'SET_SERVICE_STATUS',
@@ -50,6 +47,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
+      console.log('service.EventsOn(EVENTS.SERVICE_UNREACHABLE')
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unreachable,
@@ -57,6 +55,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
+      console.log('service.EventsOn(EVENTS.SERVICE_UNHEALTHY')
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unhealthy,
@@ -64,6 +63,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
+      console.log('service.EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR', err)
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Error,
@@ -76,6 +76,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_STOPPED, () => {
+      console.log('service.EventsOn(EVENTS.SERVICE_STOPPED')
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Stopped,
@@ -93,7 +94,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     }
   }, [service, dispatch])
 
-  if (serviceError && networkConfig) {
+  if (serviceError && httpServiceUrl) {
     return (
       <Chrome>
         <SplashError
@@ -101,28 +102,12 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
           message={
             <span>
               Make sure you don't already have an application running on machine
-              on port <code className="inline">:{networkConfig.port}</code>.
-              Reload the application, or change your network port.
+              on port <code className="inline">:1789</code>. Reload the
+              application, or change your network port.
             </span>
           }
           actions={
-            <>
-              <Button onClick={() => runtime.WindowReload()}>Reload</Button>
-              <Button
-                onClick={() =>
-                  dispatch({
-                    type: 'SET_DRAWER',
-                    state: {
-                      isOpen: true,
-                      panel: DrawerPanel.Edit,
-                      editingNetwork: network,
-                    },
-                  })
-                }
-              >
-                Change port
-              </Button>
-            </>
+            <Button onClick={() => runtime.WindowReload()}>Reload</Button>
           }
         />
       </Chrome>

@@ -87,8 +87,8 @@ const getShouldOpen = ({
 export const NetworkCompatibilityDialog = () => {
   const { state, service, dispatch, features, actions } = useGlobal()
   const { supportedVersion, networkData } = useMemo(
-    () => findNetworkData(state.network, state.version),
-    [state.network, state.version]
+    () => findNetworkData(state.currentNetwork, state.version),
+    [state.currentNetwork, state.version]
   )
   const compatibleNetworksList = useMemo(() => {
     const checkList = state.version?.networksCompatibility || []

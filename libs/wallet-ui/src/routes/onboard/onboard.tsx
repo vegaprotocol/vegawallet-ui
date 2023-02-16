@@ -8,6 +8,7 @@ import { Title } from '../../components/title'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useVegaHome } from '../../hooks/use-vega-home'
 import { Paths } from '..'
+import { indexBy } from '../../lib/index-by'
 
 export function Onboard() {
   const navigate = useNavigate()
@@ -19,7 +20,7 @@ export function Onboard() {
     actions,
     service,
     client,
-    state: { networks, wallets },
+    state: { initNetworks, wallets },
   } = useGlobal()
 
   const logger = useMemo(() => service.GetLogger('Onboard'), [service])
@@ -32,19 +33,23 @@ export function Onboard() {
 
       // If use doesnt have networks go to the import network section on onboarding
       // otherwise go to home to complete onboarding
-      if (networks.length) {
+      if (initNetworks?.length) {
         const config = await service.GetAppConfig()
-        const defaultNetwork = config.defaultNetwork
+        const currentNetwork = config.defaultNetwork
           ? config.defaultNetwork
-          : networks[0]
-        const defaultNetworkConfig = await client.DescribeNetwork({
-          name: defaultNetwork,
-        })
+          : initNetworks[0]
+
+        const networks = await Promise.all(
+          initNetworks.map((name) => client.DescribeNetwork({ name }))
+        )
+
         dispatch({
           type: 'ADD_NETWORKS',
-          networks,
-          network: defaultNetwork,
-          networkConfig: defaultNetworkConfig,
+          networks: networks.reduce(indexBy('name'), {}),
+        })
+        dispatch({
+          type: 'CHANGE_NETWORK',
+          network: currentNetwork,
         })
       }
 

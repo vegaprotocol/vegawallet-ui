@@ -11,13 +11,15 @@ interface DrawerNetworkProps {
 
 export function DrawerNetwork({ setView }: DrawerNetworkProps) {
   const {
-    state: { networks },
+    state: { networks, currentNetwork },
   } = useGlobal()
+
+  const hasNetworks = Object.keys(networks).length > 0
 
   return (
     <>
       <Title className="mt-0">Network</Title>
-      {networks.length ? (
+      {hasNetworks ? (
         <div className="flex items-center justify-between mb-[20px]">
           <NetworkSwitcher />
           <ButtonUnstyled
@@ -37,7 +39,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
           </Button>
         </div>
       )}
-      <NetworkInfo />
+      <NetworkInfo network={currentNetwork} />
     </>
   )
 }

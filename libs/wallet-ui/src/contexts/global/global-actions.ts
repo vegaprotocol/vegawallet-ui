@@ -4,13 +4,11 @@ import type { Service, AppConfig } from '../../types/service'
 import type { Logger } from '../../types/logger'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
-import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
-import type { NetworkPreset } from '../../lib/networks'
-import { fetchNetworkPreset } from '../../lib/networks'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
+import { indexBy } from '../../lib/index-by'
 
 type ServiceAction = {
   getState: () => GlobalState
@@ -57,8 +55,16 @@ const startService = async ({
 }: ServiceAction) => {
   logger.debug('StartService')
   const state = getState()
-  const { isRunning } = await service.GetCurrentServiceInfo()
-  if (isRunning) {
+  const res = await service.GetCurrentServiceInfo()
+
+  console.log('SERVICE STATUS', res)
+  if (res.isRunning) {
+    if ('url' in res) {
+      dispatch({
+        type: 'SET_SERVICE_URL',
+        url: res.url,
+      })
+    }
     dispatch({
       type: 'SET_SERVICE_STATUS',
       status: ServiceState.Started,
@@ -66,15 +72,36 @@ const startService = async ({
     return
   }
   try {
-    if (state.network && state.networkConfig) {
+    console.log('CURRENT NET:', state.currentNetwork)
+    if (state.currentNetwork) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading,
       })
-      await service.StartService({ network: state.network })
+      await service.StartService({ network: state.currentNetwork })
+      const res = await service.GetCurrentServiceInfo()
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Started,
+      })
+      if ('url' in res) {
+        dispatch({
+          type: 'SET_SERVICE_URL',
+          url: res.url,
+        })
+      }
+      console.log('STARTED SERVICE ON', res)
     }
   } catch (err) {
+    console.log('START SERVICE ERROR!', err)
     if (typeof err === 'string' && err.includes('already running')) {
+      const res = await service.GetCurrentServiceInfo()
+      if ('url' in res) {
+        dispatch({
+          type: 'SET_SERVICE_URL',
+          url: res.url,
+        })
+      }
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Started,
@@ -93,31 +120,30 @@ const startService = async ({
   }
 }
 
-const getNetworks = async (client: WalletAdmin, preset?: NetworkPreset) => {
-  const networks = await client.ListNetworks()
-
-  if (preset && (!networks.networks || networks.networks.length === 0)) {
-    await client.ImportNetwork({
-      name: preset.name,
-      url: preset.configFileUrl,
-      filePath: '',
-      overwrite: true,
-    })
-
-    return client.ListNetworks()
-  }
-
-  return networks
+const isMainnet = (config: WalletModel.DescribeNetworkResult) => {
+  return !!config.metadata?.find(
+    ({ key, value }) => key === 'network' && value === 'mainnet'
+  )
 }
 
-const getDefaultNetwork = (
+const compileNetworks = (
   config: AppConfig,
-  networks: WalletModel.ListNetworksResult
+  networkConfigs: WalletModel.DescribeNetworkResult[]
 ) => {
-  if (config.defaultNetwork) {
-    return config.defaultNetwork
+  const networks = networkConfigs.reduce(indexBy('name'), {})
+
+  const currentNetwork =
+    config.defaultNetwork ||
+    // @TODO: remove this ugly nonsense when metadata is fixed on the backend
+    (networks['mainnet1'] && 'mainnet1') ||
+    networkConfigs.find(isMainnet)?.name ||
+    networkConfigs[0]?.name ||
+    null
+
+  return {
+    currentNetwork,
+    networks,
   }
-  return networks.networks?.[0]
 }
 
 export function createActions(service: Service, client: WalletAdmin) {
@@ -142,39 +168,37 @@ export function createActions(service: Service, client: WalletAdmin) {
           // else continue with app setup, get wallets/networks
           logger.debug('InitApp')
 
-          const [config, presets, presetsInternal] = await Promise.all([
-            service.GetAppConfig(),
-            fetchNetworkPreset(DataSources.NETWORKS, logger),
-            fetchNetworkPreset(DataSources.NETWORKS_INTERNAL, logger),
-          ])
+          const config = await service.GetAppConfig()
 
           if (config.telemetry.enabled) {
             service.EnableTelemetry()
           }
 
           // should now have an app config
-          const [wallets, networks] = await Promise.all([
+          const [wallets, networkNames] = await Promise.all([
             client.ListWallets(),
-            getNetworks(client, presets[0]),
+            client.ListNetworks(),
           ])
 
-          const defaultNetwork = getDefaultNetwork(config, networks)
+          const networkConfigs = await Promise.all(
+            networkNames.networks
+              .filter(({ name }) => !!name)
+              .map(({ name }) =>
+                client.DescribeNetwork({ name: name as string })
+              )
+          )
 
-          const defaultNetworkConfig = defaultNetwork
-            ? await client.DescribeNetwork({
-                name: defaultNetwork,
-              })
-            : null
+          const { currentNetwork, networks } = compileNetworks(
+            config,
+            networkConfigs
+          )
 
           dispatch({
             type: 'INIT_APP',
             config: config,
             wallets: wallets.wallets ?? [],
-            network: defaultNetwork ?? '',
-            networks: networks.networks ?? [],
-            networkConfig: defaultNetworkConfig,
-            presetNetworks: presets,
-            presetNetworksInternal: presetsInternal,
+            currentNetwork,
+            networks,
           })
         } catch (err) {
           const message =
@@ -262,14 +286,14 @@ export function createActions(service: Service, client: WalletAdmin) {
     setDrawerAction(
       isOpen: boolean,
       panel?: DrawerPanel | null,
-      editingNetwork?: string
+      selectedNetwork?: string
     ): GlobalAction {
       return {
         type: 'SET_DRAWER',
         state: {
           isOpen,
           panel: panel ?? DrawerPanel.Network,
-          editingNetwork: editingNetwork ?? null,
+          selectedNetwork: selectedNetwork ?? null,
         },
       }
     },
@@ -296,12 +320,9 @@ export function createActions(service: Service, client: WalletAdmin) {
             })
           }
 
-          const config = await client.DescribeNetwork({ name: network })
-
           dispatch({
             type: 'CHANGE_NETWORK',
             network,
-            config,
           })
 
           await startService({
@@ -330,7 +351,7 @@ export function createActions(service: Service, client: WalletAdmin) {
         logger.debug('UpdateNetworkConfig')
 
         // Stop main REST service if you are editing the active network config
-        if (state.network === editingNetwork) {
+        if (state.currentNetwork === editingNetwork) {
           await stopService({
             getState,
             logger,
@@ -364,7 +385,7 @@ export function createActions(service: Service, client: WalletAdmin) {
           logger.error(err)
         }
 
-        if (state.network === editingNetwork) {
+        if (state.currentNetwork === editingNetwork) {
           await startService({
             getState,
             logger,
@@ -384,11 +405,10 @@ export function createActions(service: Service, client: WalletAdmin) {
 
         dispatch({
           type: 'ADD_NETWORK',
-          network,
           config,
         })
 
-        if (!state.network) {
+        if (!state.currentNetwork) {
           dispatch(actions.changeNetworkAction(network))
         }
       }
@@ -399,7 +419,7 @@ export function createActions(service: Service, client: WalletAdmin) {
         const state = getState()
         logger.debug('RemoveNetwork')
         try {
-          if (state.network === network) {
+          if (state.currentNetwork === network) {
             await stopService({
               getState,
               logger,
