@@ -20,7 +20,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
   const [serviceError, setServiceError] = useState<string | null>(null)
 
   const {
-    state: { serviceStatus, network, networkConfig },
+    state: { serviceStatus, currentNetwork, httpServiceUrl },
     actions,
     service,
     runtime,
@@ -93,7 +93,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     }
   }, [service, dispatch])
 
-  if (serviceError && networkConfig) {
+  if (serviceError && httpServiceUrl) {
     return (
       <Chrome>
         <SplashError
@@ -101,8 +101,8 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
           message={
             <span>
               Make sure you don't already have an application running on machine
-              on port <code className="inline">:{networkConfig.port}</code>.
-              Reload the application, or change your network port.
+              on <code className="inline">:{httpServiceUrl}</code>. Reload the
+              application, or change your network port.
             </span>
           }
           actions={
@@ -115,7 +115,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
                     state: {
                       isOpen: true,
                       panel: DrawerPanel.Edit,
-                      editingNetwork: network,
+                      editingNetwork: currentNetwork,
                     },
                   })
                 }

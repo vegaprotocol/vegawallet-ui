@@ -4,7 +4,6 @@ import type { Service, AppConfig } from '../../types/service'
 import type { Logger } from '../../types/logger'
 import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
-import { DataSources } from '../../config/data-sources'
 import { Intent } from '../../config/intent'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
@@ -55,8 +54,14 @@ const startService = async ({
 }: ServiceAction) => {
   logger.debug('StartService')
   const state = getState()
-  const { isRunning } = await service.GetCurrentServiceInfo()
-  if (isRunning) {
+  const res = await service.GetCurrentServiceInfo()
+  if (res.isRunning) {
+    if ('url' in res) {
+      dispatch({
+        type: 'SET_SERVICE_URL',
+        url: res.url,
+      })
+    }
     dispatch({
       type: 'SET_SERVICE_STATUS',
       status: ServiceState.Started,
@@ -64,15 +69,22 @@ const startService = async ({
     return
   }
   try {
-    if (state.network && state.networkConfig) {
+    if (state.currentNetwork) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading,
       })
-      await service.StartService({ network: state.network })
+      await service.StartService({ network: state.currentNetwork })
     }
   } catch (err) {
     if (typeof err === 'string' && err.includes('already running')) {
+      const res = await service.GetCurrentServiceInfo()
+      if ('url' in res) {
+        dispatch({
+          type: 'SET_SERVICE_URL',
+          url: res.url,
+        })
+      }
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Started,
@@ -91,14 +103,25 @@ const startService = async ({
   }
 }
 
-const getDefaultNetwork = (
+const compileNetworks = (
   config: AppConfig,
-  networks: WalletModel.ListNetworksResult
+  networks: WalletModel.DescribeNetworkResult[]
 ) => {
-  if (config.defaultNetwork) {
-    return config.defaultNetwork
-  }
-  return networks.networks?.[0]
+  return networks.reduce(
+    (acc, network) => {
+      return {
+        currentNetwork: acc.currentNetwork || network.name,
+        networks: {
+          ...acc.networks,
+          [network.name]: network,
+        },
+      }
+    },
+    {
+      currentNetwork: config.defaultNetwork,
+      networks: {} as Record<string, WalletModel.DescribeNetworkResult>,
+    }
+  )
 }
 
 export function createActions(service: Service, client: WalletAdmin) {
@@ -130,26 +153,30 @@ export function createActions(service: Service, client: WalletAdmin) {
           }
 
           // should now have an app config
-          const [wallets, networks] = await Promise.all([
+          const [wallets, networkNames] = await Promise.all([
             client.ListWallets(),
             client.ListNetworks(),
           ])
 
-          const defaultNetwork = getDefaultNetwork(config, networks)
+          const networkConfigs = await Promise.all(
+            networkNames.networks
+              .filter(({ name }) => !!name)
+              .map(({ name }) =>
+                client.DescribeNetwork({ name: name as string })
+              )
+          )
 
-          const defaultNetworkConfig = defaultNetwork
-            ? await client.DescribeNetwork({
-                name: defaultNetwork,
-              })
-            : null
+          const { currentNetwork, networks } = compileNetworks(
+            config,
+            networkConfigs
+          )
 
           dispatch({
             type: 'INIT_APP',
             config: config,
             wallets: wallets.wallets ?? [],
-            network: defaultNetwork ?? '',
-            networks: networks.networks ?? [],
-            networkConfig: defaultNetworkConfig,
+            currentNetwork,
+            networks,
           })
         } catch (err) {
           const message =
@@ -276,7 +303,6 @@ export function createActions(service: Service, client: WalletAdmin) {
           dispatch({
             type: 'CHANGE_NETWORK',
             network,
-            config,
           })
 
           await startService({
@@ -305,7 +331,7 @@ export function createActions(service: Service, client: WalletAdmin) {
         logger.debug('UpdateNetworkConfig')
 
         // Stop main REST service if you are editing the active network config
-        if (state.network === editingNetwork) {
+        if (state.currentNetwork === editingNetwork) {
           await stopService({
             getState,
             logger,
@@ -339,7 +365,7 @@ export function createActions(service: Service, client: WalletAdmin) {
           logger.error(err)
         }
 
-        if (state.network === editingNetwork) {
+        if (state.currentNetwork === editingNetwork) {
           await startService({
             getState,
             logger,
@@ -359,11 +385,10 @@ export function createActions(service: Service, client: WalletAdmin) {
 
         dispatch({
           type: 'ADD_NETWORK',
-          network,
           config,
         })
 
-        if (!state.network) {
+        if (!state.currentNetwork) {
           dispatch(actions.changeNetworkAction(network))
         }
       }
@@ -374,7 +399,7 @@ export function createActions(service: Service, client: WalletAdmin) {
         const state = getState()
         logger.debug('RemoveNetwork')
         try {
-          if (state.network === network) {
+          if (state.currentNetwork === network) {
             await stopService({
               getState,
               logger,

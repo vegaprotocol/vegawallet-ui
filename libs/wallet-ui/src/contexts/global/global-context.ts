@@ -83,10 +83,13 @@ export interface GlobalState {
   wallets: Record<string, Wallet>
 
   // Network
-  network: string | null
-  networks: string[]
-  networkConfig: WalletModel.DescribeNetworkResult | null
+  currentNetwork: string | null
+  networks: Record<string, WalletModel.DescribeNetworkResult>
+  initNetworks?: string[]
+
+  // Service
   serviceStatus: ServiceState
+  httpServiceUrl: null | string
 
   // UI
   drawerState: DrawerState

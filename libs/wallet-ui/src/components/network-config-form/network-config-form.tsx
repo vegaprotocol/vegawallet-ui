@@ -12,14 +12,14 @@ import { Select } from '../forms'
 import { Input } from '../forms/input'
 
 interface FormFields {
-  logLevel: string
-  tokenExpiry: string
-  port: number
-  host: string
+  name: string
   grpcNodeRetries: number
   grpcHosts: Array<{ value: string }>
   graphqlHosts: Array<{ value: string }>
   restHosts: Array<{ value: string }>
+  consoleUrl?: string
+  explorerUrl?: string
+  tokenUrl?: string
 }
 
 export interface NetworkConfigFormProps {
@@ -55,33 +55,58 @@ export const NetworkConfigForm = ({
       })}
     >
       <FormGroup
-        label="Wallet Service Host"
-        labelFor="host"
-        intent={errors.host?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.host?.message}
+        label="Network name"
+        labelFor="name"
+        intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.name?.message}
       >
         <Input
-          data-testid="service-host"
+          data-testid="network-name"
           type="text"
-          {...register('host', {
+          {...register('name', {
             required: Validation.REQUIRED,
-            pattern: Validation.URL,
           })}
         />
       </FormGroup>
       <FormGroup
-        label="Wallet Service Port"
-        labelFor="port"
-        intent={errors.port?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.port?.message}
+        label="Console dApp URL"
+        labelFor="consoleUrl"
+        intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.consoleUrl?.message}
       >
         <Input
-          data-testid="service-port"
-          type="number"
-          {...register('port', {
+          data-testid="network-console-url"
+          type="text"
+          {...register('consoleUrl', {
             required: Validation.REQUIRED,
-            min: Validation.NUMBER_MIN_PORT,
-            max: Validation.NUMBER_MAX_PORT,
+          })}
+        />
+      </FormGroup>
+      <FormGroup
+        label="Explorer dApp URL"
+        labelFor="explorerUrl"
+        intent={errors.explorerUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.explorerUrl?.message}
+      >
+        <Input
+          data-testid="network-explorer-url"
+          type="text"
+          {...register('explorerUrl', {
+            required: Validation.REQUIRED,
+          })}
+        />
+      </FormGroup>
+      <FormGroup
+        label="Token dApp URL"
+        labelFor="tokenUrl"
+        intent={errors.tokenUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.tokenUrl?.message}
+      >
+        <Input
+          data-testid="network-token-url"
+          type="text"
+          {...register('tokenUrl', {
+            required: Validation.REQUIRED,
           })}
         />
       </FormGroup>
@@ -91,23 +116,6 @@ export const NetworkConfigForm = ({
       <HostEditor name="graphqlHosts" control={control} register={register} />
       <h2>REST Nodes</h2>
       <HostEditor name="restHosts" control={control} register={register} />
-      <FormGroup
-        label="Log level"
-        labelFor="logLevel"
-        intent={errors.logLevel?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.logLevel?.message}
-      >
-        <Select
-          data-testid="network-log-level"
-          {...register('logLevel', { required: Validation.REQUIRED })}
-        >
-          {Object.values(LogLevels).map((level) => (
-            <option key={level} value={level}>
-              {level}
-            </option>
-          ))}
-        </Select>
-      </FormGroup>
       <FormGroup
         label="gRPC Node retries"
         labelFor="grpcNodeRetries"
@@ -121,21 +129,6 @@ export const NetworkConfigForm = ({
             required: Validation.REQUIRED,
             min: Validation.NUMBER_MIN_GRPC_RETRIES,
             max: Validation.NUMBER_MAX_GRPC_RETRIES,
-          })}
-        />
-      </FormGroup>
-      <FormGroup
-        label="Token expiry"
-        labelFor="tokenExpiry"
-        intent={errors.tokenExpiry?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenExpiry?.message}
-      >
-        <Input
-          data-testid="token-expiry"
-          type="text"
-          {...register('tokenExpiry', {
-            required: Validation.REQUIRED,
-            pattern: Validation.GOLANG_DURATION,
           })}
         />
       </FormGroup>
@@ -208,11 +201,7 @@ function fieldsToConfig(
   values: FormFields
 ): WalletModel.DescribeNetworkResult {
   return {
-    name: config.name,
-    logLevel: values.logLevel,
-    tokenExpiry: values.tokenExpiry,
-    port: Number(values.port),
-    host: values.host,
+    name: values.name,
     api: {
       grpcConfig: {
         hosts: values.grpcHosts.map((x) => x.value),
@@ -225,15 +214,17 @@ function fieldsToConfig(
         hosts: values.restHosts.map((x) => x.value),
       },
     },
+    apps: {
+      console: values.consoleUrl,
+      explorer: values.explorerUrl,
+      tokenDApp: values.tokenUrl,
+    },
   }
 }
 
 function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
   return {
-    logLevel: config.logLevel ? config.logLevel.toString() : '',
-    tokenExpiry: config.tokenExpiry as string,
-    port: config.port ?? 80,
-    host: config.host ?? 'localhost',
+    name: config.name,
     grpcNodeRetries: config.api?.grpcConfig?.retries || 0,
     // @ts-ignore any resulting from generated types
     grpcHosts: config.api.grpcConfig.hosts.map((x) => ({ value: x })),
@@ -241,5 +232,8 @@ function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
     graphqlHosts: config.api.graphQLConfig.hosts.map((x) => ({ value: x })),
     // @ts-ignore any resulting from generated types
     restHosts: config.api.restConfig.hosts.map((x) => ({ value: x })),
+    consoleUrl: config.apps.console,
+    explorerUrl: config.apps.explorer,
+    tokenUrl: config.apps.tokenDApp,
   }
 }

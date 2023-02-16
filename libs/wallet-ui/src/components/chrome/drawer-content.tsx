@@ -4,7 +4,7 @@ import { DrawerPanel, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { ChevronLeft } from '../icons/chevron-left'
 import { DRAWER_HEIGHT } from '.'
-import { DrawerAddPreset } from './drawer-add-preset'
+import { DrawerAddNetwork } from './drawer-add-network'
 import { DrawerEditNetwork } from './drawer-edit-network'
 import { DrawerHead } from './drawer-head'
 import { DrawerManageNetwork } from './drawer-manage-network'
@@ -140,7 +140,7 @@ export function DrawerContent() {
             </ButtonUnstyled>
           </DrawerHead>
           <DrawerContentWrapper>
-            <DrawerAddPreset />
+            <DrawerAddNetwork />
           </DrawerContentWrapper>
         </>
       )

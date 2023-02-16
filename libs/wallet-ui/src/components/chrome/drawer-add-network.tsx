@@ -1,5 +1,5 @@
 import { NetworkImportForm } from '../network-import-form'
 
-export function DrawerAddPreset() {
+export function DrawerAddNetwork() {
   return <NetworkImportForm />
 }
