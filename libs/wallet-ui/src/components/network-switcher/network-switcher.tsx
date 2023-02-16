@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { useCallback, useMemo, useState } from 'react'
 
-import type { Wallet } from '../../contexts/global/global-context';
+import type { Wallet } from '../../contexts/global/global-context'
 import { ServiceState } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'

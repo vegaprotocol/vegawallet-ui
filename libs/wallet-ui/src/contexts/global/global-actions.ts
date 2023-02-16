@@ -8,6 +8,7 @@ import { Intent } from '../../config/intent'
 import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
+import { indexBy } from '../../lib/index-by'
 
 type ServiceAction = {
   getState: () => GlobalState
@@ -55,6 +56,8 @@ const startService = async ({
   logger.debug('StartService')
   const state = getState()
   const res = await service.GetCurrentServiceInfo()
+
+  console.log('SERVICE STATUS', res)
   if (res.isRunning) {
     if ('url' in res) {
       dispatch({
@@ -69,14 +72,28 @@ const startService = async ({
     return
   }
   try {
+    console.log('CURRENT NET:', state.currentNetwork)
     if (state.currentNetwork) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading,
       })
       await service.StartService({ network: state.currentNetwork })
+      const res = await service.GetCurrentServiceInfo()
+      dispatch({
+        type: 'SET_SERVICE_STATUS',
+        status: ServiceState.Started,
+      })
+      if ('url' in res) {
+        dispatch({
+          type: 'SET_SERVICE_URL',
+          url: res.url,
+        })
+      }
+      console.log('STARTED SERVICE ON', res)
     }
   } catch (err) {
+    console.log('START SERVICE ERROR!', err)
     if (typeof err === 'string' && err.includes('already running')) {
       const res = await service.GetCurrentServiceInfo()
       if ('url' in res) {
@@ -103,25 +120,30 @@ const startService = async ({
   }
 }
 
+const isMainnet = (config: WalletModel.DescribeNetworkResult) => {
+  return !!config.metadata?.find(
+    ({ key, value }) => key === 'network' && value === 'mainnet'
+  )
+}
+
 const compileNetworks = (
   config: AppConfig,
-  networks: WalletModel.DescribeNetworkResult[]
+  networkConfigs: WalletModel.DescribeNetworkResult[]
 ) => {
-  return networks.reduce(
-    (acc, network) => {
-      return {
-        currentNetwork: acc.currentNetwork || network.name,
-        networks: {
-          ...acc.networks,
-          [network.name]: network,
-        },
-      }
-    },
-    {
-      currentNetwork: config.defaultNetwork,
-      networks: {} as Record<string, WalletModel.DescribeNetworkResult>,
-    }
-  )
+  const networks = networkConfigs.reduce(indexBy('name'), {})
+
+  const currentNetwork =
+    config.defaultNetwork ||
+    // @TODO: remove this ugly nonsense when metadata is fixed on the backend
+    (networks['mainnet1'] && 'mainnet1') ||
+    networkConfigs.find(isMainnet)?.name ||
+    networkConfigs[0]?.name ||
+    null
+
+  return {
+    currentNetwork,
+    networks,
+  }
 }
 
 export function createActions(service: Service, client: WalletAdmin) {

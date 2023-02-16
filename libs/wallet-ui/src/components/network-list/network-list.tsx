@@ -44,45 +44,120 @@ interface NetworkListProps {
   setEditView: (network: string) => void
 }
 
+type CompiledNetworks = {
+  myNetworks: WalletModel.DescribeNetworkResult[]
+  mainnet: WalletModel.DescribeNetworkResult[]
+  testnet: WalletModel.DescribeNetworkResult[]
+}
+
+const isNetwork = (
+  type: 'mainnet' | 'testnet',
+  config: WalletModel.DescribeNetworkResult
+) => {
+  return !!config.metadata?.find(({ key, value }) => {
+    return key === 'network' && value === type
+  })
+}
+
+const compileNetworks = (
+  networks: Record<string, WalletModel.DescribeNetworkResult>
+) => {
+  const configs = Object.values(networks)
+  return configs.reduce<CompiledNetworks>(
+    (acc, config) => {
+      if (isNetwork('mainnet', config)) {
+        acc.mainnet.push(config)
+        return acc
+      }
+      if (isNetwork('testnet', config)) {
+        acc.testnet.push(config)
+        return acc
+      }
+      acc.myNetworks.push(config)
+      return acc
+    },
+    {
+      myNetworks: [],
+      mainnet: [],
+      testnet: [],
+    }
+  )
+}
+
 export function NetworkList({ setEditView }: NetworkListProps) {
   const {
-    actions,
-    dispatch,
     state: { networks },
   } = useGlobal()
 
-  const myNetworks = useMemo(() => {
-    return Object.values(networks)
+  const { myNetworks, mainnet, testnet } = useMemo(() => {
+    return compileNetworks(networks)
   }, [networks])
 
   return (
     <>
-      <Title>Networks</Title>
-
+      {mainnet.length > 0 && <Title>Networks</Title>}
+      {mainnet.map((config) => (
+        <NetworkRow
+          key={config.name}
+          type="mainnet"
+          config={config}
+          setEditView={setEditView}
+        />
+      ))}
+      {testnet.length > 0 && <Title>Test Networks</Title>}
+      {testnet.map((config) => (
+        <NetworkRow
+          key={config.name}
+          type="mainnet"
+          config={config}
+          setEditView={setEditView}
+        />
+      ))}
       {myNetworks.length > 0 && <Title>My Networks</Title>}
-      {myNetworks.map((network) => (
-        <div key={network.name} className={itemStyles}>
-          <div>{network.name}</div>
-          <div className="flex gap-[12px]">
-            <Button
-              data-testid={`remove-network-${network}`}
-              onClick={() => {
-                dispatch(actions.removeNetwork(network.name))
-              }}
-            >
-              Remove
-            </Button>
-            <Button
-              data-testid={`edit-network-${network}`}
-              onClick={() => {
-                setEditView(network.name)
-              }}
-            >
-              Edit
-            </Button>
-          </div>
-        </div>
+      {myNetworks.map((config) => (
+        <NetworkRow
+          key={config.name}
+          type="mainnet"
+          config={config}
+          setEditView={setEditView}
+        />
       ))}
     </>
+  )
+}
+
+type NetworkRowProps = NetworkListProps & {
+  type?: 'mainnet' | 'testnet'
+  config: WalletModel.DescribeNetworkResult
+}
+
+const NetworkRow = ({ config, type, setEditView }: NetworkRowProps) => {
+  const { actions, dispatch } = useGlobal()
+
+  return (
+    <div key={config.name} className={itemStyles}>
+      <div>{config.name}</div>
+
+      {!type && (
+        <div className="flex gap-[12px]">
+          <Button
+            data-testid={`remove-network-${config.name}`}
+            onClick={() => {
+              dispatch(actions.removeNetwork(config.name))
+            }}
+          >
+            Remove
+          </Button>
+          <Button
+            data-testid={`edit-network-${config.name}`}
+            onClick={() => {
+              setEditView(config.name)
+            }}
+          >
+            Edit
+          </Button>
+        </div>
+      )}
+    </div>
   )
 }

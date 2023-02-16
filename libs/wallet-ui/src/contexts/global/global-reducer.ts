@@ -51,7 +51,7 @@ export type GlobalAction =
       type: 'INIT_APP'
       config: AppConfig
       wallets: string[]
-      currentNetwork: string
+      currentNetwork: string | null
       networks: Record<string, WalletModel.DescribeNetworkResult>
     }
   | {
