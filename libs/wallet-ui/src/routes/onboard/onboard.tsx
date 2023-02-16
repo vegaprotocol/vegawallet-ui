@@ -20,7 +20,7 @@ export function Onboard() {
     actions,
     service,
     client,
-    state: { networks, initNetworks, wallets },
+    state: { initNetworks, wallets },
   } = useGlobal()
 
   const logger = useMemo(() => service.GetLogger('Onboard'), [service])

@@ -320,8 +320,6 @@ export function createActions(service: Service, client: WalletAdmin) {
             })
           }
 
-          const config = await client.DescribeNetwork({ name: network })
-
           dispatch({
             type: 'CHANGE_NETWORK',
             network,

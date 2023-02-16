@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { Intent } from '../../config/intent'
-import {
-  DrawerPanel,
-  ServiceState,
-  useGlobal,
-} from '../../contexts/global/global-context'
+import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { EVENTS } from '../../lib/events'
 import { Button } from '../button'
 import { Chrome } from '../chrome'
@@ -20,7 +16,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
   const [serviceError, setServiceError] = useState<string | null>(null)
 
   const {
-    state: { serviceStatus, currentNetwork, httpServiceUrl },
+    state: { serviceStatus, httpServiceUrl },
     actions,
     service,
     runtime,

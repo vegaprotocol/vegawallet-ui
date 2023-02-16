@@ -8,7 +8,6 @@ type NetworkInfoProps = {
 
 export function NetworkInfo({ network }: NetworkInfoProps) {
   const {
-    service,
     state: { networks },
   } = useGlobal()
   const config = network && networks[network]

@@ -4,11 +4,9 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { Intent } from '../../config/intent'
-import { LogLevels } from '../../config/log-levels'
 import { Validation } from '../../lib/form-validation'
 import { Button } from '../button'
 import { FormGroup } from '../form-group'
-import { Select } from '../forms'
 import { Input } from '../forms/input'
 
 interface FormFields {

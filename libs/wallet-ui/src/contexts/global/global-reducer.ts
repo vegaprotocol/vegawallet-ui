@@ -537,7 +537,6 @@ export function globalReducer(
       }
     }
     case 'ADD_NETWORKS': {
-      const newNetworks = action.networks
       return {
         ...state,
         networks: { ...state.networks, ...action.networks },
