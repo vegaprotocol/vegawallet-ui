@@ -67,6 +67,7 @@ export function WalletList() {
             {wallet.name}
             <ButtonGroup inline className="inline-flex ml-[20px] gap-[12px]">
               <ButtonUnstyled
+                data-testid="edit-wallet"
                 className="no-underline"
                 onClick={() => setEditing(true)}
               >

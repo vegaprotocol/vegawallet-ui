@@ -10,21 +10,18 @@ export function ServiceStatus() {
   const {
     service,
     dispatch,
-    state: { network, networkConfig, serviceStatus },
+    state: { currentNetwork, serviceStatus, httpServiceUrl },
   } = useGlobal()
-  const serviceUrl =
-    service.TYPE === 'http' && networkConfig
-      ? `http://${networkConfig.host}:${networkConfig.port}`
-      : ''
+  const serviceUrl = service.TYPE === 'http' ? httpServiceUrl : ''
 
   const startService = useCallback(async () => {
-    if (network) {
+    if (currentNetwork) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Loading,
       })
       try {
-        await service.StartService({ network })
+        await service.StartService({ network: currentNetwork })
       } catch (err) {
         dispatch({
           type: 'SET_SERVICE_STATUS',
@@ -36,10 +33,10 @@ export function ServiceStatus() {
         })
       }
     }
-  }, [dispatch, service, network])
+  }, [dispatch, service, currentNetwork])
 
   const restartService = useCallback(async () => {
-    if (network) {
+    if (currentNetwork) {
       try {
         await service.StopService()
       } catch (err) {
@@ -55,7 +52,7 @@ export function ServiceStatus() {
 
       await startService()
     }
-  }, [startService, dispatch, service, network])
+  }, [startService, dispatch, service, currentNetwork])
 
   switch (serviceStatus) {
     case ServiceState.Started: {
@@ -64,7 +61,7 @@ export function ServiceStatus() {
           <StatusCircle background="bg-green" />
           Wallet Service:{' '}
           <span className="font-mono bg-dark-200 py-[1px] px-[5px]">
-            {network}
+            {currentNetwork}
           </span>{' '}
           {serviceUrl && (
             <>

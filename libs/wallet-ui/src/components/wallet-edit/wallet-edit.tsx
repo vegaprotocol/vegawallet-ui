@@ -43,7 +43,11 @@ export const WalletEdit = ({ onClose }: WalletEditProps) => {
   )
 
   return (
-    <form className="p-[20px]" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      data-testid="edit-wallet-form"
+      className="p-[20px]"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <FormGroup
         label="Name"
         labelFor="name"

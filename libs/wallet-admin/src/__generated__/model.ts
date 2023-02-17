@@ -200,14 +200,20 @@ export namespace WalletModel {
     wallet: string
   }
   export interface ListNetworksResult {
-    networks: string[]
+    networks: {
+      name?: string
+      metadata?: {
+        key: string
+        value: string
+      }[]
+    }[]
   }
   export interface DescribeNetworkResult {
     name: string
-    logLevel: string
-    tokenExpiry: string
-    port: number
-    host: string
+    metadata?: {
+      key: string
+      value: string
+    }[]
     /**
      * The API configuration for the network.
      */
@@ -223,17 +229,26 @@ export namespace WalletModel {
         hosts: string[]
       }
     }
+    /**
+     * The URLs to the network applications.
+     */
+    apps: {
+      console?: string
+      tokenDApp?: string
+      explorer?: string
+    }
   }
   export interface DescribeNetworkParams {
     name: string
   }
   export interface UpdateNetworkParams {
     name: string
-    logLevel: string
-    tokenExpiry: string
-    port: number
-    host: string
+    metadata?: {
+      key: string
+      value: string
+    }[]
     api: NetworkApiConfig
+    apps: NetworkAppsConfig
   }
   /**
    * The API configuration for the network.
@@ -249,6 +264,14 @@ export namespace WalletModel {
     restConfig: {
       hosts: string[]
     }
+  }
+  /**
+   * The URLs to the network applications.
+   */
+  export interface NetworkAppsConfig {
+    console?: string
+    tokenDApp?: string
+    explorer?: string
   }
   export interface RemoveNetworkParams {
     name: string

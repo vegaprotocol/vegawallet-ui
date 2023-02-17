@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import { useCallback, useMemo, useState } from 'react'
 
 import type { Wallet } from '../../contexts/global/global-context'
+import { ServiceState } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
@@ -23,7 +24,7 @@ const findActiveConnections = (wallets: Record<string, Wallet>) => {
 export const NetworkSwitcher = () => {
   const { state, actions, dispatch } = useGlobal()
   const [hasConnectionWarning, setConnectionWarning] = useState(false)
-  const [selectedNetwork, setSelectedNetwork] = useState(state.network)
+  const [selectedNetwork, setSelectedNetwork] = useState(state.currentNetwork)
   const activeConnections = useMemo(
     () => findActiveConnections(state.wallets),
     [state.wallets]
@@ -56,29 +57,30 @@ export const NetworkSwitcher = () => {
             data-testid="network-select"
             className="flex justify-between items-center gap-[5px] min-w-[75px]"
           >
-            <span>{state.network}</span>
+            <span>{state.currentNetwork}</span>
             <DropdownArrow className="w-[13px] h-[13px] ml-[10px]" />
           </Button>
         }
         content={
           <div>
-            {state.networks.map((network) => (
-              <DropdownItem key={network}>
+            {Object.values(state.networks).map((network) => (
+              <DropdownItem key={network.name}>
                 <ButtonUnstyled
                   data-testid={`select-${network}`}
                   className={classnames(
                     'w-full py-[10px] px-[10px] leading-none text-left',
                     {
-                      underline: network === selectedNetwork,
-                      'text-white': network === selectedNetwork,
-                      'text-deemphasise': network !== selectedNetwork,
+                      underline: network.name === selectedNetwork,
+                      'text-white': network.name === selectedNetwork,
+                      'text-deemphasise': network.name !== selectedNetwork,
                     }
                   )}
+                  disabled={state.serviceStatus === ServiceState.Stopped}
                   onClick={() => {
-                    handleNetworkChange(network)
+                    handleNetworkChange(network.name)
                   }}
                 >
-                  {network}
+                  {network.name}
                 </ButtonUnstyled>
               </DropdownItem>
             ))}
