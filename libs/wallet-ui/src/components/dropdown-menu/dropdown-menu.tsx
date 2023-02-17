@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import * as DropdownPrimitive from '@radix-ui/react-dropdown-menu'
 import type { ReactNode, CSSProperties } from 'react'
 
@@ -16,7 +17,7 @@ export function DropdownMenu({ trigger, content }: DropdownMenuProps) {
       <DropdownPrimitive.Content
         align="start"
         sideOffset={10}
-        className="bg-dark-200 p-[10px]"
+        className="bg-dark-200"
       >
         {content}
       </DropdownPrimitive.Content>
@@ -28,5 +29,12 @@ export function DropdownItem({
   children,
   ...props
 }: DropdownPrimitive.MenuItemProps) {
-  return <DropdownPrimitive.Item {...props}>{children}</DropdownPrimitive.Item>
+  return (
+    <DropdownPrimitive.Item
+      {...props}
+      className={classnames('px-[10px] hover:bg-dark-300', props.className)}
+    >
+      {children}
+    </DropdownPrimitive.Item>
+  )
 }
