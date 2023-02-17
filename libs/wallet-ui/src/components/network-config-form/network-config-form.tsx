@@ -225,11 +225,12 @@ function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
     name: config.name,
     grpcNodeRetries: config.api?.grpcConfig?.retries || 0,
     // @ts-ignore any resulting from generated types
-    grpcHosts: config.api.grpcConfig.hosts.map((x) => ({ value: x })),
+    grpcHosts: config.api.grpcConfig?.hosts.map((x) => ({ value: x })) || [],
     // @ts-ignore any resulting from generated types
-    graphqlHosts: config.api.graphQLConfig.hosts.map((x) => ({ value: x })),
+    graphqlHosts:
+      config.api.graphQLConfig?.hosts.map((x) => ({ value: x })) || [],
     // @ts-ignore any resulting from generated types
-    restHosts: config.api.restConfig.hosts.map((x) => ({ value: x })),
+    restHosts: config.api.restConfig?.hosts.map((x) => ({ value: x })) || [],
     consoleUrl: config.apps.console,
     explorerUrl: config.apps.explorer,
     tokenUrl: config.apps.tokenDApp,
