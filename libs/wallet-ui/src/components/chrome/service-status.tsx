@@ -12,10 +12,7 @@ export function ServiceStatus() {
     dispatch,
     state: { currentNetwork, serviceStatus, httpServiceUrl },
   } = useGlobal()
-  const serviceUrl =
-    service.TYPE === 'http' && httpServiceUrl
-      ? `http://${httpServiceUrl}:${httpServiceUrl}`
-      : ''
+  const serviceUrl = service.TYPE === 'http' ? httpServiceUrl : ''
 
   const startService = useCallback(async () => {
     if (currentNetwork) {
