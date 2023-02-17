@@ -32,8 +32,9 @@ export const NetworkSwitcher = () => {
 
   const handleNetworkChange = useCallback(
     (network: string) => {
+      setSelectedNetwork(network)
+
       if (activeConnections.length) {
-        setSelectedNetwork(network)
         setConnectionWarning(true)
         return
       }
@@ -48,6 +49,10 @@ export const NetworkSwitcher = () => {
       dispatch(actions.changeNetworkAction(selectedNetwork))
     }
   }, [dispatch, actions, selectedNetwork, setConnectionWarning])
+
+  const isSelectionDisabled =
+    state.serviceStatus === ServiceState.Loading ||
+    state.serviceStatus === ServiceState.Stopping
 
   return (
     <>
@@ -66,16 +71,15 @@ export const NetworkSwitcher = () => {
             {Object.values(state.networks).map((network) => (
               <DropdownItem key={network.name}>
                 <ButtonUnstyled
-                  data-testid={`select-${network}`}
+                  data-testid={`select-${network.name}`}
                   className={classnames(
-                    'w-full py-[10px] px-[10px] leading-none text-left',
+                    'w-full py-[10px] px-[10px] leading-none text-left no-underline',
                     {
-                      underline: network.name === selectedNetwork,
                       'text-white': network.name === selectedNetwork,
                       'text-deemphasise': network.name !== selectedNetwork,
                     }
                   )}
-                  disabled={state.serviceStatus === ServiceState.Stopped}
+                  disabled={isSelectionDisabled}
                   onClick={() => {
                     handleNetworkChange(network.name)
                   }}

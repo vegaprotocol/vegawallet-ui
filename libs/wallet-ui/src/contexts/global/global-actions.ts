@@ -57,7 +57,6 @@ const startService = async ({
   const state = getState()
   const res = await service.GetCurrentServiceInfo()
 
-  console.log('SERVICE STATUS', res)
   if (res.isRunning) {
     if ('url' in res) {
       dispatch({
@@ -72,7 +71,6 @@ const startService = async ({
     return
   }
   try {
-    console.log('CURRENT NET:', state.currentNetwork)
     if (state.currentNetwork) {
       dispatch({
         type: 'SET_SERVICE_STATUS',
@@ -90,10 +88,8 @@ const startService = async ({
           url: res.url,
         })
       }
-      console.log('STARTED SERVICE ON', res)
     }
   } catch (err) {
-    console.log('START SERVICE ERROR!', err)
     if (typeof err === 'string' && err.includes('already running')) {
       const res = await service.GetCurrentServiceInfo()
       if ('url' in res) {
