@@ -59,7 +59,7 @@ const getTitle = (subview: Subview) => {
       return (
         <>
           <Warning className="w-[20px] mr-[12px]" />
-          Incompatible network
+          Potential compatibility issue
         </>
       )
     }
@@ -195,10 +195,14 @@ export const NetworkCompatibilityDialog = () => {
           )}
           {networkData.network && (
             <p className="mb-[20px]">
-              Your selected network "<code>{networkData.network}</code>" is
-              running on Vega <code>{networkData.retrievedVersion}</code>,
-              however this app only supports networks running{' '}
-              <code>{supportedVersion}</code>.
+              This software (<code>vega@{supportedVersion}</code>) and the
+              network{' '}
+              <code className="bg-dark-200 py-[1px] px-[5px]">
+                {networkData.network}
+              </code>{' '}
+              (<code>vega@{networkData.retrievedVersion}</code>) are not running
+              on the same version, you may encounter compatibility issues, such
+              as transactions not being seen by the network.
             </p>
           )}
           {compatibleNetworksList.length > 0 && (
