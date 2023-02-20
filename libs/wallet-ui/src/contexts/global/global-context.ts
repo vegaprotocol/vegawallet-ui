@@ -94,11 +94,15 @@ export interface GlobalState {
 
   // UI
   drawerState: DrawerState
+  isNetworkCompatible: boolean
+
+  // Modals
   isPassphraseModalOpen: boolean
   isSignMessageModalOpen: boolean
   isTaintKeyModalOpen: boolean
   isUpdateKeyModalOpen: boolean
   isSettingsModalOpen: boolean
+  isNetworkCompatibilityModalOpen: boolean
 }
 
 export type GlobalDispatch = ThunkDispatch<GlobalState, GlobalAction>

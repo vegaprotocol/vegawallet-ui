@@ -59,7 +59,7 @@ const getTitle = (subview: Subview) => {
       return (
         <>
           <Warning className="w-[20px] mr-[12px]" />
-          Incompatible network
+          Potential compatibility issue
         </>
       )
     }
@@ -72,14 +72,14 @@ type GetShouldOpenProps = {
   telemetry?: TelemetryConfig
 }
 
-const getShouldOpen = ({
+const getIsCompatible = ({
   features,
   networkData,
   telemetry,
 }: GetShouldOpenProps) => {
   return (
     telemetry?.consentAsked === true &&
-    networkData?.isCompatible === false &&
+    networkData?.isCompatible !== false &&
     features.NETWORK_COMPATIBILITY_WARNING === true
   )
 }
@@ -94,25 +94,27 @@ export const NetworkCompatibilityDialog = () => {
     const checkList = state.version?.networksCompatibility || []
     return checkList.reduce<string[]>(addCompatibleNetwork, [])
   }, [state.version])
-  const [isOpen, setOpen] = useState(
-    getShouldOpen({
-      features,
-      networkData,
-      telemetry: state.config?.telemetry,
-    })
-  )
+
   const [subview, setSubview] = useState<Subview>(null)
 
   useEffect(() => {
-    const shouldOpen = getShouldOpen({
+    const isCompatible = getIsCompatible({
       features,
       networkData,
       telemetry: state.config?.telemetry,
     })
-    if (shouldOpen) {
-      setOpen(true)
-    }
-  }, [supportedVersion, networkData, features, state.config?.telemetry])
+    dispatch({
+      type: 'SET_NETWORK_COMPATIBILITY',
+      isCompatible,
+    })
+  }, [
+    dispatch,
+    supportedVersion,
+    networkData,
+    features,
+    state.isNetworkCompatibilityModalOpen,
+    state.config?.telemetry,
+  ])
 
   useEffect(() => {
     const getVersion = async () => {
@@ -142,16 +144,22 @@ export const NetworkCompatibilityDialog = () => {
     ({ network }: { network?: string }) => {
       if (network) {
         dispatch(actions.changeNetworkAction(network))
-        setOpen(false)
+        dispatch({
+          type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+          open: false,
+        })
         setSubview(null)
       }
     },
-    [dispatch, actions, setOpen, setSubview]
+    [dispatch, actions, setSubview]
   )
 
   const handleAddNetwork = useCallback(
     async (network: string) => {
-      setOpen(false)
+      dispatch({
+        type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+        open: false,
+      })
       setSubview(null)
       const version = await service.GetVersion()
       dispatch({
@@ -161,7 +169,7 @@ export const NetworkCompatibilityDialog = () => {
 
       dispatch(actions.changeNetworkAction(network))
     },
-    [dispatch, actions, service, setOpen, setSubview]
+    [dispatch, actions, service, setSubview]
   )
 
   const title = useMemo(() => getTitle(subview), [subview])
@@ -174,7 +182,7 @@ export const NetworkCompatibilityDialog = () => {
     <Dialog
       size="lg"
       data-testid="network-compatibility-dialog"
-      open={isOpen}
+      open={state.isNetworkCompatibilityModalOpen}
       title={title}
     >
       {subview === null && (
@@ -187,10 +195,14 @@ export const NetworkCompatibilityDialog = () => {
           )}
           {networkData.network && (
             <p className="mb-[20px]">
-              Your selected network "<code>{networkData.network}</code>" is
-              running on Vega <code>{networkData.retrievedVersion}</code>,
-              however this app only supports networks running{' '}
-              <code>{supportedVersion}</code>.
+              This software (<code>vega@{supportedVersion}</code>) and the
+              network{' '}
+              <code className="bg-dark-200 py-[1px] px-[5px]">
+                {networkData.network}
+              </code>{' '}
+              (<code>vega@{networkData.retrievedVersion}</code>) are not running
+              on the same version, you may encounter compatibility issues, such
+              as transactions not being seen by the network.
             </p>
           )}
           {compatibleNetworksList.length > 0 && (
@@ -205,7 +217,7 @@ export const NetworkCompatibilityDialog = () => {
             </p>
           )}
           <ButtonGroup inline className="py-[20px]">
-            {!networkData.network && (
+            {networkData.network && (
               <AnchorButton
                 data-testid="network-compatibility-release"
                 href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
@@ -229,7 +241,12 @@ export const NetworkCompatibilityDialog = () => {
           </ButtonGroup>
           <ButtonUnstyled
             data-testid="network-compatibility-continue"
-            onClick={() => setOpen(false)}
+            onClick={() =>
+              dispatch({
+                type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+                open: false,
+              })
+            }
           >
             Continue with existing network
           </ButtonUnstyled>

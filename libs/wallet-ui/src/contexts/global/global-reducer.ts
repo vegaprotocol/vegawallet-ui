@@ -34,16 +34,20 @@ export const initialGlobalState: GlobalState = {
   httpServiceUrl: null,
 
   // UI
+  isNetworkCompatible: true,
   drawerState: {
     isOpen: false,
     panel: DrawerPanel.Network,
     selectedNetwork: null,
   },
+
+  // Modals
   isPassphraseModalOpen: false,
   isSignMessageModalOpen: false,
   isTaintKeyModalOpen: false,
   isUpdateKeyModalOpen: false,
   isSettingsModalOpen: false,
+  isNetworkCompatibilityModalOpen: false,
 }
 
 export type GlobalAction =
@@ -138,31 +142,6 @@ export type GlobalAction =
       from: string
       to: string
     }
-  // UI
-  | {
-      type: 'SET_DRAWER'
-      state: DrawerState
-    }
-  | {
-      type: 'SET_PASSPHRASE_MODAL'
-      open: boolean
-    }
-  | {
-      type: 'SET_SETTINGS_MODAL'
-      open: boolean
-    }
-  | {
-      type: 'SET_TAINT_KEY_MODAL'
-      open: boolean
-    }
-  | {
-      type: 'SET_SIGN_MESSAGE_MODAL'
-      open: boolean
-    }
-  | {
-      type: 'SET_UPDATE_KEY_MODAL'
-      open: boolean
-    }
   // Network
   | {
       type: 'SET_NETWORKS'
@@ -210,6 +189,40 @@ export type GlobalAction =
       type: 'ADD_CONNECTION'
       connection: Connection
       wallet: string
+    }
+  // UI
+  | {
+      type: 'SET_DRAWER'
+      state: DrawerState
+    }
+  | {
+      type: 'SET_NETWORK_COMPATIBILITY'
+      isCompatible: boolean
+    }
+  // Modals
+  | {
+      type: 'SET_PASSPHRASE_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_SETTINGS_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_TAINT_KEY_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_SIGN_MESSAGE_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_UPDATE_KEY_MODAL'
+      open: boolean
+    }
+  | {
+      type: 'SET_NETWORK_COMPATIBILITY_MODAL'
+      open: boolean
     }
 
 export function globalReducer(
@@ -477,43 +490,7 @@ export function globalReducer(
         wallet: action.wallet,
       }
     }
-    case 'SET_DRAWER': {
-      return {
-        ...state,
-        drawerState: action.state,
-      }
-    }
-    case 'SET_PASSPHRASE_MODAL': {
-      return {
-        ...state,
-        isPassphraseModalOpen: action.open,
-      }
-    }
-    case 'SET_SETTINGS_MODAL': {
-      return {
-        ...state,
-        isSettingsModalOpen: action.open,
-      }
-    }
-    case 'SET_TAINT_KEY_MODAL': {
-      return {
-        ...state,
-        isTaintKeyModalOpen: action.open,
-      }
-    }
-    case 'SET_SIGN_MESSAGE_MODAL': {
-      return {
-        ...state,
-        isSignMessageModalOpen: action.open,
-      }
-    }
-    case 'SET_UPDATE_KEY_MODAL': {
-      return {
-        ...state,
-        isUpdateKeyModalOpen: action.open,
-      }
-    }
-    // network
+    // Network
     case 'SET_NETWORKS': {
       return {
         ...state,
@@ -598,6 +575,7 @@ export function globalReducer(
         },
       }
     }
+    // Connections
     case 'ADD_CONNECTION': {
       const targetWallet = state.wallets[action.wallet]
 
@@ -620,6 +598,56 @@ export function globalReducer(
           ...state.wallets,
           [action.wallet]: updatedWallet,
         },
+      }
+    }
+    // UI
+    case 'SET_DRAWER': {
+      return {
+        ...state,
+        drawerState: action.state,
+      }
+    }
+    case 'SET_NETWORK_COMPATIBILITY': {
+      return {
+        ...state,
+        isNetworkCompatible: action.isCompatible,
+      }
+    }
+    // Modals
+    case 'SET_PASSPHRASE_MODAL': {
+      return {
+        ...state,
+        isPassphraseModalOpen: action.open,
+      }
+    }
+    case 'SET_SETTINGS_MODAL': {
+      return {
+        ...state,
+        isSettingsModalOpen: action.open,
+      }
+    }
+    case 'SET_TAINT_KEY_MODAL': {
+      return {
+        ...state,
+        isTaintKeyModalOpen: action.open,
+      }
+    }
+    case 'SET_SIGN_MESSAGE_MODAL': {
+      return {
+        ...state,
+        isSignMessageModalOpen: action.open,
+      }
+    }
+    case 'SET_UPDATE_KEY_MODAL': {
+      return {
+        ...state,
+        isUpdateKeyModalOpen: action.open,
+      }
+    }
+    case 'SET_NETWORK_COMPATIBILITY_MODAL': {
+      return {
+        ...state,
+        isNetworkCompatibilityModalOpen: action.open,
       }
     }
     default: {
