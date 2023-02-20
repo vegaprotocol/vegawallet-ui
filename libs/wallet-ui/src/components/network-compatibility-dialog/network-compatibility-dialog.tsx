@@ -194,27 +194,37 @@ export const NetworkCompatibilityDialog = () => {
             </p>
           )}
           {networkData.network && (
-            <p className="mb-[20px]">
-              This software (<code>vega@{supportedVersion}</code>) and the
-              network{' '}
-              <code className="bg-dark-200 py-[1px] px-[5px]">
-                {networkData.network}
-              </code>{' '}
-              (<code>vega@{networkData.retrievedVersion}</code>) are not running
-              on the same version, you may encounter compatibility issues, such
-              as transactions not being seen by the network.
-            </p>
-          )}
-          {compatibleNetworksList.length > 0 && (
-            <p className="mb-[20px]">
-              Download a compatible release or change network to continue.
-            </p>
-          )}
-          {compatibleNetworksList.length === 0 && (
-            <p className="mb-[20px]">
-              Download a compatible release or add a compatible network to
-              continue.
-            </p>
+            <div>
+              <p className="mb-[20px] hidden">
+                This software (<code>vega@{supportedVersion}</code>) and the
+                network{' '}
+                <code className="bg-dark-200 py-[1px] px-[5px]">
+                  {networkData.network}
+                </code>{' '}
+                (<code>vega@{networkData.retrievedVersion}</code>) are not
+                running on the same version, you may encounter compatibility
+                issues, such as transactions not being seen by the network.
+              </p>
+              <p className="mb-[20px]">
+                This software and the network{' '}
+                <code className="bg-dark-200 py-[1px] px-[5px]">
+                  {networkData.network}
+                </code>{' '}
+                are relying on different network software versions. You may
+                encounter compatibility issues, such as transactions not being
+                seen by the network.
+              </p>
+              <p>
+                The network{' '}
+                <code className="bg-dark-200 py-[1px] px-[5px]">
+                  {networkData.network}
+                </code>{' '}
+                is currently running on version "
+                <code>{networkData.retrievedVersion}</code>", while this
+                software is running on version "<code>{supportedVersion}</code>
+                ".
+              </p>
+            </div>
           )}
           <ButtonGroup inline className="py-[20px]">
             {networkData.network && (
@@ -224,19 +234,16 @@ export const NetworkCompatibilityDialog = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Get a compatible release
+                Get wallet app for ${networkData.retrievedVersion}
               </AnchorButton>
             )}
-            {compatibleNetworksList.length > 0 && (
+            {compatibleNetworksList.length === 0 && (
               <Button
                 data-testid="network-compatibility-change"
                 onClick={() => setSubview('change')}
               >
                 Change network
               </Button>
-            )}
-            {compatibleNetworksList.length === 0 && (
-              <Button onClick={() => setSubview('add')}>Add network</Button>
             )}
           </ButtonGroup>
           <ButtonUnstyled
