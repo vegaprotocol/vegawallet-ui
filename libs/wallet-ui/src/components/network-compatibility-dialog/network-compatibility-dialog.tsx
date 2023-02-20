@@ -217,7 +217,7 @@ export const NetworkCompatibilityDialog = () => {
             </p>
           )}
           <ButtonGroup inline className="py-[20px]">
-            {!networkData.network && (
+            {networkData.network && (
               <AnchorButton
                 data-testid="network-compatibility-release"
                 href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
