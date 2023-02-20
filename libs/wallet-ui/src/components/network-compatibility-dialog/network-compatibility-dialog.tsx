@@ -205,14 +205,16 @@ export const NetworkCompatibilityDialog = () => {
             </p>
           )}
           <ButtonGroup inline className="py-[20px]">
-            <AnchorButton
-              data-testid="network-compatibility-release"
-              href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get a compatible release
-            </AnchorButton>
+            {!networkData.network && (
+              <AnchorButton
+                data-testid="network-compatibility-release"
+                href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get a compatible release
+              </AnchorButton>
+            )}
             {compatibleNetworksList.length > 0 && (
               <Button
                 data-testid="network-compatibility-change"
