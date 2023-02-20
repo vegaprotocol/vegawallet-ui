@@ -187,12 +187,20 @@ export const NetworkCompatibilityDialog = () => {
     >
       {subview === null && (
         <div className="p-[20px]">
-          <p className="mb-[20px]">
-            Your selected network "<code>{networkData.network}</code>" is
-            running on Vega <code>{networkData.retrievedVersion}</code>, however
-            this app only supports networks running{' '}
-            <code>{supportedVersion}</code>.
-          </p>
+          {!networkData.network && (
+            <p className="mb-[20px]">
+              Couldn't retrieve the network compatibility information from the
+              nodes you are trying to connect to.
+            </p>
+          )}
+          {networkData.network && (
+            <p className="mb-[20px]">
+              Your selected network "<code>{networkData.network}</code>" is
+              running on Vega <code>{networkData.retrievedVersion}</code>,
+              however this app only supports networks running{' '}
+              <code>{supportedVersion}</code>.
+            </p>
+          )}
           {compatibleNetworksList.length > 0 && (
             <p className="mb-[20px]">
               Download a compatible release or change network to continue.
@@ -205,14 +213,16 @@ export const NetworkCompatibilityDialog = () => {
             </p>
           )}
           <ButtonGroup inline className="py-[20px]">
-            <AnchorButton
-              data-testid="network-compatibility-release"
-              href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get a compatible release
-            </AnchorButton>
+            {!networkData.network && (
+              <AnchorButton
+                data-testid="network-compatibility-release"
+                href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get a compatible release
+              </AnchorButton>
+            )}
             {compatibleNetworksList.length > 0 && (
               <Button
                 data-testid="network-compatibility-change"
