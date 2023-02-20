@@ -79,7 +79,7 @@ const getIsCompatible = ({
 }: GetShouldOpenProps) => {
   return (
     telemetry?.consentAsked === true &&
-    networkData?.isCompatible === false &&
+    networkData?.isCompatible !== false &&
     features.NETWORK_COMPATIBILITY_WARNING === true
   )
 }
@@ -95,7 +95,6 @@ export const NetworkCompatibilityDialog = () => {
     return checkList.reduce<string[]>(addCompatibleNetwork, [])
   }, [state.version])
 
-  // const [isOpen, setOpen] = useState(false)
   const [subview, setSubview] = useState<Subview>(null)
 
   useEffect(() => {
