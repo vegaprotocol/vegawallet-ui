@@ -72,7 +72,7 @@ type GetShouldOpenProps = {
   telemetry?: TelemetryConfig
 }
 
-const getShouldOpen = ({
+const getIsCompatible = ({
   features,
   networkData,
   telemetry,
@@ -94,25 +94,28 @@ export const NetworkCompatibilityDialog = () => {
     const checkList = state.version?.networksCompatibility || []
     return checkList.reduce<string[]>(addCompatibleNetwork, [])
   }, [state.version])
-  const [isOpen, setOpen] = useState(
-    getShouldOpen({
-      features,
-      networkData,
-      telemetry: state.config?.telemetry,
-    })
-  )
+
+  // const [isOpen, setOpen] = useState(false)
   const [subview, setSubview] = useState<Subview>(null)
 
   useEffect(() => {
-    const shouldOpen = getShouldOpen({
+    const isCompatible = getIsCompatible({
       features,
       networkData,
       telemetry: state.config?.telemetry,
     })
-    if (shouldOpen) {
-      setOpen(true)
-    }
-  }, [supportedVersion, networkData, features, state.config?.telemetry])
+    dispatch({
+      type: 'SET_NETWORK_COMPATIBILITY',
+      isCompatible,
+    })
+  }, [
+    dispatch,
+    supportedVersion,
+    networkData,
+    features,
+    state.isNetworkCompatibilityModalOpen,
+    state.config?.telemetry,
+  ])
 
   useEffect(() => {
     const getVersion = async () => {
@@ -142,16 +145,22 @@ export const NetworkCompatibilityDialog = () => {
     ({ network }: { network?: string }) => {
       if (network) {
         dispatch(actions.changeNetworkAction(network))
-        setOpen(false)
+        dispatch({
+          type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+          open: false,
+        })
         setSubview(null)
       }
     },
-    [dispatch, actions, setOpen, setSubview]
+    [dispatch, actions, setSubview]
   )
 
   const handleAddNetwork = useCallback(
     async (network: string) => {
-      setOpen(false)
+      dispatch({
+        type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+        open: false,
+      })
       setSubview(null)
       const version = await service.GetVersion()
       dispatch({
@@ -161,7 +170,7 @@ export const NetworkCompatibilityDialog = () => {
 
       dispatch(actions.changeNetworkAction(network))
     },
-    [dispatch, actions, service, setOpen, setSubview]
+    [dispatch, actions, service, setSubview]
   )
 
   const title = useMemo(() => getTitle(subview), [subview])
@@ -174,7 +183,7 @@ export const NetworkCompatibilityDialog = () => {
     <Dialog
       size="lg"
       data-testid="network-compatibility-dialog"
-      open={isOpen}
+      open={state.isNetworkCompatibilityModalOpen}
       title={title}
     >
       {subview === null && (
@@ -219,7 +228,12 @@ export const NetworkCompatibilityDialog = () => {
           </ButtonGroup>
           <ButtonUnstyled
             data-testid="network-compatibility-continue"
-            onClick={() => setOpen(false)}
+            onClick={() =>
+              dispatch({
+                type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+                open: false,
+              })
+            }
           >
             Continue with existing network
           </ButtonUnstyled>
