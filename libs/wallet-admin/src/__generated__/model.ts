@@ -222,10 +222,10 @@ export namespace WalletModel {
         hosts: string[]
         retries: number
       }
-      graphQLConfig: {
+      graphQLConfig?: {
         hosts: string[]
       }
-      restConfig: {
+      restConfig?: {
         hosts: string[]
       }
     }
@@ -258,10 +258,10 @@ export namespace WalletModel {
       hosts: string[]
       retries: number
     }
-    graphQLConfig: {
+    graphQLConfig?: {
       hosts: string[]
     }
-    restConfig: {
+    restConfig?: {
       hosts: string[]
     }
   }
