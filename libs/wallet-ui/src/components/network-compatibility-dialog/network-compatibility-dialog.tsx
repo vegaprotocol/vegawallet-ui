@@ -234,7 +234,7 @@ export const NetworkCompatibilityDialog = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Get wallet app for ${networkData.retrievedVersion}
+                Get wallet app for {networkData.retrievedVersion}
               </AnchorButton>
             )}
             {compatibleNetworksList.length === 0 && (
