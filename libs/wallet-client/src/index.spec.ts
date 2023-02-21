@@ -58,10 +58,15 @@ describe('Wallet Client', () => {
     describe('Chrome', () => {
       beforeEach(() => {
         // @ts-ignore Typescript doesn't allow this override
-        global.chrome = {
+        globalThis.chrome = {
           // @ts-ignore To prevent mocking the whole runtime object
           runtime: mockRuntime as typeof chrome.runtime,
         }
+
+        // @ts-ignore Need only this property to be mocked
+        globalThis.navigator.__defineGetter__('userAgent', function () {
+          return 'Chrome'
+        })
       })
 
       afterEach(() => {
@@ -92,6 +97,29 @@ describe('Wallet Client', () => {
           // @ts-ignore To prevent mocking the whole runtime object
           runtime: mockRuntime,
         }
+
+        const eventQueue: ((m: unknown) => void)[] = []
+
+        globalThis.window.addEventListener = jest
+          .fn()
+          .mockImplementation((msg: string, handler: (m: unknown) => void) => {
+            if (msg === 'message') {
+              eventQueue.push(handler)
+            }
+          })
+
+        globalThis.window.postMessage = jest.fn().mockImplementation((msg) => {
+          eventQueue.forEach((handler) => {
+            handler({
+              data: msg.data,
+            })
+          })
+        })
+
+        // @ts-ignore Need only this property to be mocked
+        globalThis.navigator.__defineGetter__('userAgent', function () {
+          return 'Firefox'
+        })
       })
 
       afterEach(() => {
@@ -107,11 +135,12 @@ describe('Wallet Client', () => {
         })
         const result = await client.ConnectWallet()
         expect(result).toBe(undefined)
-        expect(mockRuntime.sendMessage).toHaveBeenCalledTimes(1)
-        const [arg1, arg2] = mockRuntime.sendMessage.mock.calls[0]
-        expect(arg1).toBe('TEST_FIREFOX_ID')
-        expect(arg2.method).toBe(Identifier.ConnectWallet)
-        expect(arg2.params).toEqual({})
+        expect(globalThis.window.postMessage).toHaveBeenCalledTimes(1)
+        // @ts-ignore Typescript refuses to acknowledge this mock
+        const [arg1] = globalThis.window.postMessage.mock.calls[0]
+        expect(arg1.extensionId).toBe('TEST_FIREFOX_ID')
+        expect(arg1.data.method).toBe(Identifier.ConnectWallet)
+        expect(arg1.data.params).toEqual({})
       })
     })
   })
