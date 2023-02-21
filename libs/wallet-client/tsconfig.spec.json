@@ -15,7 +15,6 @@
     ]
   },
   "include": [
-    "../transactions/src/**/*.ts",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",

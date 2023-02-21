@@ -50,13 +50,6 @@
         "command": "yarn tsc --noEmit --project ./libs/jsonrpc-generator/tsconfig.lib.json"
       }
     },
-    "build-spec": {
-      "executor": "nx:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "yarn tsc --project ./libs/jsonrpc-generator/tsconfig.spec.json"
-      }
-    },
     "run": {
       "executor": "nx:run-commands",
       "outputs": [],

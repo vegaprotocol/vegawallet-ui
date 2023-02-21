@@ -63,13 +63,6 @@
         "command": "yarn tsc --noEmit --project ./libs/wallet-admin/tsconfig.json"
       }
     },
-    "build-spec": {
-      "executor": "nx:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "yarn tsc --project ./libs/wallet-admin/tsconfig.spec.json"
-      }
-    },
     "generate": {
       "executor": "nx:run-commands",
       "outputs": [],
