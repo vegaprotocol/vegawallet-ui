@@ -5,12 +5,18 @@ import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { StatusCircle } from '../status-circle'
 import { AppToaster } from '../toaster'
+import { Warning } from '../icons/warning'
 
 export function ServiceStatus() {
   const {
     service,
     dispatch,
-    state: { currentNetwork, serviceStatus, httpServiceUrl },
+    state: {
+      isNetworkCompatible,
+      currentNetwork,
+      serviceStatus,
+      httpServiceUrl,
+    },
   } = useGlobal()
   const serviceUrl = service.TYPE === 'http' ? httpServiceUrl : ''
 
@@ -56,9 +62,25 @@ export function ServiceStatus() {
 
   switch (serviceStatus) {
     case ServiceState.Started: {
+      const statusElement = isNetworkCompatible ? (
+        <StatusCircle background="bg-green" blinking />
+      ) : (
+        <ButtonUnstyled
+          className="text-warning-light cursor-pointer inline-block"
+          onClick={() => {
+            dispatch({
+              type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+              open: true,
+            })
+          }}
+        >
+          <Warning className="w-[16px] mr-[6px]" />
+        </ButtonUnstyled>
+      )
+
       return (
         <div data-testid="service-status" className="whitespace-nowrap">
-          <StatusCircle background="bg-green" />
+          {statusElement}
           Wallet Service:{' '}
           <span className="font-mono bg-dark-200 py-[1px] px-[5px]">
             {currentNetwork}
