@@ -13,8 +13,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "files": [],
-  "include": [],
   "exclude": ["./template/*"],
   "references": [
     {

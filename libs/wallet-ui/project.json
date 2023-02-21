@@ -17,8 +17,7 @@
             "rm -rf ./dist/libs/wallet-ui",
             "nx run wallet-ui:build-css",
             "nx run wallet-ui:build-js",
-            "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json",
-            "node scripts/patch-package-module.js ./dist/libs/wallet-ui/package.json"
+            "yarn tsc --emitDeclarationOnly --declaration --project libs/wallet-ui/tsconfig.lib.json"
           ]
         },
         "test": {

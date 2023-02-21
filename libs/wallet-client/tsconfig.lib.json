@@ -1,10 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "../../dist",
     "declaration": true,
-    "declarationDir": "../../dist",
-    "types": ["node"]
+    "declarationDir": "../../dist"
   },
   "files": [],
   "exclude": [
@@ -19,5 +19,5 @@
     "jest.config.ts",
     "template/*"
   ],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["../transactions/src/**/*.ts", "**/*.ts", "**/*.tsx"]
 }
