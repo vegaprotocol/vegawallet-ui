@@ -14,7 +14,6 @@ import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Title } from '../title'
 import { ExternalLink } from '../external-link'
 import { TransactionStatus } from '../transaction-status'
-import { getMessageIntent, TRANSACTION_TITLES } from '../../lib/transactions'
 
 type TransactionDetailsProps = {
   transaction: Transaction

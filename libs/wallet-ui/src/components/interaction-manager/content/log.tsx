@@ -1,13 +1,8 @@
 import { useEffect, useCallback } from 'react'
 import { once } from 'ramda'
 
-import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../toaster'
-import type {
-  InteractionContentProps,
-  Log,
-  LogContent,
-} from '../../../types/interaction'
+import type { InteractionContentProps, Log } from '../../../types/interaction'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { getMessageIntent } from '../../../lib/transactions'
 

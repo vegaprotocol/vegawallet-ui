@@ -2,8 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { omit } from 'ramda'
 
 import { useGlobal } from '../../../contexts/global/global-context'
-import type {
-  Transaction} from '../../../lib/transactions';
+import type { Transaction } from '../../../lib/transactions'
 import {
   TransactionStatus,
   TRANSACTION_TITLES,
