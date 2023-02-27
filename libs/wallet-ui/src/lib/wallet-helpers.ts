@@ -10,7 +10,6 @@ export function extendKeypair(kp: WalletModel.DescribeKeyResult): KeyPair {
     publicKey: kp.publicKey,
     meta: kp.metadata,
     name: nameMeta?.value || 'No name',
-    transactions: {},
     publicKeyShort,
   }
 }

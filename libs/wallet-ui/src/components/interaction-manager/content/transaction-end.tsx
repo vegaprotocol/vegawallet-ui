@@ -1,8 +1,13 @@
 import { useEffect, useMemo } from 'react'
+import { omit } from 'ramda'
 
-import type { Wallet } from '../../../contexts/global/global-context'
 import { useGlobal } from '../../../contexts/global/global-context'
-import { TransactionStatus } from '../../../lib/transactions'
+import type {
+  Transaction} from '../../../lib/transactions';
+import {
+  TransactionStatus,
+  TRANSACTION_TITLES,
+} from '../../../lib/transactions'
 import type {
   Interaction,
   InteractionContentProps,
@@ -10,6 +15,8 @@ import type {
   RequestTransactionReview,
   RequestTransactionSuccess,
 } from '../../../types/interaction'
+import { Intent } from '../../../config/intent'
+import { AppToaster } from '../../toaster'
 
 type TransactionEndProps =
   | InteractionContentProps<RequestTransactionSuccess>
@@ -62,19 +69,24 @@ const parseEvent = (event: TransactionEvent) => {
   }
 }
 
-const getTransaction = (
-  wallets: Record<string, Wallet>,
-  source: Interaction<RequestTransactionReview> | null,
-  event: TransactionEvent
+const getToastContent = (
+  event: RequestTransactionSuccess | RequestTransactionFailure,
+  transaction: Transaction
 ) => {
-  if (!source) {
-    return null
+  switch (event.name) {
+    case 'TRANSACTION_SUCCEEDED': {
+      return {
+        message: `${TRANSACTION_TITLES[transaction.type]} successfully sent.`,
+        intent: Intent.SUCCESS,
+      }
+    }
+    case 'TRANSACTION_FAILED': {
+      return {
+        message: event.data.error.Message,
+        intent: Intent.DANGER,
+      }
+    }
   }
-
-  const { wallet, publicKey } = source.event.data
-  return (
-    wallets[wallet]?.keypairs?.[publicKey]?.transactions[event.traceID] || null
-  )
 }
 
 export const TransactionEnd = ({
@@ -93,16 +105,18 @@ export const TransactionEnd = ({
   )
 
   useEffect(() => {
-    const transaction = getTransaction(state.wallets, source, event)
+    const transaction = state.transactions[event.traceID]
 
     if (!isResolved && transaction) {
       dispatch({
         type: 'UPDATE_TRANSACTION',
         transaction: {
           ...transaction,
-          ...parseEvent(event),
+          ...omit(['logs'], parseEvent(event)),
         },
       })
+
+      AppToaster.show(getToastContent(event, transaction))
 
       setResolved(true)
     }

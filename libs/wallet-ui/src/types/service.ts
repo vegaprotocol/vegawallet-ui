@@ -55,13 +55,34 @@ export type AppConfig = {
 
 type Empty = void | undefined | Error
 
+export type EventType =
+  | 'new_interaction'
+  // Sent when the service is healthy.
+  // This event can be emitted every 15 seconds.
+  | 'service_is_healthy'
+  // Sent when no service is running anymore.
+  // This event can be emitted every 15 seconds.
+  | 'service_unreachable'
+  // Sent when the service is unhealthy, meaning we could connect but the endpoint
+  // didn't answer what we expected. More in the application logs.
+  // This event can be emitted every 15 seconds.
+  | 'service_is_unhealthy'
+  // Sent when the service unexpectedly stopped, internal crash.
+  // This event is emitted once per service lifecycle.
+  // If emitted, the `ServiceStopped` is not be emitted.
+  | 'service_stopped_with_error'
+  // Sent when the service has been stopped by the user.
+  // This event is emitted once per service lifecycle.
+  // If emitted, the `ServiceStoppedWithError` is not be emitted.
+  | 'service_stopped'
+
 type EventsCallbackArgs =
-  | [EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => void]
-  | [EVENTS.SERVICE_HEALTHY, () => void]
-  | [EVENTS.SERVICE_UNREACHABLE, () => void]
-  | [EVENTS.SERVICE_UNHEALTHY, () => void]
-  | [EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => void]
-  | [EVENTS.SERVICE_STOPPED, () => void]
+  | ['new_interaction', (interaction: RawInteraction) => void]
+  | ['service_is_healthy', () => void]
+  | ['service_unreachable', () => void]
+  | ['service_is_unhealthy', () => void]
+  | ['service_stopped_with_error', (err: Error) => void]
+  | ['service_stopped', () => void]
 
 type EventsCallback = (...args: EventsCallbackArgs) => void
 
@@ -97,6 +118,6 @@ export type Service = {
 
   // API
   EventsOn: EventsCallback
-  EventsOff: (...name: EVENTS[]) => void
+  EventsOff: (...name: EventType[]) => void
   RespondToInteraction: (arg: InteractionResponse) => Promise<Empty>
 }

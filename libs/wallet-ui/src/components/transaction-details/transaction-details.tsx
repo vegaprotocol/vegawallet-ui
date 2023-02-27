@@ -1,22 +1,43 @@
+import classnames from 'classnames'
 import type { ReactNode } from 'react'
+import { useState } from 'react'
 import { useExplorerUrl } from '../../hooks/use-explorer-url'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
+import { ButtonUnstyled } from '../button-unstyled'
 import { BreakText } from '../break-text'
 import { CodeBlock } from '../code-block'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 import { ArrowTopRight } from '../icons/arrow-top-right'
+import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Title } from '../title'
 import { ExternalLink } from '../external-link'
 import { TransactionStatus } from '../transaction-status'
+import { getMessageIntent, TRANSACTION_TITLES } from '../../lib/transactions'
 
 type TransactionDetailsProps = {
   transaction: Transaction
 }
 
-const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
-  const rows: Array<{ key?: string; value: ReactNode }> = [
+type SectionListProps = {
+  transaction: Transaction
+  explorerUrl?: string
+  isLogSectionVisible: boolean
+  isDetailSectionVisible: boolean
+  onViewLogs: () => void
+  onViewDetails: () => void
+}
+
+const compileSectionList = ({
+  transaction,
+  explorerUrl,
+  isLogSectionVisible,
+  isDetailSectionVisible,
+  onViewLogs,
+  onViewDetails,
+}: SectionListProps) => {
+  const rows: Array<{ key?: string | ReactNode; value: ReactNode }> = [
     {
       value: <TransactionStatus transaction={transaction} />,
     },
@@ -66,10 +87,56 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
     })
   }
 
+  if (transaction.logs.length) {
+    rows.push({
+      key: (
+        <>
+          <span>Event log</span>
+          <ButtonUnstyled onClick={onViewLogs}>
+            <DropdownArrow className="ml-[10px] w-[10px]" />
+          </ButtonUnstyled>
+        </>
+      ),
+      value: (
+        <CodeBlock
+          className={classnames('text-xs mb-0', {
+            hidden: !isLogSectionVisible,
+          })}
+          onClick={onViewLogs}
+        >
+          {transaction.logs.map((entry, i) => (
+            <p
+              key={i}
+              className={classnames({
+                'text-success-light': entry.type === 'Success',
+                'text-warning-light': entry.type === 'Warning',
+                'text-danger-light': entry.type === 'Error',
+                'text-neutral-light': entry.type === 'Info',
+              })}
+            >
+              {entry.message}
+            </p>
+          ))}
+        </CodeBlock>
+      ),
+    })
+  }
+
   rows.push({
-    key: 'Transaction details',
+    key: (
+      <>
+        <span>Transaction details</span>
+        <ButtonUnstyled onClick={onViewDetails}>
+          <DropdownArrow className="ml-[10px] w-[10px]" />
+        </ButtonUnstyled>
+      </>
+    ),
     value: (
-      <CodeBlock className="text-xs mb-0">
+      <CodeBlock
+        className={classnames('text-xs mb-0', {
+          hidden: !isDetailSectionVisible,
+        })}
+      >
         <pre data-testid="transaction-payload">
           {JSON.stringify(transaction.payload, null, 2)}
         </pre>
@@ -82,14 +149,39 @@ const compileSectionList = (transaction: Transaction, explorerUrl?: string) => {
     value: <p>{formatDate(new Date(transaction.receivedAt))}</p>,
   })
 
+  if (transaction.txHash) {
+    rows.push({
+      key: 'Transaction hash',
+      value: explorerUrl ? (
+        <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
+          {truncateMiddle(transaction.txHash)}
+          <ArrowTopRight className="w-[13px] ml-[6px]" />
+        </ExternalLink>
+      ) : (
+        <CopyWithTooltip text={transaction.txHash}>
+          {truncateMiddle(transaction.txHash)}
+        </CopyWithTooltip>
+      ),
+    })
+  }
+
   return rows
 }
 
 export const TransactionDetails = ({
   transaction,
 }: TransactionDetailsProps) => {
+  const [isDetailSectionVisible, setDetailSectionVisible] = useState(false)
+  const [isLogSectionVisible, setLogSectionVisible] = useState(false)
   const explorerUrl = useExplorerUrl()
-  const sectionList = compileSectionList(transaction, explorerUrl)
+  const sectionList = compileSectionList({
+    transaction,
+    explorerUrl,
+    isLogSectionVisible,
+    isDetailSectionVisible,
+    onViewLogs: () => setLogSectionVisible(!isLogSectionVisible),
+    onViewDetails: () => setDetailSectionVisible(!isDetailSectionVisible),
+  })
 
   return (
     <div>

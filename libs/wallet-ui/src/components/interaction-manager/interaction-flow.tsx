@@ -180,6 +180,9 @@ const getEventFlowType = (events: Interaction[]) => {
       case INTERACTION_TYPE.REQUEST_PERMISSIONS_REVIEW: {
         return acc || EVENT_FLOW_TYPE.PERMISSION_REQUEST
       }
+      case INTERACTION_TYPE.REQUEST_TRANSACTION_REVIEW_FOR_SENDING: {
+        return acc || EVENT_FLOW_TYPE.TRANSACTION_REVIEW
+      }
       default: {
         return acc
       }

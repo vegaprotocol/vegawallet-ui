@@ -8,46 +8,43 @@ import type {
   Log,
   LogContent,
 } from '../../../types/interaction'
-
-const getMessageIntent = (type: LogContent['type']) => {
-  switch (type) {
-    case 'Error': {
-      return Intent.DANGER
-    }
-    case 'Warning': {
-      return Intent.WARNING
-    }
-    case 'Success': {
-      return Intent.SUCCESS
-    }
-    default: {
-      return Intent.NONE
-    }
-  }
-}
+import { useGlobal } from '../../../contexts/global/global-context'
+import { getMessageIntent } from '../../../lib/transactions'
 
 export const LogComponent = ({
+  flow,
   event,
   isResolved,
   setResolved,
 }: InteractionContentProps<Log>) => {
+  const { dispatch } = useGlobal()
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const showMessage = useCallback(
+  const handleMessage = useCallback(
     once((event: Log) => {
-      AppToaster.show({
-        message: event.data.message,
-        intent: getMessageIntent(event.data.type),
-      })
+      console.log(flow, event)
+      if (flow !== 'TRANSACTION_REVIEW') {
+        AppToaster.show({
+          message: event.data.message,
+          intent: getMessageIntent(event.data.type),
+        })
+      } else {
+        dispatch({
+          type: 'ADD_TRANSACTION_LOG',
+          id: event.traceID,
+          log: event.data,
+        })
+      }
     }),
-    []
+    [flow, dispatch]
   )
 
   useEffect(() => {
     if (!isResolved) {
-      showMessage(event)
+      handleMessage(event)
       setResolved(true)
     }
-  }, [event, isResolved, setResolved, showMessage])
+  }, [event, isResolved, setResolved, handleMessage])
 
   return null
 }
