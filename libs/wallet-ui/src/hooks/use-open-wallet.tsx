@@ -1,4 +1,3 @@
-import { WalletModel } from '@vegaprotocol/wallet-admin'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
