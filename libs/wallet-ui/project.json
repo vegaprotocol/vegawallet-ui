@@ -159,6 +159,13 @@
           "buildTarget": "wallet-ui:build:test"
         }
       }
+    },
+    "bump": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "node ./scripts/version-package --project=wallet-ui"
+      }
     }
   }
 }
