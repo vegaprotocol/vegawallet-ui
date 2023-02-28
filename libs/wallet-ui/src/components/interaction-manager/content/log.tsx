@@ -17,7 +17,6 @@ export const LogComponent = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleMessage = useCallback(
     once((event: Log) => {
-      console.log(flow, event)
       if (flow !== 'TRANSACTION_REVIEW') {
         AppToaster.show({
           message: event.data.message,
