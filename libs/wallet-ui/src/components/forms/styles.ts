@@ -2,8 +2,10 @@ import classnames from 'classnames'
 
 export const getDefaultClassName = ({
   hasError = false,
+  isDisabled = false,
 }: {
   hasError?: boolean
+  isDisabled?: boolean
 }) => {
   return classnames(
     'block appearance-none w-full bg-transparent',
@@ -13,6 +15,8 @@ export const getDefaultClassName = ({
       'outline-white': !hasError,
       'border-red': hasError,
       'border-white': !hasError,
+      'border-neutral': isDisabled,
+      'text-neutral': isDisabled,
     }
   )
 }

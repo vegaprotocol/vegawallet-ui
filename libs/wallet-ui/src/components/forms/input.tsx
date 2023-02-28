@@ -19,7 +19,10 @@ export const Input = forwardRef(
         autoCorrect="off"
         autoComplete="off"
         className={classnames(
-          getDefaultClassName({ hasError: props['aria-invalid'] === 'true' }),
+          getDefaultClassName({
+            hasError: props['aria-invalid'] === 'true',
+            isDisabled: props.disabled,
+          }),
           className
         )}
       />

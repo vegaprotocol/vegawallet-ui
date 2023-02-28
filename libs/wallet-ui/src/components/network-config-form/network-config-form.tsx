@@ -61,6 +61,7 @@ export const NetworkConfigForm = ({
         <Input
           data-testid="network-name"
           type="text"
+          disabled={true}
           {...register('name', {
             required: Validation.REQUIRED,
           })}
