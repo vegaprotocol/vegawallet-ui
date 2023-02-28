@@ -76,7 +76,7 @@ export const NetworkConfigForm = ({
           data-testid="network-console-url"
           type="text"
           {...register('consoleUrl', {
-            required: Validation.REQUIRED,
+            pattern: Validation.URL,
           })}
         />
       </FormGroup>
@@ -90,7 +90,7 @@ export const NetworkConfigForm = ({
           data-testid="network-explorer-url"
           type="text"
           {...register('explorerUrl', {
-            required: Validation.REQUIRED,
+            pattern: Validation.URL,
           })}
         />
       </FormGroup>
@@ -104,7 +104,7 @@ export const NetworkConfigForm = ({
           data-testid="network-token-url"
           type="text"
           {...register('tokenUrl', {
-            required: Validation.REQUIRED,
+            pattern: Validation.URL,
           })}
         />
       </FormGroup>
