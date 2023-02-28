@@ -91,8 +91,12 @@ const compileSectionList = ({
       key: (
         <>
           <span>Event log</span>
-          <ButtonUnstyled onClick={onViewLogs}>
-            <DropdownArrow className="ml-[10px] w-[10px]" />
+          <ButtonUnstyled className="ml-[10px]" onClick={onViewLogs}>
+            <DropdownArrow
+              className={classnames('w-[10px]', {
+                'rotate-180': isLogSectionVisible,
+              })}
+            />
           </ButtonUnstyled>
         </>
       ),
@@ -125,8 +129,12 @@ const compileSectionList = ({
     key: (
       <>
         <span>Transaction details</span>
-        <ButtonUnstyled onClick={onViewDetails}>
-          <DropdownArrow className="ml-[10px] w-[10px]" />
+        <ButtonUnstyled className="ml-[10px]" onClick={onViewDetails}>
+          <DropdownArrow
+            className={classnames('w-[10px]', {
+              'rotate-180': isDetailSectionVisible,
+            })}
+          />
         </ButtonUnstyled>
       </>
     ),
