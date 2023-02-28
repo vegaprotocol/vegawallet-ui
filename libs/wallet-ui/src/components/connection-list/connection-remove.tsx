@@ -37,7 +37,7 @@ export const Remove = ({ wallet, hostname, onClose }: RemoveDialogProps) => {
     }
     setLoading(false)
     onClose()
-  }, [dispatch, hostname, wallet, setLoading, onClose])
+  }, [dispatch, client, hostname, wallet, setLoading, onClose])
 
   return (
     <div>

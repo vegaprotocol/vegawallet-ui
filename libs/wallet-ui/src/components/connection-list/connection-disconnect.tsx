@@ -53,7 +53,7 @@ export const Disconnect = ({
         message: `${err}`,
       })
     }
-  }, [dispatch, setLoading, onClose])
+  }, [dispatch, client, wallet, hostname, setLoading, onClose])
 
   return (
     <div>
