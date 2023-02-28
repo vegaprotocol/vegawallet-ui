@@ -53,20 +53,6 @@ export const NetworkConfigForm = ({
       })}
     >
       <FormGroup
-        label="Network name"
-        labelFor="name"
-        intent={errors.name?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.name?.message}
-      >
-        <Input
-          data-testid="network-name"
-          type="text"
-          {...register('name', {
-            required: Validation.REQUIRED,
-          })}
-        />
-      </FormGroup>
-      <FormGroup
         label="Console dApp URL"
         labelFor="consoleUrl"
         intent={errors.consoleUrl?.message ? Intent.DANGER : Intent.NONE}
