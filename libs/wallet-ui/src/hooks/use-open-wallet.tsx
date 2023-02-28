@@ -1,3 +1,4 @@
+import { WalletModel } from '@vegaprotocol/wallet-admin'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -15,11 +16,13 @@ export const useOpenWallet = () => {
   const getWalletData = useCallback(
     async (wallet: string, passphrase: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_w, { keys = [] }, { permissions }] = await Promise.all([
-        client.DescribeWallet({ wallet, passphrase }),
-        client.ListKeys({ wallet, passphrase }),
-        client.ListPermissions({ wallet, passphrase }),
-      ])
+      const [_w, { keys = [] }, { permissions }, { activeConnections }] =
+        await Promise.all([
+          client.DescribeWallet({ wallet, passphrase }),
+          client.ListKeys({ wallet, passphrase }),
+          client.ListPermissions({ wallet, passphrase }),
+          client.ListConnections({}),
+        ])
 
       const keysWithMeta = await Promise.all(
         keys.map((key) =>
@@ -31,6 +34,16 @@ export const useOpenWallet = () => {
         )
       )
 
+      const walletConnections = activeConnections.reduce<string[]>(
+        (acc, connection) => {
+          if (connection.wallet === wallet) {
+            acc.push(connection.hostname)
+          }
+          return acc
+        },
+        []
+      )
+
       const permissionDetails = await Promise.all(
         Object.keys(permissions).map(async (hostname) => {
           const result = await client.DescribePermissions({
@@ -40,7 +53,7 @@ export const useOpenWallet = () => {
           })
           return {
             hostname,
-            active: false,
+            active: walletConnections.includes(hostname),
             permissions: result.permissions,
           }
         })
