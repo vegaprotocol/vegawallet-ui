@@ -6,12 +6,14 @@ import { StatusCircle } from '../status-circle'
 type ConnectionItemProps = {
   connection: Connection
   onManage: () => void
+  onRemove: () => void
   onDisconnect: () => void
 }
 
 export const ConnectionItem = ({
   connection,
   onManage,
+  onRemove,
   onDisconnect,
 }: ConnectionItemProps) => {
   return (
@@ -32,9 +34,12 @@ export const ConnectionItem = ({
       </div>
       <div className="flex gap-[20px]">
         <ButtonUnstyled onClick={onManage}>Manage</ButtonUnstyled>
-        <ButtonUnstyled className="hidden" onClick={onDisconnect}>
-          Disconnect
-        </ButtonUnstyled>
+        {connection.active && (
+          <ButtonUnstyled onClick={onDisconnect}>Disconnect</ButtonUnstyled>
+        )}
+        {!connection.active && (
+          <ButtonUnstyled onClick={onRemove}>Remove</ButtonUnstyled>
+        )}
       </div>
     </div>
   )
