@@ -1,6 +1,6 @@
 import { omit } from 'ramda'
 import { useCallback, useState } from 'react'
-import type { Wallet } from '../../contexts/global/global-context';
+import type { Wallet } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'

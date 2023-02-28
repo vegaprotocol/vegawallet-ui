@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import type { Connection } from '../contexts/global/global-context';
+import type { Connection } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
 import { indexBy } from '../lib/index-by'
 
