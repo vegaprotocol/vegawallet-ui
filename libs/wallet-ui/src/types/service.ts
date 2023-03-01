@@ -1,4 +1,3 @@
-import type { EVENTS } from '../lib/events'
 import type { RawInteraction, InteractionResponse } from './interaction'
 import type { Logger } from './logger'
 
@@ -55,13 +54,21 @@ export type AppConfig = {
 
 type Empty = void | undefined | Error
 
+export type EventType =
+  | 'new_interaction'
+  | 'service_is_healthy'
+  | 'service_unreachable'
+  | 'service_is_unhealthy'
+  | 'service_stopped_with_error'
+  | 'service_stopped'
+
 type EventsCallbackArgs =
-  | [EVENTS.NEW_INTERACTION_EVENT, (interaction: RawInteraction) => void]
-  | [EVENTS.SERVICE_HEALTHY, () => void]
-  | [EVENTS.SERVICE_UNREACHABLE, () => void]
-  | [EVENTS.SERVICE_UNHEALTHY, () => void]
-  | [EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => void]
-  | [EVENTS.SERVICE_STOPPED, () => void]
+  | ['new_interaction', (interaction: RawInteraction) => void]
+  | ['service_is_healthy', () => void]
+  | ['service_unreachable', () => void]
+  | ['service_is_unhealthy', () => void]
+  | ['service_stopped_with_error', (err: Error) => void]
+  | ['service_stopped', () => void]
 
 type EventsCallback = (...args: EventsCallbackArgs) => void
 
@@ -97,6 +104,6 @@ export type Service = {
 
   // API
   EventsOn: EventsCallback
-  EventsOff: (...name: EVENTS[]) => void
+  EventsOff: (...name: EventType[]) => void
   RespondToInteraction: (arg: InteractionResponse) => Promise<Empty>
 }

@@ -27,6 +27,10 @@ export interface ErrorOccurredContent {
   error: string
 }
 
+export interface SessionStartedData {
+  workflow: EventFlowType
+}
+
 export interface LogContent {
   type: 'Info' | 'Warning' | 'Error' | 'Success'
   message: string
@@ -194,6 +198,7 @@ export type Log = {
 export type SessionStarted = {
   traceID: string
   name: 'INTERACTION_SESSION_BEGAN'
+  data: SessionStartedData
 }
 
 export type SessionEnded = {
