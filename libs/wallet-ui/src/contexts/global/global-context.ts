@@ -63,7 +63,6 @@ export interface KeyPair
   name: string
   publicKeyShort: string
   meta: WalletModel.DescribeKeyResult['metadata']
-  transactions: Record<string, Transaction>
 }
 
 export interface Wallet {
@@ -82,6 +81,7 @@ export interface GlobalState {
   // Wallet
   wallet: string | null
   wallets: Record<string, Wallet>
+  transactions: Record<string, Transaction>
 
   // Network
   currentNetwork: string | null
@@ -103,6 +103,7 @@ export interface GlobalState {
   isUpdateKeyModalOpen: boolean
   isSettingsModalOpen: boolean
   isNetworkCompatibilityModalOpen: boolean
+  showTransactionDetails: null | string
 }
 
 export type GlobalDispatch = ThunkDispatch<GlobalState, GlobalAction>

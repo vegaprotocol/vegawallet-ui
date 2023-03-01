@@ -9,6 +9,7 @@ import { Chrome } from './components/chrome'
 import { InteractionManager } from './components/interaction-manager'
 import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
 import { PassphraseModal } from './components/passphrase-modal'
+import { TransactionDetailsDialog } from './components/transaction-details-dialog'
 import { Settings } from './components/settings'
 import { SplashError } from './components/splash-error'
 import { TelemetryDialog } from './components/telemetry-dialog'
@@ -61,6 +62,7 @@ export function App({ service, client, runtime, features }: AppProps) {
                     <PassphraseModal />
                     <InteractionManager />
                     <NetworkCompatibilityDialog />
+                    <TransactionDetailsDialog />
                     <Settings />
                   </AppLoader>
                 </Chrome>
