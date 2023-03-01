@@ -117,7 +117,7 @@ export type GlobalAction =
   | {
       type: 'SET_CONNECTIONS'
       wallet: string
-      connections: Connection[]
+      connections: Record<string, Connection>
     }
   | {
       type: 'SET_PERMISSONS'
@@ -396,10 +396,7 @@ export function globalReducer(
 
       const updatedWallet: Wallet = {
         ...targetWallet,
-        connections: action.connections.reduce(
-          indexBy<Connection>('hostname'),
-          {}
-        ),
+        connections: action.connections,
       }
 
       return {
