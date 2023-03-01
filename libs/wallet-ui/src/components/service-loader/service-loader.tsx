@@ -38,7 +38,6 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
 
   useEffect(() => {
     service.EventsOn(EVENTS.SERVICE_HEALTHY, () => {
-      console.log('service.EventsOn(EVENTS.SERVICE_HEALTHY')
       setServiceError(null)
       dispatch({
         type: 'SET_SERVICE_STATUS',
@@ -47,7 +46,6 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
-      console.log('service.EventsOn(EVENTS.SERVICE_UNREACHABLE')
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unreachable,
@@ -55,7 +53,6 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
-      console.log('service.EventsOn(EVENTS.SERVICE_UNHEALTHY')
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unhealthy,
@@ -63,7 +60,6 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
-      console.log('service.EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR', err)
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Error,
@@ -76,7 +72,6 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
     })
 
     service.EventsOn(EVENTS.SERVICE_STOPPED, () => {
-      console.log('service.EventsOn(EVENTS.SERVICE_STOPPED')
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Stopped,

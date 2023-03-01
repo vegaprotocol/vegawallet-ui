@@ -5,6 +5,7 @@ import { indexBy } from '../../lib/index-by'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type { AppConfig, GetVersionResponse } from '../../types/service'
+import type { LogContent } from '../../types/interaction'
 
 import type {
   Connection,
@@ -24,6 +25,7 @@ export const initialGlobalState: GlobalState = {
   // Wallet
   wallet: null,
   wallets: {},
+  transactions: {},
 
   // Network
   currentNetwork: null,
@@ -48,6 +50,7 @@ export const initialGlobalState: GlobalState = {
   isUpdateKeyModalOpen: false,
   isSettingsModalOpen: false,
   isNetworkCompatibilityModalOpen: false,
+  showTransactionDetails: null,
 }
 
 export type GlobalAction =
@@ -176,13 +179,19 @@ export type GlobalAction =
       type: 'SET_SERVICE_URL'
       url: string
     }
+  // Transactions
   | {
       type: 'ADD_TRANSACTION'
       transaction: Transaction
     }
   | {
       type: 'UPDATE_TRANSACTION'
-      transaction: Transaction
+      transaction: Partial<Transaction> & Pick<Transaction, 'id'>
+    }
+  | {
+      type: 'ADD_TRANSACTION_LOG'
+      id: string
+      log: LogContent
     }
   // Connections
   | {
@@ -223,6 +232,10 @@ export type GlobalAction =
   | {
       type: 'SET_NETWORK_COMPATIBILITY_MODAL'
       open: boolean
+    }
+  | {
+      type: 'SHOW_TRANSACTION_DETAILS'
+      id: string | null
     }
 
 export function globalReducer(
@@ -536,41 +549,45 @@ export function globalReducer(
         httpServiceUrl: action.url,
       }
     }
-    case 'ADD_TRANSACTION':
-    case 'UPDATE_TRANSACTION': {
-      const targetWallet = state.wallets[action.transaction.wallet]
-
-      if (!targetWallet) {
-        throw new Error('Wallet not found')
-      }
-
-      const keypair = targetWallet.keypairs?.[action.transaction.publicKey]
-
-      if (!keypair) {
-        throw new Error('Public key not found')
-      }
-
-      const updatedWallet: Wallet = {
-        ...targetWallet,
-        keypairs: {
-          ...targetWallet.keypairs,
-          [action.transaction.publicKey]: {
-            ...keypair,
-            transactions: {
-              ...keypair.transactions,
-              [action.transaction.id]: action.transaction,
-            },
-          },
-        },
-      }
-
+    case 'ADD_TRANSACTION': {
       return {
         ...state,
-        wallets: {
-          ...state.wallets,
-          [action.transaction.wallet]: updatedWallet,
+        transactions: {
+          ...state.transactions,
+          [action.transaction.id]: action.transaction,
         },
       }
+    }
+    case 'UPDATE_TRANSACTION': {
+      if (state.transactions[action.transaction.id]) {
+        return {
+          ...state,
+          transactions: {
+            ...state.transactions,
+            [action.transaction.id]: {
+              ...state.transactions[action.transaction.id],
+              ...action.transaction,
+            },
+          },
+        }
+      }
+      return state
+    }
+    case 'ADD_TRANSACTION_LOG': {
+      if (state.transactions[action.id]) {
+        const transaction = state.transactions[action.id]
+        return {
+          ...state,
+          transactions: {
+            ...state.transactions,
+            [action.id]: {
+              ...transaction,
+              logs: [...transaction.logs, action.log],
+            },
+          },
+        }
+      }
+      return state
     }
     // Connections
     case 'ADD_CONNECTION': {
@@ -645,6 +662,12 @@ export function globalReducer(
       return {
         ...state,
         isNetworkCompatibilityModalOpen: action.open,
+      }
+    }
+    case 'SHOW_TRANSACTION_DETAILS': {
+      return {
+        ...state,
+        showTransactionDetails: action.id,
       }
     }
     default: {

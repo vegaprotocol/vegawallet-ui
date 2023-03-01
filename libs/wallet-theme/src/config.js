@@ -62,6 +62,7 @@ module.exports = {
     },
     neutral: {
       DEFAULT: '#6E6E6E',
+      light: '#A7A7A7',
     },
     emphasise: '#F5F8fA',
     deemphasise: '#8A9BA8',

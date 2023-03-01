@@ -56,10 +56,23 @@ type Empty = void | undefined | Error
 
 export type EventType =
   | 'new_interaction'
+  // Sent when the service is healthy.
+  // This event can be emitted every 15 seconds.
   | 'service_is_healthy'
+  // Sent when no service is running anymore.
+  // This event can be emitted every 15 seconds.
   | 'service_unreachable'
+  // Sent when the service is unhealthy, meaning we could connect but the endpoint
+  // didn't answer what we expected. More in the application logs.
+  // This event can be emitted every 15 seconds.
   | 'service_is_unhealthy'
+  // Sent when the service unexpectedly stopped, internal crash.
+  // This event is emitted once per service lifecycle.
+  // If emitted, the `ServiceStopped` is not be emitted.
   | 'service_stopped_with_error'
+  // Sent when the service has been stopped by the user.
+  // This event is emitted once per service lifecycle.
+  // If emitted, the `ServiceStoppedWithError` is not be emitted.
   | 'service_stopped'
 
 type EventsCallbackArgs =
