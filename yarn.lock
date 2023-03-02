@@ -1654,7 +1654,7 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@cypress/grep@^3.1.4":
+"@cypress/grep@3.1.4":
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/@cypress/grep/-/grep-3.1.4.tgz#4aa5ab9559705079d991079b96395f745e47c1e0"
   integrity sha512-3xpuuHJQKF/KIyF8dFVIO1qeH2+w67yLjknD68GxtehJAy2AqY+AdICwT4LS6tXrXlhjZLNNA21MT+FcT3+tUA==
@@ -2387,7 +2387,7 @@
     source-map-support "0.5.19"
     tree-kill "1.2.2"
 
-"@nrwl/js@15.6.3", "@nrwl/js@^15.6.3":
+"@nrwl/js@15.6.3":
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/@nrwl/js/-/js-15.6.3.tgz#82c831ab2bf620c3cd376515ff861c9041341d5c"
   integrity sha512-OkjpbNAL6732jGPR7Lz/6K6AScqjxMGuZCHmMqmlK0NpSRcOtYJpGsn4XZzPRsWteqXCvY/l3efceiL6eNPmRg==
@@ -2476,7 +2476,7 @@
     fs-extra "^11.1.0"
     tslib "^2.3.0"
 
-"@nrwl/react@^15.6.3":
+"@nrwl/react@15.6.3":
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/@nrwl/react/-/react-15.6.3.tgz#2165d6b51b99bde0f1e4e9dc784f35f687e2cc1b"
   integrity sha512-WpINxLNsX4Wq9O/stsJIXDGE8GdatyyeeKI0Y9GjVdMPfdPq3qTifnCsUrb97D0WjTEceyPGUzGsx0GmhPB3Dg==
@@ -2548,7 +2548,7 @@
   dependencies:
     nx "15.6.3"
 
-"@nrwl/web@^15.6.3":
+"@nrwl/web@15.6.3":
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-15.6.3.tgz#54d0731c752dc5fc3ec7be2729364b1447fe175e"
   integrity sha512-K4qbULw6hiAegDB4YwkPTj9xcWpw4Fj8s+uP7l+/KgTElO5e6phS3iiij3ClDe8AUPliTp/PdzCftiuwwxxM5A==
@@ -4319,7 +4319,7 @@
     deepmerge "^4.2.2"
     svgo "^2.8.0"
 
-"@svgr/webpack@^6.5.1":
+"@svgr/webpack@6.5.1":
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/@svgr/webpack/-/webpack-6.5.1.tgz#ecf027814fc1cb2decc29dc92f39c3cf691e40e8"
   integrity sha512-cQ/AsnBkXPkEK8cLbv4Dm7JGXq2XrumKnL1dRpJD9rIO2fTIlJI9a1uCciYG1F2aUsox/hJQyNGbt3soDxSRkA==
@@ -4651,7 +4651,7 @@
   dependencies:
     change-case "*"
 
-"@types/chrome@^0.0.212":
+"@types/chrome@0.0.212":
   version "0.0.212"
   resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.212.tgz#d4d189c14db8c10f57fc335864bd7c673794f4a1"
   integrity sha512-O9blKfj6mQyBvkexEa71xcpRfkjAu8izQD3qGYfdwffk+mJhF7eogz628bZr5dETT6Eu7vU0stUGYG/+EQWj9g==
@@ -4742,7 +4742,7 @@
   resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.29.tgz#a48795ecadf957f6c0d10e0c34af86c098fa5bee"
   integrity sha512-BsPXH/irW0ht0Ji6iw/jJaK8Lj3FJemon2gvEqHKpCdDCeemHa+rI3WBGq5z7cDMZgoLjY40oninGxqk+8NzNQ==
 
-"@types/firefox-webext-browser@^109.0.0":
+"@types/firefox-webext-browser@109.0.0":
   version "109.0.0"
   resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-109.0.0.tgz#17120057a46985ec7659dfd33589655860419929"
   integrity sha512-tkEjBP/zZxaS5bv8MH/0kUs3WeUm8KU3Ew1B9BtQQdq5PwtG23SXvAbjxjMSQpoIzbxyWG4Yu4mi1uB2S8W7ng==
@@ -7840,7 +7840,7 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha512-NJGVKPS81XejHcLhaLJS7plab0fK3slPh11mESeeDq2W4ZI5kUKK/LRRdVDvjJseojbPB7ZwjnyOybg3Igea/A==
 
-cypress@^12.5.1:
+cypress@12.5.1:
   version "12.5.1"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-12.5.1.tgz#effdcccdd5a6187d61d497300903d4f3b5b21b6e"
   integrity sha512-ZmCmJ3lsyeOpBfh410m5+AO2CO1AxAzFBt7k6/uVbNcrNZje1vdiwYTpj2ksPKg9mjr9lR6V8tmlDNMvr4H/YQ==
@@ -8767,7 +8767,7 @@ eslint-module-utils@^2.7.3:
   dependencies:
     debug "^3.2.7"
 
-eslint-plugin-cypress@^2.12.1:
+eslint-plugin-cypress@2.12.1:
   version "2.12.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-cypress/-/eslint-plugin-cypress-2.12.1.tgz#9aeee700708ca8c058e00cdafe215199918c2632"
   integrity sha512-c2W/uPADl5kospNDihgiLc7n87t5XhUbFDoTl6CfVkmG+kDAb5Ux10V9PoLPu9N+r7znpc+iQlcmAqT1A/89HA==
@@ -9044,15 +9044,15 @@ eventemitter2@6.4.7:
   resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.7.tgz#a7f6c4d7abf28a14c1ef3442f21cb306a054271d"
   integrity sha512-tYUSVOGeQPKt/eC1ABfhHy5Xd96N3oIijJvN3O9+TsC28T5V9yX9oEfEK5faP0EFSNVOG97qtAS68GBrQB2hDg==
 
+eventemitter3@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.0.tgz#084eb7f5b5388df1451e63f4c2aafd71b217ccb3"
+  integrity sha512-riuVbElZZNXLeLEoprfNYoDSwTBRR44X3mnhdI1YcnENpWTCsTTVZ2zFuqQcpoyqPQIUXdiPEU0ECAq0KQRaHg==
+
 eventemitter3@^4.0.0, eventemitter3@^4.0.4:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
-
-eventemitter3@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.0.tgz#084eb7f5b5388df1451e63f4c2aafd71b217ccb3"
-  integrity sha512-riuVbElZZNXLeLEoprfNYoDSwTBRR44X3mnhdI1YcnENpWTCsTTVZ2zFuqQcpoyqPQIUXdiPEU0ECAq0KQRaHg==
 
 events@^3.0.0, events@^3.2.0:
   version "3.3.0"
@@ -16693,7 +16693,7 @@ ts-proto-descriptors@1.7.1:
     long "^4.0.0"
     protobufjs "^6.8.8"
 
-ts-proto@^1.139.0:
+ts-proto@1.139.0:
   version "1.139.0"
   resolved "https://registry.yarnpkg.com/ts-proto/-/ts-proto-1.139.0.tgz#de681b59aae145fc2e55cbb00f7fdb5846e8dbc6"
   integrity sha512-DXfRVbsEnzan/tpb7RxuJOgjhzwuxDsyXbYSnF8JHCIDcJ/JxeqeUyDUVICFGmgqrsPcnjn5t3iqOUZRNRm9tg==

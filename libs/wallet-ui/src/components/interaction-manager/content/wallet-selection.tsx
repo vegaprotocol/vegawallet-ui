@@ -51,7 +51,6 @@ export const WalletSelection = ({
           name: 'SELECTED_WALLET',
           data: {
             wallet,
-            passphrase,
           },
         })
 

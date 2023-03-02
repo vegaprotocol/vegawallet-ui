@@ -9,7 +9,7 @@ interface DialogProps {
   open: boolean
   title?: ReactNode
   children: React.ReactNode
-  size?: 'sm' | 'lg'
+  size?: 'sm' | 'lg' | 'full'
   onChange?: (open: boolean) => void
 }
 
@@ -59,8 +59,11 @@ export function Dialog({
                       {
                         'left-[10%]': size === 'lg',
                         'w-[80%]': size === 'lg',
-                        'left-[calc(50%_-_170px)]': size !== 'lg',
-                        'w-[375px]': size !== 'lg',
+                        'left-[calc(50%_-_170px)]': size === 'sm',
+                        'w-[375px]': size === 'sm',
+                        'left-0': size === 'full',
+                        'w-screen': size === 'full',
+                        'h-screen': size === 'full',
                       }
                     )}
                     style={{

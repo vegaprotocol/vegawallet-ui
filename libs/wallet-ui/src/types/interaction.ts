@@ -272,7 +272,6 @@ export interface WalletConnectionDecision {
 
 export interface SelectedWallet {
   wallet: string
-  passphrase: string
 }
 
 export interface Decision {

@@ -1,18 +1,28 @@
-import type { QueueItem } from './provider'
-import { WalletConnection, TransactionReview, PermissionRequest } from './flows'
+import type {
+  WalletConnectionProps,
+  TransactionReviewProps,
+  PermissionRequestProps} from './flows';
+import {
+  WalletConnection,
+  TransactionReview,
+  PermissionRequest
+} from './flows'
 
-type InteractionDisplayProps = QueueItem
+export type InteractionDisplayProps =
+  | WalletConnectionProps
+  | TransactionReviewProps
+  | PermissionRequestProps
 
 export const InteractionDisplay = (p: InteractionDisplayProps) => {
-  switch (p.workflow) {
+  switch (p.data.workflow) {
     case 'WALLET_CONNECTION': {
-      return <WalletConnection {...p} />
+      return <WalletConnection {...(p as WalletConnectionProps)} />
     }
     case 'TRANSACTION_REVIEW': {
-      return <TransactionReview {...p} />
+      return <TransactionReview {...(p as TransactionReviewProps)} />
     }
     case 'PERMISSION_REQUEST': {
-      return <PermissionRequest {...p} />
+      return <PermissionRequest {...(p as PermissionRequestProps)} />
     }
     default: {
       return null

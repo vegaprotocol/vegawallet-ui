@@ -3,7 +3,6 @@ import type { ReactNode } from 'react'
 
 import { Intent } from '../../config/intent'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
-import { EVENTS } from '../../lib/events'
 import { Button } from '../button'
 import { Chrome } from '../chrome'
 import { SplashError } from '../splash-error'
@@ -37,7 +36,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
   }, [serviceStatus, serviceError])
 
   useEffect(() => {
-    service.EventsOn(EVENTS.SERVICE_HEALTHY, () => {
+    service.EventsOn('service_is_healthy', () => {
       setServiceError(null)
       dispatch({
         type: 'SET_SERVICE_STATUS',
@@ -45,21 +44,21 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
       })
     })
 
-    service.EventsOn(EVENTS.SERVICE_UNREACHABLE, () => {
+    service.EventsOn('service_unreachable', () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unreachable,
       })
     })
 
-    service.EventsOn(EVENTS.SERVICE_UNHEALTHY, () => {
+    service.EventsOn('service_is_unhealthy', () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Unhealthy,
       })
     })
 
-    service.EventsOn(EVENTS.SERVICE_STOPPED_WITH_ERROR, (err: Error) => {
+    service.EventsOn('service_stopped_with_error', (err: Error) => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Error,
@@ -71,7 +70,7 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
       })
     })
 
-    service.EventsOn(EVENTS.SERVICE_STOPPED, () => {
+    service.EventsOn('service_stopped', () => {
       dispatch({
         type: 'SET_SERVICE_STATUS',
         status: ServiceState.Stopped,
@@ -80,11 +79,11 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
 
     return () => {
       service.EventsOff(
-        EVENTS.SERVICE_HEALTHY,
-        EVENTS.SERVICE_UNREACHABLE,
-        EVENTS.SERVICE_UNHEALTHY,
-        EVENTS.SERVICE_STOPPED_WITH_ERROR,
-        EVENTS.SERVICE_STOPPED
+        'service_is_healthy',
+        'service_unreachable',
+        'service_is_unhealthy',
+        'service_stopped_with_error',
+        'service_stopped'
       )
     }
   }, [service, dispatch])

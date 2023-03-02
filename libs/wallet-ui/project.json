@@ -38,7 +38,7 @@
         "tsConfig": "libs/wallet-ui/tsconfig.lib.json",
         "project": "libs/wallet-ui/package.json",
         "deleteOutputPath": false,
-        "minify": true,
+        "minify": false,
         "sourcemap": true,
         "platform": "browser",
         "esbuildOptions": {
