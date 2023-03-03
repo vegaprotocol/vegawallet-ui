@@ -8,27 +8,27 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  name: Test and lint - PR
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+  ui-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Derive appropriate SHAs for base and head for `nx affected` commands
-      uses: nrwl/nx-set-shas@v2
-      with:
-        main-branch-name: ${{ github.base_ref }}
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+        with:
+          main-branch-name: ${{ github.base_ref }}
 
-    - name: Use Node.js 18
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.12.0
-        cache: yarn
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.0
+          cache: yarn
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-    - name: Run tests
-      run: yarn nx affected:e2e --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome
+      - name: Run tests
+        run: yarn nx affected:e2e --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome
