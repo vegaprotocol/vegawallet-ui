@@ -254,7 +254,9 @@ export const InteractionsProvider = () => {
                   setQueue((queue) => {
                     const q = new Map(queue)
                     q.delete(currentFlowItem[0])
-                    dispatch({ type: 'END_INTERACTION' })
+                    if (q.size === 0) {
+                      dispatch({ type: 'END_INTERACTION' })
+                    }
                     return q
                   })
                 }
