@@ -22,7 +22,6 @@ export const InteractionDisplay = (p: InteractionDisplayProps) => {
       return <PermissionRequest {...(p as PermissionRequestProps)} />
     }
     default: {
-      console.log('IT: returning null')
       return null
     }
   }

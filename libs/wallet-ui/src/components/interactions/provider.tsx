@@ -37,7 +37,6 @@ const handleEvent = ({
   event: RawInteraction
   dispatch: GlobalDispatch
 }): Queue => {
-  console.log(queue, event)
   const q = new Map(queue)
   const queueItem = q.get(event.traceID)
 
