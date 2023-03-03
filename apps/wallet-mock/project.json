@@ -18,7 +18,7 @@
       }
     },
     "build": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "@nrwl/nx:run-commands",
       "outputs": [],
       "options": {
         "command": "yarn tsc --project ./apps/wallet-mock/"
