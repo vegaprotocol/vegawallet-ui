@@ -81,7 +81,7 @@ export const InteractionError = ({
       </div>
       <p className="mt-[20px]">{description}</p>
       <div className="my-[20px]">
-        <CodeBlock>{message}</CodeBlock>
+        <CodeBlock className="max-w-full">{message}</CodeBlock>
       </div>
       <ButtonGroup>
         {type === 'User error' && (
