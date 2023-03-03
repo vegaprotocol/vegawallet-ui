@@ -124,7 +124,8 @@ export const TransactionReview = ({
             className="min-h-[150px]"
             logs={data.transaction.logs}
           />
-          <div className="flex gap-[20px] mt-[20px]">
+          {data.transaction.txHash && <Title>Transaction ID</Title>}
+          <div className="flex gap-[20px] justify-between mt-[20px]">
             {data.transaction.txHash && (
               <CopyWithTooltip text={data.transaction.txHash}>
                 <span className="text-neutral-light">
