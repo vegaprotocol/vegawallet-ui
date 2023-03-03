@@ -23,6 +23,7 @@ export function FormGroup({
 }: FormGroupProps) {
   return (
     <div className={classnames('flex flex-col mb-[8px]', className)}>
+      <div>some fake content</div>
       <label htmlFor={labelFor}>{label}</label>
       <div className="relative mt-[5px] pb-[21px]">
         {children}
