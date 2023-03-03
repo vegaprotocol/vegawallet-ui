@@ -28,7 +28,9 @@ export const PassphraseView = ({
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<Result>()
+  } = useForm<Result>({
+    reValidateMode: 'onChange',
+  })
 
   useEffect(() => {
     if (data.error?.type === 'User error') {

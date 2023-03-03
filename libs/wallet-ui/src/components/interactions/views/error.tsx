@@ -1,8 +1,9 @@
 import { Title } from '../../title'
+import { Button } from '../../button'
+import { ButtonGroup } from '../../button-group'
+import { CodeBlock } from '../../code-block'
 import { Warning } from '../../icons/warning'
 import type { ErrorOccurredContent } from '../../../types/interaction'
-
-import { useEffect } from 'react'
 
 export type InteractionErrorType =
   | ErrorOccurredContent
@@ -12,32 +13,84 @@ export type InteractionErrorType =
     }
 
 export type InteractionErrorProps = {
-  title: string
-  type: string
+  title?: string
+  type: InteractionErrorType['type']
   message: string
+  onReset: () => void
   onClose: () => void
+}
+
+const getDefs = (type: InteractionErrorType['type']) => {
+  switch (type) {
+    case 'Application error': {
+      return {
+        title: type,
+        description: '',
+      }
+    }
+    // When not being able to send a request to the wails backend
+    case 'Backend error': {
+      return {
+        title: 'Something went wrong',
+        description:
+          "Couldn't send the response to the backend service. You might need to restart your wallet app, and try again.",
+      }
+    }
+    case 'Internal error': {
+      return {
+        title: type,
+        description: '',
+      }
+    }
+    case 'Network error': {
+      return {
+        title: type,
+        description:
+          "We couldn't fulfill your request due to network issues. Make sure your connection is stable, and give it another go.",
+      }
+    }
+    case 'Server error': {
+      return {
+        title: type,
+        description: '',
+      }
+    }
+    case 'User error': {
+      return {
+        title: 'Something went wrong',
+        description: '',
+      }
+    }
+  }
 }
 
 export const InteractionError = ({
   title,
   type,
   message,
+  onReset,
   onClose,
 }: InteractionErrorProps) => {
-  useEffect(() => {
-    const stamp = setTimeout(() => {
-      onClose()
-    }, 1500)
-
-    return () => clearTimeout(stamp)
-  }, [onClose])
+  const { title: defTitle, description } = getDefs(type)
 
   return (
-    <div className="flex flex-col py-[40px] justify-center items-center">
-      <Title className="text-3xl">{title}</Title>
-      <div className="border border-white rounded-sm p-[10px]">
-        <Warning className="w-[48px]" />
+    <div className="flex flex-col py-[40px] px-[20px] justify-center items-center">
+      <Title className="text-xl">{title || defTitle}</Title>
+      <div className="p-[10px]">
+        <Warning className="w-[48px] text-danger-light" />
       </div>
+      <p className="mt-[20px]">{description}</p>
+      <div className="my-[20px]">
+        <CodeBlock>{message}</CodeBlock>
+      </div>
+      <ButtonGroup>
+        {type === 'User error' && (
+          <Button onClick={() => onReset()}>Try again</Button>
+        )}
+        {type !== 'User error' && (
+          <Button onClick={() => onClose()}>Close</Button>
+        )}
+      </ButtonGroup>
     </div>
   )
 }

@@ -10,8 +10,9 @@ import type {
   PermissionTypes,
 } from '../../../../types/interaction'
 import { Title } from '../../../title'
-import type { InteractionErrorType } from '../../views/error';
+import type { InteractionErrorType } from '../../views/error'
 import { InteractionError } from '../../views/error'
+import { InteractionSuccess } from '../../views/success'
 
 export type PermissionRequestData = {
   traceID: string
@@ -19,6 +20,7 @@ export type PermissionRequestData = {
   error?: InteractionErrorType
   hostname?: string
   wallet?: string
+  view?: 'success'
   permissions?: Record<PermissionTargetType, PermissionTypes>
 }
 
@@ -82,7 +84,10 @@ export const PermissionRequest = ({
         },
       })
     }
-    onClose()
+
+    if (!decision) {
+      onClose()
+    }
   }
 
   if (data.error) {
@@ -91,9 +96,19 @@ export const PermissionRequest = ({
         title="Failed to update permissions"
         type={data.error.type}
         message={data.error.error}
+        onReset={() =>
+          onUpdate({
+            ...data,
+            error: undefined,
+          })
+        }
         onClose={onClose}
       />
     )
+  }
+
+  if (data.view === 'success') {
+    return <InteractionSuccess title="Permissions updated" onClose={onClose} />
   }
 
   return (

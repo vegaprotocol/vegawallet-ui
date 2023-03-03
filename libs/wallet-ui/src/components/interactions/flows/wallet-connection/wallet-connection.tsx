@@ -1,11 +1,7 @@
-import type { InteractionErrorType } from '../../views/error';
+import type { InteractionErrorType } from '../../views/error'
 import { InteractionError } from '../../views/error'
-import {
-  ConnectionView,
-  SelectionView,
-  PassphraseView,
-  SuccessView,
-} from './views'
+import { InteractionSuccess } from '../../views/success'
+import { ConnectionView, SelectionView, PassphraseView } from './views'
 
 export type WalletConnectionData = {
   traceID: string
@@ -30,6 +26,12 @@ export const WalletConnection = (p: WalletConnectionProps) => {
         title="Connection failed"
         type={p.data.error.type}
         message={p.data.error.error}
+        onReset={() =>
+          p.onUpdate({
+            ...p.data,
+            error: undefined,
+          })
+        }
         onClose={p.onClose}
       />
     )
@@ -46,7 +48,7 @@ export const WalletConnection = (p: WalletConnectionProps) => {
       return <PassphraseView {...p} />
     }
     case 'success': {
-      return <SuccessView {...p} />
+      return <InteractionSuccess title="Connected" onClose={p.onClose} />
     }
     default: {
       return null

@@ -54,7 +54,7 @@ export const ConnectionView = ({
         <ul className="list-none">
           <li className="flex mb-[5px]">
             <Tick className="w-[12px] mr-[10px] text-success-light" />
-            <p className="text-light-200">Request access to your wallets</p>
+            <p className="text-light-200">Request access to your key(s)</p>
           </li>
         </ul>
       </div>

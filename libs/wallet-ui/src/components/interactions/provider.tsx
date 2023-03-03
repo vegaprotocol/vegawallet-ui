@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { useState, useEffect } from 'react'
 import { EventEmitter } from 'eventemitter3'
 import { animated, config, useTransition } from 'react-spring'
@@ -87,7 +88,10 @@ const handleEvent = ({
       break
     }
     case 'REQUEST_SUCCEEDED': {
-      if (queueItem?.workflow === 'WALLET_CONNECTION') {
+      if (
+        queueItem?.workflow === 'WALLET_CONNECTION' ||
+        queueItem?.workflow === 'PERMISSION_REQUEST'
+      ) {
         q.set(event.traceID, {
           ...queueItem,
           view: 'success',
@@ -196,16 +200,31 @@ const handleEvent = ({
   return q
 }
 
+const getSplashClasses = (item?: QueueItem) => {
+  if (item && 'view' in item && item?.view === 'success') {
+    return {
+      background: 'bg-success',
+      color: 'text-black',
+    }
+  }
+  return {
+    background: 'bg-black',
+    color: 'text-white',
+  }
+}
+
 export const InteractionsProvider = () => {
   const { service, dispatch } = useGlobal()
   const [queue, setQueue] = useState<Queue>(new Map())
   const currentFlowItem = queue.entries().next().value
 
+  const { background, color } = getSplashClasses(currentFlowItem?.[1])
+
   const transitions = useTransition(!!currentFlowItem, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
-    config: { ...config.default, duration: 170 },
+    config: { ...config.default, duration: 200 },
   })
 
   useEffect(() => {
@@ -226,15 +245,16 @@ export const InteractionsProvider = () => {
     return () => service.EventsOff('new_interaction')
   }, [service, dispatch, setQueue])
 
-  if (!currentFlowItem) {
-    return null
-  }
-
   return transitions(
     (styles, item) =>
       item && (
         <animated.div
-          className="fixed top-0 bottom-0 left-0 right-0 bg-black overflow-y-auto"
+          className={classnames(
+            'fixed top-0 bottom-0 left-0 right-0 bg-black overflow-y-auto',
+            'transition duration-200 ease-in-out',
+            background,
+            color
+          )}
           style={{
             opacity: styles.opacity,
           }}
