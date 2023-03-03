@@ -31,10 +31,12 @@ export const TransactionDetailsDialog = () => {
       title={transaction ? TRANSACTION_TITLES[transaction.type] : ''}
       onChange={changeHandler}
     >
-      {transaction && <TransactionDetails transaction={transaction} />}
-      <ButtonGroup inline className="p-[20px]">
-        <ButtonUnstyled onClick={() => changeHandler()}>Close</ButtonUnstyled>
-      </ButtonGroup>
+      <div className="p-[20px]">
+        {transaction && <TransactionDetails transaction={transaction} />}
+        <ButtonGroup inline className="pt-[20px]">
+          <ButtonUnstyled onClick={() => changeHandler()}>Close</ButtonUnstyled>
+        </ButtonGroup>
+      </div>
     </Dialog>
   )
 }

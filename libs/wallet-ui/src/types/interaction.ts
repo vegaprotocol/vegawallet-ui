@@ -23,7 +23,12 @@ export type InteractionContentProps<T extends RawInteraction> = {
 // Received interaction content
 
 export interface ErrorOccurredContent {
-  name: string
+  type:
+    | 'User error'
+    | 'Internal error'
+    | 'Server error'
+    | 'Network error'
+    | 'Application error'
   error: string
 }
 

@@ -8,12 +8,16 @@ import { CONNECTION_RESPONSE } from '../../../../../types/interaction'
 
 import type { WalletConnectionProps } from '../'
 
-export const ConnectionView = ({ data, onUpdate }: WalletConnectionProps) => {
+export const ConnectionView = ({
+  data,
+  onUpdate,
+  onClose,
+}: WalletConnectionProps) => {
   const { service } = useGlobal()
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState<'approve' | 'reject' | false>(false)
 
   const handleDecision = async (decision: boolean) => {
-    setLoading(true)
+    setLoading(decision ? 'approve' : 'reject')
     try {
       await service.RespondToInteraction({
         traceID: data.traceID,
@@ -27,34 +31,47 @@ export const ConnectionView = ({ data, onUpdate }: WalletConnectionProps) => {
     } catch (err: unknown) {
       onUpdate({
         ...data,
-        error: `${err}`,
+        error: {
+          type: 'Backend error',
+          error: `${err}`,
+        },
       })
+    }
+
+    if (!decision) {
+      onClose()
     }
   }
 
   return (
     <div>
-      <div className="my-[20px]">
-        <Title>
-          WALLET {'->'} {data.hostname}
-        </Title>
+      <div className="text-center mt-[100px] mb-[32px]">
+        <Title className="mb-[5px]">Connect to website</Title>
+        <p className="text-neutral-light">{data.hostname}</p>
       </div>
-      <p>Connect to website</p>
-      <p className="text-neutral-light">{data.hostname}</p>
-      <div className="border border-neutral rounded p-[10px]">
-        <p>Allow this site to:</p>
+      <div className="border border-neutral rounded p-[10px] mb-[20px]">
+        <p className="mb-[5px]">Allow this site to:</p>
         <ul className="list-none">
-          <li>
-            <Tick className="w-[10px] mr-[6px] text-success-light" />
-            <p>Request access to your wallets</p>
+          <li className="flex mb-[5px]">
+            <Tick className="w-[12px] mr-[10px] text-success-light" />
+            <p className="text-light-200">Request access to your wallets</p>
           </li>
         </ul>
       </div>
       <ButtonGroup inline>
-        <Button loading={isLoading} onClick={() => handleDecision(true)}>
+        <Button
+          loading={isLoading === 'approve'}
+          disabled={!!isLoading}
+          onClick={() => handleDecision(true)}
+        >
           Approve
         </Button>
-        <Button onClick={() => handleDecision(false)}>Deny</Button>
+        <Button
+          loading={isLoading === 'reject'}
+          onClick={() => handleDecision(false)}
+        >
+          Deny
+        </Button>
       </ButtonGroup>
     </div>
   )

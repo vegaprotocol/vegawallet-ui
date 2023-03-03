@@ -10,12 +10,18 @@ import {
   TransactionStatus,
   TRANSACTION_TITLES,
 } from '../../../../lib/transactions'
+import { TransactionStatus as TransactionStatusDisplay } from '../../../transaction-status'
+import { Loader } from '../../../loader'
+import { TransactionLogs } from '../../../transaction-logs'
+import { Tick } from '../../../icons/tick'
+import { Warning } from '../../../icons/warning'
+import type { InteractionErrorType } from '../../views/error'
 
 export type TransactionReviewData = {
   traceID: string
   workflow: 'TRANSACTION_REVIEW'
   transaction?: Transaction
-  error?: string
+  error?: InteractionErrorType
 }
 
 export type TransactionReviewProps = {
@@ -24,22 +30,71 @@ export type TransactionReviewProps = {
   onClose: () => void
 }
 
+const InfoBox = ({ transaction }: { transaction: Transaction }) => {
+  switch (transaction.status) {
+    case TransactionStatus.PENDING: {
+      return (
+        <div className="flex border border-neutral rounded p-[16px] mb-[20px]">
+          <Loader size="small" />
+          <p className="ml-[10px]">Processing your transaction</p>
+        </div>
+      )
+    }
+    case TransactionStatus.FAILURE: {
+      return (
+        <div className="flex border border-neutral rounded p-[16px] mb-[20px]">
+          <Warning className="w-[12px] text-danger-light" />
+          <p className="ml-[10px]">The transaction failed</p>
+        </div>
+      )
+    }
+    case TransactionStatus.SUCCESS: {
+      return (
+        <div className="flex border border-neutral rounded p-[16px] mb-[20px]">
+          <Tick className="w-[12px] text-success-light" />
+          <p className="ml-[10px]">
+            The transaction has been sent to the network
+          </p>
+        </div>
+      )
+    }
+    default:
+      return null
+  }
+}
+
 export const TransactionReview = ({
   data,
   onClose,
+  onUpdate,
 }: TransactionReviewProps) => {
   const [isLoading, setLoading] = useState<'approve' | 'reject' | false>(false)
   const { service } = useGlobal()
+  const isProcessing = data.transaction && data.transaction.logs.length > 0
 
   const handleDecision = async (decision: boolean) => {
     setLoading(decision ? 'approve' : 'reject')
-    await service.RespondToInteraction({
-      traceID: data.traceID,
-      name: 'DECISION',
-      data: {
-        approved: decision,
-      },
-    })
+    try {
+      await service.RespondToInteraction({
+        traceID: data.traceID,
+        name: 'DECISION',
+        data: {
+          approved: decision,
+        },
+      })
+    } catch (err) {
+      onUpdate({
+        ...data,
+        error: {
+          type: 'Backend error',
+          error: `${err}`,
+        },
+      })
+    }
+
+    if (!decision) {
+      onClose()
+    }
   }
 
   if (!data.transaction) {
@@ -47,13 +102,29 @@ export const TransactionReview = ({
   }
 
   return (
-    <div>
-      <Title>
-        {data.transaction ? TRANSACTION_TITLES[data.transaction.type] : ''}
-      </Title>
-      <TransactionDetails transaction={data.transaction} />
+    <div className="p-[20px]">
+      <div className="text-center mt-[32px] mb-[32px]">
+        <TransactionStatusDisplay transaction={data.transaction} />
+        <Title className="mb-[5px] mt-[20px]">
+          {data.transaction ? TRANSACTION_TITLES[data.transaction.type] : ''}
+        </Title>
+        <p className="text-neutral-light">{data.transaction.hostname}</p>
+      </div>
+      {isProcessing && (
+        <div className="mb-[20px]">
+          <InfoBox transaction={data.transaction} />
+          <TransactionLogs
+            isVisible={true}
+            className="min-h-[150px]"
+            logs={data.transaction.logs}
+          />
+        </div>
+      )}
+      {!isProcessing && (
+        <TransactionDetails transaction={data.transaction} showStatus={false} />
+      )}
       {data.transaction.status === TransactionStatus.PENDING && (
-        <ButtonGroup>
+        <ButtonGroup inline>
           <Button
             loading={isLoading === 'approve'}
             disabled={!!isLoading}
@@ -71,7 +142,7 @@ export const TransactionReview = ({
         </ButtonGroup>
       )}
       {data.transaction.status !== TransactionStatus.PENDING && (
-        <ButtonGroup>
+        <ButtonGroup inline>
           <Button onClick={() => onClose()}>Close</Button>
         </ButtonGroup>
       )}

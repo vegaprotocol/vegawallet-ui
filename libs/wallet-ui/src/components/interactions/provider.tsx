@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { EventEmitter } from 'eventemitter3'
-import type {
-  GlobalDispatch,
-  GlobalState,
-} from '../../contexts/global/global-context'
+import { animated, config, useTransition } from 'react-spring'
+
+import type { GlobalDispatch } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
 import type { RawInteraction } from '../../types'
-import type { InteractionDisplayProps } from './display';
+import type { InteractionDisplayProps } from './display'
 import { InteractionDisplay } from './display'
-import { Dialog } from '../dialog'
+import { Splash } from '../splash'
 import { Intent } from '../../config/intent'
 import { AppToaster } from '../toaster'
 import type {
@@ -32,18 +31,18 @@ const handleEvent = ({
   queue,
   event,
   dispatch,
-  state,
 }: {
   queue: Queue
   event: RawInteraction
   dispatch: GlobalDispatch
-  state: GlobalState
 }): Queue => {
+  console.log(queue, event)
   const q = new Map(queue)
   const queueItem = q.get(event.traceID)
 
   switch (event.name) {
     case 'INTERACTION_SESSION_BEGAN': {
+      dispatch({ type: 'START_INTERACTION' })
       q.set(event.traceID, {
         traceID: event.traceID,
         workflow: event.data.workflow,
@@ -57,20 +56,24 @@ const handleEvent = ({
       if (queueItem) {
         q.set(event.traceID, {
           ...queueItem,
-          error: event.data.error,
+          error: event.data,
         })
       }
       break
     }
     case 'LOG': {
-      if (queueItem?.workflow === 'TRANSACTION_REVIEW') {
-        dispatch({
-          type: 'ADD_TRANSACTION_LOG',
-          id: event.traceID,
-          log: event.data,
+      if (
+        queueItem?.workflow === 'TRANSACTION_REVIEW' &&
+        queueItem.transaction
+      ) {
+        const t = queueItem.transaction
+        q.set(event.traceID, {
+          ...queueItem,
+          transaction: {
+            ...t,
+            logs: [...t.logs, event.data],
+          },
         })
-      } else {
-        // ???
       }
       break
     }
@@ -89,18 +92,18 @@ const handleEvent = ({
           ...queueItem,
           view: 'success',
         })
+      } else {
+        AppToaster.show({
+          intent: Intent.SUCCESS,
+          message: event.data.message,
+        })
       }
-      AppToaster.show({
-        intent: Intent.SUCCESS,
-        message: event.data.message,
-      })
       break
     }
     // Wallet connection
     case 'REQUEST_WALLET_CONNECTION_REVIEW': {
       if (queueItem) {
         q.set(event.traceID, {
-          ...queueItem,
           traceID: event.traceID,
           workflow: 'WALLET_CONNECTION',
           view: 'connection',
@@ -150,33 +153,41 @@ const handleEvent = ({
       break
     }
     case 'TRANSACTION_FAILED': {
-      const t = state.transactions[event.traceID]
-      const transaction = parseTransactionInput(event, t)
+      if (
+        queueItem?.workflow === 'TRANSACTION_REVIEW' &&
+        queueItem.transaction
+      ) {
+        const transaction = parseTransactionInput(event, queueItem.transaction)
 
-      q.set(event.traceID, {
-        traceID: event.traceID,
-        workflow: 'TRANSACTION_REVIEW',
-        transaction,
-      })
-      dispatch({
-        type: 'UPDATE_TRANSACTION',
-        transaction,
-      })
+        q.set(event.traceID, {
+          traceID: event.traceID,
+          workflow: 'TRANSACTION_REVIEW',
+          transaction,
+        })
+        dispatch({
+          type: 'UPDATE_TRANSACTION',
+          transaction,
+        })
+      }
 
       break
     }
     case 'TRANSACTION_SUCCEEDED': {
-      const t = state.transactions[event.traceID]
-      const transaction = parseTransactionInput(event, t)
-      q.set(event.traceID, {
-        traceID: event.traceID,
-        workflow: 'TRANSACTION_REVIEW',
-        transaction,
-      })
-      dispatch({
-        type: 'UPDATE_TRANSACTION',
-        transaction,
-      })
+      if (
+        queueItem?.workflow === 'TRANSACTION_REVIEW' &&
+        queueItem.transaction
+      ) {
+        const transaction = parseTransactionInput(event, queueItem.transaction)
+        q.set(event.traceID, {
+          traceID: event.traceID,
+          workflow: 'TRANSACTION_REVIEW',
+          transaction,
+        })
+        dispatch({
+          type: 'UPDATE_TRANSACTION',
+          transaction,
+        })
+      }
 
       break
     }
@@ -186,15 +197,22 @@ const handleEvent = ({
 }
 
 export const InteractionsProvider = () => {
-  const { service, state, dispatch } = useGlobal()
+  const { service, dispatch } = useGlobal()
   const [queue, setQueue] = useState<Queue>(new Map())
   const currentFlowItem = queue.entries().next().value
+
+  const transitions = useTransition(!!currentFlowItem, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { ...config.default, duration: 170 },
+  })
 
   useEffect(() => {
     service.EventsOn('new_interaction', (event: RawInteraction) => {
       if (event.name === 'INTERACTION_SESSION_BEGAN') {
         interactionBus.addListener(event.traceID, (event: RawInteraction) => {
-          setQueue((queue) => handleEvent({ queue, event, dispatch, state }))
+          setQueue((queue) => handleEvent({ queue, event, dispatch }))
         })
       }
 
@@ -206,29 +224,44 @@ export const InteractionsProvider = () => {
     })
 
     return () => service.EventsOff('new_interaction')
-  }, [service, state, dispatch, setQueue])
+  }, [service, dispatch, setQueue])
 
-  return (
-    <Dialog size="full" open={!!currentFlowItem}>
-      {currentFlowItem && (
-        <InteractionDisplay
-          data={currentFlowItem}
-          onUpdate={(data: InteractionDisplayProps['data']) =>
-            setQueue((queue) => {
-              const q = new Map(queue)
-              q.set(currentFlowItem.traceID, data)
-              return q
-            })
-          }
-          onClose={() =>
-            setQueue((queue) => {
-              const q = new Map(queue)
-              q.delete(currentFlowItem.traceID)
-              return q
-            })
-          }
-        />
-      )}
-    </Dialog>
+  if (!currentFlowItem) {
+    return null
+  }
+
+  return transitions(
+    (styles, item) =>
+      item && (
+        <animated.div
+          className="fixed top-0 bottom-0 left-0 right-0 bg-black overflow-y-auto"
+          style={{
+            opacity: styles.opacity,
+          }}
+        >
+          <Splash>
+            {currentFlowItem && (
+              <InteractionDisplay
+                data={currentFlowItem[1]}
+                onUpdate={(data: InteractionDisplayProps['data']) =>
+                  setQueue((queue) => {
+                    const q = new Map(queue)
+                    q.set(currentFlowItem[0], data)
+                    return q
+                  })
+                }
+                onClose={() =>
+                  setQueue((queue) => {
+                    const q = new Map(queue)
+                    q.delete(currentFlowItem[0])
+                    dispatch({ type: 'END_INTERACTION' })
+                    return q
+                  })
+                }
+              />
+            )}
+          </Splash>
+        </animated.div>
+      )
   )
 }

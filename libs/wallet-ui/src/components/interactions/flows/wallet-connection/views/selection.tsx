@@ -44,33 +44,36 @@ export const SelectionView = ({
     } catch (err) {
       onUpdate({
         ...data,
-        error: `${err}`,
+        error: {
+          type: 'Backend error',
+          error: `${err}`,
+        },
       })
     }
   }
 
   return (
     <div>
-      <div className="my-[20px]">
-        <Title>
-          WALLET {'->'} {data.hostname}
-        </Title>
+      <div className="text-center mt-[100px] mb-[32px]">
+        <Title>Connect to website</Title>
+        <p className="text-neutral-light">{data.hostname}</p>
       </div>
-      <p>Connect to website</p>
-      <p className="text-neutral-light">{data.hostname}</p>
-      <p>Select a wallet to connect to:</p>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RadioGroup
-          name="wallet"
-          control={control}
-          rules={{
-            required: Validation.REQUIRED,
-          }}
-          options={(data.availableWallets || []).map((w) => ({
-            label: w,
-            value: w,
-          }))}
-        />
+        <div className="border border-neutral rounded p-[10px] mb-[20px]">
+          <p className="mb-[5px]">Select a wallet to connect to:</p>
+          <RadioGroup
+            name="wallet"
+            control={control}
+            itemClass="mb-[5px]"
+            rules={{
+              required: Validation.REQUIRED,
+            }}
+            options={(data.availableWallets || []).map((w) => ({
+              label: w,
+              value: w,
+            }))}
+          />
+        </div>
         <ButtonGroup inline>
           <Button type="submit" disabled={isLoading || !formState.isValid}>
             Approve

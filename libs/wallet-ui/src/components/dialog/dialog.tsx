@@ -54,13 +54,15 @@ export function Dialog({
                 >
                   <animated.div
                     className={classnames(
-                      'fixed bg-black top-[30px] overflow-y-auto shadow',
+                      'fixed bg-black overflow-y-auto shadow',
                       'max-h-[calc(100vh_-_60px)]',
                       {
+                        'top-[30px]': size !== 'full',
                         'left-[10%]': size === 'lg',
                         'w-[80%]': size === 'lg',
                         'left-[calc(50%_-_170px)]': size === 'sm',
                         'w-[375px]': size === 'sm',
+                        'top-0': size === 'full',
                         'left-0': size === 'full',
                         'w-screen': size === 'full',
                         'h-screen': size === 'full',

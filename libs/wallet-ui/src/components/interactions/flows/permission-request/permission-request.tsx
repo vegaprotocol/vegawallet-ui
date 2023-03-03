@@ -9,11 +9,14 @@ import type {
   PermissionTargetType,
   PermissionTypes,
 } from '../../../../types/interaction'
+import { Title } from '../../../title'
+import type { InteractionErrorType } from '../../views/error';
+import { InteractionError } from '../../views/error'
 
 export type PermissionRequestData = {
   traceID: string
   workflow: 'PERMISSION_REQUEST'
-  error?: string
+  error?: InteractionErrorType
   hostname?: string
   wallet?: string
   permissions?: Record<PermissionTargetType, PermissionTypes>
@@ -73,20 +76,37 @@ export const PermissionRequest = ({
     } catch (err: unknown) {
       onUpdate({
         ...data,
-        error: `${err}`,
+        error: {
+          type: 'Backend error',
+          error: `${err}`,
+        },
       })
     }
     onClose()
   }
 
+  if (data.error) {
+    return (
+      <InteractionError
+        title="Failed to update permissions"
+        type={data.error.type}
+        message={data.error.error}
+        onClose={onClose}
+      />
+    )
+  }
+
   return (
     <div>
-      <p className="text-neutral-light">{data.hostname}</p>
-      <div className="border border-neutral rounded p-[10px]">
-        <p>Allows this site to:</p>
+      <div className="text-center mt-[100px] mb-[32px]">
+        <Title className="mb-[5px]">Website permissions</Title>
+        <p className="text-neutral-light">{data.hostname}</p>
+      </div>
+      <div className="border border-neutral rounded p-[10px] mb-[20px]">
+        <p className="mb-[5px]">Allows this site to:</p>
         <ul>
           {permissions.map((permissionText, i) => (
-            <li key={i}>
+            <li key={i} className="mb-[5px]">
               <Tick className="w-[10px] mr-[6px] text-success-light" />
               {permissionText}
             </li>

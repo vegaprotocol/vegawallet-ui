@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { FormGroup } from '../../../../form-group'
@@ -27,7 +27,22 @@ export const PassphraseView = ({
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<Result>()
+
+  useEffect(() => {
+    if (data.error?.type === 'User error') {
+      setError(
+        'passphrase',
+        {
+          message: `Error: ${data.error.error}`,
+        },
+        {
+          shouldFocus: true,
+        }
+      )
+    }
+  }, [data.error, setError])
 
   const onDeny = async () => {
     await service.RespondToInteraction({
@@ -50,36 +65,44 @@ export const PassphraseView = ({
     } catch (err) {
       onUpdate({
         ...data,
-        error: `${err}`,
+        error: {
+          type: 'Backend error',
+          error: `${err}`,
+        },
       })
     }
   }
 
   return (
     <div>
-      <div className="my-[20px]">
-        <Title>
-          WALLET {'->'} {data.hostname}
-        </Title>
+      <div className="text-center mt-[100px] mb-[32px]">
+        <Title>Connect to website</Title>
+        <p className="text-neutral-light">{data.hostname}</p>
       </div>
-      <p>Connect to website</p>
-      <p className="text-neutral-light">{data.hostname}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup
-          label="Passphrase"
-          labelFor="passphrase"
-          helperText={errors.passphrase?.message}
-          intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
-        >
-          <Input
-            data-testid="input-passphrase"
-            type="password"
-            autoComplete="off"
-            {...register('passphrase', { required: Validation.REQUIRED })}
-          />
-        </FormGroup>
+        <div className="border border-neutral rounded p-[10px] mb-[20px]">
+          <FormGroup
+            label="Unlock with your passphrase to complete connection"
+            labelFor="passphrase"
+            helperText={errors.passphrase?.message}
+            intent={errors.passphrase?.message ? Intent.DANGER : Intent.NONE}
+          >
+            <Input
+              data-testid="input-passphrase"
+              type="password"
+              autoComplete="off"
+              aria-invalid={errors.passphrase?.message ? 'true' : undefined}
+              className="mt-[10px]"
+              {...register('passphrase', { required: Validation.REQUIRED })}
+            />
+          </FormGroup>
+        </div>
         <ButtonGroup inline>
-          <Button loading={isLoading} type="submit">
+          <Button
+            loading={isLoading}
+            disabled={!!errors.passphrase}
+            type="submit"
+          >
             Approve
           </Button>
           <Button onClick={() => onDeny()}>Cancel</Button>

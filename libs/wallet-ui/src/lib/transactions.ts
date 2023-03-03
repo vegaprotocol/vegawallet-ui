@@ -204,6 +204,21 @@ export function parseTransactionInput(
     }
   } else if (existingTransaction) {
     const transactionPartial = parseEndEvent(event)
+
+    if (event.name === 'TRANSACTION_FAILED') {
+      return {
+        ...existingTransaction,
+        ...transactionPartial,
+        logs: [
+          ...existingTransaction.logs,
+          {
+            type: 'Error',
+            message: `Error: ${event.data.error.Message}`,
+          },
+        ],
+      }
+    }
+
     return {
       ...existingTransaction,
       ...transactionPartial,

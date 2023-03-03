@@ -14,13 +14,17 @@ import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Title } from '../title'
 import { ExternalLink } from '../external-link'
 import { TransactionStatus } from '../transaction-status'
+import { TransactionLogs } from '../transaction-logs'
+import { Warning } from '../icons/warning'
 
 type TransactionDetailsProps = {
   transaction: Transaction
+  showStatus?: boolean
 }
 
 type SectionListProps = {
   transaction: Transaction
+  showStatus: boolean
   explorerUrl?: string
   isLogSectionVisible: boolean
   isDetailSectionVisible: boolean
@@ -30,40 +34,62 @@ type SectionListProps = {
 
 const compileSectionList = ({
   transaction,
+  showStatus,
   explorerUrl,
   isLogSectionVisible,
   isDetailSectionVisible,
   onViewLogs,
   onViewDetails,
 }: SectionListProps) => {
-  const rows: Array<{ key?: string | ReactNode; value: ReactNode }> = [
-    {
+  const rows: Array<{ key?: string | ReactNode; value: ReactNode }> = []
+
+  if (showStatus) {
+    rows.push({
       value: <TransactionStatus transaction={transaction} />,
-    },
-    {
-      key: 'Wallet',
-      value: <p>{transaction.wallet}</p>,
-    },
-    {
-      key: 'Public key',
-      value: (
-        <CopyWithTooltip text={transaction.publicKey}>
-          <BreakText>{transaction.publicKey}</BreakText>
-        </CopyWithTooltip>
+    })
+  }
+
+  if (transaction.error) {
+    rows.push({
+      key: (
+        <div className="flex">
+          <Warning className="w-[12px] mr-[10px] text-danger-light" />
+          <span>Error</span>
+        </div>
       ),
-    },
-  ]
+      value: <p className="text-neutral-light">{transaction.error}</p>,
+    })
+  }
+
+  rows.push({
+    key: 'Wallet',
+    value: <p className="text-neutral-light">{transaction.wallet}</p>,
+  })
+
+  rows.push({
+    key: 'Public key',
+    value: (
+      <CopyWithTooltip text={transaction.publicKey}>
+        <BreakText className="text-neutral-light">
+          {transaction.publicKey}
+        </BreakText>
+      </CopyWithTooltip>
+    ),
+  })
 
   if (transaction.blockHeight) {
     rows.push({
       key: 'Block height',
       value: explorerUrl ? (
-        <ExternalLink href={`${explorerUrl}/blocks/${transaction.blockHeight}`}>
+        <ExternalLink
+          className="text-neutral-light"
+          href={`${explorerUrl}/blocks/${transaction.blockHeight}`}
+        >
           {transaction.blockHeight}
           <ArrowTopRight className="w-[13px] ml-[6px]" />
         </ExternalLink>
       ) : (
-        transaction.blockHeight
+        <p className="text-neutral-light">{transaction.blockHeight}</p>
       ),
     })
   }
@@ -73,16 +99,11 @@ const compileSectionList = ({
       key: 'Signature',
       value: (
         <CopyWithTooltip text={transaction.signature}>
-          {truncateMiddle(transaction.signature)}
+          <span className="text-neutral-light">
+            {truncateMiddle(transaction.signature)}
+          </span>
         </CopyWithTooltip>
       ),
-    })
-  }
-
-  if (transaction.error) {
-    rows.push({
-      key: 'Error',
-      value: <p>{transaction.error}</p>,
     })
   }
 
@@ -101,26 +122,10 @@ const compileSectionList = ({
         </>
       ),
       value: (
-        <CodeBlock
-          className={classnames('text-xs mb-0', {
-            hidden: !isLogSectionVisible,
-          })}
-          onClick={onViewLogs}
-        >
-          {transaction.logs.map((entry, i) => (
-            <p
-              key={i}
-              className={classnames({
-                'text-success-light': entry.type === 'Success',
-                'text-warning-light': entry.type === 'Warning',
-                'text-danger-light': entry.type === 'Error',
-                'text-neutral-light': entry.type === 'Info',
-              })}
-            >
-              {entry.message}
-            </p>
-          ))}
-        </CodeBlock>
+        <TransactionLogs
+          logs={transaction.logs}
+          isVisible={isLogSectionVisible}
+        />
       ),
     })
   }
@@ -153,20 +158,29 @@ const compileSectionList = ({
 
   rows.push({
     key: 'Received at',
-    value: <p>{formatDate(new Date(transaction.receivedAt))}</p>,
+    value: (
+      <p className="text-neutral-light">
+        {formatDate(new Date(transaction.receivedAt))}
+      </p>
+    ),
   })
 
   if (transaction.txHash) {
     rows.push({
       key: 'Transaction hash',
       value: explorerUrl ? (
-        <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
+        <ExternalLink
+          className="text-neutral-light"
+          href={`${explorerUrl}/txs/${transaction.txHash}`}
+        >
           {truncateMiddle(transaction.txHash)}
           <ArrowTopRight className="w-[13px] ml-[6px]" />
         </ExternalLink>
       ) : (
         <CopyWithTooltip text={transaction.txHash}>
-          {truncateMiddle(transaction.txHash)}
+          <span className="text-neutral-light">
+            {truncateMiddle(transaction.txHash)}
+          </span>
         </CopyWithTooltip>
       ),
     })
@@ -177,12 +191,14 @@ const compileSectionList = ({
 
 export const TransactionDetails = ({
   transaction,
+  showStatus = true,
 }: TransactionDetailsProps) => {
   const [isDetailSectionVisible, setDetailSectionVisible] = useState(false)
   const [isLogSectionVisible, setLogSectionVisible] = useState(false)
   const explorerUrl = useExplorerUrl()
   const sectionList = compileSectionList({
     transaction,
+    showStatus,
     explorerUrl,
     isLogSectionVisible,
     isDetailSectionVisible,
@@ -193,7 +209,7 @@ export const TransactionDetails = ({
   return (
     <div>
       {sectionList.map(({ key, value }, index) => (
-        <div key={index} className="px-[20px] pb-[20px]">
+        <div key={index} className="pb-[20px]">
           {key && <Title className="m-0 mb-[12px]">{key}</Title>}
           {value}
         </div>

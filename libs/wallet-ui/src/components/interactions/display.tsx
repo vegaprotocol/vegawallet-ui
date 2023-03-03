@@ -1,12 +1,9 @@
 import type {
   WalletConnectionProps,
   TransactionReviewProps,
-  PermissionRequestProps} from './flows';
-import {
-  WalletConnection,
-  TransactionReview,
-  PermissionRequest
+  PermissionRequestProps,
 } from './flows'
+import { WalletConnection, TransactionReview, PermissionRequest } from './flows'
 
 export type InteractionDisplayProps =
   | WalletConnectionProps
@@ -25,6 +22,7 @@ export const InteractionDisplay = (p: InteractionDisplayProps) => {
       return <PermissionRequest {...(p as PermissionRequestProps)} />
     }
     default: {
+      console.log('IT: returning null')
       return null
     }
   }
