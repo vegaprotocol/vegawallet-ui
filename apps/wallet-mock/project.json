@@ -6,7 +6,7 @@
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/wallet-mock/cypress.config.js",
+        "cypressConfig": "apps/wallet-mock/cypress.config.ts",
         "devServerTarget": "wallet-ui:serve:test"
       }
     },
