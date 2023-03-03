@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
+import type { Connection } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
+import { indexBy } from '../lib/index-by'
 
 export const useOpenWallet = () => {
   const navigate = useNavigate()
@@ -13,11 +15,13 @@ export const useOpenWallet = () => {
   const getWalletData = useCallback(
     async (wallet: string, passphrase: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_w, { keys = [] }, { permissions }] = await Promise.all([
-        client.DescribeWallet({ wallet, passphrase }),
-        client.ListKeys({ wallet, passphrase }),
-        client.ListPermissions({ wallet, passphrase }),
-      ])
+      const [_w, { keys = [] }, { permissions }, { activeConnections }] =
+        await Promise.all([
+          client.DescribeWallet({ wallet, passphrase }),
+          client.ListKeys({ wallet, passphrase }),
+          client.ListPermissions({ wallet, passphrase }),
+          client.ListConnections({}),
+        ])
 
       const keysWithMeta = await Promise.all(
         keys.map((key) =>
@@ -29,6 +33,16 @@ export const useOpenWallet = () => {
         )
       )
 
+      const walletConnections = activeConnections.reduce<string[]>(
+        (acc, connection) => {
+          if (connection.wallet === wallet) {
+            acc.push(connection.hostname)
+          }
+          return acc
+        },
+        []
+      )
+
       const permissionDetails = await Promise.all(
         Object.keys(permissions).map(async (hostname) => {
           const result = await client.DescribePermissions({
@@ -38,7 +52,7 @@ export const useOpenWallet = () => {
           })
           return {
             hostname,
-            active: false,
+            active: walletConnections.includes(hostname),
             permissions: result.permissions,
           }
         })
@@ -52,7 +66,10 @@ export const useOpenWallet = () => {
       dispatch({
         type: 'SET_CONNECTIONS',
         wallet,
-        connections: permissionDetails,
+        connections: permissionDetails.reduce<Record<string, Connection>>(
+          indexBy('hostname'),
+          {}
+        ),
       })
       dispatch({
         type: 'ACTIVATE_WALLET',

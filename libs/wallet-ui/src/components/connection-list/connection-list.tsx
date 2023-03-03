@@ -1,8 +1,9 @@
-import { Fragment, useCallback, useState } from 'react'
+import { Fragment, useCallback, useState, useMemo } from 'react'
 
 import type { Wallet } from '../../contexts/global/global-context'
 import { Dialog } from '../dialog'
 import { Disconnect } from './connection-disconnect'
+import { Remove } from './connection-remove'
 import { ConnectionItem } from './connection-item'
 import { ManagePermissions } from './connection-manage'
 
@@ -11,9 +12,15 @@ type ConnectionListProps = {
 }
 
 export const ConnectionList = ({ wallet }: ConnectionListProps) => {
+  const [removeHost, setRemoveHost] = useState<string | null>(null)
   const [disconnectHost, setDisconnectHost] = useState<string | null>(null)
   const [manageHost, setManageHost] = useState<string | null>(null)
-  const connectionList = Object.keys(wallet.connections || {})
+  const connectionList = useMemo(() => {
+    return Object.keys(wallet.connections || {}).filter((key) => {
+      const c = wallet.connections?.[key]
+      return c && !(!c.active && c.permissions.publicKeys.access === 'none')
+    })
+  }, [wallet.connections])
 
   const handleCloseDisconnect = useCallback(() => {
     setDisconnectHost(null)
@@ -22,6 +29,10 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
   const handleCloseManage = useCallback(() => {
     setManageHost(null)
   }, [setManageHost])
+
+  const handleCloseRemove = useCallback(() => {
+    setRemoveHost(null)
+  }, [])
 
   return (
     <div className={connectionList.length ? 'border-b border-black' : ''}>
@@ -34,6 +45,7 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
             <ConnectionItem
               connection={wallet.connections[key]}
               onManage={() => setManageHost(key)}
+              onRemove={() => setRemoveHost(key)}
               onDisconnect={() => setDisconnectHost(key)}
             />
           )}
@@ -49,6 +61,19 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
             wallet={wallet}
             hostname={disconnectHost}
             onClose={handleCloseDisconnect}
+          />
+        )}
+      </Dialog>
+      <Dialog
+        open={!!removeHost}
+        title="Remove connection"
+        onChange={() => setRemoveHost(null)}
+      >
+        {removeHost && (
+          <Remove
+            wallet={wallet}
+            hostname={removeHost}
+            onClose={handleCloseRemove}
           />
         )}
       </Dialog>
