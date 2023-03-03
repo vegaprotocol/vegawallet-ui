@@ -224,7 +224,7 @@ export const InteractionsProvider = () => {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
-    config: { ...config.default, duration: 200 },
+    config: { ...config.default, duration: 300 },
   })
 
   useEffect(() => {
@@ -251,7 +251,7 @@ export const InteractionsProvider = () => {
         <animated.div
           className={classnames(
             'fixed top-0 bottom-0 left-0 right-0 bg-black overflow-y-auto',
-            'transition duration-200 ease-in-out',
+            'transition duration-300 ease-in-out',
             background,
             color
           )}

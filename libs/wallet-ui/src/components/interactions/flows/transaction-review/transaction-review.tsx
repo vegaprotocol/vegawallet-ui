@@ -16,6 +16,11 @@ import { TransactionLogs } from '../../../transaction-logs'
 import { Tick } from '../../../icons/tick'
 import { Warning } from '../../../icons/warning'
 import type { InteractionErrorType } from '../../views/error'
+import { useExplorerUrl } from '../../../../hooks/use-explorer-url'
+import { CopyWithTooltip } from '../../../copy-with-tooltip'
+import { ExternalLink } from '../../../external-link'
+import { ArrowTopRight } from '../../../icons/arrow-top-right'
+import { truncateMiddle } from '../../../../lib/truncate-middle'
 
 export type TransactionReviewData = {
   traceID: string
@@ -68,6 +73,7 @@ export const TransactionReview = ({
   onClose,
   onUpdate,
 }: TransactionReviewProps) => {
+  const explorerUrl = useExplorerUrl()
   const [isLoading, setLoading] = useState<'approve' | 'reject' | false>(false)
   const { service } = useGlobal()
   const isProcessing = data.transaction && data.transaction.logs.length > 0
@@ -118,6 +124,23 @@ export const TransactionReview = ({
             className="min-h-[150px]"
             logs={data.transaction.logs}
           />
+          <div className="flex gap-[20px] mt-[20px]">
+            {data.transaction.txHash && (
+              <CopyWithTooltip text={data.transaction.txHash}>
+                <span className="text-neutral-light">
+                  {truncateMiddle(data.transaction.txHash)}
+                </span>
+              </CopyWithTooltip>
+            )}
+            {data.transaction.txHash && explorerUrl && (
+              <ExternalLink
+                href={`${explorerUrl}/txs/${data.transaction.txHash}`}
+              >
+                View in block explorer
+                <ArrowTopRight className="w-[13px] ml-[6px]" />
+              </ExternalLink>
+            )}
+          </div>
         </div>
       )}
       {!isProcessing && (
