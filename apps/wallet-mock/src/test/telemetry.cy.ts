@@ -58,6 +58,6 @@ describe('Telemetry dialog action', () => {
   it('should be able to submit telemetry form', () => {
     cy.get('[data-testid="telemetry-option-form"] #yes').click()
     cy.get('[data-testid="telemetry-option-continue"]').click()
-    cy.get('[role="dialog"]').should('not.be.visible')
+    cy.get('[role="dialog"]').should('not.exist')
   })
 })
