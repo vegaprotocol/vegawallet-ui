@@ -1,4 +1,5 @@
 import log from 'loglevel'
+import storageMock from './storage-mock'
 import type { Service } from '../types/service'
 
 const logger = log.getLogger('test')
@@ -35,15 +36,17 @@ export const service: Service = {
 
   // Config
   GetAppConfig: () =>
-    Promise.resolve({
-      logLevel: 'debug',
-      vegaHome: '',
-      defaultNetwork: 'test',
-      telemetry: {
-        consentAsked: true,
-        enabled: true,
-      },
-    }),
+    Promise.resolve(
+      storageMock('service.GetAppConfig', {
+        logLevel: 'debug',
+        vegaHome: '',
+        defaultNetwork: 'test',
+        telemetry: {
+          consentAsked: true,
+          enabled: true,
+        },
+      })
+    ),
   SearchForExistingConfiguration: () =>
     Promise.resolve({
       wallets: [],
