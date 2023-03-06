@@ -7,7 +7,7 @@ export default function getStorageMock(
     window.localStorage.getItem(`MOCK.${functionName}`) !== null
   ) {
     return JSON.parse(
-      window.localStorage.getItem(`MOCK.service.GetAppConfig`)?.toString() ||
+      window.localStorage.getItem(`MOCK.service.${functionName}`)?.toString() ||
         'null'
     )
   } else {
