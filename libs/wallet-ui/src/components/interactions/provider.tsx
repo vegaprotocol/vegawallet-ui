@@ -241,7 +241,10 @@ export const InteractionsProvider = () => {
       }
     })
 
-    return () => service.EventsOff('new_interaction')
+    return () => {
+      service.EventsOff('new_interaction')
+      interactionBus.removeAllListeners()
+    }
   }, [service, dispatch, setQueue])
 
   return transitions(
