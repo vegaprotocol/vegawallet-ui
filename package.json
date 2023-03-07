@@ -65,7 +65,6 @@
   "devDependencies": {
     "@commitlint/cli": "17.2.0",
     "@commitlint/config-conventional": "17.2.0",
-    "@cypress/grep": "3.1.4",
     "@nrwl/cli": "15.6.3",
     "@nrwl/devkit": "15.6.3",
     "@nrwl/esbuild": "15.1.1",
