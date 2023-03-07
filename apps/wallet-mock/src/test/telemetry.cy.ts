@@ -1,3 +1,5 @@
+import serviceMock from '../types/service-mock'
+
 const appConfigMock = {
   logLevel: 'debug',
   vegaHome: '',
@@ -11,7 +13,7 @@ const appConfigMock = {
 describe('Telemetry dialog elements', () => {
   // 0001-WALL-003 - if the app sends telemetry/analytics: must be prompted to opt into (or stay out of) analytics
   before(() => {
-    cy.mock('service.GetAppConfig', appConfigMock)
+    cy.mock(serviceMock.GetAppConfig, appConfigMock)
     cy.visit('/')
   })
   it('should see telemetry dialog', () => {
@@ -54,7 +56,7 @@ describe('Telemetry dialog elements', () => {
 
 describe('Telemetry dialog action', () => {
   before(() => {
-    cy.mock('service.GetAppConfig', appConfigMock)
+    cy.mock(serviceMock.GetAppConfig, appConfigMock)
     cy.visit('/')
   })
   it('should be able to submit telemetry form', () => {

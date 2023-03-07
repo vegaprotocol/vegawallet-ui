@@ -1,3 +1,5 @@
+import serviceMock from '../types/service-mock'
+
 const getVersion = {
   version: '0.98.0',
   gitHash: '0x0',
@@ -32,7 +34,7 @@ const getVersion = {
 describe('Network incompatible warning', () => {
   // 0001-WALL-015 - must be warned if the version I am using is not compatible with the version of Vega on the selected network, and I am given a link to get latest compatible version on github
   before(() => {
-    cy.mock('service.GetVersion', getVersion)
+    cy.mock(serviceMock.GetVersion, getVersion)
     cy.visit('/')
   })
   it('should see network incompatible warning button', () => {
@@ -46,7 +48,7 @@ describe('Network incompatible warning', () => {
 
 describe('Network incompatible dialog validations', () => {
   before(() => {
-    cy.mock('service.GetVersion', getVersion)
+    cy.mock(serviceMock.GetVersion, getVersion)
     cy.visit('/')
     cy.getByTestId('network-compatibility-warning').click()
   })
@@ -97,7 +99,7 @@ describe('Network incompatible dialog validations', () => {
 
 describe('Network incompatible dialog actions', () => {
   beforeEach(() => {
-    cy.mock('service.GetVersion', getVersion)
+    cy.mock(serviceMock.GetVersion, getVersion)
     cy.visit('/')
     cy.getByTestId('network-compatibility-warning').click()
   })
@@ -124,7 +126,7 @@ describe('Network compatible icon', () => {
   before(() => {
     const mock = Object.assign({}, getVersion)
     mock.networksCompatibility[0].isCompatible = true
-    cy.mock('service.GetVersion', getVersion)
+    cy.mock(serviceMock.GetVersion, getVersion)
     cy.visit('/')
   })
   it('should see status icon green and blinking', () => {
