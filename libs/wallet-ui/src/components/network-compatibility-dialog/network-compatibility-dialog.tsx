@@ -194,17 +194,7 @@ export const NetworkCompatibilityDialog = () => {
             </p>
           )}
           {networkData.network && (
-            <div>
-              <p className="mb-[20px] hidden">
-                This software (<code>vega@{supportedVersion}</code>) and the
-                network{' '}
-                <code className="bg-dark-200 py-[1px] px-[5px]">
-                  {networkData.network}
-                </code>{' '}
-                (<code>vega@{networkData.retrievedVersion}</code>) are not
-                running on the same version, you may encounter compatibility
-                issues, such as transactions not being seen by the network.
-              </p>
+            <div data-testid="network-compatibility-info-text">
               <p className="mb-[20px]">
                 This software and the network{' '}
                 <code className="bg-dark-200 py-[1px] px-[5px]">
@@ -237,14 +227,12 @@ export const NetworkCompatibilityDialog = () => {
                 Get wallet app for {networkData.retrievedVersion}
               </AnchorButton>
             )}
-            {compatibleNetworksList.length === 0 && (
-              <Button
-                data-testid="network-compatibility-change"
-                onClick={() => setSubview('change')}
-              >
-                Change network
-              </Button>
-            )}
+            <Button
+              data-testid="network-compatibility-change"
+              onClick={() => setSubview('change')}
+            >
+              Change network
+            </Button>
           </ButtonGroup>
           <ButtonUnstyled
             data-testid="network-compatibility-continue"
