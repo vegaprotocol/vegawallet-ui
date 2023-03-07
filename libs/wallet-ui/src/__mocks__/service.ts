@@ -1,11 +1,17 @@
 import log from 'loglevel'
 import storageMock from './storage-mock'
 import type { Service } from '../types/service'
+import type { RawInteraction } from '../types'
 
 const logger = log.getLogger('test')
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {}
+
+type CallbackFunctionTypes =
+  | (() => void)
+  | ((interaction: RawInteraction) => void)
+  | ((err: Error) => void)
 
 export const service: Service = {
   TYPE: 'http',
@@ -76,7 +82,12 @@ export const service: Service = {
     }),
 
   // API
-  EventsOn: noop,
+  EventsOn: (event: string, cb: CallbackFunctionTypes) => {
+    window.document.body.addEventListener(event, (e) => {
+      const detail = e && (e as CustomEvent).detail
+      cb(detail)
+    })
+  },
   EventsOff: noop,
   RespondToInteraction: () => Promise.resolve(undefined),
 }
