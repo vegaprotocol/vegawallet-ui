@@ -25,3 +25,5 @@ jobs:
 
       - name: Run tests
         run: yarn e2e:percy --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
