@@ -1,5 +1,5 @@
 describe('User Journey -- Onboard', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('#/onboard')
   })
 
