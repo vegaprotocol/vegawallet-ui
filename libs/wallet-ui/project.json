@@ -28,7 +28,7 @@
             "nx run wallet-ui:build-css:test",
             "nx run wallet-ui:build-js:test",
             "cp libs/wallet-ui/test/index.html dist/test/libs/wallet-ui",
-            "node scripts/rewrite-bundle-names.js dist/libs/wallet-ui/package"
+            "node scripts/rewrite-bundle-names.js dist/libs/wallet-ui/package.json"
           ]
         }
       }
