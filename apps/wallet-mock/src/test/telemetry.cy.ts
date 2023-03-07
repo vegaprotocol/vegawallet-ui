@@ -48,6 +48,7 @@ describe('Telemetry dialog elements', () => {
   })
 
   it('should see form button', () => {
+    cy.percySnapshot('onboarding_telemetry')
     cy.getByTestId('telemetry-option-form')
       .find('button')
       .should('have.text', 'Continue')
