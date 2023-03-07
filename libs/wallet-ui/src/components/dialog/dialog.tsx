@@ -11,6 +11,7 @@ interface DialogProps {
   children: React.ReactNode
   size?: 'sm' | 'lg'
   onChange?: (open: boolean) => void
+  'data-testid'?: string
 }
 
 export function Dialog({
@@ -19,6 +20,7 @@ export function Dialog({
   children,
   onChange,
   size = 'sm',
+  ...props
 }: DialogProps) {
   const transitions = useTransition(open, {
     from: { opacity: 0, y: -10 },
@@ -51,6 +53,7 @@ export function Dialog({
                   forceMount={true}
                   asChild={true}
                   className="text-white font-sans"
+                  data-testid={props['data-testid']}
                 >
                   <animated.div
                     className={classnames(

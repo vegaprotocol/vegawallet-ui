@@ -66,6 +66,7 @@ export function ServiceStatus() {
         <StatusCircle background="bg-green" blinking />
       ) : (
         <ButtonUnstyled
+          data-testid="network-compatibility-warning"
           className="text-warning-light cursor-pointer inline-block"
           onClick={() => {
             dispatch({

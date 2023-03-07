@@ -33,6 +33,7 @@ export const TelemetryDialog = () => {
         config?.telemetry.consentAsked === false && features.TELEMETRY_CHECK
       }
       title="Report bugs and crashes"
+      data-testid="telemetry-option-dialog"
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
