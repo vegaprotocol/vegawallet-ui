@@ -1,4 +1,4 @@
-describe('Onboard -- User Journey', () => {
+describe('User Journey -- Onboard', () => {
   before(() => {
     cy.visit('#/onboard')
   })
