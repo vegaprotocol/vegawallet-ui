@@ -6,7 +6,7 @@ describe('User Journey -- Onboard', () => {
   it('User journey: Onboarding (Use existing)', () => {
     cy.percySnapshot('onboard_existing-wallet_home-1')
     cy.getByTestId('use-existing-wallet').click()
-    cy.percySnapshot('onboard_existing-wallet_keys-2')
+    cy.percySnapshot('home-page_keys')
   })
 
   it('User journey: Onboarding (Recovery phrase)', () => {
@@ -20,7 +20,6 @@ describe('User Journey -- Onboard', () => {
     cy.getByTestId('wallet-import-form-passphrase-confirm').type('123')
     cy.percySnapshot('onboard_recovery-wallet_import-2')
     cy.getByTestId('wallet-import-form-submit').click()
-    cy.percySnapshot('onboard_recovery-wallet_keys-3')
   })
 
   it('User journey: Onboarding (Create wallet)', () => {
@@ -36,6 +35,5 @@ describe('User Journey -- Onboard', () => {
     cy.percySnapshot('onboard_create-wallet_success-3')
 
     cy.getByTestId('create-wallet-success-cta').click()
-    cy.percySnapshot('onboard_create-wallet_keys-4')
   })
 })

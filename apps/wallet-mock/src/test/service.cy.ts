@@ -4,7 +4,6 @@ describe('Interactions', () => {
   })
   it('should display unhealthy status', () => {
     cy.visit('/')
-    cy.percySnapshot('view-wallets_keys')
     cy.window().then((win) => {
       win.document.body.dispatchEvent(new CustomEvent('service_is_unhealthy'))
     })
