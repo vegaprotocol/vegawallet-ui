@@ -18,6 +18,8 @@ import { AppRouter } from './routes'
 import type { Service } from './types/service'
 import type { Runtime } from './types/runtime'
 import type { Features } from './types/features'
+import { useEffect } from 'react'
+import { Globals } from 'react-spring'
 export { FeatureMap } from './types/features'
 
 export * from './types'
@@ -35,6 +37,19 @@ const ROOT = 'wallet-ui'
  * Renders all the providers
  */
 export function App({ service, client, runtime, features }: AppProps) {
+  useEffect(() => {
+    if ('Cypress' in window) {
+      Globals.assign({
+        skipAnimation: true,
+      })
+    }
+
+    return () => {
+      Globals.assign({
+        skipAnimation: false,
+      })
+    }
+  })
   return (
     <ErrorBoundary
       fallback={({ error }) => (

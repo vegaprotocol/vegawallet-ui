@@ -66,6 +66,7 @@ export function ServiceStatus() {
         <StatusCircle background="bg-green" blinking />
       ) : (
         <ButtonUnstyled
+          data-testid="network-compatibility-warning"
           className="text-warning-light cursor-pointer inline-block"
           onClick={() => {
             dispatch({
@@ -95,7 +96,7 @@ export function ServiceStatus() {
     }
     case ServiceState.Stopped: {
       return (
-        <div data-testid="service-status" className="whitespace-nowrap">
+        <div data-testid="service-status-stopped" className="whitespace-nowrap">
           <StatusCircle background="bg-red" />
           <span>
             Wallet Service: Not running.{' '}
@@ -108,7 +109,7 @@ export function ServiceStatus() {
     }
     case ServiceState.Loading: {
       return (
-        <div data-testid="service-status" className="whitespace-nowrap">
+        <div data-testid="service-status-loading" className="whitespace-nowrap">
           <StatusCircle blinking background="bg-orange" />
           <span className="loading">Wallet Service: Loading</span>
         </div>
@@ -116,7 +117,10 @@ export function ServiceStatus() {
     }
     case ServiceState.Stopping: {
       return (
-        <div data-testid="service-status" className="whitespace-nowrap">
+        <div
+          data-testid="service-status-stopping"
+          className="whitespace-nowrap"
+        >
           <StatusCircle blinking background="bg-orange" />
           <span className="loading">Wallet Service: Stopping</span>
         </div>
@@ -124,7 +128,10 @@ export function ServiceStatus() {
     }
     case ServiceState.Unhealthy: {
       return (
-        <div data-testid="service-status" className="whitespace-nowrap">
+        <div
+          data-testid="service-status-unhealthy"
+          className="whitespace-nowrap"
+        >
           <StatusCircle blinking background="bg-orange" />
           <span>
             Wallet Service: Unhealthy{' '}
@@ -135,7 +142,10 @@ export function ServiceStatus() {
     }
     case ServiceState.Unreachable: {
       return (
-        <div data-testid="service-status" className="whitespace-nowrap">
+        <div
+          data-testid="service-status-unreachable"
+          className="whitespace-nowrap"
+        >
           <StatusCircle blinking background="bg-orange" />
           <span className="loading">
             Wallet Service: Not reachable, retrying
@@ -145,7 +155,7 @@ export function ServiceStatus() {
     }
     case ServiceState.Error: {
       return (
-        <div data-testid="service-status" className="whitespace-nowrap">
+        <div data-testid="service-status-error" className="whitespace-nowrap">
           <StatusCircle background="bg-red" />
           <span>
             Wallet Service: Failed to start.{' '}

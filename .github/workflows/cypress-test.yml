@@ -24,4 +24,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run tests
-        run: yarn e2e --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome
+        run: yarn e2e:percy --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}

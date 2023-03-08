@@ -50,7 +50,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         helperText={errors.wallet?.message}
       >
         <Input
-          data-testid="wallet-name"
+          data-testid="wallet-import-form-name"
           type="text"
           {...register('wallet', { required: Validation.REQUIRED })}
         />
@@ -61,7 +61,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         helperText={errors.recoveryPhrase?.message}
       >
         <Textarea
-          data-testid="recovery-phrase"
+          data-testid="wallet-import-form-recovery-phrase"
           {...register('recoveryPhrase', { required: Validation.REQUIRED })}
           className="min-h-[100px]"
         />
@@ -86,19 +86,18 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         helperText={errors.passphrase?.message}
       >
         <Input
-          data-testid="passphrase"
+          data-testid="wallet-import-form-passphrase"
           type="password"
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
       <FormGroup
-        data-testid="confirm-passphrase"
         label="Confirm passphrase"
         labelFor="confirmPassphrase"
         helperText={errors.confirmPassphrase?.message}
       >
         <Input
-          data-testid="confirm-passphrase"
+          data-testid="wallet-import-form-passphrase-confirm"
           type="password"
           {...register('confirmPassphrase', {
             required: Validation.REQUIRED,
@@ -107,7 +106,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid="submit" type="submit">
+        <Button data-testid="wallet-import-form-submit" type="submit">
           Submit
         </Button>
         <ButtonUnstyled data-testid="cancel" onClick={cancel}>
