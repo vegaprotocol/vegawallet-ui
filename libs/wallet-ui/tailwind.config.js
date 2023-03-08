@@ -11,7 +11,7 @@ module.exports = {
     path.join(
       __dirname,
       '../../node_modules/@vegaprotocol/ui-toolkit/index.js'
-    ), // Sledge hammer to crack a wallnut, add ALL classes
+    ),
   ],
   theme: _.merge(theme, uiToolkitTheme),
   darkMode: 'class',
