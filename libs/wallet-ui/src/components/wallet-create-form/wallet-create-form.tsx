@@ -74,7 +74,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid="submit" type="submit">
+        <Button data-testid="create-wallet-form-submit" type="submit">
           Submit
         </Button>
         <ButtonUnstyled onClick={cancel}>Cancel</ButtonUnstyled>

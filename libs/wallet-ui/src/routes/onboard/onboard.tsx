@@ -70,6 +70,7 @@ export function Onboard() {
         <p className="mb-[20px]">Existing wallets found</p>
         <ButtonGroup>
           <Button
+            data-testid="use-existing-wallet"
             loading={isLoading}
             className="w-full"
             onClick={handleImportExistingWallet}
