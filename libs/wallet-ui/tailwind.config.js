@@ -13,7 +13,7 @@ module.exports = {
       '../../node_modules/@vegaprotocol/ui-toolkit/index.js'
     ),
   ],
-  theme: _.merge(theme, uiToolkitTheme),
+  theme: { extend: _.merge(theme, uiToolkitTheme) },
   darkMode: 'class',
   plugins: [vegaCustomClasses],
 }
