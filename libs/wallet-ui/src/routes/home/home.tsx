@@ -12,6 +12,7 @@ import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
+import { Button as Button2 } from '@vegaprotocol/ui-toolkit'
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -72,9 +73,13 @@ export const Home = () => {
       >
         <ButtonGroup className="mb-[20px]">
           <Link className="flex-1" to="/wallet-create">
-            <Button data-testid="create-new-wallet" className="w-full">
+            <Button2
+              variant="primary"
+              data-testid="create-new-wallet"
+              className="w-full"
+            >
               Create wallet
-            </Button>
+            </Button2>
           </Link>
           <Link className="flex-1" to="/wallet-import">
             <Button data-testid="import-wallet" className="w-full">
