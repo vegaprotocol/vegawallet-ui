@@ -6,7 +6,7 @@ import { ThemeProvider } from '@vegaprotocol/wallet-theme'
 import { AppFrame, AppLoader } from './app-loader'
 import { Button } from './components/button'
 import { Chrome } from './components/chrome'
-import { InteractionManager } from './components/interaction-manager'
+import { InteractionsProvider } from './components/interactions'
 import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
 import { PassphraseModal } from './components/passphrase-modal'
 import { TransactionDetailsDialog } from './components/transaction-details-dialog'
@@ -75,7 +75,7 @@ export function App({ service, client, runtime, features }: AppProps) {
                     <AppRouter />
                     <TelemetryDialog />
                     <PassphraseModal />
-                    <InteractionManager />
+                    <InteractionsProvider />
                     <NetworkCompatibilityDialog />
                     <TransactionDetailsDialog />
                     <Settings />

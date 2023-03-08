@@ -23,8 +23,17 @@ export type InteractionContentProps<T extends RawInteraction> = {
 // Received interaction content
 
 export interface ErrorOccurredContent {
-  name: string
+  type:
+    | 'User error'
+    | 'Internal error'
+    | 'Server error'
+    | 'Network error'
+    | 'Application error'
   error: string
+}
+
+export interface SessionStartedData {
+  workflow: EventFlowType
 }
 
 export interface LogContent {
@@ -194,6 +203,7 @@ export type Log = {
 export type SessionStarted = {
   traceID: string
   name: 'INTERACTION_SESSION_BEGAN'
+  data: SessionStartedData
 }
 
 export type SessionEnded = {
@@ -267,7 +277,6 @@ export interface WalletConnectionDecision {
 
 export interface SelectedWallet {
   wallet: string
-  passphrase: string
 }
 
 export interface Decision {

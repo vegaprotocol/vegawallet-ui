@@ -1,6 +1,11 @@
 import { omit } from 'ramda'
 
-import type { LogContent, RequestTransactionReview } from '../types/interaction'
+import type {
+  LogContent,
+  RequestTransactionReview,
+  RequestTransactionSuccess,
+  RequestTransactionFailure,
+} from '../types/interaction'
 import { Intent } from '../config/intent'
 
 export enum TransactionStatus {
@@ -120,24 +125,108 @@ const getType = (payload: object) => {
   )[0] as TransactionKeys
 }
 
-export const parseTransactionInput = (
-  event: RequestTransactionReview
-): Transaction => {
-  const payload = getPayload(event.data.transaction)
-  const type = getType(payload)
+type Tx = {
+  signature: {
+    value: string
+  }
+}
+
+const parseTx = (tx: string) => {
+  try {
+    const { signature } = JSON.parse(tx) as Tx
+    return { signature: signature.value }
+  } catch (err) {
+    return {}
+  }
+}
+
+type InputData = {
+  blockHeight: string
+}
+
+const deserializeTransaction = (inputData: string) => {
+  try {
+    const { blockHeight } = JSON.parse(inputData) as InputData
+    return { blockHeight: parseInt(blockHeight, 10) }
+  } catch (err) {
+    return {}
+  }
+}
+
+const parseEndEvent = (
+  event: RequestTransactionSuccess | RequestTransactionFailure
+) => {
+  const isSuccess = event.name === 'TRANSACTION_SUCCEEDED'
+  const txData = parseTx(event.data.tx)
+  const inputData = deserializeTransaction(event.data.deserializedInputData)
 
   return {
-    id: event.traceID,
-    type,
-    payload,
-    status: TransactionStatus.PENDING,
-    hostname: event.data.hostname,
-    receivedAt: new Date(event.data.receivedAt),
-    wallet: event.data.wallet,
-    publicKey: event.data.publicKey,
-    logs: [],
-    txHash: null,
+    ...txData,
+    ...inputData,
+    status: isSuccess ? TransactionStatus.SUCCESS : TransactionStatus.FAILURE,
+    txHash: event.name === 'TRANSACTION_SUCCEEDED' ? event.data.txHash : null,
+    error:
+      event.name === 'TRANSACTION_FAILED'
+        ? event.data.error.Message
+        : undefined,
   }
+}
+
+export function parseTransactionInput(
+  event: RequestTransactionReview
+): Transaction
+export function parseTransactionInput(
+  event: RequestTransactionSuccess | RequestTransactionFailure,
+  t: Transaction
+): Transaction
+export function parseTransactionInput(
+  event:
+    | RequestTransactionReview
+    | RequestTransactionSuccess
+    | RequestTransactionFailure,
+  existingTransaction?: Transaction
+): Transaction {
+  if (event.name === 'REQUEST_TRANSACTION_REVIEW_FOR_SENDING') {
+    const payload = getPayload(event.data.transaction)
+    const type = getType(payload)
+
+    return {
+      id: event.traceID,
+      type,
+      payload,
+      status: TransactionStatus.PENDING,
+      hostname: event.data.hostname,
+      receivedAt: new Date(event.data.receivedAt),
+      wallet: event.data.wallet,
+      publicKey: event.data.publicKey,
+      logs: [],
+      txHash: null,
+    }
+  } else if (existingTransaction) {
+    const transactionPartial = parseEndEvent(event)
+
+    if (event.name === 'TRANSACTION_FAILED') {
+      return {
+        ...existingTransaction,
+        ...transactionPartial,
+        logs: [
+          ...existingTransaction.logs,
+          {
+            type: 'Error',
+            message: `Error: ${event.data.error.Message}`,
+          },
+        ],
+      }
+    }
+
+    return {
+      ...existingTransaction,
+      ...transactionPartial,
+    }
+  }
+  throw new Error(
+    'Invalid data provided. For "RequestTransactionSuccess" and "RequestTransactionFailure" you need to provide an existing transaction.'
+  )
 }
 
 export const sortTransaction = (a: Transaction, b: Transaction) => {

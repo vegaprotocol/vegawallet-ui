@@ -83,6 +83,12 @@ export type GlobalAction =
         networks: string[]
       }
     }
+  | {
+      type: 'START_INTERACTION'
+    }
+  | {
+      type: 'END_INTERACTION'
+    }
   // Wallet
   | {
       type: 'ADD_WALLET'
@@ -272,6 +278,18 @@ export function globalReducer(
       }
     }
     case 'COMPLETE_ONBOARD': {
+      return {
+        ...state,
+        status: AppStatus.Initialised,
+      }
+    }
+    case 'START_INTERACTION': {
+      return {
+        ...state,
+        status: AppStatus.Interacting,
+      }
+    }
+    case 'END_INTERACTION': {
       return {
         ...state,
         status: AppStatus.Initialised,

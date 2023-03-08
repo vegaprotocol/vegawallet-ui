@@ -18,6 +18,7 @@ export enum AppStatus {
   Initialised = 'Initialised',
   Failed = 'Failed',
   Onboarding = 'Onboarding',
+  Interacting = 'Interacting',
 }
 
 export enum ServiceState {
