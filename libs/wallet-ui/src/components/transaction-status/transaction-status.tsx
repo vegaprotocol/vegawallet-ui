@@ -46,6 +46,7 @@ export const TransactionStatus = ({ transaction }: TransactionStatusProps) => {
 
   return (
     <span
+      data-testid="transaction-status"
       className={classnames(
         'inline-block text-white py-[4px] px-[8px] m-[8px] mb-0 rounded-sm',
         background

@@ -132,7 +132,7 @@ const compileSectionList = ({
 
   rows.push({
     key: (
-      <>
+      <div data-testid="transaction-details-key">
         <span>Transaction details</span>
         <ButtonUnstyled className="ml-[10px]" onClick={onViewDetails}>
           <DropdownArrow
@@ -141,18 +141,20 @@ const compileSectionList = ({
             })}
           />
         </ButtonUnstyled>
-      </>
+      </div>
     ),
     value: (
-      <CodeBlock
-        className={classnames('text-xs mb-0', {
-          hidden: !isDetailSectionVisible,
-        })}
-      >
-        <pre data-testid="transaction-payload">
-          {JSON.stringify(transaction.payload, null, 2)}
-        </pre>
-      </CodeBlock>
+      <div data-testid="transaction-details-value">
+        <CodeBlock
+          className={classnames('text-xs mb-0', {
+            hidden: !isDetailSectionVisible,
+          })}
+        >
+          <pre data-testid="transaction-payload">
+            {JSON.stringify(transaction.payload, null, 2)}
+          </pre>
+        </CodeBlock>
+      </div>
     ),
   })
 
@@ -210,8 +212,30 @@ export const TransactionDetails = ({
     <div>
       {sectionList.map(({ key, value }, index) => (
         <div key={index} className="pb-[20px]">
-          {key && <Title className="m-0 mb-[12px]">{key}</Title>}
-          {value}
+          {typeof key === 'string' ? (
+            <>
+              <Title
+                data-testid={`${String(key)
+                  .toLowerCase()
+                  .replace(' ', '-')}-key`}
+                className="m-0 mb-[12px]"
+              >
+                {key}
+              </Title>
+              <div
+                data-testid={`${String(key)
+                  .toLowerCase()
+                  .replace(' ', '-')}-value`}
+              >
+                {value}
+              </div>
+            </>
+          ) : (
+            <>
+              <Title className="m-0 mb-[12px]">{key}</Title>
+              {value}
+            </>
+          )}
         </div>
       ))}
     </div>

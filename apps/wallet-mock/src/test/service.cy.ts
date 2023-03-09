@@ -1,9 +1,8 @@
 describe('Interactions', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/')
   })
   it('should display unhealthy status', () => {
-    cy.visit('/')
     cy.window().then((win) => {
       win.document.body.dispatchEvent(new CustomEvent('service_is_unhealthy'))
     })
@@ -14,7 +13,6 @@ describe('Interactions', () => {
   })
 
   it('should display healthy status', () => {
-    cy.visit('/')
     cy.window().then((win) => {
       win.document.body.dispatchEvent(new CustomEvent('service_is_healthy'))
     })
@@ -25,7 +23,6 @@ describe('Interactions', () => {
   })
 
   it('should display unreachable status', () => {
-    cy.visit('/')
     cy.window().then((win) => {
       win.document.body.dispatchEvent(new CustomEvent('service_unreachable'))
     })
@@ -36,7 +33,6 @@ describe('Interactions', () => {
   })
 
   it('should display service stopped with error status', () => {
-    cy.visit('/')
     cy.window().then((win) => {
       win.document.body.dispatchEvent(
         new CustomEvent('service_stopped_with_error')
@@ -49,7 +45,6 @@ describe('Interactions', () => {
   })
 
   it('should display service stopped status', () => {
-    cy.visit('/')
     cy.window().then((win) => {
       win.document.body.dispatchEvent(new CustomEvent('service_stopped'))
     })

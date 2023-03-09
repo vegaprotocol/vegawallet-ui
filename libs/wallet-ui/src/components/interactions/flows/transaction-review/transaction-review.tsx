@@ -114,7 +114,9 @@ export const TransactionReview = ({
         <Title className="mb-[5px] mt-[20px]">
           {data.transaction ? TRANSACTION_TITLES[data.transaction.type] : ''}
         </Title>
-        <p className="text-neutral-light">{data.transaction.hostname}</p>
+        <p data-testid="transaction-hostname" className="text-neutral-light">
+          {data.transaction.hostname}
+        </p>
       </div>
       {isProcessing && (
         <div className="mb-[20px]">
@@ -150,6 +152,7 @@ export const TransactionReview = ({
       {data.transaction.status === TransactionStatus.PENDING && (
         <ButtonGroup inline>
           <Button
+            data-testid="transaction-approve-button"
             loading={isLoading === 'approve'}
             disabled={!!isLoading}
             onClick={() => handleDecision(true)}
@@ -157,6 +160,7 @@ export const TransactionReview = ({
             Approve
           </Button>
           <Button
+            data-testid="transaction-reject-button"
             loading={isLoading === 'reject'}
             disabled={!!isLoading}
             onClick={() => handleDecision(false)}

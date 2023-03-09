@@ -1,4 +1,3 @@
-import '../src/index.css'
 import { createRoot } from 'react-dom/client'
 import { App as WalletUI } from '../src'
 import { service, client, runtime } from '../src/mocks'
