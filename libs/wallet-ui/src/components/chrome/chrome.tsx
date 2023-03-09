@@ -30,9 +30,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           style={{
             height: state.status === AppStatus.Initialised ? DRAWER_HEIGHT : 0,
           }}
-          className={classnames(
-            'fixed bottom-0 left-0 w-full transition-all duration-200'
-          )}
+          className="fixed bottom-0 left-0 w-full transition-all duration-200"
         >
           <ChromeDrawer height={height} />
         </div>

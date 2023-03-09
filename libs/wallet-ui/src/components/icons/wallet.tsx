@@ -1,6 +1,7 @@
-export const Wallet = () => {
+export const Wallet = ({ className }: { className?: string }) => {
   return (
     <svg
+      className={className}
       width="21"
       height="19"
       viewBox="0 0 21 19"

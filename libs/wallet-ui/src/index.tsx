@@ -20,6 +20,7 @@ import type { Runtime } from './types/runtime'
 import type { Features } from './types/features'
 import { useEffect } from 'react'
 import { Globals } from 'react-spring'
+import { NavBar } from './components/navbar'
 
 export { FeatureMap } from './types/features'
 
@@ -68,10 +69,11 @@ export function App({ service, client, runtime, features }: AppProps) {
           runtime={runtime}
           features={features}
         >
-          <div id={ROOT} className="h-full text-white font-sans">
+          <div id={ROOT} className="h-full text-white font-sans bg-black">
             <Router>
               <AppFrame>
-                <Chrome>
+                <NavBar />
+                {/* <Chrome>
                   <AppLoader>
                     <AppRouter />
                     <TelemetryDialog />
@@ -81,7 +83,7 @@ export function App({ service, client, runtime, features }: AppProps) {
                     <TransactionDetailsDialog />
                     <Settings />
                   </AppLoader>
-                </Chrome>
+                </Chrome> */}
               </AppFrame>
             </Router>
           </div>

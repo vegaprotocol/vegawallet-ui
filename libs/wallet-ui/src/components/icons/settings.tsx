@@ -1,6 +1,7 @@
-export const Settings = () => {
+export const Settings = ({ className }: { className?: string }) => {
   return (
     <svg
+      className={className}
       width="22"
       height="21"
       viewBox="0 0 22 21"
