@@ -1,38 +1,25 @@
-// For now it supports only simple transaction review event, ideally it should be extended to support all possible workflows
-
-Cypress.Commands.add('triggerTransactionEvent', (event, data) => {
+Cypress.Commands.add('sendBackendInteraction', (interaction, data) => {
   cy.window().then((win) => {
     win.document.body.dispatchEvent(
       new CustomEvent('new_interaction', {
         detail: {
-          name: 'INTERACTION_SESSION_BEGAN',
-          data: { workflow: 'TRANSACTION_REVIEW' },
-          traceID: '1',
-        },
-      })
-    )
-  })
-  cy.window().then((win) => {
-    win.document.body.dispatchEvent(
-      new CustomEvent('new_interaction', {
-        detail: {
-          name: event,
+          name: interaction,
           data,
           traceID: '1',
         },
       })
     )
   })
-  cy.window().then((win) => {
-    win.document.body.dispatchEvent(
-      new CustomEvent('new_interaction', {
-        detail: {
-          name: 'INTERACTION_SESSION_ENDED',
-          traceID: '1',
-        },
-      })
-    )
+})
+
+Cypress.Commands.add('beginInteractionSession', (type) => {
+  cy.sendBackendInteraction('INTERACTION_SESSION_BEGAN', {
+    workflow: type,
   })
+})
+
+Cypress.Commands.add('endInteractionSession', () => {
+  cy.sendBackendInteraction('INTERACTION_SESSION_ENDED')
 })
 
 // Below is a scheme of possible wallet worfklows:

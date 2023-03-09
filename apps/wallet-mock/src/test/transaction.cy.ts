@@ -11,7 +11,9 @@ describe('Transaction review modal', () => {
   // 0001-WALL-025 - must see the details of the transaction
   before(() => {
     cy.visit('/')
-    cy.triggerTransactionEvent('REQUEST_TRANSACTION_REVIEW_FOR_SENDING', data)
+    cy.beginInteractionSession('TRANSACTION_REVIEW')
+    cy.sendBackendInteraction('REQUEST_TRANSACTION_REVIEW_FOR_SENDING', data)
+    cy.endInteractionSession()
   })
   it('should see pending transaction', () => {
     cy.getByTestId('transaction-status').should('contain', 'Pending')
