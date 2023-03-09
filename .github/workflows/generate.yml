@@ -19,20 +19,34 @@ jobs:
           key: node_modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install root dependencies
         run: yarn install --frozen-lockfile
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: '3.x'
+      - name: Clone vega
+        run: git clone git@github.com:vegaprotocol/vega.git
+      - name: Regenerate transactions interface
+        run: |
+          yarn nx run transactions:generate \
+          rm -rf vega \
+        with: WALLET_TRANSACTIONS_ROOT=./vega/protos/sources
+          WALLET_TRANSACTIONS_SOURCE=./vega/protos/sources/vega/commands/v1/commands.proto
       - name: Regenerate the wallet admin
         run: yarn nx run wallet-admin:generate
         with: WALLET_ADMIN_SPECS={{ github.event.data.source }}
       - name: Regenerate the wallet client
         run: yarn nx run wallet-client:generate
         with: WALLET_CLIENT_SPECS={{ github.event.data.source }}
+      - name: Lint
+        run: yarn nx affected --target=lint --fix
+      - name: Format
+        run: yarn nx format:write
       - name: Bump the library versions
-        run: yarn nx run-many target=bump
+        run: yarn nx affected --target=bump
       - name: Update readmes
         run: |
           node ./scripts/bump-readme --project=wallet-client --version={{ github.event.data.version }} \
           node ./scripts/bump-readme --project=wallet-admin --version={{ github.event.data.version }} \
-      - name: Format
-        run: yarn nx format:write
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:
