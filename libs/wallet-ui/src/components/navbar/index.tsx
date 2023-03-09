@@ -3,6 +3,7 @@ import { Settings } from '../icons/settings'
 import { Wallet } from '../icons/wallet'
 import type { To } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
+import classNames from 'classnames'
 
 export const NavButton = ({
   icon,
@@ -22,12 +23,12 @@ export const NavButton = ({
           <div className="h-full py-3 grid gap-0 grid-rows-[1fr_auto_auto]">
             <div className="grid items-center">{icon}</div>
             <span className="uppercase">{text}</span>
-            {isActive && (
-              <span
-                data-testid="link-active"
-                className="absolute h-0.5 w-full bottom-[-1px] left-0 bg-vega-yellow"
-              />
-            )}
+            <div
+              data-testid="link-active"
+              className={classNames('h-0.5 w-full bottom-[-1px]', {
+                'bg-vega-yellow': isActive,
+              })}
+            />
           </div>
         )
       }}
@@ -39,7 +40,7 @@ export const NavBar = () => {
   return (
     <nav
       data-testid="nav-bar"
-      className="w-full fixed h-20 grid gap-0 grid-cols-[1fr_1fr]"
+      className="w-full h-20 grid gap-0 grid-cols-[1fr_1fr]"
     >
       <NavButton
         end={true}

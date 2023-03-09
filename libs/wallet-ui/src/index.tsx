@@ -72,8 +72,7 @@ export function App({ service, client, runtime, features }: AppProps) {
           <div id={ROOT} className="h-full text-white font-sans bg-black">
             <Router>
               <AppFrame>
-                <NavBar />
-                {/* <Chrome>
+                <Chrome>
                   <AppLoader>
                     <AppRouter />
                     <TelemetryDialog />
@@ -82,8 +81,9 @@ export function App({ service, client, runtime, features }: AppProps) {
                     <NetworkCompatibilityDialog />
                     <TransactionDetailsDialog />
                     <Settings />
+                    <NavBar />
                   </AppLoader>
-                </Chrome> */}
+                </Chrome>
               </AppFrame>
             </Router>
           </div>
