@@ -20,6 +20,7 @@ import type { Runtime } from './types/runtime'
 import type { Features } from './types/features'
 import { useEffect } from 'react'
 import { Globals } from 'react-spring'
+
 export { FeatureMap } from './types/features'
 
 export * from './types'
