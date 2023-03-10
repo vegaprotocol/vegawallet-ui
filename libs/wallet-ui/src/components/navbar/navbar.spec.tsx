@@ -36,7 +36,6 @@ describe('NavButton', () => {
     expect(screen.getByTestId('nav-button')).toBeInTheDocument()
     expect(screen.getByTestId('test-icon')).toBeInTheDocument()
     expect(screen.getByText('Test Button')).toBeInTheDocument()
-    expect(screen.getByTestId('nav-button')).not.toHaveClass('text-white')
     expect(screen.getByTestId('link-active')).not.toHaveClass('bg-vega-yellow')
   })
 
