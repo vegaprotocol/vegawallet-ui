@@ -20,7 +20,6 @@ import type { Runtime } from './types/runtime'
 import type { Features } from './types/features'
 import { useEffect } from 'react'
 import { Globals } from 'react-spring'
-import { NavBar } from './components/navbar'
 
 export { FeatureMap } from './types/features'
 
@@ -81,7 +80,6 @@ export function App({ service, client, runtime, features }: AppProps) {
                     <NetworkCompatibilityDialog />
                     <TransactionDetailsDialog />
                     <Settings />
-                    <NavBar />
                   </AppLoader>
                 </Chrome>
               </AppFrame>

@@ -5,17 +5,14 @@ import type { To } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
 
-export const NavButton = ({
-  icon,
-  text,
-  to,
-  end,
-}: {
+export interface NavButtonProps {
   end?: boolean
   icon: ReactNode
   text: string
   to: To
-}) => {
+}
+
+export const NavButton = ({ icon, text, to, end }: NavButtonProps) => {
   return (
     <NavLink end={end} data-testid="nav-button" to={to} className="text-center">
       {({ isActive }) => {
