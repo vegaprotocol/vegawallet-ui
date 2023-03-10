@@ -19,10 +19,13 @@ export const NavButton = ({
   return (
     <NavLink end={end} data-testid="nav-button" to={to} className="text-center">
       {({ isActive }) => {
+        const textColor = isActive ? 'text-white' : 'text-dark-300'
         return (
           <div className="h-full py-3 grid gap-0 grid-rows-[1fr_auto_auto]">
-            <div className="grid items-center">{icon}</div>
-            <span className="uppercase">{text}</span>
+            <div className={classNames('grid items-center', textColor)}>
+              {icon}
+            </div>
+            <span className={classNames('uppercase', textColor)}>{text}</span>
             <div
               data-testid="link-active"
               className={classNames('h-0.5 w-full bottom-[-1px]', {
