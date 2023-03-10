@@ -1,3 +1,4 @@
+import type { EventFlowType, InteractionType } from '@vegaprotocol/wallet-ui'
 import type adminMock from './src/types/admin-mock'
 import type serviceMock from './src/types/service-mock'
 
@@ -10,6 +11,9 @@ declare global {
         selector: string,
         options?: Partial<Loggable & Timeoutable & Withinable & Shadow>
       ): Chainable<JQuery<HTMLElementTagNameMap[string]>>
+      sendBackendInteraction(interaction: InteractionType, data?: object): void
+      beginInteractionSession(eventFlowType: EventFlowType): void
+      endInteractionSession(): void
     }
   }
 }
