@@ -147,8 +147,11 @@ export function MockAPIRequest(req: {
   params: WalletModel.CloseConnectionsToWalletParams
 }): Promise<WalletModel.CloseConnectionsToWalletResult>
 export function MockAPIRequest({ method }: WalletAPIRequest) {
-  // These few lines below are for modyfying mocks by Cypress via localStorage
-  if ('Cypress' in window && localStorage.getItem(`MOCK.${method}`) !== null) {
+  // These few lines below are for modyfying mocks by playwright via localStorage
+  if (
+    //'playwright' in window) &&
+    localStorage.getItem(`MOCK.${method}`) !== null
+  ) {
     return Promise.resolve(
       JSON.parse(localStorage.getItem(`MOCK.${method}`)?.toString() || 'null')
     )

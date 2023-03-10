@@ -39,11 +39,11 @@ const ROOT = 'wallet-ui'
  */
 export function App({ service, client, runtime, features }: AppProps) {
   useEffect(() => {
-    if ('Cypress' in window) {
-      Globals.assign({
-        skipAnimation: true,
-      })
-    }
+    // if ('playwright' in window) {
+    Globals.assign({
+      skipAnimation: true,
+    })
+    // }
 
     return () => {
       Globals.assign({
