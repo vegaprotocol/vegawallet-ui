@@ -8,14 +8,13 @@ import type {
   GetVersionResponse,
   NetworkCompatibility,
 } from '../../types'
-import { AnchorButton, Button } from '../button'
-import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { Warning } from '../icons/warning'
 import { AppToaster } from '../toaster'
 import { AddNetwork } from './add-network'
 import { ChangeNetwork } from './choose-network'
+import { NetworkCompatibilityCheckFailed } from './network-compatibility-check-failed'
+import { NetworkIncompatible } from './network-incompatible'
 
 const ONE_DAY = 86400000
 
@@ -106,6 +105,7 @@ export const NetworkCompatibilityDialog = () => {
     dispatch({
       type: 'SET_NETWORK_COMPATIBILITY',
       isCompatible,
+      wasAbleToCheck: !!networkData?.retrievedVersion, // TODO this is a hack an implementation specific. We should have a flag in the version endpoint.
     })
   }, [
     dispatch,
@@ -185,68 +185,6 @@ export const NetworkCompatibilityDialog = () => {
       open={state.isNetworkCompatibilityModalOpen}
       title={title}
     >
-      {subview === null && (
-        <div className="p-[20px]">
-          {!networkData.network && (
-            <p className="mb-[20px]">
-              Couldn't retrieve the network compatibility information from the
-              nodes you are trying to connect to.
-            </p>
-          )}
-          {networkData.network && (
-            <div data-testid="network-compatibility-info-text">
-              <p className="mb-[20px]">
-                This software and the network{' '}
-                <code className="bg-dark-200 py-[1px] px-[5px]">
-                  {networkData.network}
-                </code>{' '}
-                are relying on different network software versions. You may
-                encounter compatibility issues, such as transactions not being
-                seen by the network.
-              </p>
-              <p>
-                The network{' '}
-                <code className="bg-dark-200 py-[1px] px-[5px]">
-                  {networkData.network}
-                </code>{' '}
-                is currently running on version "
-                <code>{networkData.retrievedVersion}</code>", while this
-                software is running on version "<code>{supportedVersion}</code>
-                ".
-              </p>
-            </div>
-          )}
-          <ButtonGroup inline className="py-[20px]">
-            {networkData.network && (
-              <AnchorButton
-                data-testid="network-compatibility-release"
-                href="https://github.com/vegaprotocol/vegawallet-desktop/releases"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Get wallet app for {networkData.retrievedVersion}
-              </AnchorButton>
-            )}
-            <Button
-              data-testid="network-compatibility-change"
-              onClick={() => setSubview('change')}
-            >
-              Change network
-            </Button>
-          </ButtonGroup>
-          <ButtonUnstyled
-            data-testid="network-compatibility-continue"
-            onClick={() =>
-              dispatch({
-                type: 'SET_NETWORK_COMPATIBILITY_MODAL',
-                open: false,
-              })
-            }
-          >
-            Continue with existing network
-          </ButtonUnstyled>
-        </div>
-      )}
       {subview === 'add' && (
         <AddNetwork
           onSubmit={handleAddNetwork}
@@ -261,6 +199,31 @@ export const NetworkCompatibilityDialog = () => {
           onAddNetwork={() => setSubview('add')}
         />
       )}
+      {subview === null ? (
+        !state.isNetworkCompatible && state.wasAbleToVerifyCompatibility ? (
+          <NetworkIncompatible
+            networkData={networkData}
+            supportedVersion={supportedVersion}
+            onChangeNetwork={() => setSubview('change')}
+            onContinue={() => {
+              dispatch({
+                type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+                open: false,
+              })
+            }}
+          />
+        ) : (
+          <NetworkCompatibilityCheckFailed
+            onContinue={() => {
+              dispatch({
+                type: 'SET_NETWORK_COMPATIBILITY_MODAL',
+                open: false,
+              })
+            }}
+            onChangeNetwork={() => setSubview('change')}
+          />
+        )
+      ) : null}
     </Dialog>
   )
 }

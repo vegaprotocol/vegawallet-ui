@@ -37,6 +37,7 @@ export const initialGlobalState: GlobalState = {
 
   // UI
   isNetworkCompatible: true,
+  wasAbleToVerifyCompatibility: true,
   drawerState: {
     isOpen: false,
     panel: DrawerPanel.Network,
@@ -213,6 +214,7 @@ export type GlobalAction =
   | {
       type: 'SET_NETWORK_COMPATIBILITY'
       isCompatible: boolean
+      wasAbleToCheck: boolean
     }
   // Modals
   | {
@@ -643,6 +645,7 @@ export function globalReducer(
       return {
         ...state,
         isNetworkCompatible: action.isCompatible,
+        wasAbleToVerifyCompatibility: action.wasAbleToCheck,
       }
     }
     // Modals

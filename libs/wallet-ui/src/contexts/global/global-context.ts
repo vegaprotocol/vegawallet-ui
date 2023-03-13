@@ -96,6 +96,7 @@ export interface GlobalState {
   // UI
   drawerState: DrawerState
   isNetworkCompatible: boolean
+  wasAbleToVerifyCompatibility: boolean
 
   // Modals
   isPassphraseModalOpen: boolean
