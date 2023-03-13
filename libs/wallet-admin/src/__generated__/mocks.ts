@@ -149,7 +149,7 @@ export function MockAPIRequest(req: {
 export function MockAPIRequest({ method }: WalletAPIRequest) {
   // These few lines below are for modyfying mocks by playwright via localStorage
   if (
-    //'playwright' in window) &&
+    localStorage.getItem('playwright') &&
     localStorage.getItem(`MOCK.${method}`) !== null
   ) {
     return Promise.resolve(

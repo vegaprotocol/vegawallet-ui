@@ -40,7 +40,7 @@ test.describe('Network incompatible warning', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     await mock(page, serviceMock.GetVersion, getVersion)
-    await page.goto('http://localhost:3000')
+    await page.goto('/')
   })
   test('should see network incompatible warning button', async () => {
     await expect(
@@ -58,16 +58,14 @@ test.describe('Network incompatible dialog validations', () => {
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
     await mock(page, serviceMock.GetVersion, getVersion)
-    await page.goto('http://localhost:3000')
+    await page.goto('/')
     await page.getByTestId('network-compatibility-warning').click()
   })
 
   test('should see dialog title', async () => {
     const title = page.getByTestId('network-compatibility-dialog').locator('h2')
-    await Promise.all([
-      expect(title).toBeVisible(),
-      expect(title).toHaveText('Potential compatibility issue'),
-    ])
+    await expect(title).toBeVisible()
+    await expect(title).toHaveText('Potential compatibility issue')
   })
   test('should see info text', async () => {
     await expect(
@@ -93,18 +91,14 @@ test.describe('Network incompatible dialog validations', () => {
 
   test('should see change network button', async () => {
     const button = page.getByTestId('network-compatibility-change')
-    await Promise.all([
-      expect(button).toBeVisible(),
-      expect(button).toHaveText('Change network'),
-    ])
+    await expect(button).toBeVisible()
+    await expect(button).toHaveText('Change network')
   })
 
   test('should see continue link', async () => {
     const link = page.getByTestId('network-compatibility-continue')
-    await Promise.all([
-      expect(link).toBeVisible(),
-      expect(link).toHaveText('Continue with existing network'),
-    ])
+    await expect(link).toBeVisible()
+    await expect(link).toHaveText('Continue with existing network')
   })
 })
 

@@ -5,6 +5,7 @@ import {
   endInteractionSession,
   sendBackendInteraction,
 } from '../support/event-trigger'
+import { mock } from '../support/mock'
 
 const data = {
   hostname: 'vega.xyz',
@@ -20,6 +21,7 @@ test.describe('Transaction review modal', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
+    await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'TRANSACTION_REVIEW')
     await sendBackendInteraction(

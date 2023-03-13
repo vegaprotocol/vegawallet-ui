@@ -3,7 +3,7 @@ export default function getStorageMock(
   defaultValue?: unknown
 ) {
   if (
-    // ('playwright' in window) &&
+    localStorage.getItem('playwright') &&
     window.localStorage.getItem(`MOCK.${functionName}`) !== null
   ) {
     return JSON.parse(

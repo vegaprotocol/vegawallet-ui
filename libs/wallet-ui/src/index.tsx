@@ -39,11 +39,11 @@ const ROOT = 'wallet-ui'
  */
 export function App({ service, client, runtime, features }: AppProps) {
   useEffect(() => {
-    // if ('playwright' in window) {
-    Globals.assign({
-      skipAnimation: true,
-    })
-    // }
+    if (localStorage.getItem('playwright')) {
+      Globals.assign({
+        skipAnimation: true,
+      })
+    }
 
     return () => {
       Globals.assign({
