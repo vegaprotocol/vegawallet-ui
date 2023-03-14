@@ -26,8 +26,8 @@ test.describe('User Journey -- Onboard', async () => {
       .type('Word '.repeat(24))
     await page.getByTestId('wallet-import-form-passphrase').type('123')
     await page.getByTestId('wallet-import-form-passphrase-confirm').type('123')
-    await percySnapshot(page, 'onboard_recovery-wallet_import-2')
     await page.getByTestId('wallet-import-form-submit').click()
+    await percySnapshot(page, 'onboard_recovery-wallet_import-2')
   })
 
   test('User journey: Onboarding (Create wallet)', async () => {
@@ -37,11 +37,11 @@ test.describe('User Journey -- Onboard', async () => {
     await page.getByTestId('create-wallet-form-name').type('Test')
     await page.getByTestId('create-wallet-form-passphrase').type('123')
     await page.getByTestId('create-wallet-form-passphrase-confirm').type('123')
+
     await percySnapshot(page, 'onboard_create-wallet_form-2')
-
     await page.getByTestId('create-wallet-form-submit').click()
-    await percySnapshot(page, 'onboard_create-wallet_success-3')
 
+    await percySnapshot(page, 'onboard_create-wallet_success-3')
     await page.getByTestId('create-wallet-success-cta').click()
   })
 })
