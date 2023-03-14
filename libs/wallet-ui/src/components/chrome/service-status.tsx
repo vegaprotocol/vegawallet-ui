@@ -116,7 +116,12 @@ export function ServiceStatus() {
           <StatusCircle blinking background="bg-orange" />
           <span>
             Wallet Service: Unhealthy{' '}
-            <ButtonUnstyled onClick={restartService}>Restart</ButtonUnstyled>
+            <ButtonUnstyled
+              data-testid="service-status-restart-service"
+              onClick={restartService}
+            >
+              Restart
+            </ButtonUnstyled>
           </span>
         </div>
       )
@@ -140,7 +145,10 @@ export function ServiceStatus() {
           <StatusCircle background="bg-red" />
           <span>
             Wallet Service: Failed to start.{' '}
-            <ButtonUnstyled onClick={startService}>
+            <ButtonUnstyled
+              data-testid="service-status-restart-service"
+              onClick={startService}
+            >
               Try to restart
             </ButtonUnstyled>
           </span>
