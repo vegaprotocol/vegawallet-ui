@@ -1,5 +1,5 @@
 import type { Meta, Story } from '@storybook/react'
-import { CodeWindow } from '.'
+import { CodeWindow } from './code-window'
 
 export default {
   component: CodeWindow,
