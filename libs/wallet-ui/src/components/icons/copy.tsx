@@ -1,13 +1,8 @@
 import classnames from 'classnames'
 
-import { className as defaultClassName } from './style'
-
 export function Copy({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 11 11"
-      className={classnames(defaultClassName, className)}
-    >
+    <svg viewBox="0 0 11 11" className={classnames('fill-current', className)}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

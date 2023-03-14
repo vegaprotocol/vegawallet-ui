@@ -57,14 +57,14 @@ const getTitle = (subview: Subview, wasAbleToVerifyCompatibility: boolean) => {
     }
     default: {
       return (
-        <>
+        <div className="flex">
           <Warning
             className={classNames('w-[20px] mr-[12px]', {
               'text-danger-light': !wasAbleToVerifyCompatibility,
             })}
           />
           Potential compatibility issue
-        </>
+        </div>
       )
     }
   }
@@ -222,6 +222,7 @@ export const NetworkCompatibilityDialog = () => {
           />
         ) : (
           <NetworkCompatibilityCheckFailed
+            error={networkData.error}
             onContinue={() => {
               dispatch({
                 type: 'SET_NETWORK_COMPATIBILITY_MODAL',

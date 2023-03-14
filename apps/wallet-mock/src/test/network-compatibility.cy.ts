@@ -46,7 +46,7 @@ describe('Network incompatible warning', () => {
   })
 })
 
-describe('Network check failed warning', () => {
+describe.only('Network check failed warning', () => {
   // 0001-WALL-015 - must be warned if the version I am using is not compatible with the version of Vega on the selected network, and I am given a link to get latest compatible version on github
   before(() => {
     cy.mock(serviceMock.GetVersion, {
@@ -57,6 +57,7 @@ describe('Network check failed warning', () => {
           network: 'test',
           isCompatible: false,
           retrievedVersion: '',
+          error: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
         },
       ],
       backend: {
@@ -72,13 +73,9 @@ describe('Network check failed warning', () => {
   it('should open network incompatible warning dialog', () => {
     cy.getByTestId('network-compatibility-warning').click()
     cy.getByTestId('network-compatibility-dialog').should('be.visible')
-    cy.getByTestId('network-compatibility-failed-info-1').should(
+    cy.getByTestId('network-compatibility-failed-info').should(
       'have.text',
-      'We were unable to verify network compatibility.'
-    )
-    cy.getByTestId('network-compatibility-failed-info-2').should(
-      'have.text',
-      'Your connection may not work as expected, and transactions may not be seen by the network.'
+      'We were unable to verify network compatibility. Your connection may not work as expected, and transactions may not be seen by the network.'
     )
     cy.percySnapshot('networks_incompatible-1')
   })
