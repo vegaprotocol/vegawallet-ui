@@ -5,6 +5,7 @@ import { className as defaultClassName } from './style'
 export function Warning({ className }: { className?: string }) {
   return (
     <svg
+      data-testid="warning-icon"
       viewBox="0 0 16 16"
       className={classnames(defaultClassName, className)}
     >

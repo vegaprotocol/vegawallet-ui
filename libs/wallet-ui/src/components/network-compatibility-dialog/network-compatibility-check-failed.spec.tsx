@@ -12,9 +12,12 @@ describe('NetworkCompatibilityCheckFailed', () => {
       />
     )
     expect(
-      screen.getByTestId('network-compatibility-failed-info')
+      screen.getByTestId('network-compatibility-failed-info-1')
+    ).toHaveTextContent('We were unable to verify network compatibility.')
+    expect(
+      screen.getByTestId('network-compatibility-failed-info-2')
     ).toHaveTextContent(
-      "Couldn't retrieve the network compatibility information from the nodes you are trying to connect to."
+      'Your connection may not work as expected, and transactions may not be seen by the network.'
     )
   })
   it('should render call onChangeNetwork when edit button is pressed', () => {

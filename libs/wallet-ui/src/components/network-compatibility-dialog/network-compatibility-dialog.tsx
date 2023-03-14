@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Intent } from '../../config/intent'
@@ -46,7 +47,7 @@ const addCompatibleNetwork = (
 
 type Subview = 'change' | 'add' | null
 
-const getTitle = (subview: Subview) => {
+const getTitle = (subview: Subview, wasAbleToVerifyCompatibility: boolean) => {
   switch (subview) {
     case 'add': {
       return 'Add network'
@@ -57,7 +58,11 @@ const getTitle = (subview: Subview) => {
     default: {
       return (
         <>
-          <Warning className="w-[20px] mr-[12px]" />
+          <Warning
+            className={classNames('w-[20px] mr-[12px]', {
+              'text-danger-light': !wasAbleToVerifyCompatibility,
+            })}
+          />
           Potential compatibility issue
         </>
       )
@@ -172,7 +177,10 @@ export const NetworkCompatibilityDialog = () => {
     [dispatch, actions, service, setSubview]
   )
 
-  const title = useMemo(() => getTitle(subview), [subview])
+  const title = useMemo(
+    () => getTitle(subview, state.wasAbleToVerifyCompatibility),
+    [state.wasAbleToVerifyCompatibility, subview]
+  )
 
   if (!networkData) {
     return null

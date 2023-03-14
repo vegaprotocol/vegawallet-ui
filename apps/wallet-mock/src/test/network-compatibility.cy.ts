@@ -46,6 +46,44 @@ describe('Network incompatible warning', () => {
   })
 })
 
+describe('Network check failed warning', () => {
+  // 0001-WALL-015 - must be warned if the version I am using is not compatible with the version of Vega on the selected network, and I am given a link to get latest compatible version on github
+  before(() => {
+    cy.mock(serviceMock.GetVersion, {
+      version: '0.98.0',
+      gitHash: '0x0',
+      networksCompatibility: [
+        {
+          network: 'test',
+          isCompatible: false,
+          retrievedVersion: '',
+        },
+      ],
+      backend: {
+        version: '2.0.1',
+        gitHash: '0x0',
+      },
+    })
+    cy.visit('/')
+  })
+  it('should see network incompatible warning button', () => {
+    cy.getByTestId('network-compatibility-warning').should('be.visible')
+  })
+  it('should open network incompatible warning dialog', () => {
+    cy.getByTestId('network-compatibility-warning').click()
+    cy.getByTestId('network-compatibility-dialog').should('be.visible')
+    cy.getByTestId('network-compatibility-failed-info-1').should(
+      'have.text',
+      'We were unable to verify network compatibility.'
+    )
+    cy.getByTestId('network-compatibility-failed-info-2').should(
+      'have.text',
+      'Your connection may not work as expected, and transactions may not be seen by the network.'
+    )
+    cy.percySnapshot('networks_incompatible-1')
+  })
+})
+
 describe('Network incompatible dialog validations', () => {
   before(() => {
     cy.mock(serviceMock.GetVersion, getVersion)
@@ -94,6 +132,7 @@ describe('Network incompatible dialog validations', () => {
       expect(button).to.be.visible
       expect(button).to.have.text('Continue with existing network')
     })
+    cy.percySnapshot('networks_incompatible-2')
   })
 })
 
@@ -113,6 +152,7 @@ describe('Network incompatible dialog actions', () => {
       expect(dialog.find('#test')).to.not.exist
       expect(dialog.find('#test3')).to.not.exist
     })
+    cy.percySnapshot('networks_dialog_change-1')
   })
 
   it('should close the dialog', () => {
@@ -130,13 +170,13 @@ describe('Network compatible icon', () => {
     cy.visit('/')
   })
   it('should see status icon green and blinking', () => {
-    cy.getByTestId('service-status')
+    cy.getByTestId('service-status-started')
       .find('.bg-green.blink')
       .should('be.visible')
   })
 
   it('should not be able to click status icon', () => {
-    cy.getByTestId('service-status').find('.bg-green.blink').click()
+    cy.getByTestId('service-status-started').find('.bg-green.blink').click()
     cy.getByTestId('network-compatibility-dialog').should('not.exist')
   })
 

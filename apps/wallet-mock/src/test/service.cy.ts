@@ -16,7 +16,7 @@ describe('Interactions', () => {
     cy.window().then((win) => {
       win.document.body.dispatchEvent(new CustomEvent('service_is_healthy'))
     })
-    cy.get('[data-testid="service-status"]').should(
+    cy.get('[data-testid="service-status-started"]').should(
       'have.text',
       'Wallet Service: test on http://localhost:1789'
     )

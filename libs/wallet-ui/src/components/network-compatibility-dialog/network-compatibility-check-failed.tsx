@@ -1,5 +1,6 @@
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
+import { ButtonUnstyled } from '../button-unstyled'
 
 export const NetworkCompatibilityCheckFailed = ({
   onContinue,
@@ -10,9 +11,18 @@ export const NetworkCompatibilityCheckFailed = ({
 }) => {
   return (
     <div className="p-[20px]">
-      <p className="mb-[20px]" data-testid="network-compatibility-failed-info">
-        Couldn't retrieve the network compatibility information from the nodes
-        you are trying to connect to.
+      <p
+        className="mb-[20px]"
+        data-testid="network-compatibility-failed-info-1"
+      >
+        We were unable to verify network compatibility.
+      </p>
+      <p
+        className="mb-[20px]"
+        data-testid="network-compatibility-failed-info-2"
+      >
+        Your connection may not work as expected, and transactions may not be
+        seen by the network.
       </p>
       <ButtonGroup inline className="py-[20px]">
         <Button
@@ -21,12 +31,12 @@ export const NetworkCompatibilityCheckFailed = ({
         >
           Change Network
         </Button>
-        <Button
+        <ButtonUnstyled
           data-testid="network-compatibility-failed-change"
           onClick={onContinue}
         >
           Continue with existing network
-        </Button>
+        </ButtonUnstyled>
       </ButtonGroup>
     </div>
   )
