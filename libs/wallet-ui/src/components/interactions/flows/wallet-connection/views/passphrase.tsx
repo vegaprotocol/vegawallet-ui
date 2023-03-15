@@ -72,6 +72,8 @@ export const PassphraseView = ({
           error: `${err}`,
         },
       })
+    } finally {
+      setLoading(false)
     }
   }
 
