@@ -43,3 +43,11 @@ cypress.env.json
 
 # e2e
 apps/wallet-mock/cypress
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Playwright
+**/test-results
+**/playwright-report
+**/playwright/.cache

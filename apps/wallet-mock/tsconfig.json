@@ -4,7 +4,7 @@
     "jsx": "react-jsx",
     "sourceMap": false,
     "outDir": "../../dist/out-tsc",
-    "types": ["cypress", "node"],
+    "types": ["@playwright/test", "node"],
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -15,5 +15,5 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["index.d.ts", "src/**/*.ts", "src/**/*.js"]
+  "include": ["src/**/*.ts", "src/**/*.js"]
 }

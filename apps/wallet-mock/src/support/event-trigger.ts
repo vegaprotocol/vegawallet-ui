@@ -1,26 +1,38 @@
-Cypress.Commands.add('sendBackendInteraction', (interaction, data) => {
-  cy.window().then((win) => {
-    win.document.body.dispatchEvent(
-      new CustomEvent('new_interaction', {
-        detail: {
-          name: interaction,
-          data,
-          traceID: '1',
-        },
-      })
-    )
-  })
-})
+import type { Page } from '@playwright/test'
+import type { EventFlowType, InteractionType } from '@vegaprotocol/wallet-ui'
 
-Cypress.Commands.add('beginInteractionSession', (type) => {
-  cy.sendBackendInteraction('INTERACTION_SESSION_BEGAN', {
-    workflow: type,
-  })
-})
+export async function sendBackendInteraction(
+  page: Page,
+  interaction: InteractionType,
+  data?: object
+) {
+  page.evaluate(
+    ({ interaction, data }) =>
+      window.document.body.dispatchEvent(
+        new CustomEvent('new_interaction', {
+          detail: {
+            name: interaction,
+            data,
+            traceID: '1',
+          },
+        })
+      ),
+    { interaction, data }
+  )
+}
 
-Cypress.Commands.add('endInteractionSession', () => {
-  cy.sendBackendInteraction('INTERACTION_SESSION_ENDED')
-})
+export async function beginInteractionSession(
+  page: Page,
+  eventFlowType: EventFlowType
+) {
+  sendBackendInteraction(page, 'INTERACTION_SESSION_BEGAN', {
+    workflow: eventFlowType,
+  })
+}
+
+export async function endInteractionSession(page: Page) {
+  sendBackendInteraction(page, 'INTERACTION_SESSION_ENDED')
+}
 
 // Below is a scheme of possible wallet worfklows:
 // client.connect_wallet:

@@ -3,7 +3,7 @@ export default function getStorageMock(
   defaultValue?: unknown
 ) {
   if (
-    'Cypress' in window &&
+    localStorage.getItem('playwright') &&
     window.localStorage.getItem(`MOCK.${functionName}`) !== null
   ) {
     return JSON.parse(

@@ -39,7 +39,7 @@ const ROOT = 'wallet-ui'
  */
 export function App({ service, client, runtime, features }: AppProps) {
   useEffect(() => {
-    if ('Cypress' in window) {
+    if (localStorage.getItem('playwright')) {
       Globals.assign({
         skipAnimation: true,
       })

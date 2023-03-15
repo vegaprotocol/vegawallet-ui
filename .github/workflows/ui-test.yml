@@ -23,7 +23,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Install playwright dependencies
+        run: yarn playwright install --with-deps
+
       - name: Run tests
-        run: yarn e2e:percy --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome
+        run: yarn e2e:percy --record
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}

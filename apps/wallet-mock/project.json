@@ -4,10 +4,10 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@mands/nx-playwright:playwright-executor",
       "options": {
-        "cypressConfig": "apps/wallet-mock/cypress.config.ts",
-        "devServerTarget": "wallet-ui:serve:test"
+        "e2eFolder": "apps/wallet-mock",
+        "packageRunner": "yarn"
       }
     },
     "lint": {
