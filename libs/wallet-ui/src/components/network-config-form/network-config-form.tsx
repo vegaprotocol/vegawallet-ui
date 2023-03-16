@@ -17,7 +17,7 @@ interface FormFields {
   restHosts: Array<{ value: string }>
   consoleUrl?: string
   explorerUrl?: string
-  tokenUrl?: string
+  governanceUrl?: string
 }
 
 export interface NetworkConfigFormProps {
@@ -81,15 +81,15 @@ export const NetworkConfigForm = ({
         />
       </FormGroup>
       <FormGroup
-        label="Token dApp URL"
-        labelFor="tokenUrl"
-        intent={errors.tokenUrl?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.tokenUrl?.message}
+        label="Governance dApp URL"
+        labelFor="governanceUrl"
+        intent={errors.governanceUrl?.message ? Intent.DANGER : Intent.NONE}
+        helperText={errors.governanceUrl?.message}
       >
         <Input
           data-testid="network-token-url"
           type="text"
-          {...register('tokenUrl', {
+          {...register('governanceUrl', {
             pattern: Validation.URL,
           })}
         />
@@ -201,6 +201,7 @@ function fieldsToConfig(
     apps: {
       console: values.consoleUrl,
       explorer: values.explorerUrl,
+      governance: values.governanceUrl,
     },
   }
 }
@@ -218,5 +219,6 @@ function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
     restHosts: config.api.restConfig?.hosts.map((x) => ({ value: x })) || [],
     consoleUrl: config.apps.console,
     explorerUrl: config.apps.explorer,
+    governanceUrl: config.apps.governance,
   }
 }
