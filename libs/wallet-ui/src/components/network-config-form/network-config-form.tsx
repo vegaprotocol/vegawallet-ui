@@ -219,6 +219,5 @@ function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
     restHosts: config.api.restConfig?.hosts.map((x) => ({ value: x })) || [],
     consoleUrl: config.apps.console,
     explorerUrl: config.apps.explorer,
-    tokenUrl: config.apps.tokenDApp,
   }
 }

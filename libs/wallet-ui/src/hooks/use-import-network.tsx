@@ -46,7 +46,7 @@ export function useImportNetwork() {
           setResponse(config)
 
           AppToaster.show({
-            message: `Network imported to: ${res.filePath}`,
+            message: `Network imported`,
             intent: Intent.SUCCESS,
           })
         } else {

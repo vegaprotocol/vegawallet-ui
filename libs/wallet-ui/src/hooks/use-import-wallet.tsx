@@ -49,7 +49,7 @@ export function useImportWallet() {
             key: keypair,
           })
           AppToaster.show({
-            message: `Wallet imported to: ${resp.wallet.filePath}`,
+            message: `Wallet imported`,
             intent: Intent.SUCCESS,
             timeout: 0,
           })
