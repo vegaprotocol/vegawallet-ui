@@ -24,12 +24,11 @@ export function useImportNetwork() {
   const submit = useCallback(
     async (values: ImportNetworkArgs) => {
       setStatus(FormStatus.Pending)
-      const { name, url, filePath, force } = createImportNetworkArgs(values)
+      const { name, url, force } = createImportNetworkArgs(values)
 
       try {
         const res = await client.ImportNetwork({
           name,
-          filePath,
           url,
           overwrite: force,
         })

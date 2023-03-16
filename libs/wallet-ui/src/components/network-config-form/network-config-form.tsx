@@ -201,7 +201,6 @@ function fieldsToConfig(
     apps: {
       console: values.consoleUrl,
       explorer: values.explorerUrl,
-      tokenDApp: values.tokenUrl,
     },
   }
 }
