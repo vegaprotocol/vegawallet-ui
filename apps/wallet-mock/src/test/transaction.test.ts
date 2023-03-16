@@ -89,7 +89,6 @@ test.describe('Transaction review modal -- Approve + Success', () => {
   })
 
   test('should see transaction details value', async () => {
-    await page.getByTestId('transaction-details-key').locator('button').click()
     await expect(page.getByTestId('transaction-details-value')).toHaveText(
       JSON.stringify(transaction, null, 2)
     )
@@ -157,6 +156,96 @@ test.describe('Transaction review modal -- Approve + Success', () => {
       deserializedInputData: JSON.stringify(transaction),
       sentAt: new Date().toISOString(),
     })
+    await expect(page.getByTestId('transaction-status')).toHaveText('Approved')
+    await expect(page.getByTestId('transaction-type')).toHaveText(
+      'Order submission'
+    )
+
+    await expect(page.getByTestId('transaction-logs')).toBeVisible()
+    await expect(
+      page.getByTestId('transaction-logs').locator('.text-success-light')
+    ).toHaveText('Success')
+    await expect(
+      page.getByTestId('transaction-logs').locator('.text-warning-light')
+    ).toHaveText('Warning')
+    await expect(
+      page.getByTestId('transaction-logs').locator('.text-danger-light')
+    ).toHaveText('Error')
+    await expect(
+      page.getByTestId('transaction-logs').locator('.text-neutral-light')
+    ).toHaveText('Info')
+    await expect(page.getByTestId('transaction-header')).toHaveText(
+      'Transaction ID'
+    )
+    await expect(page.getByTestId('transaction-id')).toHaveText('a3aac0…445d')
     await percySnapshot(page, 'interaction_transaction_success')
+    await expect(page.getByTestId('transaction-close')).toHaveText('Close')
+    await expect(page.getByTestId('wallet-home')).toBeVisible()
+    await page.getByTestId('transaction-close').click()
+  })
+})
+
+test.describe('Transaction review modal -- Approve + Error', () => {
+  let page: Page
+  test.beforeAll(async ({ browser }) => {
+    page = await browser.newPage()
+    await mock(page)
+    await page.goto('/')
+    await beginInteractionSession(page, 'TRANSACTION_REVIEW')
+    await sendBackendInteraction(
+      page,
+      'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+      data
+    )
+  })
+
+  test.afterAll(async () => {
+    await endInteractionSession(page)
+  })
+
+  test('should show the transaction logs for all levels and error message', async () => {
+    await page.getByTestId('transaction-approve-button').click()
+    await sendBackendInteraction(page, 'LOG', {
+      type: 'Info',
+      message: 'Info',
+    })
+    await sendBackendInteraction(page, 'ERROR_OCCURRED', {
+      type: 'Network error',
+      error: 'Error message',
+    })
+    await expect(page.getByTestId('interaction-error-description')).toHaveText(
+      "We couldn't fulfill your request due to network issues. Make sure your connection is stable, and give it another go."
+    )
+    await expect(page.getByTestId('interaction-error-message')).toHaveText(
+      'Error message'
+    )
+
+    await percySnapshot(page, 'interaction_transaction_failed')
+  })
+})
+
+test.describe('Transaction review modal -- Reject', () => {
+  let page: Page
+  test.beforeAll(async ({ browser }) => {
+    page = await browser.newPage()
+    await mock(page)
+    await page.goto('/')
+    await beginInteractionSession(page, 'TRANSACTION_REVIEW')
+    await sendBackendInteraction(
+      page,
+      'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+      data
+    )
+  })
+
+  test('should show home page', async () => {
+    await page.getByTestId('transaction-reject-button').click()
+    await sendBackendInteraction(page, 'LOG', {
+      type: 'Info',
+      message: 'Info',
+    })
+    await endInteractionSession(page)
+    await expect(page.getByTestId('wallet-home')).toBeVisible()
+    await percySnapshot(page, 'interaction_transaction_rejected')
   })
 })
