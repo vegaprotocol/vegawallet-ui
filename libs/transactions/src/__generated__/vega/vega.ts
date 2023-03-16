@@ -56,8 +56,12 @@ export enum AuctionTrigger {
   AUCTION_TRIGGER_OPENING = 2,
   /** AUCTION_TRIGGER_PRICE - Price monitoring trigger */
   AUCTION_TRIGGER_PRICE = 3,
-  /** AUCTION_TRIGGER_LIQUIDITY - Liquidity monitoring trigger */
+  /** AUCTION_TRIGGER_LIQUIDITY - Deprecated */
   AUCTION_TRIGGER_LIQUIDITY = 4,
+  /** AUCTION_TRIGGER_LIQUIDITY_TARGET_NOT_MET - Liquidity auction due to not enough committed liquidity */
+  AUCTION_TRIGGER_LIQUIDITY_TARGET_NOT_MET = 5,
+  /** AUCTION_TRIGGER_UNABLE_TO_DEPLOY_LP_ORDERS - Liquidity auction due to not being able to deploy LP orders because there's nothing to peg on one or both sides of the book */
+  AUCTION_TRIGGER_UNABLE_TO_DEPLOY_LP_ORDERS = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -517,7 +521,10 @@ export enum Order_Status {
   STATUS_REJECTED = 6,
   /** STATUS_PARTIALLY_FILLED - Used for closed partially filled IOC orders */
   STATUS_PARTIALLY_FILLED = 7,
-  /** STATUS_PARKED - Order has been removed from the order book and has been parked, this applies to pegged orders only */
+  /**
+   * STATUS_PARKED - Order has been removed from the order book and has been parked,
+   * this applies to pegged orders and liquidity orders (orders created from a liquidity provision shape)
+   */
   STATUS_PARKED = 8,
   UNRECOGNIZED = -1,
 }
