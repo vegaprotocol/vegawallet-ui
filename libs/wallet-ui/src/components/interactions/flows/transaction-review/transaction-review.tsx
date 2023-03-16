@@ -16,6 +16,7 @@ import { TransactionLogs } from '../../../transaction-logs'
 import { Tick } from '../../../icons/tick'
 import { Warning } from '../../../icons/warning'
 import type { InteractionErrorType } from '../../views/error'
+import { InteractionError } from '../../views/error'
 import { useExplorerUrl } from '../../../../hooks/use-explorer-url'
 import { CopyWithTooltip } from '../../../copy-with-tooltip'
 import { ExternalLink } from '../../../external-link'
@@ -100,6 +101,8 @@ export const TransactionReview = ({
 
     if (!decision) {
       onClose()
+    } else {
+      setLoading(false)
     }
   }
 
@@ -107,11 +110,22 @@ export const TransactionReview = ({
     return null
   }
 
+  if (data.error) {
+    return (
+      <InteractionError
+        title="Failed to send transaction"
+        type={data.error.type}
+        message={data.error.error}
+        onClose={onClose}
+      />
+    )
+  }
+
   return (
     <div className="p-[20px]">
       <div className="text-center mt-[32px] mb-[32px]">
         <TransactionStatusDisplay transaction={data.transaction} />
-        <Title className="mb-[5px] mt-[20px]">
+        <Title data-testid="transaction-type" className="mb-[5px] mt-[20px]">
           {data.transaction ? TRANSACTION_TITLES[data.transaction.type] : ''}
         </Title>
         <p data-testid="transaction-hostname" className="text-neutral-light">
@@ -126,11 +140,16 @@ export const TransactionReview = ({
             className="min-h-[150px]"
             logs={data.transaction.logs}
           />
-          {data.transaction.txHash && <Title>Transaction ID</Title>}
+          {data.transaction.txHash && (
+            <Title data-testid="transaction-header">Transaction ID</Title>
+          )}
           <div className="flex gap-[20px] justify-between mt-[20px]">
             {data.transaction.txHash && (
               <CopyWithTooltip text={data.transaction.txHash}>
-                <span className="text-neutral-light">
+                <span
+                  data-testid="transaction-id"
+                  className="text-neutral-light"
+                >
                   {truncateMiddle(data.transaction.txHash)}
                 </span>
               </CopyWithTooltip>
@@ -171,7 +190,9 @@ export const TransactionReview = ({
       )}
       {data.transaction.status !== TransactionStatus.PENDING && (
         <ButtonGroup inline>
-          <Button onClick={() => onClose()}>Close</Button>
+          <Button data-testid="transaction-close" onClick={() => onClose()}>
+            Close
+          </Button>
         </ButtonGroup>
       )}
     </div>

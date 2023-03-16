@@ -16,7 +16,6 @@ export type InteractionErrorProps = {
   title?: string
   type: InteractionErrorType['type']
   message: string
-  onReset: () => void
   onClose: () => void
 }
 
@@ -68,7 +67,6 @@ export const InteractionError = ({
   title,
   type,
   message,
-  onReset,
   onClose,
 }: InteractionErrorProps) => {
   const { title: defTitle, description } = getDefs(type)
@@ -79,17 +77,19 @@ export const InteractionError = ({
       <div className="p-[10px]">
         <Warning className="w-[48px] text-danger-light" />
       </div>
-      <p className="mt-[20px]">{description}</p>
+      <p data-testid="interaction-error-description" className="mt-[20px]">
+        {description}
+      </p>
       <div className="my-[20px]">
-        <CodeBlock className="max-w-full">{message}</CodeBlock>
+        <CodeBlock
+          data-testid="interaction-error-message"
+          className="max-w-full"
+        >
+          {message}
+        </CodeBlock>
       </div>
       <ButtonGroup>
-        {type === 'User error' && (
-          <Button onClick={() => onReset()}>Try again</Button>
-        )}
-        {type !== 'User error' && (
-          <Button onClick={() => onClose()}>Close</Button>
-        )}
+        <Button onClick={() => onClose()}>Close</Button>
       </ButtonGroup>
     </div>
   )

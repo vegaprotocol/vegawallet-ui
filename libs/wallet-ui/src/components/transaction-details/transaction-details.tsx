@@ -195,7 +195,7 @@ export const TransactionDetails = ({
   transaction,
   showStatus = true,
 }: TransactionDetailsProps) => {
-  const [isDetailSectionVisible, setDetailSectionVisible] = useState(false)
+  const [isDetailSectionVisible, setDetailSectionVisible] = useState(true)
   const [isLogSectionVisible, setLogSectionVisible] = useState(false)
   const explorerUrl = useExplorerUrl()
   const sectionList = compileSectionList({
