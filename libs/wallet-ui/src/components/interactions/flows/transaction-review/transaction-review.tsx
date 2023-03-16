@@ -15,7 +15,8 @@ import { Loader } from '../../../loader'
 import { TransactionLogs } from '../../../transaction-logs'
 import { Tick } from '../../../icons/tick'
 import { Warning } from '../../../icons/warning'
-import type { InteractionErrorType } from '../../views/error'
+import type { InteractionErrorType } from '../../views/error';
+import { InteractionError } from '../../views/error'
 import { useExplorerUrl } from '../../../../hooks/use-explorer-url'
 import { CopyWithTooltip } from '../../../copy-with-tooltip'
 import { ExternalLink } from '../../../external-link'
@@ -100,11 +101,24 @@ export const TransactionReview = ({
 
     if (!decision) {
       onClose()
+    } else {
+      setLoading(false)
     }
   }
 
   if (!data.transaction) {
     return null
+  }
+
+  if (data.error) {
+    return (
+      <InteractionError
+        title="Failed to send transaction"
+        type={data.error.type}
+        message={data.error.error}
+        onClose={onClose}
+      />
+    )
   }
 
   return (

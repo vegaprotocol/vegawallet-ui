@@ -96,12 +96,6 @@ export const PermissionRequest = ({
         title="Failed to update permissions"
         type={data.error.type}
         message={data.error.error}
-        onReset={() =>
-          onUpdate({
-            ...data,
-            error: undefined,
-          })
-        }
         onClose={onClose}
       />
     )

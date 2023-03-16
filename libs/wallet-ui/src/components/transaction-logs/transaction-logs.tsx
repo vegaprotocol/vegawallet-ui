@@ -11,6 +11,7 @@ type Props = {
 export const TransactionLogs = ({ logs, isVisible, className }: Props) => {
   return (
     <CodeBlock
+      data-testid="transaction-logs"
       className={classnames('text-xs mb-0', className, {
         hidden: !isVisible,
       })}

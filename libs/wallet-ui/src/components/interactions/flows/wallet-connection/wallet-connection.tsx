@@ -26,12 +26,6 @@ export const WalletConnection = (p: WalletConnectionProps) => {
         title="Connection failed"
         type={p.data.error.type}
         message={p.data.error.error}
-        onReset={() =>
-          p.onUpdate({
-            ...p.data,
-            error: undefined,
-          })
-        }
         onClose={p.onClose}
       />
     )
