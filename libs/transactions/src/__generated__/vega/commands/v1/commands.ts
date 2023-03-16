@@ -15,6 +15,7 @@ import type {
   Side,
   WithdrawExt,
 } from '../../vega'
+import type { NodeSignatureKind } from './validator_commands'
 
 export const protobufPackage = 'vega.commands.v1'
 
@@ -46,9 +47,13 @@ export interface OrderSubmission {
    * Price for the order, the price is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places,
    * , required field for limit orders, however it is not required for market orders
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   price: string
-  /** Size for the order, for example, in a futures market the size equals the number of units, cannot be negative */
+  /**
+   * Size for the order, for example, in a futures market the size equals the number of units, cannot be negative
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   size: number
   /**
    * Side for the order, e.g. SIDE_BUY or SIDE_SELL, required field
@@ -94,13 +99,17 @@ export interface OrderAmendment {
   orderId: string
   /** Market identifier, this is required to find the order and will not be updated */
   marketId: string
-  /** Amend the price for the order, if the Price value is set, otherwise price will remain unchanged - See [`Price`](#vega.Price) */
+  /**
+   * Amend the price for the order if the price value is set, otherwise price will remain unchanged.
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   price?: string | undefined
   /**
    * Amend the size for the order by the delta specified:
    * - To reduce the size from the current value set a negative integer value
    * - To increase the size from the current value, set a positive integer value
    * - To leave the size unchanged set a value of zero
+   * This field needs to be scaled using the market's position decimal places.
    */
   sizeDelta: number
   /**
@@ -113,7 +122,10 @@ export interface OrderAmendment {
    * - See [`TimeInForce`](#api.VegaTimeResponse).`timestamp`
    */
   timeInForce: Order_TimeInForce
-  /** Amend the pegged order offset for the order */
+  /**
+   * Amend the pegged order offset for the order
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   peggedOffset: string
   /**
    * Amend the pegged order reference for the order
@@ -126,7 +138,10 @@ export interface OrderAmendment {
 export interface LiquidityProvisionSubmission {
   /** Market identifier for the order, required field */
   marketId: string
-  /** Specified as a unitless number that represents the amount of settlement asset of the market */
+  /**
+   * Specified as a unitless number that represents the amount of settlement asset of the market
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places.
+   */
   commitmentAmount: string
   /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers */
   fee: string
@@ -162,7 +177,10 @@ export interface LiquidityProvisionAmendment {
 
 /** Represents the submission request to withdraw funds for a party on Vega */
 export interface WithdrawSubmission {
-  /** The amount to be withdrawn */
+  /**
+   * The amount to be withdrawn
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
   /** The asset to be withdrawn */
   asset: string
@@ -198,13 +216,19 @@ export interface VoteSubmission {
 export interface DelegateSubmission {
   /** The ID for the node to delegate to */
   nodeId: string
-  /** The amount of stake to delegate */
+  /**
+   * The amount of stake to delegate
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
+   */
   amount: string
 }
 
 export interface UndelegateSubmission {
   nodeId: string
-  /** optional, if not specified = ALL */
+  /**
+   * optional, if not specified = ALL
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
+   */
   amount: string
   method: UndelegateSubmission_Method
 }
@@ -229,7 +253,10 @@ export interface Transfer {
   toAccountType: AccountType
   /** The asset */
   asset: string
-  /** The amount to be taken from the source account */
+  /**
+   * The amount to be taken from the source account
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
   /** The reference to be attached to the transfer */
   reference: string
@@ -262,4 +289,14 @@ export interface RecurringTransfer {
 export interface CancelTransfer {
   /** The ID of the transfer to cancel */
   transferId: string
+}
+
+/** A transaction for a validator to submit signatures to a smart contract */
+export interface IssueSignatures {
+  /** The ethereum address which will submit the signatures to the smart contract */
+  submitter: string
+  /** The kind of signatures to generate, namely for whether a signer is being added or removed */
+  kind: NodeSignatureKind
+  /** The ID of the node that will be signed in or out of the smart contract */
+  validatorNodeId: string
 }

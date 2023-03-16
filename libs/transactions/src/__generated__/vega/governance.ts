@@ -93,6 +93,10 @@ export enum ProposalError {
   PROPOSAL_ERROR_LP_PRICE_RANGE_NONPOSITIVE = 42,
   /** PROPOSAL_ERROR_LP_PRICE_RANGE_TOO_LARGE - The LP price range must not be larger than 100 */
   PROPOSAL_ERROR_LP_PRICE_RANGE_TOO_LARGE = 43,
+  /** PROPOSAL_ERROR_LINEAR_SLIPPAGE_FACTOR_OUT_OF_RANGE - The linear slippage factor is out of range (either negative or too large) */
+  PROPOSAL_ERROR_LINEAR_SLIPPAGE_FACTOR_OUT_OF_RANGE = 44,
+  /** PROPOSAL_ERROR_QUADRATIC_SLIPPAGE_FACTOR_OUT_OF_RANGE - The quadratic slippage factor is out of range (either negative or too large) */
+  PROPOSAL_ERROR_QUADRATIC_SLIPPAGE_FACTOR_OUT_OF_RANGE = 45,
   UNRECOGNIZED = -1,
 }
 
@@ -143,6 +147,10 @@ export interface NewMarketConfiguration {
    * price levels over which automated liquidity provision orders will be deployed
    */
   lpPriceRange: string
+  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume */
+  linearSlippageFactor: string
+  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume */
+  quadraticSlippageFactor: string
 }
 
 /** New market on Vega */
@@ -178,6 +186,10 @@ export interface UpdateMarketConfiguration {
    * price levels over which automated liquidity provision orders will be deployed
    */
   lpPriceRange: string
+  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume */
+  linearSlippageFactor: string
+  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume */
+  quadraticSlippageFactor: string
 }
 
 /** Instrument configuration */

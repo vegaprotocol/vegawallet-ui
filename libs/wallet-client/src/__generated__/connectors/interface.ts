@@ -17,6 +17,9 @@ export interface Connector {
   SendTransaction(
     params: WalletModel.SendTransactionParams
   ): Promise<WalletModel.SendTransactionResult>
+  CheckTransaction(
+    params: WalletModel.CheckTransactionParams
+  ): Promise<WalletModel.CheckTransactionResult>
   GetChainId(
     params: WalletModel.GetChainIdParams
   ): Promise<WalletModel.GetChainIdResult>

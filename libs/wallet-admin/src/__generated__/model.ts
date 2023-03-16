@@ -6,6 +6,7 @@ export namespace WalletModel {
   export type RemoveWalletResult = null
   export type ListNetworksParams = []
   export type UpdateNetworkResult = null
+  export type RenameNetworkResult = null
   export type RemoveNetworkResult = null
   /**
    * The Vega public key to use.
@@ -49,6 +50,8 @@ export namespace WalletModel {
     DescribeNetworkParams?: DescribeNetworkParams
     UpdateNetworkResult?: UpdateNetworkResult
     UpdateNetworkParams?: UpdateNetworkParams
+    RenameNetworkResult?: RenameNetworkResult
+    RenameNetworkParams?: RenameNetworkParams
     RemoveNetworkResult?: RemoveNetworkResult
     RemoveNetworkParams?: RemoveNetworkParams
     ImportNetworkResult?: ImportNetworkResult
@@ -87,6 +90,8 @@ export namespace WalletModel {
     VerifyMessageParams?: VerifyMessageParams
     SendTransactionResult?: SendTransactionResult
     SendTransactionParams?: SendTransactionParams
+    CheckTransactionResult?: CheckTransactionResult
+    CheckTransactionParams?: CheckTransactionParams
     SendRawTransactionResult?: SendRawTransactionResult
     SendRawTransactionParams?: SendRawTransactionParams
     StartServiceResult?: StartServiceResult
@@ -110,7 +115,6 @@ export namespace WalletModel {
       name: string
       keyDerivationVersion: number
       recoveryPhrase: string
-      filePath: string
     }
     /**
      * the first public key generated
@@ -144,7 +148,6 @@ export namespace WalletModel {
     wallet: {
       name: string
       keyDerivationVersion: number
-      filePath: string
     }
     /**
      * the first public key generated
@@ -194,7 +197,6 @@ export namespace WalletModel {
   export interface RenameWalletParams {
     wallet: string
     newName: string
-    passphrase: string
   }
   export interface RemoveWalletParams {
     wallet: string
@@ -234,7 +236,7 @@ export namespace WalletModel {
      */
     apps: {
       console?: string
-      tokenDApp?: string
+      governance?: string
       explorer?: string
     }
   }
@@ -270,19 +272,27 @@ export namespace WalletModel {
    */
   export interface NetworkAppsConfig {
     console?: string
-    tokenDApp?: string
+    governance?: string
     explorer?: string
+  }
+  export interface RenameNetworkParams {
+    network: string
+    newName: string
   }
   export interface RemoveNetworkParams {
     name: string
   }
   export interface ImportNetworkResult {
     name: string
-    filePath: string
   }
   export interface ImportNetworkParams {
+    /**
+     * The name to give to the imported network. If unset the network's name will be taken from the imported definition
+     */
     name?: string
-    filePath: string
+    /**
+     * The URL of a network to import. The prefix `file://` can be used to indicate a file-path.
+     */
     url: string
     overwrite: boolean
   }
@@ -367,10 +377,6 @@ export namespace WalletModel {
      * Name of the generated isolated wallet
      */
     wallet: string
-    /**
-     * Path to the isolated wallet file
-     */
-    filePath: string
   }
   export interface IsolateKeyParams {
     wallet: string
@@ -605,6 +611,8 @@ export namespace WalletModel {
     passphrase: string
     pubKey: string
     network?: number
+    nodeAddress?: string
+    retries?: number
     sendingMode: SendingMode
     transaction: Transaction1
   }
@@ -612,6 +620,53 @@ export namespace WalletModel {
    * The transaction as a JSON object
    */
   export interface Transaction1 {}
+  export interface CheckTransactionResult {
+    /**
+     * The date when the API received the request to send the transaction.
+     *
+     * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
+     */
+    receivedAt: string
+    /**
+     * The date when the transaction has been sent to the network.
+     *
+     * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
+     */
+    sentAt: string
+    /**
+     * A transaction that has been signed by the wallet.
+     */
+    transaction: {
+      inputData: string
+      signature: {
+        value: string
+        algo: string
+        version: number
+      }
+      from: {
+        publicKey?: string
+        address?: string
+      }
+      version: number
+      pow: {
+        tid: string
+        nonce: number
+      }
+    }
+  }
+  export interface CheckTransactionParams {
+    wallet: string
+    passphrase: string
+    pubKey: string
+    network?: number
+    nodeAddress?: string
+    retries?: number
+    transaction: Transaction2
+  }
+  /**
+   * The transaction as a JSON object
+   */
+  export interface Transaction2 {}
   export interface SendRawTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
@@ -709,6 +764,7 @@ export enum Identifier {
   ListNetworks = 'admin.list_networks',
   DescribeNetwork = 'admin.describe_network',
   UpdateNetwork = 'admin.update_network',
+  RenameNetwork = 'admin.rename_network',
   RemoveNetwork = 'admin.remove_network',
   ImportNetwork = 'admin.import_network',
   GenerateKey = 'admin.generate_key',
@@ -728,6 +784,7 @@ export enum Identifier {
   SignMessage = 'admin.sign_message',
   VerifyMessage = 'admin.verify_message',
   SendTransaction = 'admin.send_transaction',
+  CheckTransaction = 'admin.check_transaction',
   SendRawTransaction = 'admin.send_raw_transaction',
   StartService = 'admin.start_service',
   StopService = 'admin.stop_service',
@@ -759,6 +816,10 @@ export type WalletAPIRequest =
   | {
       method: Identifier.UpdateNetwork
       params: WalletModel.UpdateNetworkParams
+    }
+  | {
+      method: Identifier.RenameNetwork
+      params: WalletModel.RenameNetworkParams
     }
   | {
       method: Identifier.RemoveNetwork
@@ -810,6 +871,10 @@ export type WalletAPIRequest =
       params: WalletModel.SendTransactionParams
     }
   | {
+      method: Identifier.CheckTransaction
+      params: WalletModel.CheckTransactionParams
+    }
+  | {
       method: Identifier.SendRawTransaction
       params: WalletModel.SendRawTransactionParams
     }
@@ -843,6 +908,7 @@ export type WalletAPIResponse =
   | WalletModel.ListNetworksResult
   | WalletModel.DescribeNetworkResult
   | WalletModel.UpdateNetworkResult
+  | WalletModel.RenameNetworkResult
   | WalletModel.RemoveNetworkResult
   | WalletModel.ImportNetworkResult
   | WalletModel.GenerateKeyResult
@@ -862,6 +928,7 @@ export type WalletAPIResponse =
   | WalletModel.SignMessageResult
   | WalletModel.VerifyMessageResult
   | WalletModel.SendTransactionResult
+  | WalletModel.CheckTransactionResult
   | WalletModel.SendRawTransactionResult
   | WalletModel.StartServiceResult
   | WalletModel.StopServiceResult
@@ -910,6 +977,10 @@ export type WalletAPIHandler = ((req: {
     method: Identifier.UpdateNetwork
     params: WalletModel.UpdateNetworkParams
   }) => Promise<WalletModel.UpdateNetworkResult>) &
+  ((req: {
+    method: Identifier.RenameNetwork
+    params: WalletModel.RenameNetworkParams
+  }) => Promise<WalletModel.RenameNetworkResult>) &
   ((req: {
     method: Identifier.RemoveNetwork
     params: WalletModel.RemoveNetworkParams
@@ -986,6 +1057,10 @@ export type WalletAPIHandler = ((req: {
     method: Identifier.SendTransaction
     params: WalletModel.SendTransactionParams
   }) => Promise<WalletModel.SendTransactionResult>) &
+  ((req: {
+    method: Identifier.CheckTransaction
+    params: WalletModel.CheckTransactionParams
+  }) => Promise<WalletModel.CheckTransactionResult>) &
   ((req: {
     method: Identifier.SendRawTransaction
     params: WalletModel.SendRawTransactionParams
