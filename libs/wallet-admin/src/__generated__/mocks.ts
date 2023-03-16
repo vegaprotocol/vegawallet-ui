@@ -43,6 +43,10 @@ export function MockAPIRequest(req: {
   params: WalletModel.UpdateNetworkParams
 }): Promise<WalletModel.UpdateNetworkResult>
 export function MockAPIRequest(req: {
+  method: Identifier.RenameNetwork
+  params: WalletModel.RenameNetworkParams
+}): Promise<WalletModel.RenameNetworkResult>
+export function MockAPIRequest(req: {
   method: Identifier.RemoveNetwork
   params: WalletModel.RemoveNetworkParams
 }): Promise<WalletModel.RemoveNetworkResult>
@@ -119,6 +123,10 @@ export function MockAPIRequest(req: {
   params: WalletModel.SendTransactionParams
 }): Promise<WalletModel.SendTransactionResult>
 export function MockAPIRequest(req: {
+  method: Identifier.CheckTransaction
+  params: WalletModel.CheckTransactionParams
+}): Promise<WalletModel.CheckTransactionResult>
+export function MockAPIRequest(req: {
   method: Identifier.SendRawTransaction
   params: WalletModel.SendRawTransactionParams
 }): Promise<WalletModel.SendRawTransactionResult>
@@ -147,156 +155,16 @@ export function MockAPIRequest(req: {
   params: WalletModel.CloseConnectionsToWalletParams
 }): Promise<WalletModel.CloseConnectionsToWalletResult>
 export function MockAPIRequest({ method }: WalletAPIRequest) {
-  // These few lines below are for modyfying mocks by playwright via localStorage
-  if (
-    localStorage.getItem('playwright') &&
-    localStorage.getItem(`MOCK.${method}`) !== null
-  ) {
-    return Promise.resolve(
-      JSON.parse(localStorage.getItem(`MOCK.${method}`)?.toString() || 'null')
-    )
-  } else {
-    switch (method) {
-      case Identifier.CreateWallet: {
-        return Promise.resolve<WalletModel.CreateWalletResult>({
-          wallet: {
-            name: 'my-wallet',
-            keyDerivationVersion: 2,
-            recoveryPhrase:
-              'swing ceiling chaos green put insane ripple desk match tip melt usual shrug turkey renew icon parade veteran lens govern path rough page render',
-            filePath: 'some/path/to/my-wallet',
-          },
-          key: {
-            publicKey:
-              'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
-            algorithm: {
-              name: 'vega/ed25519',
-              version: 1,
-            },
-            metadata: [
-              {
-                key: 'name',
-                value: 'my-wallet key 1',
-              },
-            ],
-          },
-        })
-      }
-      case Identifier.ImportWallet: {
-        return Promise.resolve<WalletModel.ImportWalletResult>({
-          wallet: {
-            name: 'my-wallet',
-            keyDerivationVersion: 2,
-            filePath: 'some/path/to/my-wallet',
-          },
-          key: {
-            publicKey:
-              'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
-            algorithm: {
-              name: 'vega/ed25519',
-              version: 1,
-            },
-            metadata: [
-              {
-                key: 'name',
-                value: 'my-wallet key 1',
-              },
-            ],
-          },
-        })
-      }
-      case Identifier.UpdatePassphrase: {
-        return Promise.resolve<WalletModel.UpdatePassphraseResult>(null)
-      }
-      case Identifier.DescribeWallet: {
-        return Promise.resolve<WalletModel.DescribeWalletResult>({
+  switch (method) {
+    case Identifier.CreateWallet: {
+      return Promise.resolve<WalletModel.CreateWalletResult>({
+        wallet: {
           name: 'my-wallet',
           keyDerivationVersion: 2,
-          type: 'HD Wallet',
-          id: '7ffa36b2fb99d8404e9448f0d2ce944055e64c36d895d1fde044c867bfdf779f',
-        })
-      }
-      case Identifier.ListWallets: {
-        return Promise.resolve<WalletModel.ListWalletsResult>({
-          wallets: ['wallet-1', 'wallet-2'],
-        })
-      }
-      case Identifier.RenameWallet: {
-        return Promise.resolve<WalletModel.RenameWalletResult>(null)
-      }
-      case Identifier.RemoveWallet: {
-        return Promise.resolve<WalletModel.RemoveWalletResult>(null)
-      }
-      case Identifier.ListNetworks: {
-        return Promise.resolve<WalletModel.ListNetworksResult>({
-          networks: [
-            {
-              name: 'mainnet1',
-              metadata: [
-                {
-                  key: 'network',
-                  value: 'mainnet',
-                },
-              ],
-            },
-            {
-              name: 'fairground',
-              metadata: [
-                {
-                  key: 'network',
-                  value: 'testnet',
-                },
-              ],
-            },
-            {
-              name: 'local-network',
-            },
-          ],
-        })
-      }
-      case Identifier.DescribeNetwork: {
-        return Promise.resolve<WalletModel.DescribeNetworkResult>({
-          name: 'local-network',
-          metadata: [
-            {
-              key: 'network',
-              value: 'local',
-            },
-          ],
-          api: {
-            grpcConfig: {
-              hosts: ['localhost:3028'],
-              retries: 5,
-            },
-            graphQLConfig: {
-              hosts: ['localhost:3028'],
-            },
-            restConfig: {
-              hosts: ['localhost:3029'],
-            },
-          },
-          apps: {
-            console: 'console.vega.xyz',
-            tokenDApp: 'token.vega.xyz',
-            explorer: 'explorer.vega.xyz',
-          },
-        })
-      }
-      case Identifier.UpdateNetwork: {
-        return Promise.resolve<WalletModel.UpdateNetworkResult>(null)
-      }
-      case Identifier.RemoveNetwork: {
-        return Promise.resolve<WalletModel.RemoveNetworkResult>(null)
-      }
-      case Identifier.ImportNetwork: {
-        return Promise.resolve<WalletModel.ImportNetworkResult>({
-          name: 'local-network',
-          filePath:
-            '/Users/username/vega-home/wallet-service/networks/local-network.toml',
-        })
-      }
-      case Identifier.GenerateKey: {
-        return Promise.resolve<WalletModel.GenerateKeyResult>({
+          recoveryPhrase:
+            'swing ceiling chaos green put insane ripple desk match tip melt usual shrug turkey renew icon parade veteran lens govern path rough page render',
+        },
+        key: {
           publicKey:
             'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
           algorithm: {
@@ -305,18 +173,20 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
           },
           metadata: [
             {
-              key: 'portfolio',
-              value: 'btc',
-            },
-            {
               key: 'name',
-              value: 'Key 1',
+              value: 'my-wallet key 1',
             },
           ],
-        })
-      }
-      case Identifier.DescribeKey: {
-        return Promise.resolve<WalletModel.DescribeKeyResult>({
+        },
+      })
+    }
+    case Identifier.ImportWallet: {
+      return Promise.resolve<WalletModel.ImportWalletResult>({
+        wallet: {
+          name: 'my-wallet',
+          keyDerivationVersion: 2,
+        },
+        key: {
           publicKey:
             'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
           algorithm: {
@@ -325,207 +195,354 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
           },
           metadata: [
             {
-              key: 'portfolio',
-              value: 'btc',
-            },
-            {
               key: 'name',
-              value: 'Key 1',
+              value: 'my-wallet key 1',
             },
           ],
-          isTainted: false,
-        })
-      }
-      case Identifier.ListKeys: {
-        return Promise.resolve<WalletModel.ListKeysResult>({
-          keys: [
-            {
-              name: 'Key 1',
-              publicKey:
-                'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
-            },
-          ],
-        })
-      }
-      case Identifier.AnnotateKey: {
-        return Promise.resolve<WalletModel.AnnotateKeyResult>({
-          metadata: [
-            {
-              key: 'portfolio',
-              value: 'btc',
-            },
-            {
-              key: 'name',
-              value: 'Key 1',
-            },
-          ],
-        })
-      }
-      case Identifier.IsolateKey: {
-        return Promise.resolve<WalletModel.IsolateKeyResult>({
-          wallet: 'my-wallet.b5fd9d3c.isolated',
-          filePath: 'some/path/to/my-wallet.b5fd9d3c.isolated',
-        })
-      }
-      case Identifier.RotateKey: {
-        return Promise.resolve<WalletModel.RotateKeyResult>({
-          masterPublicKey:
-            '9df682a3c87d90567f260566a9c223ccbbb7529c38340cf163b8fe199dbf0f2e',
-          encodedTransaction:
-            'CqsBdGVzdC1jaGFpbi1UaHo5YzYACPfdurmpppHlogEQCqp9iAEIAhAPGkA5ODhlYWUzMjNhMDdmMTIzNjNjMTcwMjVjMjNlZTU4ZWEzMmFjMzkxMjM5OGUxNmJiMGI1Njk2OWY1N2FkYzUyIkA4MWFhZjk2NmU4ZjUxNDIzZjBiZDFkOTMzYWQ0NmY5NjJlMjNiY2Q3MTg4ZWQzZmUwZjUzZjRkYThhMzJhOWVlEpMBCoABYzg3NDVkODhlMWQ1YTBhOGE3NGI5YzRmN2QyMzQ3ZmQ5ZDY1NzIwYTQ3ZmYwNWU3YTZmZmYyOTA0NzhmOTU0M2NjM2E4MzJkNjBmYTJiNmY3ZTQ3YWJlMjE0MGIwOTEyNzBlNTAxZTA5MjVjNDg3NzEwMjViOTkyYTg1ZTAxMDQSDHZlZ2EvZWQyNTUxORgBgH0D0j5AOWRmNjgyYTNjODdkOTA1NjdmMjYwNTY2YTljMjIzY2NiYmI3NTI5YzM4MzQwY2YxNjNiOGZlMTk5ZGJmMGYyZQ==',
-        })
-      }
-      case Identifier.TaintKey: {
-        return Promise.resolve<WalletModel.TaintKeyResult>(null)
-      }
-      case Identifier.UntaintKey: {
-        return Promise.resolve<WalletModel.UntaintKeyResult>(null)
-      }
-      case Identifier.DescribePermissions: {
-        return Promise.resolve<WalletModel.DescribePermissionsResult>({
-          permissions: {
-            publicKeys: {
-              access: 'read',
-              allowedKeys: [
-                'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
-              ],
-            },
+        },
+      })
+    }
+    case Identifier.UpdatePassphrase: {
+      return Promise.resolve<WalletModel.UpdatePassphraseResult>(null)
+    }
+    case Identifier.DescribeWallet: {
+      return Promise.resolve<WalletModel.DescribeWalletResult>({
+        name: 'my-wallet',
+        keyDerivationVersion: 2,
+        type: 'HD Wallet',
+        id: '7ffa36b2fb99d8404e9448f0d2ce944055e64c36d895d1fde044c867bfdf779f',
+      })
+    }
+    case Identifier.ListWallets: {
+      return Promise.resolve<WalletModel.ListWalletsResult>({
+        wallets: ['wallet-1', 'wallet-2'],
+      })
+    }
+    case Identifier.RenameWallet: {
+      return Promise.resolve<WalletModel.RenameWalletResult>(null)
+    }
+    case Identifier.RemoveWallet: {
+      return Promise.resolve<WalletModel.RemoveWalletResult>(null)
+    }
+    case Identifier.ListNetworks: {
+      return Promise.resolve<WalletModel.ListNetworksResult>({
+        networks: [
+          {
+            name: 'mainnet1',
+            metadata: [
+              {
+                key: 'network',
+                value: 'mainnet',
+              },
+            ],
           },
-        })
-      }
-      case Identifier.ListPermissions: {
-        return Promise.resolve<WalletModel.ListPermissionsResult>({
-          permissions: {
-            'vega.xyz': {
-              public_keys: 'read',
-            },
-            'token.vega.xyz': {
-              public_keys: 'none',
-            },
+          {
+            name: 'fairground',
+            metadata: [
+              {
+                key: 'network',
+                value: 'testnet',
+              },
+            ],
           },
-        })
-      }
-      case Identifier.UpdatePermissions: {
-        return Promise.resolve<WalletModel.UpdatePermissionsResult>({
-          permissions: {
-            publicKeys: {
-              access: 'read',
-              allowedKeys: [
-                'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
-              ],
-            },
+          {
+            name: 'local-network',
           },
-        })
-      }
-      case Identifier.RevokePermissions: {
-        return Promise.resolve<WalletModel.RevokePermissionsResult>(null)
-      }
-      case Identifier.PurgePermissions: {
-        return Promise.resolve<WalletModel.PurgePermissionsResult>(null)
-      }
-      case Identifier.SignTransaction: {
-        return Promise.resolve<WalletModel.SignTransactionResult>({
-          encodedTransaction: 'string',
-        })
-      }
-      case Identifier.SignMessage: {
-        return Promise.resolve<WalletModel.SignMessageResult>({
-          encodedSignature:
-            '6a2Ud6yuNcnOaO8jaiTJJi8dZBQzvNySV2Tt2hD+YhVnz1dNxHGUavU2a1W1z0/1uX0n91x2jWXONMRpiiNODg==',
-        })
-      }
-      case Identifier.VerifyMessage: {
-        return Promise.resolve<WalletModel.VerifyMessageResult>({
-          isValid: 'string',
-        })
-      }
-      case Identifier.SendTransaction: {
-        return Promise.resolve<WalletModel.SendTransactionResult>({
-          receivedAt: 'string',
-          sentAt: 'string',
-          transactionHash: 'string',
-          transaction: {
-            inputData: 'string',
-            signature: {
-              value: 'string',
-              algo: 'string',
-              version: 0,
-            },
-            from: {
-              publicKey: 'string',
-              address: 'string',
-            },
+        ],
+      })
+    }
+    case Identifier.DescribeNetwork: {
+      return Promise.resolve<WalletModel.DescribeNetworkResult>({
+        name: 'local-network',
+        metadata: [
+          {
+            key: 'network',
+            value: 'local',
+          },
+        ],
+        api: {
+          grpcConfig: {
+            hosts: ['localhost:3028'],
+            retries: 5,
+          },
+          graphQLConfig: {
+            hosts: ['localhost:3028'],
+          },
+          restConfig: {
+            hosts: ['localhost:3029'],
+          },
+        },
+        apps: {
+          console: 'console.vega.xyz',
+          governance: 'governance.vega.xyz',
+          explorer: 'explorer.vega.xyz',
+        },
+      })
+    }
+    case Identifier.UpdateNetwork: {
+      return Promise.resolve<WalletModel.UpdateNetworkResult>(null)
+    }
+    case Identifier.RenameNetwork: {
+      return Promise.resolve<WalletModel.RenameNetworkResult>(null)
+    }
+    case Identifier.RemoveNetwork: {
+      return Promise.resolve<WalletModel.RemoveNetworkResult>(null)
+    }
+    case Identifier.ImportNetwork: {
+      return Promise.resolve<WalletModel.ImportNetworkResult>({
+        name: 'local-network',
+      })
+    }
+    case Identifier.GenerateKey: {
+      return Promise.resolve<WalletModel.GenerateKeyResult>({
+        publicKey:
+          'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
+        algorithm: {
+          name: 'vega/ed25519',
+          version: 1,
+        },
+        metadata: [
+          {
+            key: 'portfolio',
+            value: 'btc',
+          },
+          {
+            key: 'name',
+            value: 'Key 1',
+          },
+        ],
+      })
+    }
+    case Identifier.DescribeKey: {
+      return Promise.resolve<WalletModel.DescribeKeyResult>({
+        publicKey:
+          'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
+        algorithm: {
+          name: 'vega/ed25519',
+          version: 1,
+        },
+        metadata: [
+          {
+            key: 'portfolio',
+            value: 'btc',
+          },
+          {
+            key: 'name',
+            value: 'Key 1',
+          },
+        ],
+        isTainted: false,
+      })
+    }
+    case Identifier.ListKeys: {
+      return Promise.resolve<WalletModel.ListKeysResult>({
+        keys: [
+          {
+            name: 'Key 1',
+            publicKey:
+              'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
+          },
+        ],
+      })
+    }
+    case Identifier.AnnotateKey: {
+      return Promise.resolve<WalletModel.AnnotateKeyResult>({
+        metadata: [
+          {
+            key: 'portfolio',
+            value: 'btc',
+          },
+          {
+            key: 'name',
+            value: 'Key 1',
+          },
+        ],
+      })
+    }
+    case Identifier.IsolateKey: {
+      return Promise.resolve<WalletModel.IsolateKeyResult>({
+        wallet: 'my-wallet.b5fd9d3c.isolated',
+      })
+    }
+    case Identifier.RotateKey: {
+      return Promise.resolve<WalletModel.RotateKeyResult>({
+        masterPublicKey:
+          '9df682a3c87d90567f260566a9c223ccbbb7529c38340cf163b8fe199dbf0f2e',
+        encodedTransaction:
+          'CqsBdGVzdC1jaGFpbi1UaHo5YzYACPfdurmpppHlogEQCqp9iAEIAhAPGkA5ODhlYWUzMjNhMDdmMTIzNjNjMTcwMjVjMjNlZTU4ZWEzMmFjMzkxMjM5OGUxNmJiMGI1Njk2OWY1N2FkYzUyIkA4MWFhZjk2NmU4ZjUxNDIzZjBiZDFkOTMzYWQ0NmY5NjJlMjNiY2Q3MTg4ZWQzZmUwZjUzZjRkYThhMzJhOWVlEpMBCoABYzg3NDVkODhlMWQ1YTBhOGE3NGI5YzRmN2QyMzQ3ZmQ5ZDY1NzIwYTQ3ZmYwNWU3YTZmZmYyOTA0NzhmOTU0M2NjM2E4MzJkNjBmYTJiNmY3ZTQ3YWJlMjE0MGIwOTEyNzBlNTAxZTA5MjVjNDg3NzEwMjViOTkyYTg1ZTAxMDQSDHZlZ2EvZWQyNTUxORgBgH0D0j5AOWRmNjgyYTNjODdkOTA1NjdmMjYwNTY2YTljMjIzY2NiYmI3NTI5YzM4MzQwY2YxNjNiOGZlMTk5ZGJmMGYyZQ==',
+      })
+    }
+    case Identifier.TaintKey: {
+      return Promise.resolve<WalletModel.TaintKeyResult>(null)
+    }
+    case Identifier.UntaintKey: {
+      return Promise.resolve<WalletModel.UntaintKeyResult>(null)
+    }
+    case Identifier.DescribePermissions: {
+      return Promise.resolve<WalletModel.DescribePermissionsResult>({
+        permissions: {
+          publicKeys: {
+            access: 'read',
+            allowedKeys: [
+              'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
+            ],
+          },
+        },
+      })
+    }
+    case Identifier.ListPermissions: {
+      return Promise.resolve<WalletModel.ListPermissionsResult>({
+        permissions: {
+          'vega.xyz': {
+            public_keys: 'read',
+          },
+          'token.vega.xyz': {
+            public_keys: 'none',
+          },
+        },
+      })
+    }
+    case Identifier.UpdatePermissions: {
+      return Promise.resolve<WalletModel.UpdatePermissionsResult>({
+        permissions: {
+          publicKeys: {
+            access: 'read',
+            allowedKeys: [
+              'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
+            ],
+          },
+        },
+      })
+    }
+    case Identifier.RevokePermissions: {
+      return Promise.resolve<WalletModel.RevokePermissionsResult>(null)
+    }
+    case Identifier.PurgePermissions: {
+      return Promise.resolve<WalletModel.PurgePermissionsResult>(null)
+    }
+    case Identifier.SignTransaction: {
+      return Promise.resolve<WalletModel.SignTransactionResult>({
+        encodedTransaction: 'string',
+      })
+    }
+    case Identifier.SignMessage: {
+      return Promise.resolve<WalletModel.SignMessageResult>({
+        encodedSignature:
+          '6a2Ud6yuNcnOaO8jaiTJJi8dZBQzvNySV2Tt2hD+YhVnz1dNxHGUavU2a1W1z0/1uX0n91x2jWXONMRpiiNODg==',
+      })
+    }
+    case Identifier.VerifyMessage: {
+      return Promise.resolve<WalletModel.VerifyMessageResult>({
+        isValid: 'string',
+      })
+    }
+    case Identifier.SendTransaction: {
+      return Promise.resolve<WalletModel.SendTransactionResult>({
+        receivedAt: 'string',
+        sentAt: 'string',
+        transactionHash: 'string',
+        transaction: {
+          inputData: 'string',
+          signature: {
+            value: 'string',
+            algo: 'string',
             version: 0,
-            pow: {
-              tid: 'string',
-              nonce: 0,
-            },
           },
-        })
-      }
-      case Identifier.SendRawTransaction: {
-        return Promise.resolve<WalletModel.SendRawTransactionResult>({
-          receivedAt: 'string',
-          sentAt: 'string',
-          transactionHash: 'string',
-          transaction: {
-            inputData: 'string',
-            signature: {
-              value: 'string',
-              algo: 'string',
-              version: 0,
-            },
-            from: {
-              publicKey: 'string',
-              address: 'string',
-            },
+          from: {
+            publicKey: 'string',
+            address: 'string',
+          },
+          version: 0,
+          pow: {
+            tid: 'string',
+            nonce: 0,
+          },
+        },
+      })
+    }
+    case Identifier.CheckTransaction: {
+      return Promise.resolve<WalletModel.CheckTransactionResult>({
+        receivedAt: 'string',
+        sentAt: 'string',
+        transaction: {
+          inputData: 'string',
+          signature: {
+            value: 'string',
+            algo: 'string',
             version: 0,
-            pow: {
-              tid: 'string',
-              nonce: 0,
-            },
           },
-        })
-      }
-      case Identifier.StartService: {
-        return Promise.resolve<WalletModel.StartServiceResult>(null)
-      }
-      case Identifier.StopService: {
-        return Promise.resolve<WalletModel.StopServiceResult>(null)
-      }
-      case Identifier.ListConnections: {
-        return Promise.resolve<WalletModel.ListConnectionsResult>({
-          activeConnections: [
-            {
-              hostname: 'console.vega.xyz',
-              wallet: 'my-btc-wallet',
-            },
-            {
-              hostname: 'vega.xyz',
-              wallet: 'my-btc-wallet',
-            },
-            {
-              hostname: 'vega.xyz',
-              wallet: 'my-eth-wallet',
-            },
-          ],
-        })
-      }
-      case Identifier.CloseConnection: {
-        return Promise.resolve<WalletModel.CloseConnectionResult>(null)
-      }
-      case Identifier.CloseConnectionsToHostname: {
-        return Promise.resolve<WalletModel.CloseConnectionsToHostnameResult>(
-          null
-        )
-      }
-      case Identifier.CloseConnectionsToWallet: {
-        return Promise.resolve<WalletModel.CloseConnectionsToWalletResult>(null)
-      }
+          from: {
+            publicKey: 'string',
+            address: 'string',
+          },
+          version: 0,
+          pow: {
+            tid: 'string',
+            nonce: 0,
+          },
+        },
+      })
+    }
+    case Identifier.SendRawTransaction: {
+      return Promise.resolve<WalletModel.SendRawTransactionResult>({
+        receivedAt: 'string',
+        sentAt: 'string',
+        transactionHash: 'string',
+        transaction: {
+          inputData: 'string',
+          signature: {
+            value: 'string',
+            algo: 'string',
+            version: 0,
+          },
+          from: {
+            publicKey: 'string',
+            address: 'string',
+          },
+          version: 0,
+          pow: {
+            tid: 'string',
+            nonce: 0,
+          },
+        },
+      })
+    }
+    case Identifier.StartService: {
+      return Promise.resolve<WalletModel.StartServiceResult>(null)
+    }
+    case Identifier.StopService: {
+      return Promise.resolve<WalletModel.StopServiceResult>(null)
+    }
+    case Identifier.ListConnections: {
+      return Promise.resolve<WalletModel.ListConnectionsResult>({
+        activeConnections: [
+          {
+            hostname: 'console.vega.xyz',
+            wallet: 'my-btc-wallet',
+          },
+          {
+            hostname: 'vega.xyz',
+            wallet: 'my-btc-wallet',
+          },
+          {
+            hostname: 'vega.xyz',
+            wallet: 'my-eth-wallet',
+          },
+        ],
+      })
+    }
+    case Identifier.CloseConnection: {
+      return Promise.resolve<WalletModel.CloseConnectionResult>(null)
+    }
+    case Identifier.CloseConnectionsToHostname: {
+      return Promise.resolve<WalletModel.CloseConnectionsToHostnameResult>(null)
+    }
+    case Identifier.CloseConnectionsToWallet: {
+      return Promise.resolve<WalletModel.CloseConnectionsToWalletResult>(null)
+    }
 
-      default: {
-        return Promise.resolve(null)
-      }
+    default: {
+      return Promise.resolve(null)
     }
   }
 }

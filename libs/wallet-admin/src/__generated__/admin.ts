@@ -130,6 +130,18 @@ export class WalletAdmin {
   }
 
   /**
+   * Renames a network
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public RenameNetwork = (params: WalletModel.RenameNetworkParams) => {
+    return this.request({
+      method: Identifier.RenameNetwork,
+      params,
+    })
+  }
+
+  /**
    * Removes a network from the computer.
    */
 
@@ -355,6 +367,18 @@ export class WalletAdmin {
   public SendTransaction = (params: WalletModel.SendTransactionParams) => {
     return this.request({
       method: Identifier.SendTransaction,
+      params,
+    })
+  }
+
+  /**
+   * Check transaction command using the specified wallet and public key.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public CheckTransaction = (params: WalletModel.CheckTransactionParams) => {
+    return this.request({
+      method: Identifier.CheckTransaction,
       params,
     })
   }

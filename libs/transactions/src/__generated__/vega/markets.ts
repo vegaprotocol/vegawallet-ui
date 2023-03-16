@@ -232,6 +232,10 @@ export interface Market {
    * price levels over which automated liquidity provision orders will be deployed
    */
   lpPriceRange: string
+  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume */
+  linearSlippageFactor: string
+  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume */
+  quadraticSlippageFactor: string
 }
 
 /** The current state of the market */

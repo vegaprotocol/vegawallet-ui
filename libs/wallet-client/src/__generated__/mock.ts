@@ -10,9 +10,7 @@ type Props = {
 }
 
 const MockParams = {
-  ConnectWallet: {
-    hostname: 'vega.xyz',
-  },
+  ConnectWallet: {},
 
   DisconnectWallet: {},
 
@@ -31,6 +29,12 @@ const MockParams = {
     sendingMode: 'TYPE_SYNC',
     encodedTransaction:
       'ewogICAgInZvdGVTdWJtaXNzaW9uIjogewogICAgICAgICJwcm9wb3NhbElkIjogImViMmQzOTAyZmRkYTljM2ViNmUzNjlmMjIzNTY4OWI4NzFjNzMyMmNmM2FiMjg0ZGRlM2U5ZGZjMTM4NjNhMTciLAogICAgICAgICJ2YWx1ZSI6ICJWQUxVRV9ZRVMiCiAgICB9Cn0K',
+  },
+
+  CheckTransaction: {
+    publicKey:
+      '3fd42fd5ceb22d99ac45086f1d82d516118a5cb7ad9a2e096cd78ca2c8960c80',
+    transaction: {},
   },
 
   GetChainId: {},
@@ -105,6 +109,19 @@ export class MockWalletService {
         }
 
         case Identifier.SendTransaction: {
+          res.send({
+            id: req.body.id,
+            result: {
+              receivedAt: '2021-02-18T21:54:42.123Z',
+              sentAt: '2021-02-18T21:54:42.123Z',
+              txHash:
+                'E8C167126D1FC8D92898AB9C07C318161DF68753A1316A69ABDC9ADC557723B3',
+            },
+          })
+          return
+        }
+
+        case Identifier.CheckTransaction: {
           res.send({
             id: req.body.id,
             result: {

@@ -26,6 +26,8 @@ export namespace WalletModel {
     SignTransactionParams?: SignTransactionParams
     SendTransactionResult?: SendTransactionResult
     SendTransactionParams?: SendTransactionParams
+    CheckTransactionResult?: CheckTransactionResult
+    CheckTransactionParams?: CheckTransactionParams
     GetChainIdResult?: GetChainIdResult
     GetChainIdParams?: GetChainIdParams
   }
@@ -114,6 +116,44 @@ export namespace WalletModel {
     sendingMode: SendingMode
     transaction: Transaction
   }
+  export interface CheckTransactionResult {
+    /**
+     * The date when the API received the request to send the transaction.
+     *
+     * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
+     */
+    receivedAt: string
+    /**
+     * The date when the transaction has been sent to the network.
+     *
+     * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
+     */
+    sentAt: string
+    /**
+     * A transaction that has been signed by the wallet.
+     */
+    transaction: {
+      inputData: string
+      signature: {
+        value: string
+        algo: string
+        version: number
+      }
+      from: {
+        publicKey?: string
+        address?: string
+      }
+      version: number
+      pow: {
+        tid: string
+        nonce: number
+      }
+    }
+  }
+  export interface CheckTransactionParams {
+    publicKey: PublicKey
+    transaction: Transaction
+  }
   export interface GetChainIdResult {
     /**
      * The chain identifier
@@ -129,6 +169,7 @@ export enum Identifier {
   ListKeys = 'client.list_keys',
   SignTransaction = 'client.sign_transaction',
   SendTransaction = 'client.send_transaction',
+  CheckTransaction = 'client.check_transaction',
   GetChainId = 'client.get_chain_id',
 }
 
@@ -152,6 +193,10 @@ export type WalletClientHandler = ((
     id: Identifier.SendTransaction,
     params: WalletModel.SendTransactionParams
   ) => Promise<WalletModel.SendTransactionResult>) &
+  ((
+    id: Identifier.CheckTransaction,
+    params: WalletModel.CheckTransactionParams
+  ) => Promise<WalletModel.CheckTransactionResult>) &
   ((
     id: Identifier.GetChainId,
     params: WalletModel.GetChainIdParams

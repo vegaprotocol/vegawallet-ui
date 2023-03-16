@@ -22,6 +22,8 @@ export enum Side {
 export enum Interval {
   /** INTERVAL_UNSPECIFIED - Default value, always invalid */
   INTERVAL_UNSPECIFIED = 0,
+  /** INTERVAL_BLOCK - The block interval is not a fixed amount of time, rather it used to indicate grouping of events that occur in a single block. It is usually about a second. */
+  INTERVAL_BLOCK = -1,
   /** INTERVAL_I1M - 1 minute. */
   INTERVAL_I1M = 60,
   /** INTERVAL_I5M - 5 minutes. */
@@ -37,6 +39,13 @@ export enum Interval {
   UNRECOGNIZED = -1,
 }
 
+export enum PositionStatus {
+  POSITION_STATUS_UNSPECIFIED = 0,
+  POSITION_STATUS_ORDERS_CLOSED = 1,
+  POSITION_STATUS_CLOSED_OUT = 2,
+  UNRECOGNIZED = -1,
+}
+
 /** Auction triggers indicate what condition triggered an auction (if market is in auction mode) */
 export enum AuctionTrigger {
   /** AUCTION_TRIGGER_UNSPECIFIED - Default value for AuctionTrigger, no auction triggered */
@@ -47,8 +56,12 @@ export enum AuctionTrigger {
   AUCTION_TRIGGER_OPENING = 2,
   /** AUCTION_TRIGGER_PRICE - Price monitoring trigger */
   AUCTION_TRIGGER_PRICE = 3,
-  /** AUCTION_TRIGGER_LIQUIDITY - Liquidity monitoring trigger */
+  /** AUCTION_TRIGGER_LIQUIDITY - Deprecated */
   AUCTION_TRIGGER_LIQUIDITY = 4,
+  /** AUCTION_TRIGGER_LIQUIDITY_TARGET_NOT_MET - Liquidity auction due to not enough committed liquidity */
+  AUCTION_TRIGGER_LIQUIDITY_TARGET_NOT_MET = 5,
+  /** AUCTION_TRIGGER_UNABLE_TO_DEPLOY_LP_ORDERS - Liquidity auction due to not being able to deploy LP orders because there's nothing to peg on one or both sides of the book */
+  AUCTION_TRIGGER_UNABLE_TO_DEPLOY_LP_ORDERS = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -388,11 +401,18 @@ export interface Order {
   /**
    * Price for the order, the price is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   price: string
-  /** Size for the order, for example, in a futures market the size equals the number of contracts */
+  /**
+   * Size for the order, for example, in a futures market the size equals the number of contracts
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   size: number
-  /** Size remaining, when this reaches 0 then the order is fully filled and status becomes STATUS_FILLED */
+  /**
+   * Size remaining, when this reaches 0 then the order is fully filled and status becomes STATUS_FILLED
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   remaining: number
   /**
    * Time in force indicates how long an order will remain active before it is executed or expires.
@@ -501,7 +521,10 @@ export enum Order_Status {
   STATUS_REJECTED = 6,
   /** STATUS_PARTIALLY_FILLED - Used for closed partially filled IOC orders */
   STATUS_PARTIALLY_FILLED = 7,
-  /** STATUS_PARKED - Order has been removed from the order book and has been parked, this applies to pegged orders only */
+  /**
+   * STATUS_PARKED - Order has been removed from the order book and has been parked,
+   * this applies to pegged orders and liquidity orders (orders created from a liquidity provision shape)
+   */
   STATUS_PARKED = 8,
   UNRECOGNIZED = -1,
 }
@@ -545,9 +568,13 @@ export interface Trade {
   /**
    * Price for the trade, the price is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   price: string
-  /** Size filled for the trade */
+  /**
+   * Size filled for the trade
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   size: number
   /** Unique party identifier for the buyer */
   buyer: string
@@ -597,11 +624,20 @@ export enum Trade_Type {
 
 /** Represents any fees paid by a party, resulting from a trade */
 export interface Fee {
-  /** Fee amount paid to the non-aggressive party of the trade */
+  /**
+   * Fee amount paid to the non-aggressive party of the trade
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   makerFee: string
-  /** Fee amount paid for maintaining the Vega infrastructure */
+  /**
+   * Fee amount paid for maintaining the Vega infrastructure
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   infrastructureFee: string
-  /** Fee amount paid to market makers */
+  /**
+   * Fee amount paid to market makers
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   liquidityFee: string
 }
 
@@ -622,15 +658,30 @@ export interface Candle {
   timestamp: number
   /** An ISO-8601 datetime with nanosecond precision for when the candle was last updated */
   datetime: string
-  /** Highest price for trading during the candle interval */
+  /**
+   * Highest price for trading during the candle interval
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   high: string
-  /** Lowest price for trading during the candle interval */
+  /**
+   * Lowest price for trading during the candle interval
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   low: string
-  /** Open trade price */
+  /**
+   * Open trade price
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   open: string
-  /** Closing trade price */
+  /**
+   * Closing trade price
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   close: string
-  /** Total trading volume during the candle interval */
+  /**
+   * Total trading volume during the candle interval
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   volume: number
   /** Time interval for the candle - See [`Interval`](#vega.Interval) */
   interval: Interval
@@ -641,11 +692,15 @@ export interface PriceLevel {
   /**
    * Price for the price level, the price is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   price: string
   /** Number of orders at the price level */
   numberOfOrders: number
-  /** Volume at the price level */
+  /**
+   * Volume at the price level
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   volume: number
 }
 
@@ -681,27 +736,45 @@ export interface Position {
   marketId: string
   /** Party identifier */
   partyId: string
-  /** Open volume for the position, value is signed +ve for long and -ve for short */
+  /**
+   * Open volume for the position, value is signed +ve for long and -ve for short
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   openVolume: number
-  /** Realised profit and loss for the position, value is signed +ve for long and -ve for short */
+  /**
+   * Realised profit and loss for the position, value is signed +ve for long and -ve for short
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   realisedPnl: string
-  /** Unrealised profit and loss for the position, value is signed +ve for long and -ve for short */
+  /**
+   * Unrealised profit and loss for the position, value is signed +ve for long and -ve for short
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   unrealisedPnl: string
   /**
    * Average entry price for the position, the price is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   averageEntryPrice: string
   /** Timestamp for the latest time the position was updated */
   updatedAt: number
+  /** Sum of profit that could not be paid due to loss socialisation. */
+  lossSocialisationAmount: string
+  /** Position status, indicating whether the party was distressed and had orders cancelled or was closed out. */
+  positionStatus: PositionStatus
 }
 
 export interface PositionTrade {
-  /** Volume for the position trade, value is signed +ve for long and -ve for short */
+  /**
+   * Volume for the position trade, value is signed +ve for long and -ve for short
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   volume: number
   /**
    * Price for the position trade, the price is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   price: string
 }
@@ -716,7 +789,10 @@ export interface Deposit {
   partyId: string
   /** The Vega asset targeted by this deposit */
   asset: string
-  /** The amount to be deposited */
+  /**
+   * The amount to be deposited
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
   /** The hash of the transaction from the foreign chain */
   txHash: string
@@ -745,7 +821,10 @@ export interface Withdrawal {
   id: string
   /** Unique party identifier of the user initiating the withdrawal */
   partyId: string
-  /** The amount to be withdrawn */
+  /**
+   * The amount to be withdrawn
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
   /** The asset to withdraw funds from */
   asset: string
@@ -807,6 +886,7 @@ export interface Account {
    * Balance of the asset, the balance is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
    * and importantly balances cannot be negative
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   balance: string
   /** Asset identifier for the account */
@@ -819,7 +899,10 @@ export interface Account {
 
 /** Asset value information used within a transfer */
 export interface FinancialAmount {
-  /** A signed integer amount of asset */
+  /**
+   * An unsigned integer amount of asset
+   * This field is passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
   /** Asset identifier */
   asset: string
@@ -829,11 +912,17 @@ export interface FinancialAmount {
 export interface Transfer {
   /** Party identifier for the owner of the transfer */
   owner: string
-  /** A financial amount (of an asset) to transfer */
+  /**
+   * A financial amount (of an asset) to transfer
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: FinancialAmount | undefined
   /** The type of transfer, gives the reason for the transfer */
   type: TransferType
-  /** A minimum amount */
+  /**
+   * A minimum amount
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   minAmount: string
   /** optional dispatch strategy */
   marketId: string
@@ -854,9 +943,15 @@ export interface TransferRequest {
   fromAccount: Account[]
   /** One or more accounts to transfer to */
   toAccount: Account[]
-  /** An amount to transfer for the asset */
+  /**
+   * An amount to transfer for the asset
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
-  /** A minimum amount */
+  /**
+   * The minimum amount that needs to be transferred for the transfer request. If this minimum isn't reached, it will error
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   minAmount: string
   /** Asset identifier */
   asset: string
@@ -879,7 +974,10 @@ export interface LedgerEntry {
   fromAccount: AccountDetails | undefined
   /** One or more accounts to transfer to */
   toAccount: AccountDetails | undefined
-  /** An amount to transfer */
+  /**
+   * An amount to transfer
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
   /** Transfer type for this entry */
   type: TransferType
@@ -895,7 +993,10 @@ export interface LedgerEntry {
 export interface PostTransferBalance {
   /** The account relating to the transfer */
   account: AccountDetails | undefined
-  /** The balance relating to the transfer */
+  /**
+   * The balance relating to the transfer
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   balance: string
 }
 
@@ -906,13 +1007,25 @@ export interface LedgerMovement {
 
 /** Represents the margin levels for a party on a market at a given time */
 export interface MarginLevels {
-  /** Maintenance margin value */
+  /**
+   * Maintenance margin value
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   maintenanceMargin: string
-  /** Search level value */
+  /**
+   * Margin search level value
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   searchLevel: string
-  /** Initial margin value */
+  /**
+   * Initial margin value
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   initialMargin: string
-  /** Collateral release level value */
+  /**
+   * Collateral release level value
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   collateralReleaseLevel: string
   /** Party identifier */
   partyId: string
@@ -932,53 +1045,84 @@ export interface MarketData {
   /**
    * Mark price, as an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   markPrice: string
   /**
    * Highest price level on an order book for buy orders, as an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   bestBidPrice: string
-  /** Aggregated volume being bid at the best bid price */
+  /**
+   * Aggregated volume being bid at the best bid price
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   bestBidVolume: number
-  /** Lowest price level on an order book for offer orders */
+  /**
+   * Lowest price level on an order book for offer orders
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   bestOfferPrice: string
   /**
    * Aggregated volume being offered at the best offer price, as an integer, for example `123456` is a correctly
-   *  // formatted price of `1.23456` assuming market configured to 5 decimal places
+   * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
    */
   bestOfferVolume: number
-  /** Highest price on the order book for buy orders not including pegged orders */
+  /**
+   * Highest price on the order book for buy orders not including pegged orders
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   bestStaticBidPrice: string
-  /** Total volume at the best static bid price excluding pegged orders */
+  /**
+   * Total volume at the best static bid price excluding pegged orders
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   bestStaticBidVolume: number
-  /** Lowest price on the order book for sell orders not including pegged orders */
+  /**
+   * Lowest price on the order book for sell orders not including pegged orders
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   bestStaticOfferPrice: string
-  /** Total volume at the best static offer price excluding pegged orders */
+  /**
+   * Total volume at the best static offer price, excluding pegged orders
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   bestStaticOfferVolume: number
   /**
    * Arithmetic average of the best bid price and best offer price, as an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   midPrice: string
-  /** Arithmetic average of the best static bid price and best static offer price */
+  /**
+   * Arithmetic average of the best static bid price and best static offer price
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   staticMidPrice: string
   /** Market identifier for the data */
   market: string
-  /**
-   * Timestamp at which this mark price was relevant, in nanoseconds since the epoch
-   * - See [`VegaTimeResponse`](#api.VegaTimeResponse).`timestamp`
-   */
+  /** Timestamp at which this mark price was relevant, in nanoseconds since the epoch */
   timestamp: number
-  /** The sum of the size of all positions greater than 0 on the market */
+  /**
+   * The sum of the size of all positions greater than zero on the market
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   openInterest: number
-  /** Time in seconds until the end of the auction (0 if currently not in auction period) */
+  /** Time in seconds until the end of the auction (zero if currently not in auction period) */
   auctionEnd: number
   /** Time until next auction, or start time of the current auction if market is in auction period */
   auctionStart: number
-  /** Indicative price (zero if not in auction) */
+  /**
+   * Indicative price (zero if not in auction)
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   indicativePrice: string
-  /** Indicative volume (zero if not in auction) */
+  /**
+   * Indicative volume (zero if not in auction)
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
+   */
   indicativeVolume: number
   /** The current trading mode for the market */
   marketTradingMode: Market_TradingMode
@@ -986,9 +1130,15 @@ export interface MarketData {
   trigger: AuctionTrigger
   /** When a market auction is extended, this field indicates what caused the extension */
   extensionTrigger: AuctionTrigger
-  /** Targeted stake for the given market */
+  /**
+   * Targeted stake for the given market
+   * This field is an unsigned integer passed as a string and needs to be scaled using the settlement asset's decimal places.
+   */
   targetStake: string
-  /** Available stake for the given market */
+  /**
+   * Available stake for the given market
+   * This field is an unsigned integer passed as a string and needs to be scaled using the settlement asset's decimal places.
+   */
   suppliedStake: string
   /** One or more price monitoring bounds for the current timestamp */
   priceMonitoringBounds: PriceMonitoringBounds[]
@@ -1000,7 +1150,10 @@ export interface MarketData {
   marketState: Market_State
   /** next MTM timestamp */
   nextMarkToMarket: number
-  /** last traded price of the market */
+  /**
+   * Last traded price of the market
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   lastTradedPrice: string
 }
 
@@ -1018,13 +1171,22 @@ export interface LiquidityProviderFeeShare {
 
 /** Represents a list of valid (at the current timestamp) price ranges per associated trigger */
 export interface PriceMonitoringBounds {
-  /** Minimum price that isn't currently breaching the specified price monitoring trigger */
+  /**
+   * Minimum price that isn't currently breaching the specified price monitoring trigger
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   minValidPrice: string
-  /** Maximum price that isn't currently breaching the specified price monitoring trigger */
+  /**
+   * Maximum price that isn't currently breaching the specified price monitoring trigger
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   maxValidPrice: string
   /** Price monitoring trigger associated with the bounds */
   trigger: PriceMonitoringTrigger | undefined
-  /** Reference price used to calculate the valid price range */
+  /**
+   * Reference price used to calculate the valid price range
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   referencePrice: string
 }
 
@@ -1070,7 +1232,10 @@ export interface LiquidityOrder {
   reference: PeggedReference
   /** The relative proportion of the commitment to be allocated at a price level */
   proportion: number
-  /** The offset/amount of units away for the order */
+  /**
+   * The offset/amount of units away for the order
+   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   */
   offset: string
 }
 
@@ -1100,7 +1265,10 @@ export interface LiquidityProvision {
   updatedAt: number
   /** Market identifier for the order, required field */
   marketId: string
-  /** Specified as a unitless number that represents the amount of settlement asset of the market */
+  /**
+   * Specified as a unitless number that represents the amount of settlement asset of the market
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   commitmentAmount: string
   /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers */
   fee: string
@@ -1263,15 +1431,30 @@ export interface Node {
   infoUrl: string
   /** Country code for the location of the node */
   location: string
-  /** The amount the node has put up themselves */
+  /**
+   * The amount the node has put up themselves
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
+   */
   stakedByOperator: string
-  /** The amount of stake that has been delegated by token holders */
+  /**
+   * The amount of stake that has been delegated by token holders
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
+   */
   stakedByDelegates: string
-  /** Total amount staked on node */
+  /**
+   * Total amount staked on node
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
+   */
   stakedTotal: string
-  /** Max amount of (wanted) stake, is this a network param or a node param */
+  /**
+   * Max amount of (wanted) stake
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places.
+   */
   maxIntendedStake: string
-  /** Amount of stake on the next epoch */
+  /**
+   * Amount of stake on the next epoch
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places of the token.
+   */
   pendingStake: string
   /** Information about epoch */
   epochData: EpochData | undefined
@@ -1304,7 +1487,10 @@ export interface NodeSet {
 }
 
 export interface NodeData {
-  /** Total staked amount across all nodes */
+  /**
+   * Total staked amount across all nodes
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places of the token.
+   */
   stakedTotal: string
   /** Total number of nodes across all node sets */
   totalNodes: number
@@ -1325,7 +1511,10 @@ export interface Delegation {
   party: string
   /** Node ID */
   nodeId: string
-  /** Amount delegated */
+  /**
+   * Amount delegated
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places of the token.
+   */
   amount: string
   /** Epoch of delegation */
   epochSeq: string
@@ -1336,6 +1525,10 @@ export interface Reward {
   assetId: string
   partyId: string
   epoch: number
+  /**
+   * Amount paid as a reward
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places of the reward asset.
+   */
   amount: string
   percentageOfTotal: string
   receivedAt: number
@@ -1347,7 +1540,10 @@ export interface Reward {
 export interface RewardSummary {
   assetId: string
   partyId: string
-  /** Total amount of rewards for the asset */
+  /**
+   * Total amount of rewards paid in the asset
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
+   */
   amount: string
 }
 
@@ -1357,6 +1553,10 @@ export interface EpochRewardSummary {
   assetId: string
   marketId: string
   rewardType: string
+  /**
+   * Amount distributed
+   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places.
+   */
   amount: string
 }
 

@@ -90,6 +90,17 @@ export class WalletClient {
   }
 
   /**
+   * Check a transaction or a bundle of transactions and send them to the network.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public CheckTransaction = async (
+    params: WalletModel.CheckTransactionParams
+  ) => {
+    return this.connector.CheckTransaction(params)
+  }
+
+  /**
    * Returns the chain ID of the network in use.
    */
 

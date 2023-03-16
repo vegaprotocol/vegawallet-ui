@@ -42,18 +42,6 @@ export function NetworkInfo({ network }: NetworkInfoProps) {
           </a>
         </>
       )}
-      {config.apps.tokenDApp && (
-        <>
-          <Title>Token dApp URL</Title>
-          <a
-            href={config.apps.tokenDApp}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {config.apps.tokenDApp}
-          </a>
-        </>
-      )}
       <Title>gRPC Nodes</Title>
       <NodeList items={config.api?.grpcConfig?.hosts ?? []} />
       <Title>GraphQL Nodes</Title>

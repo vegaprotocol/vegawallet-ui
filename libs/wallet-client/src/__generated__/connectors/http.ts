@@ -224,6 +224,41 @@ export class ConnectorHttp implements Connector {
   }
 
   /**
+   * Check a transaction or a bundle of transactions and send them to the network.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public CheckTransaction = async (
+    params: WalletModel.CheckTransactionParams
+  ) => {
+    const headers = new Headers()
+    headers.append('Content-Type', 'application/json')
+    if (this.token) {
+      headers.append('Authorization', this.token)
+    }
+
+    return fetch(`${this.address}/api/v2/requests`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: nanoid(),
+        method: Identifier.CheckTransaction,
+        params,
+      }),
+    })
+      .then((r) => {
+        const token = r.headers.get('Authorization')
+        if (token !== this.token) {
+          this.token = token
+          this.onTokenChange?.(token)
+        }
+        return r
+      })
+      .then((r) => handleHTTPResponse<WalletModel.CheckTransactionResult>(r))
+  }
+
+  /**
    * Returns the chain ID of the network in use.
    */
 

@@ -201,6 +201,25 @@ export class ConnectorBrowser implements Connector {
   }
 
   /**
+   * Check a transaction or a bundle of transactions and send them to the network.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public CheckTransaction = async (
+    params: WalletModel.CheckTransactionParams
+  ) => {
+    return handleExtensionRequest<
+      WalletModel.CheckTransactionParams,
+      WalletModel.CheckTransactionResult
+    >({
+      platform: this.platform,
+      extensionId: this.extensionId,
+      method: Identifier.CheckTransaction,
+      params,
+    })
+  }
+
+  /**
    * Returns the chain ID of the network in use.
    */
 
