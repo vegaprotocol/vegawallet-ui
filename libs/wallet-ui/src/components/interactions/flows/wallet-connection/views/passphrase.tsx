@@ -78,12 +78,20 @@ export const PassphraseView = ({
   }
 
   return (
-    <div>
+    <div data-testid="dapp-passphrase-modal">
       <div className="text-center mt-[100px] mb-[32px]">
         <Title>Connect to website</Title>
-        <p className="text-neutral-light">{data.hostname}</p>
+        <p
+          data-testid="dapp-passphrase-hostname"
+          className="text-neutral-light"
+        >
+          {data.hostname}
+        </p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        data-testid="dapp-passphrase-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="border border-neutral rounded p-[10px] mb-[20px]">
           <FormGroup
             label="Unlock with your passphrase to complete connection"
@@ -103,13 +111,19 @@ export const PassphraseView = ({
         </div>
         <ButtonGroup inline>
           <Button
+            data-testid="dapp-passphrase-approve-button"
             loading={isLoading}
             disabled={!!errors.passphrase}
             type="submit"
           >
             Approve
           </Button>
-          <Button onClick={() => onDeny()}>Cancel</Button>
+          <Button
+            data-testid="dapp-passphrase-cancel-button"
+            onClick={() => onDeny()}
+          >
+            Cancel
+          </Button>
         </ButtonGroup>
       </form>
     </div>

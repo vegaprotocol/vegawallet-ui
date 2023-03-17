@@ -53,12 +53,17 @@ export const SelectionView = ({
   }
 
   return (
-    <div>
+    <div data-testid="dapp-select-wallet-modal">
       <div className="text-center mt-[100px] mb-[32px]">
         <Title>Connect to website</Title>
-        <p className="text-neutral-light">{data.hostname}</p>
+        <p data-testid="dapp-select-hostname" className="text-neutral-light">
+          {data.hostname}
+        </p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        data-testid="dapp-select-wallet-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="border border-neutral rounded p-[10px] mb-[20px]">
           <p className="mb-[5px]">Select a wallet to connect to:</p>
           <RadioGroup
@@ -75,10 +80,19 @@ export const SelectionView = ({
           />
         </div>
         <ButtonGroup inline>
-          <Button type="submit" disabled={isLoading || !formState.isValid}>
+          <Button
+            data-testid="dapp-select-approve-button"
+            type="submit"
+            disabled={isLoading || !formState.isValid}
+          >
             Approve
           </Button>
-          <Button onClick={() => onDeny()}>Deny</Button>
+          <Button
+            data-testid="dapp-select-deny-button"
+            onClick={() => onDeny()}
+          >
+            Deny
+          </Button>
         </ButtonGroup>
       </form>
     </div>
