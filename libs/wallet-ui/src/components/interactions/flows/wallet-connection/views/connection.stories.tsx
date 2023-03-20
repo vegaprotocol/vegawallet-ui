@@ -5,7 +5,7 @@ import { service, client, runtime } from '../../../../../../src/mocks'
 
 export default {
   component: ConnectionView,
-  title: 'ConnectionView',
+  title: 'Interactions/Connection/Connection',
 } as Meta
 
 const NOOP = () => undefined

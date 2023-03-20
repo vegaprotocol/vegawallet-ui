@@ -3,7 +3,7 @@ import { ConnectionHeader } from './connection-header'
 
 export default {
   component: ConnectionHeader,
-  title: 'ConnectionHeader',
+  title: 'Interactions/Connection/Header',
 } as Meta
 
 const Template: Story = () => <ConnectionHeader hostname="hostname" />

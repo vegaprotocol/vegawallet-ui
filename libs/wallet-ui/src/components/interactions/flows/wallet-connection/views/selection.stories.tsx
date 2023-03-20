@@ -5,7 +5,7 @@ import { SelectionView } from './selection'
 
 export default {
   component: SelectionView,
-  title: 'SelectionView',
+  title: 'Interactions/Connection/Selection',
 } as Meta
 
 const NOOP = () => undefined
