@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { Title } from '../../../../title'
 import { RadioGroup } from '../../../../radio-group'
 import { ButtonGroup } from '../../../../button-group'
-import { Button } from '../../../../button'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { useGlobal } from '../../../../../contexts/global/global-context'
 import { Validation } from '../../../../../lib/form-validation'
 
 import type { WalletConnectionProps } from '../'
+import { ConnectionHeader } from './connection-header'
+import { Frame } from '../../../../frame'
 
 type Result = {
   wallet: string
@@ -24,10 +25,17 @@ export const SelectionView = ({
   const { control, handleSubmit, formState } = useForm<Result>()
 
   const onDeny = async () => {
-    await service.RespondToInteraction({
-      traceID: data.traceID,
-      name: 'CANCEL_REQUEST',
-    })
+    setLoading(true)
+    try {
+      await service.RespondToInteraction({
+        traceID: data.traceID,
+        name: 'CANCEL_REQUEST',
+      })
+    } catch (err) {
+      // TODO: handle error
+    } finally {
+      setLoading(false)
+    }
     onClose()
   }
 
@@ -54,22 +62,17 @@ export const SelectionView = ({
 
   return (
     <div data-testid="dapp-select-wallet-modal">
-      <div className="text-center mt-[100px] mb-[32px]">
-        <Title>Connect to website</Title>
-        <p data-testid="dapp-select-hostname" className="text-neutral-light">
-          {data.hostname}
-        </p>
-      </div>
+      <ConnectionHeader hostname={data.hostname} />
       <form
         data-testid="dapp-select-wallet-form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="border border-neutral rounded p-[10px] mb-[20px]">
-          <p className="mb-[5px]">Select a wallet to connect to:</p>
+        <Frame>
+          <p className="mb-1">Select a wallet to connect to:</p>
           <RadioGroup
             name="wallet"
             control={control}
-            itemClass="mb-[5px]"
+            itemClass="mb-1"
             rules={{
               required: Validation.REQUIRED,
             }}
@@ -78,10 +81,11 @@ export const SelectionView = ({
               value: w,
             }))}
           />
-        </div>
+        </Frame>
         <ButtonGroup inline>
           <Button
             data-testid="dapp-select-approve-button"
+            variant="primary"
             type="submit"
             disabled={isLoading || !formState.isValid}
           >
