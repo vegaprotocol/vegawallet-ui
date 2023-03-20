@@ -9,6 +9,7 @@ import { KeyPairHome } from './wallet/keypair/home'
 import { Transactions } from './wallet/keypair/transactions'
 import { WalletCreate } from './wallet-create'
 import { WalletImport } from './wallet-import'
+import { TransactionHome } from './transactions'
 
 // Root paths start with '/'
 export enum Paths {
@@ -32,6 +33,7 @@ export const AppRouter = () => {
             <Route path="transactions" element={<Transactions />} />
           </Route>
         </Route>
+        <Route path="transactions" element={<TransactionHome />} />
       </Route>
     </Routes>
   )
