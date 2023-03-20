@@ -21,7 +21,7 @@ export const TransactionHome = ({
           You have no transactions this session.
         </p>
       ) : (
-        <ul>
+        <ul className="pt-4">
           {transactions.map((transaction) => (
             <li key={transaction.id}>
               <div className="border-b border-1 border-dark-200 py-4">

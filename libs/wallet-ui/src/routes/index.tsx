@@ -33,7 +33,10 @@ export const AppRouter = () => {
             <Route path="transactions" element={<Transactions />} />
           </Route>
         </Route>
-        <Route path="transactions" element={<TransactionHome />} />
+        <Route path="transactions" element={<Outlet />}>
+          <Route index={true} element={<TransactionHome transactions={[]} />} />
+          <Route path=":id" element={<TransactionHome transactions={[]} />} />
+        </Route>
       </Route>
     </Routes>
   )
