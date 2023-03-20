@@ -3,14 +3,15 @@ import { useForm } from 'react-hook-form'
 
 import { FormGroup } from '../../../../form-group'
 import { Input } from '../../../../forms/input'
-import { Button } from '../../../../button'
+import { Button, ButtonLink } from '@vegaprotocol/ui-toolkit'
 import { ButtonGroup } from '../../../../button-group'
-import { Title } from '../../../../title'
 import { Validation } from '../../../../../lib/form-validation'
 import { useGlobal } from '../../../../../contexts/global/global-context'
 import { Intent } from '../../../../../config/intent'
 
 import type { WalletConnectionProps } from '../'
+import { ConnectionHeader } from './connection-header'
+import { Frame } from '../../../../frame'
 
 type Result = {
   passphrase: string
@@ -79,20 +80,12 @@ export const PassphraseView = ({
 
   return (
     <div data-testid="dapp-passphrase-modal">
-      <div className="text-center mt-[100px] mb-[32px]">
-        <Title>Connect to website</Title>
-        <p
-          data-testid="dapp-passphrase-hostname"
-          className="text-neutral-light"
-        >
-          {data.hostname}
-        </p>
-      </div>
+      <ConnectionHeader hostname={data.hostname} />
       <form
         data-testid="dapp-passphrase-form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="border border-neutral rounded p-[10px] mb-[20px]">
+        <Frame>
           <FormGroup
             label="Unlock with your passphrase to complete connection"
             labelFor="passphrase"
@@ -104,26 +97,28 @@ export const PassphraseView = ({
               type="password"
               autoComplete="off"
               aria-invalid={errors.passphrase?.message ? 'true' : undefined}
-              className="mt-[10px]"
+              className="mt-2"
               {...register('passphrase', { required: Validation.REQUIRED })}
             />
           </FormGroup>
-        </div>
+        </Frame>
         <ButtonGroup inline>
           <Button
             data-testid="dapp-passphrase-approve-button"
-            loading={isLoading}
-            disabled={!!errors.passphrase}
+            variant="primary"
+            // TODO: add loading state
+            // loading={isLoading}
+            disabled={!!errors.passphrase || isLoading}
             type="submit"
           >
-            Approve
+            Unlock
           </Button>
-          <Button
+          <ButtonLink
             data-testid="dapp-passphrase-cancel-button"
             onClick={() => onDeny()}
           >
             Cancel
-          </Button>
+          </ButtonLink>
         </ButtonGroup>
       </form>
     </div>
