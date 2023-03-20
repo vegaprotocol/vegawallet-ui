@@ -5,7 +5,7 @@ import { PassphraseView } from './passphrase'
 
 export default {
   component: PassphraseView,
-  title: 'PassphraseView',
+  title: 'Interactions/Connection/Passphrase',
 } as Meta
 
 const NOOP = () => undefined
