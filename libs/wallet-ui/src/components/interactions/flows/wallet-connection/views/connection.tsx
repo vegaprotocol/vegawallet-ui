@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { Button, Icon } from '@vegaprotocol/ui-toolkit'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { ButtonGroup } from '../../../../button-group'
 import { Tick } from '../../../../icons/tick'
 import { useGlobal } from '../../../../../contexts/global/global-context'
 import { CONNECTION_RESPONSE } from '../../../../../types/interaction'
 
 import type { WalletConnectionProps } from '../'
-import { VegaIcon } from '../../../../../components/icons/vega-icon'
 import { Frame } from '../../../../../components/frame'
+import { ConnectionHeader } from './connection-header'
 
 export const ConnectionView = ({
   data,
@@ -46,17 +46,7 @@ export const ConnectionView = ({
 
   return (
     <div data-testid="dapp-connect-modal">
-      <div className="flex justify-center mt-16">
-        <VegaIcon />
-        <div className="flex flex-col justify-center mx-8">
-          <Icon name="arrow-right" className="text-vega-yellow-500" />
-        </div>
-        <VegaIcon inverted={true} />
-      </div>
-      <div className="text-center mb-6 mt-10">
-        <h1 className="mb-1 text-2xl">Connect to website</h1>
-        <p className="text-neutral-light">{data.hostname}</p>
-      </div>
+      <ConnectionHeader hostname={data.hostname} />
       <Frame>
         <p className="mb-3">Allow this site to:</p>
         <ul className="list-none">
