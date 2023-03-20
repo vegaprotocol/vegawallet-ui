@@ -110,11 +110,11 @@ export const PermissionRequest = ({
     <div>
       <InteractionHeader hostname={data.hostname} />
       <Frame>
-        <p className="mb-[5px]">Allows this site to:</p>
+        <p className="mb-1">Allows this site to:</p>
         <ul>
           {permissions.map((permissionText, i) => (
-            <li key={i} className="mb-[5px]">
-              <Tick className="w-[10px] mr-[6px] text-success-light" />
+            <li key={i} className="mb-1">
+              <Tick className="w-2 mr-2 text-success-light" />
               {permissionText}
             </li>
           ))}
