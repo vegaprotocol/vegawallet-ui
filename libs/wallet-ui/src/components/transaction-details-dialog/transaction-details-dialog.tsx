@@ -5,7 +5,7 @@ import { Dialog } from '../dialog'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
 import { TransactionDetails } from '../transaction-details'
-import { TRANSACTION_TITLES } from '../../lib/transactions'
+import { TRANSACTION_TITLES } from '@vegaprotocol/wallet-types'
 
 export const TransactionDetailsDialog = () => {
   const { state, dispatch } = useGlobal()

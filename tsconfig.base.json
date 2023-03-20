@@ -23,6 +23,7 @@
       "@vegaprotocol/wallet-admin": ["libs/wallet-admin/src/index.ts"],
       "@vegaprotocol/wallet-client": ["libs/wallet-client/src/index.ts"],
       "@vegaprotocol/wallet-theme": ["libs/wallet-theme/src/index.tsx"],
+      "@vegaprotocol/wallet-types": ["libs/wallet-types/src/index.ts"],
       "@vegaprotocol/wallet-ui": ["libs/wallet-ui/src/index.tsx"]
     }
   },
