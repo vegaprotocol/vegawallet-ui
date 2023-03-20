@@ -1,7 +1,7 @@
 import { Icon } from '@vegaprotocol/ui-toolkit'
-import { VegaIcon } from '../../../../icons/vega-icon'
+import { VegaIcon } from '../../icons/vega-icon'
 
-export const ConnectionHeader = ({
+export const InteractionHeader = ({
   hostname,
 }: {
   hostname: string | undefined

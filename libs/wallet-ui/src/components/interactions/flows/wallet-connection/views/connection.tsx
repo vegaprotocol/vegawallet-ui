@@ -7,7 +7,7 @@ import { CONNECTION_RESPONSE } from '../../../../../types/interaction'
 
 import type { WalletConnectionProps } from '../'
 import { Frame } from '../../../../../components/frame'
-import { ConnectionHeader } from './connection-header'
+import { InteractionHeader } from '../../interaction-header'
 
 export const ConnectionView = ({
   data,
@@ -46,7 +46,7 @@ export const ConnectionView = ({
 
   return (
     <div data-testid="dapp-connect-modal">
-      <ConnectionHeader hostname={data.hostname} />
+      <InteractionHeader hostname={data.hostname} />
       <Frame>
         <p className="mb-3">Allow this site to:</p>
         <ul className="list-none">

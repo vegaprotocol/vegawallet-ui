@@ -10,8 +10,8 @@ import { useGlobal } from '../../../../../contexts/global/global-context'
 import { Intent } from '../../../../../config/intent'
 
 import type { WalletConnectionProps } from '../'
-import { ConnectionHeader } from './connection-header'
 import { Frame } from '../../../../frame'
+import { InteractionHeader } from '../../interaction-header'
 
 type Result = {
   passphrase: string
@@ -80,7 +80,7 @@ export const PassphraseView = ({
 
   return (
     <div data-testid="dapp-passphrase-modal">
-      <ConnectionHeader hostname={data.hostname} />
+      <InteractionHeader hostname={data.hostname} />
       <form
         data-testid="dapp-passphrase-form"
         onSubmit={handleSubmit(onSubmit)}

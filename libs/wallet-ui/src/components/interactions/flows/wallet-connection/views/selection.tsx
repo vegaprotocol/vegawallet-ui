@@ -8,8 +8,8 @@ import { useGlobal } from '../../../../../contexts/global/global-context'
 import { Validation } from '../../../../../lib/form-validation'
 
 import type { WalletConnectionProps } from '../'
-import { ConnectionHeader } from './connection-header'
 import { Frame } from '../../../../frame'
+import { InteractionHeader } from '../../interaction-header'
 
 type Result = {
   wallet: string
@@ -62,7 +62,7 @@ export const SelectionView = ({
 
   return (
     <div data-testid="dapp-select-wallet-modal">
-      <ConnectionHeader hostname={data.hostname} />
+      <InteractionHeader hostname={data.hostname} />
       <form
         data-testid="dapp-select-wallet-form"
         onSubmit={handleSubmit(onSubmit)}
