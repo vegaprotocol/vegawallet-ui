@@ -10,7 +10,6 @@ import {
 import { formatDate } from '../../../lib/date'
 import type { ReactNode } from 'react'
 import { useExplorerUrl } from '../../../hooks/use-explorer-url'
-import { ArrowTopRight } from '../../../components/icons/arrow-top-right'
 import { TransactionLogs } from '../../../components/transaction-logs'
 import { CodeWindow } from '../../../components/code-window'
 
@@ -52,7 +51,12 @@ export const TransactionPage = ({
           item={transaction}
           renderItem={(transaction) => (
             <TransactionDetailsItem title="Wallet">
-              {transaction.publicKey}
+              <ExternalLink
+                className="uppercase"
+                href={`${explorerUrl}/parties/${transaction.publicKey}`}
+              >
+                {truncateMiddle(transaction.publicKey)}
+              </ExternalLink>
             </TransactionDetailsItem>
           )}
         />
@@ -90,7 +94,6 @@ export const TransactionPage = ({
               <TransactionDetailsItem title="Transaction hash">
                 <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
                   {truncateMiddle(transaction.txHash)}
-                  <ArrowTopRight className="w-[13px] ml-[6px]" />
                 </ExternalLink>
               </TransactionDetailsItem>
             )}
