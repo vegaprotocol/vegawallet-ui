@@ -8,7 +8,7 @@ export default {
 
 const Template: Story = ({ item }) => (
   <ul>
-    <ListItem item={item} idProp="id" renderItem={(i) => i.name} />
+    <ListItem item={item} renderItem={(i) => i.name} />
   </ul>
 )
 
