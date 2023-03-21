@@ -21,7 +21,6 @@ export function List<T>({
         <ListItem
           key={item[idProp]?.toString()}
           item={item}
-          idProp={idProp}
           renderItem={renderItem}
         />
       ))}
