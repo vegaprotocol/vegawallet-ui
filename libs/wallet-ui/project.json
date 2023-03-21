@@ -137,15 +137,14 @@
         }
       }
     },
+
     "build-storybook": {
       "executor": "@nrwl/storybook:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": ["{options.outputDir}"],
       "options": {
         "uiFramework": "@storybook/react",
-        "outputPath": "dist/storybook/wallet-ui",
-        "config": {
-          "configFolder": "libs/wallet-ui/.storybook"
-        }
+        "outputDir": "dist/storybook/wallet-ui",
+        "configDir": "libs/wallet-ui/.storybook"
       },
       "configurations": {
         "ci": {
