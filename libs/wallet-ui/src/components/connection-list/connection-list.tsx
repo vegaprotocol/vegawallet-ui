@@ -65,6 +65,7 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
         )}
       </Dialog>
       <Dialog
+        data-testid="remove-connection-modal"
         open={!!removeHost}
         title="Remove connection"
         onChange={() => setRemoveHost(null)}

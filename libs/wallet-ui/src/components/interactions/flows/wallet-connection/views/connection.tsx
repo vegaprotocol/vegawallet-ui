@@ -44,12 +44,17 @@ export const ConnectionView = ({
   }
 
   return (
-    <div>
+    <div data-testid="dapp-connect-modal">
       <div className="text-center mt-[100px] mb-[32px]">
         <Title className="mb-[5px]">Connect to website</Title>
-        <p className="text-neutral-light">{data.hostname}</p>
+        <p data-testid="dapp-connect-hostname" className="text-neutral-light">
+          {data.hostname}
+        </p>
       </div>
-      <div className="border border-neutral rounded p-[10px] mb-[20px]">
+      <div
+        data-testid="dapp-connect-access-list"
+        className="border border-neutral rounded p-[10px] mb-[20px]"
+      >
         <p className="mb-[5px]">Allow this site to:</p>
         <ul className="list-none">
           <li className="flex mb-[5px]">
@@ -60,6 +65,7 @@ export const ConnectionView = ({
       </div>
       <ButtonGroup inline>
         <Button
+          data-testid="dapp-connect-approve-button"
           loading={isLoading === 'approve'}
           disabled={!!isLoading}
           onClick={() => handleDecision(true)}
@@ -67,6 +73,7 @@ export const ConnectionView = ({
           Approve
         </Button>
         <Button
+          data-testid="dapp-connect-deny-button"
           loading={isLoading === 'reject'}
           onClick={() => handleDecision(false)}
         >
