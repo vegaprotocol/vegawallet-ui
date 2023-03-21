@@ -9,7 +9,7 @@ export const CodeWindow = ({
   text: string
 }) => {
   return (
-    <div className="max-h-40 text-xl flex border-dark-200 border border-2 p-5 rounded-md w-full">
+    <div className="mt-3 whitespace-pre max-h-60 text-xl flex border-dark-200 border border-2 p-5 rounded-md w-full">
       <code className="overflow-y-scroll w-full">{content}</code>
       <CopyWithTooltip text={text} />
     </div>

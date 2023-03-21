@@ -23,7 +23,25 @@ Default.args = {
     wallet: 'Wallet 1',
     publicKey:
       'c1d9b39e5148b14d694020572cb591a8af971b9c5a4a185f3afa47bd9247c0da',
-    payload: {},
+    payload: {
+      nonce: '18290134391243719184',
+      blockHeight: '39347',
+      orderSubmission: {
+        marketId:
+          '10c7d40afd910eeac0c2cad186d79cb194090d5d5f13bd31e14c49fd1bded7e2',
+        price: '0',
+        size: '62',
+        side: 'SIDE_BUY',
+        timeInForce: 'TIME_IN_FORCE_GTT',
+        expiresAt: '1679416294197900655',
+        type: 'TYPE_LIMIT',
+        reference: 'traderbot',
+        peggedOrder: {
+          reference: 'PEGGED_REFERENCE_BEST_BID',
+          offset: '9',
+        },
+      },
+    },
     status: 'success',
     receivedAt: new Date(),
     logs: [

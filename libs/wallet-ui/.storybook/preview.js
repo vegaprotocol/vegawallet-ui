@@ -2,9 +2,13 @@ import './styles.css'
 import classnames from 'classnames'
 
 const StoryWrapper = ({ children, fill }) => {
-  const classes = classnames('p-4', 'bg-black text-white font-sans', {
-    'w-screen h-screen': fill,
-  })
+  const classes = classnames(
+    'p-4',
+    'bg-black text-white font-sans overflow-y-scroll',
+    {
+      'w-screen h-screen': fill,
+    }
+  )
   return <div className={classes}>{children}</div>
 }
 
