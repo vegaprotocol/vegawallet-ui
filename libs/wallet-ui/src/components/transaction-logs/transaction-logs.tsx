@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import { CodeBlock } from '../code-block'
 import type { LogContent } from '../../types/interaction'
+import { CodeWindow } from '../code-window/code-window'
 
 type Props = {
   logs: LogContent[]
@@ -10,13 +10,10 @@ type Props = {
 
 export const TransactionLogs = ({ logs, isVisible, className }: Props) => {
   return (
-    <CodeBlock
+    <CodeWindow
       data-testid="transaction-logs"
-      className={classnames('text-xs mb-0', className, {
-        hidden: !isVisible,
-      })}
-    >
-      {logs.map((entry, i) => (
+      text={logs.join('\n')}
+      content={logs.map((entry, i) => (
         <p
           key={i}
           className={classnames({
@@ -29,6 +26,6 @@ export const TransactionLogs = ({ logs, isVisible, className }: Props) => {
           {entry.message}
         </p>
       ))}
-    </CodeBlock>
+    />
   )
 }
