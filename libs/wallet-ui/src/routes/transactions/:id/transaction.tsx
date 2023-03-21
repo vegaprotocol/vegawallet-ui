@@ -12,6 +12,7 @@ import type { ReactNode } from 'react'
 import { useExplorerUrl } from '../../../hooks/use-explorer-url'
 import { ArrowTopRight } from '../../../components/icons/arrow-top-right'
 import { TransactionLogs } from '../../../components/transaction-logs'
+import { CodeWindow } from '../../../components/code-window'
 
 const TransactionDetailsItem = ({
   children,
@@ -59,7 +60,10 @@ export const TransactionPage = ({
           item={transaction}
           renderItem={(transaction) => (
             <TransactionDetailsItem title="Details">
-              {JSON.stringify(transaction.payload)}
+              <CodeWindow
+                content={JSON.stringify(transaction.payload, null, 2)}
+                text={JSON.stringify(transaction.payload)}
+              />
             </TransactionDetailsItem>
           )}
         />
