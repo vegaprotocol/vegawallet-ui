@@ -2,7 +2,7 @@ import { List } from '../../components/list'
 import { TransactionStatus } from '../../components/transaction-status'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
-import { TRANSACTION_TITLES } from '../../lib/transactions'
+import { TRANSACTION_TITLES } from '@vegaprotocol/wallet-types'
 import { truncateMiddle } from '../../lib/truncate-middle'
 
 export const TransactionHome = ({
