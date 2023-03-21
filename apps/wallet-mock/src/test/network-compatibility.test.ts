@@ -119,8 +119,8 @@ test.describe('Network incompatible dialog actions', async () => {
       expect(dialog.locator('h2')).toHaveText('Choose a compatible network'),
       expect(dialog.locator('#test2')).toBeVisible(),
       expect(dialog.locator('#test4')).toBeVisible(),
-      expect(dialog.locator('#test')).toHaveCount(0),
-      expect(dialog.locator('#test3')).toHaveCount(0),
+      expect(dialog.locator('#test')).toBeHidden(),
+      expect(dialog.locator('#test3')).toBeHidden(),
     ])
   })
 

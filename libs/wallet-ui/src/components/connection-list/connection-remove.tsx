@@ -41,7 +41,7 @@ export const Remove = ({ wallet, hostname, onClose }: RemoveDialogProps) => {
 
   return (
     <div>
-      <div className="p-[20px]">
+      <div data-testid="remove-connection-message" className="p-[20px]">
         <p>
           Are you sure you want to remove the connection from your wallet{' '}
           <code>{wallet.name}</code> to <code>{hostname}</code>? You may lose
@@ -49,10 +49,19 @@ export const Remove = ({ wallet, hostname, onClose }: RemoveDialogProps) => {
         </p>
       </div>
       <ButtonGroup inline className="p-[20px]">
-        <Button loading={isLoading} onClick={handleRemoval}>
+        <Button
+          data-testid="remove-connection-remove-button"
+          loading={isLoading}
+          onClick={handleRemoval}
+        >
           Remove
         </Button>
-        <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
+        <ButtonUnstyled
+          data-testid="remove-connection-cancel-button"
+          onClick={onClose}
+        >
+          Cancel
+        </ButtonUnstyled>
       </ButtonGroup>
     </div>
   )

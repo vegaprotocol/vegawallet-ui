@@ -115,7 +115,7 @@ test.describe('Connect to Dapp modal actions', () => {
 
   test('should close modal on deny', async () => {
     await page.getByTestId('dapp-connect-deny-button').click()
-    await expect(page.getByTestId('dapp-connect-modal')).toHaveCount(0)
+    await expect(page.getByTestId('dapp-connect-modal')).toBeHidden()
   })
 
   test.fixme('should close modal on approve', async () => {
@@ -224,7 +224,7 @@ test.describe('Connect to Dapp - wallet selection actions', () => {
 
   test('should close modal on deny', async () => {
     await page.getByTestId('dapp-select-deny-button').click()
-    await expect(page.getByTestId('dapp-select-wallet')).toHaveCount(0)
+    await expect(page.getByTestId('dapp-select-wallet')).toBeHidden()
   })
 
   test('should enable approve button when wallet chosen', async () => {
@@ -351,7 +351,7 @@ test.describe('Connect to Dapp - passphrase request actions', () => {
 
   test('should close modal on cancel', async () => {
     await page.getByTestId('dapp-passphrase-cancel-button').click()
-    await expect(page.getByTestId('dapp-passphrase-modal')).toHaveCount(0)
+    await expect(page.getByTestId('dapp-passphrase-modal')).toBeHidden()
   })
 
   test('should not allow to proceed with empty password', async () => {

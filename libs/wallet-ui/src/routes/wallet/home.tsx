@@ -32,6 +32,7 @@ const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
     <div className="flex gap-[20px]">
       {Object.values(Tabs).map((tab) => (
         <Title
+          data-testid={`tab-${tab.toLowerCase()}`}
           key={tab}
           element="h2"
           onClick={() => setTab(tab)}

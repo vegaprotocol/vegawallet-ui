@@ -18,6 +18,7 @@ export const ConnectionItem = ({
 }: ConnectionItemProps) => {
   return (
     <div
+      data-testid={`connection-${connection.hostname}`}
       className={classnames(
         'flex justify-between items-center gap-[20px]',
         'py-[20px] px-0 border-t border-black'
@@ -33,12 +34,21 @@ export const ConnectionItem = ({
         </code>
       </div>
       <div className="flex gap-[20px]">
-        <ButtonUnstyled onClick={onManage}>Manage</ButtonUnstyled>
+        <ButtonUnstyled data-testid="manage-button" onClick={onManage}>
+          Manage
+        </ButtonUnstyled>
         {connection.active && (
-          <ButtonUnstyled onClick={onDisconnect}>Disconnect</ButtonUnstyled>
+          <ButtonUnstyled
+            data-testid="disconnect-button"
+            onClick={onDisconnect}
+          >
+            Disconnect
+          </ButtonUnstyled>
         )}
         {!connection.active && (
-          <ButtonUnstyled onClick={onRemove}>Remove</ButtonUnstyled>
+          <ButtonUnstyled data-testid="remove-button" onClick={onRemove}>
+            Remove
+          </ButtonUnstyled>
         )}
       </div>
     </div>

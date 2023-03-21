@@ -73,6 +73,6 @@ test.describe('Telemetry dialog action', () => {
   test('should be able to submit telemetry form', async () => {
     await page.getByTestId('telemetry-option-form').locator('#yes').click()
     await page.getByTestId('telemetry-option-continue').click()
-    await expect(page.getByTestId('telemetry-option-dialog')).toHaveCount(0)
+    await expect(page.getByTestId('telemetry-option-dialog')).toBeHidden()
   })
 })
