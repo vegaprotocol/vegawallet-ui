@@ -56,7 +56,9 @@ test.describe('Transaction review modal -- Approve + Success', () => {
 
   test('should see pending transaction', async () => {
     await percySnapshot(page, 'interaction_transaction_review')
-    await expect(page.getByTestId('transaction-status')).toHaveText('Pending')
+    await expect(page.getByTestId('transaction-status')).toHaveText(
+      'In progress'
+    )
   })
 
   test('should see valid hostname', async () => {
