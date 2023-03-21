@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ListItem } from './list-item'
 
 export function List<T>({
   items,
@@ -17,13 +18,12 @@ export function List<T>({
   return (
     <ul data-testid="list" className="pt-4">
       {items.map((item) => (
-        <li
-          data-testid="list-item"
-          className="border-b border-1 border-dark-200 py-4"
-          key={(item[idProp] as string | number).toString()}
-        >
-          {renderItem(item)}
-        </li>
+        <ListItem
+          key={item[idProp]?.toString()}
+          item={item}
+          idProp={idProp}
+          renderItem={renderItem}
+        />
       ))}
     </ul>
   )
