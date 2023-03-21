@@ -1,4 +1,5 @@
 {
+  "name": "wallet-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/wallet-client/src",
   "projectType": "library",
@@ -51,7 +52,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/wallet-client"],
+      "outputs": ["{workspaceRoot}/coverage/libs/wallet-client"],
       "options": {
         "jestConfig": "libs/wallet-client/jest.config.ts",
         "passWithNoTests": true
