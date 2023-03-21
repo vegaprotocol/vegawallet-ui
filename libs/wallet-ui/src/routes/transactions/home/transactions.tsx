@@ -1,9 +1,9 @@
-import { List } from '../../components/list'
-import { TransactionStatus } from '../../components/transaction-status'
-import { formatDate } from '../../lib/date'
-import type { Transaction } from '../../lib/transactions'
+import { List } from '../../../components/list'
+import { TransactionStatus } from '../../../components/transaction-status'
+import { formatDate } from '../../../lib/date'
+import type { Transaction } from '../../../lib/transactions'
 import { TRANSACTION_TITLES } from '@vegaprotocol/wallet-types'
-import { truncateMiddle } from '../../lib/truncate-middle'
+import { truncateMiddle } from '../../../lib/truncate-middle'
 
 export const TransactionHome = ({
   transactions,
@@ -11,7 +11,7 @@ export const TransactionHome = ({
   transactions: Transaction[]
 }) => {
   return (
-    <div>
+    <section>
       <h1 className="text-2xl" data-testid="transactions-header">
         Transactions
       </h1>
@@ -45,6 +45,6 @@ export const TransactionHome = ({
           </div>
         )}
       />
-    </div>
+    </section>
   )
 }

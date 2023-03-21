@@ -9,9 +9,9 @@ import { KeyPairHome } from './wallet/keypair/home'
 import { Transactions } from './wallet/keypair/transactions'
 import { WalletCreate } from './wallet-create'
 import { WalletImport } from './wallet-import'
-import { TransactionHome } from './transactions'
 import { OnboardHome } from './onboard/home'
 import { OnboardStart } from './onboard/start'
+import { TransactionHome } from './transactions/home'
 
 // Root paths start with '/'
 export enum Paths {
