@@ -13,4 +13,11 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/wallet-ui',
   setupFilesAfterEnv: ['./src/test/setup-tests.ts'],
+  collectCoverageFrom: [
+    '**/*.{ts,tsx}',
+    '!**/*.stories.{ts,tsx}',
+    '!**/node_modules/**',
+    '!**/__generated__/**',
+    '!**/__generated___/**',
+  ],
 }

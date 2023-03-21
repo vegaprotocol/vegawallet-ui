@@ -17,6 +17,7 @@ export function ButtonGroup({
 }: ButtonGroupProps) {
   return (
     <div
+      data-testid="button-group"
       {...props}
       className={classnames(
         'flex justify-start gap-[20px]',
