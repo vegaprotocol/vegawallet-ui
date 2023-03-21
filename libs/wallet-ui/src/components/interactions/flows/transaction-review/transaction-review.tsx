@@ -9,7 +9,7 @@ import { useGlobal } from '../../../../contexts/global/global-context'
 import {
   TransactionStatus,
   TRANSACTION_TITLES,
-} from '../../../../lib/transactions'
+} from '@vegaprotocol/wallet-types'
 import { TransactionStatus as TransactionStatusDisplay } from '../../../transaction-status'
 import { Loader } from '../../../loader'
 import { TransactionLogs } from '../../../transaction-logs'

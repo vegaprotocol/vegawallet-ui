@@ -7,6 +7,7 @@
     "wallet-client": "libs/wallet-client",
     "wallet-mock": "apps/wallet-mock",
     "wallet-theme": "libs/wallet-theme",
+    "wallet-types": "libs/wallet-types",
     "wallet-ui": "libs/wallet-ui"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"

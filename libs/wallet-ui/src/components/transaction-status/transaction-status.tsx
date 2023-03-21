@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import type { Transaction } from '../../lib/transactions'
-import { TransactionStatus as TransactionStatusTypes } from '../../lib/transactions'
+import { TransactionStatus as TransactionStatusTypes } from '@vegaprotocol/wallet-types'
 
 const getTransactionInfo = (status?: TransactionStatusTypes) => {
   switch (status) {
