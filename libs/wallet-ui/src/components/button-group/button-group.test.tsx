@@ -14,3 +14,8 @@ test('renders children', () => {
   expect(button).toBeInTheDocument()
   expect(button).toHaveTextContent(buttonText)
 })
+
+test('renders nothing if children are not valid', () => {
+  render(<ButtonGroup>foo</ButtonGroup>)
+  expect(screen.getByTestId('button-group')).toBeEmptyDOMElement()
+})
