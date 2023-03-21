@@ -1,5 +1,5 @@
 import { render, screen, within } from '@testing-library/react'
-import { TransactionKeys, TransactionStatus } from '../../lib/transactions'
+import { TransactionKeys, TransactionStatus } from '@vegaprotocol/wallet-types'
 import { TransactionHome } from './transactions'
 
 describe('Transactions', () => {
