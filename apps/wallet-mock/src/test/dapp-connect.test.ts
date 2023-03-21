@@ -363,6 +363,19 @@ test.describe('Connect to Dapp - passphrase request actions', () => {
     await expect(page.getByTestId('helper-text')).toHaveText('Required')
   })
 
+  test.fixme('should not allow to proceed with invalid password', async () => {
+    //Just suggestion how the test could look like (created by Github Copilot)
+    await page.getByTestId('input-passphrase').type('invalid')
+    await page.getByTestId('dapp-passphrase-approve-button').click()
+    await expect(
+      page.getByTestId('dapp-passphrase-approve-button')
+    ).toBeDisabled()
+    await expect(page.getByTestId('helper-text')).toBeVisible()
+    await expect(page.getByTestId('helper-text')).toHaveText(
+      'Invalid passphrase'
+    )
+  })
+
   test.fixme('should close modal on approve', async () => {
     await page.getByTestId('input-passphrase').type('passphrase')
     await page.getByTestId('dapp-passphrase-approve-button').click()

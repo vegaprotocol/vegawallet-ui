@@ -78,6 +78,23 @@ test.describe('Dapp remove connection actions', () => {
     await expect(page.getByTestId('remove-connection-modal')).toBeHidden()
   })
 
+  test('should show error when passphrase is empty', async () => {
+    await page.getByTestId('remove-connection-remove-button').click()
+    await page.getByTestId('input-submit').click()
+    await expect(page.getByTestId('helper-text')).toBeVisible()
+    await expect(page.getByTestId('helper-text')).toHaveText('Required')
+  })
+
+  test.fixme('should show error when passphrase is invalid', async () => {
+    await page.getByTestId('remove-connection-remove-button').click()
+    await page.getByTestId('input-passphrase').fill('1234')
+    await page.getByTestId('input-submit').click()
+    await expect(page.getByTestId('helper-text')).toBeVisible()
+    await expect(page.getByTestId('helper-text')).toHaveText(
+      'Invalid passphrase'
+    )
+  })
+
   test('should remove connection', async () => {
     await page.getByTestId('remove-connection-remove-button').click()
     await page.getByTestId('input-passphrase').fill('123')
