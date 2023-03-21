@@ -74,7 +74,7 @@ describe('Transactions', () => {
     ).toHaveTextContent('wallet, public…cKey')
     expect(
       within(successfulTransaction).getByTestId('transactions-date')
-    ).toHaveTextContent('1/1/1970, 1:00:00 AM')
+    ).toHaveTextContent('1/1/1970, 12:00:00 AM')
 
     expect(
       within(pendingTransaction).getByTestId('transaction-status')
@@ -90,6 +90,6 @@ describe('Transactions', () => {
     ).toHaveTextContent('wallet, public…cKey')
     expect(
       within(pendingTransaction).getByTestId('transactions-date')
-    ).toHaveTextContent('1/1/1970, 1:00:00 AM')
+    ).toHaveTextContent('1/1/1970, 12:00:00 AM')
   })
 })
