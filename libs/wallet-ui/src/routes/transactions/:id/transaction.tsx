@@ -1,7 +1,7 @@
 import { ListItem } from '../../../components/list'
 import { TransactionStatus } from '../../../components/transaction-status'
 import type { Transaction } from '../../../lib/transactions'
-import { TRANSACTION_TITLES } from '../../../lib/transactions'
+import { TRANSACTION_TITLES } from '@vegaprotocol/wallet-types'
 import {
   AnchorButton,
   ExternalLink,
