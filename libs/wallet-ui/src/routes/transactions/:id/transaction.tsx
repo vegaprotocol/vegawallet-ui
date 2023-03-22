@@ -10,13 +10,11 @@ import {
 } from '@vegaprotocol/ui-toolkit'
 import { formatDate } from '../../../lib/date'
 import type { ReactNode } from 'react'
-import { useState } from 'react'
 import { useExplorerUrl } from '../../../hooks/use-explorer-url'
 import { TransactionLogs } from '../../../components/transaction-logs'
 import { CodeWindow } from '../../../components/code-window'
-import { DropdownArrow } from '../../../components/icons/dropdown-arrow'
-import classnames from 'classnames'
 import { Copy } from '../../../components/icons/copy'
+import { CollapsiblePanel } from '../../../components/collapsible-panel'
 
 const TransactionDetailsItem = ({
   children,
@@ -30,31 +28,6 @@ const TransactionDetailsItem = ({
     <div>{children}</div>
   </div>
 )
-
-const CollapsiblePanel = ({
-  initialState,
-  title,
-  panelContent,
-}: {
-  initialState: boolean
-  title: string
-  panelContent: ReactNode
-}) => {
-  const [isOpen, setIsOpen] = useState(initialState)
-  return (
-    <div>
-      <button onClick={() => setIsOpen(!isOpen)}>
-        <span className="text-dark-300 uppercase">{title}</span>
-        <DropdownArrow
-          className={classnames('w-3 ml-3 mb-1', {
-            'rotate-180': isOpen,
-          })}
-        />
-      </button>
-      <div className={!isOpen ? 'hidden' : ''}>{panelContent}</div>
-    </div>
-  )
-}
 
 export const TransactionPage = ({
   transaction,
@@ -126,7 +99,7 @@ export const TransactionPage = ({
           renderItem={(transaction) => (
             <CollapsiblePanel
               title="Details"
-              initialState={true}
+              initiallyOpen={true}
               panelContent={
                 <CodeWindow
                   content={JSON.stringify(transaction.payload, null, 2)}
@@ -150,7 +123,7 @@ export const TransactionPage = ({
             renderItem={(transaction) => (
               <CollapsiblePanel
                 title="Event logs"
-                initialState={true}
+                initiallyOpen={false}
                 panelContent={
                   <TransactionLogs logs={transaction.logs} isVisible={true} />
                 }
