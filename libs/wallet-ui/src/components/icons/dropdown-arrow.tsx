@@ -5,6 +5,7 @@ import { className as defaultClassName } from './style'
 export function DropdownArrow({ className }: { className?: string }) {
   return (
     <svg
+      data-testid="dropdown-arrow"
       className={classnames(defaultClassName, 'fill-transparent', className)}
       viewBox="0 0 13 14"
       xmlns="http://www.w3.org/2000/svg"
