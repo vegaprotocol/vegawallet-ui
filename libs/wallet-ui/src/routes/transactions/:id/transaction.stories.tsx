@@ -53,7 +53,8 @@ Default.args = {
     ],
     txHash: '9BD4215DCDA4DC87F05305BBEF2544261771E9BC2986F78D96B86FD03ACAD4C0',
     blockHeight: 123456,
-    signature: 'signature',
+    signature:
+      'signaturesignaturesignaturesignaturesignaturesignaturesignaturesignature',
     error: null,
   },
 }
