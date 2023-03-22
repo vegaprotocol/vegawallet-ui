@@ -130,7 +130,7 @@ Errors.args = {
         },
       },
     },
-    status: TransactionStatus.SUCCESS,
+    status: TransactionStatus.FAILURE,
     receivedAt: new Date(),
     logs: [
       { type: 'Info', message: 'Withdrawal submitted to the network' },
