@@ -79,4 +79,8 @@ describe('Transaction', () => {
     renderComponent()
     expect(false).toBeTruthy()
   })
+  it('renders error notification if present', () => {
+    renderComponent()
+    expect(false).toBeTruthy()
+  })
 })
