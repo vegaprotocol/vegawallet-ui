@@ -20,7 +20,7 @@ const getTransactionInfo = (status?: TransactionStatusTypes) => {
     }
     case TransactionStatusTypes.REJECTED: {
       return {
-        background: 'bg-vega-pink-500',
+        background: 'bg-dark-200',
         textColor: 'text-white',
         text: 'Rejected',
       }
