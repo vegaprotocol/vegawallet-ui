@@ -87,7 +87,7 @@ export const TransactionPage = ({
             </TransactionDetailsItem>
           )}
         />
-        {transaction.txHash && (
+        {transaction.txHash ? (
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
@@ -98,14 +98,15 @@ export const TransactionPage = ({
               </TransactionDetailsItem>
             )}
           />
-        )}
+        ) : null}
       </ul>
-      {/* TODO correct link */}
-      <div className="mt-6 flex justify-center">
-        <AnchorButton href="explorer.vega.xyz">
-          View on block explorer
-        </AnchorButton>
-      </div>
+      {transaction.txHash && (
+        <div className="mt-6 flex justify-center">
+          <AnchorButton href={`${explorerUrl}/txs/${transaction.txHash}`}>
+            View on block explorer
+          </AnchorButton>
+        </div>
+      )}
     </section>
   )
 }
