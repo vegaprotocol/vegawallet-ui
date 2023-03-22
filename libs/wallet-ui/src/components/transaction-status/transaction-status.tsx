@@ -29,7 +29,7 @@ const getTransactionInfo = (status?: TransactionStatusTypes) => {
       return {
         background: 'bg-vega-blue-500',
         textColor: 'text-white',
-        text: 'In progress',
+        text: 'In Progress',
       }
     }
     default: {
