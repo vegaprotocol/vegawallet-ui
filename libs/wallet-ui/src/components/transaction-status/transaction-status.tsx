@@ -8,7 +8,7 @@ const getTransactionInfo = (status?: TransactionStatusTypes) => {
       return {
         background: 'bg-vega-green-500',
         textColor: 'text-black',
-        text: 'Approved',
+        text: 'Successful',
       }
     }
     case TransactionStatusTypes.FAILURE: {
@@ -35,7 +35,7 @@ const getTransactionInfo = (status?: TransactionStatusTypes) => {
     default: {
       return {
         background: 'bg-neutral',
-        textColor: 'text-white',
+        textColor: 'text-black',
         text: 'Unknown',
       }
     }
