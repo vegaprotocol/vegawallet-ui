@@ -6,7 +6,9 @@ import {
   AnchorButton,
   CopyWithTooltip,
   ExternalLink,
+  Notification,
   truncateMiddle,
+  Intent,
 } from '@vegaprotocol/ui-toolkit'
 import { formatDate } from '../../../lib/date'
 import type { ReactNode } from 'react'
@@ -90,6 +92,21 @@ export const TransactionPage = ({
                     <Copy className="w-3 ml-1" />
                   </span>
                 </CopyWithTooltip>
+              </TransactionDetailsItem>
+            )}
+          />
+        )}
+        {transaction.error && (
+          <ListItem
+            item={transaction}
+            renderItem={(transaction) => (
+              <TransactionDetailsItem title="Error">
+                <div className="mt-2">
+                  <Notification
+                    intent={Intent.Danger}
+                    message={transaction.error}
+                  />
+                </div>
               </TransactionDetailsItem>
             )}
           />
