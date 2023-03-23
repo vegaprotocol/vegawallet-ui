@@ -6,7 +6,7 @@ import { TransactionStatus } from '@vegaprotocol/wallet-types'
 
 export default {
   component: TransactionPage,
-  title: 'TransactionPage',
+  title: 'Pages/Transactions/Transaction',
 } as Meta
 
 const Template: Story = ({ transaction }) => (

@@ -3,7 +3,7 @@ import { TransactionHome } from './transactions'
 
 export default {
   component: TransactionHome,
-  title: 'TransactionHome',
+  title: 'Pages/Transactions/TransactionHome',
 } as Meta
 
 const Template: Story = ({ transactions }) => (
