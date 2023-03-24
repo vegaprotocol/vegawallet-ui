@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
+import { useIsFairground } from '../../hooks/use-is-fairground'
 import { useWindowSize } from '../../hooks/use-window-size'
 import { ChromeDrawer } from './chrome-drawer'
 
@@ -12,12 +13,14 @@ export function Chrome({ children }: { children: React.ReactNode }) {
   const { state } = useGlobal()
   const { height } = useWindowSize()
   const useVegaBg = state.status === AppStatus.Onboarding
+  const isFairground = useIsFairground()
 
   return (
     <>
       <div
         className={classnames('relative block h-full bg-cover', {
-          'vega-border-image': !useVegaBg,
+          'vega-border-image': !useVegaBg && !isFairground,
+          'border-vega-yellow-500': !useVegaBg && isFairground,
           'border-t-[3px]': !useVegaBg,
           'bg-dark-100': !useVegaBg,
           'pb-[70px]': state.status === AppStatus.Initialised,

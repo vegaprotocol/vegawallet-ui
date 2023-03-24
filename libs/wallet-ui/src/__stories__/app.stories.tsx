@@ -18,3 +18,15 @@ Default.args = {
   client,
   runtime,
 }
+
+export const Fairground = Template.bind({})
+Fairground.args = {
+  service,
+  client,
+  runtime,
+  features: {
+    FAIRGROUND_MODE: true,
+    TELEMETRY_CHECK: false,
+    NETWORK_COMPATIBILITY_WARNING: false,
+  },
+}

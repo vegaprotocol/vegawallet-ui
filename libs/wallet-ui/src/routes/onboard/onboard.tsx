@@ -9,6 +9,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useVegaHome } from '../../hooks/use-vega-home'
 import { Paths } from '..'
 import { indexBy } from '../../lib/index-by'
+import { useIsFairground } from '../../hooks/use-is-fairground'
 
 export function Onboard() {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ export function Onboard() {
     client,
     state: { initNetworks, wallets },
   } = useGlobal()
-
+  const isFairground = useIsFairground()
   const logger = useMemo(() => service.GetLogger('Onboard'), [service])
 
   const handleImportExistingWallet = async () => {
@@ -31,7 +32,7 @@ export function Onboard() {
 
       await service.InitialiseApp({ vegaHome })
 
-      // If use doesnt have networks go to the import network section on onboarding
+      // If use doesn't have networks go to the import network section on onboarding
       // otherwise go to home to complete onboarding
       if (initNetworks?.length) {
         const config = await service.GetAppConfig()
@@ -67,7 +68,7 @@ export function Onboard() {
 
     return (
       <>
-        <p className="mb-[20px]">Existing wallets found</p>
+        <p className="mb-5">Existing wallets found</p>
         <ButtonGroup>
           <Button
             data-testid="use-existing-wallet"
@@ -78,18 +79,27 @@ export function Onboard() {
             Use existing
           </Button>
         </ButtonGroup>
-        <p className="my-[20px]">OR</p>
+        <p className="my-5">OR</p>
       </>
     )
   }
 
   return (
-    <div className="w-[545px] m-auto text-center pt-[82px]">
-      <Title className="m-0 mb-[30px] text-white">
+    <div className="w-[545px] m-auto text-center pt-10">
+      <Title className="m-0 mb-7 text-white">
         <Vega />
       </Title>
+      {isFairground && (
+        <p className="mb-5">
+          This is a fairground build of the wallet, it is highly recommended you
+          use a different wallet directory to your wallet on other networks to
+          ensure full functionality. If you choose to use the same wallet
+          directory, compatibility of the configuration files is not guaranteed.
+          This can be changed in App settings.
+        </p>
+      )}
       {renderExistingMessage()}
-      <ButtonGroup orientation="vertical" className="mb-[20px]">
+      <ButtonGroup orientation="vertical" className="mb-4">
         <Button
           data-testid="create-new-wallet"
           onClick={() => navigate('/wallet-create')}
