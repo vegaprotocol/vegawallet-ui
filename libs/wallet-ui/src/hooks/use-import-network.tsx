@@ -74,13 +74,12 @@ export function useImportNetwork() {
 
 function createImportNetworkArgs(values: ImportNetworkArgs) {
   // Other option is selected so figure out whether the fileOrUrl input is a url or not
-  // and use the relevent object property
+  // and use the relevant object property
   if (values.network === 'other') {
     const isUrl = /^(http|https):\/\/[^ "]+$/i.test(values.fileOrUrl)
     return {
       name: values.name,
-      url: isUrl ? values.fileOrUrl : '',
-      filePath: !isUrl ? values.fileOrUrl : '',
+      url: `${isUrl ? '' : 'file://'}${values.fileOrUrl}`,
       force: values.force,
     }
   }
@@ -89,7 +88,6 @@ function createImportNetworkArgs(values: ImportNetworkArgs) {
   return {
     name: '',
     url: values.network,
-    filePath: '',
     force: false,
   }
 }
