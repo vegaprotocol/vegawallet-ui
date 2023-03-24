@@ -11,6 +11,7 @@ import { globalReducer, initialGlobalState } from './global-reducer'
 const DEFAULT_FEATURES: Features = {
   TELEMETRY_CHECK: true,
   NETWORK_COMPATIBILITY_WARNING: true,
+  FAIRGROUND_MODE: false,
 }
 
 interface GlobalProviderProps {
