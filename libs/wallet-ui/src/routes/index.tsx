@@ -16,7 +16,7 @@ import { OnboardStart } from './onboard/start'
 // Root paths start with '/'
 export enum Paths {
   Home = '/',
-  Onboard = '/onboard ',
+  Onboard = '/onboard',
   Wallet = '/wallet',
 }
 
