@@ -110,7 +110,9 @@ export const PermissionRequest = ({
     <div>
       <InteractionHeader hostname={data.hostname} />
       <Frame>
-        <p className="mb-1">Allows this site to:</p>
+        <p data-testid="dapp-connect-access-list" className="mb-1">
+          Allows this site to:
+        </p>
         <ul>
           {permissions.map((permissionText, i) => (
             <li key={i} className="mb-1">

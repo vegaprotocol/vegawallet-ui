@@ -48,11 +48,18 @@ export const ConnectionView = ({
     <div data-testid="dapp-connect-modal">
       <InteractionHeader hostname={data.hostname} />
       <Frame>
-        <p className="mb-3">Allow this site to:</p>
+        <p className="mb-3" data-testid="dapp-connect-access-list-title">
+          Allow this site to:
+        </p>
         <ul className="list-none">
           <li className="flex">
             <Tick className="w-3 mr-2 text-success-light" />
-            <p className="text-light-200">Request access to your key(s)</p>
+            <p
+              data-testid="dapp-connect-access-list-access"
+              className="text-light-200"
+            >
+              Request access to your key(s)
+            </p>
           </li>
         </ul>
       </Frame>

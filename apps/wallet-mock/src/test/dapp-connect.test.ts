@@ -58,19 +58,20 @@ test.describe('Connect to Dapp modal validations', () => {
   })
 
   test('should see hostname', async () => {
-    await expect(page.getByTestId('dapp-connect-hostname')).toBeVisible()
-    await expect(page.getByTestId('dapp-connect-hostname')).toHaveText(
+    await expect(page.getByTestId('dapp-hostname')).toBeVisible()
+    await expect(page.getByTestId('dapp-hostname')).toHaveText(
       connectionContent.hostname
     )
   })
 
   test('should see request access list', async () => {
     await Promise.all([
-      expect(page.getByTestId('dapp-connect-access-list')).toBeVisible(),
-      expect(page.getByTestId('dapp-connect-access-list')).toContainText(
+      expect(page.getByTestId('dapp-connect-access-list-title')).toBeVisible(),
+      expect(page.getByTestId('dapp-connect-access-list-access')).toBeVisible(),
+      expect(page.getByTestId('dapp-connect-access-list-title')).toContainText(
         'Allow this site to:'
       ),
-      expect(page.getByTestId('dapp-connect-access-list')).toContainText(
+      expect(page.getByTestId('dapp-connect-access-list-access')).toContainText(
         'Request access to your key(s)'
       ),
     ])
@@ -155,8 +156,8 @@ test.describe('Connect to Dapp - wallet selection validations', () => {
   })
 
   test('should see hostname', async () => {
-    await expect(page.getByTestId('dapp-select-hostname')).toBeVisible()
-    await expect(page.getByTestId('dapp-select-hostname')).toHaveText(
+    await expect(page.getByTestId('dapp-hostname')).toBeVisible()
+    await expect(page.getByTestId('dapp-hostname')).toHaveText(
       connectionContent.hostname
     )
   })
@@ -280,8 +281,8 @@ test.describe('Connect to Dapp - passphrase request validations', () => {
   })
 
   test('should see hostname', async () => {
-    await expect(page.getByTestId('dapp-passphrase-hostname')).toBeVisible()
-    await expect(page.getByTestId('dapp-passphrase-hostname')).toHaveText(
+    await expect(page.getByTestId('dapp-hostname')).toBeVisible()
+    await expect(page.getByTestId('dapp-hostname')).toHaveText(
       connectionContent.hostname
     )
   })

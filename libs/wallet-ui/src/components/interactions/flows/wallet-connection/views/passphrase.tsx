@@ -111,7 +111,7 @@ export const PassphraseView = ({
             disabled={!!errors.passphrase || isLoading}
             type="submit"
           >
-            Unlock
+            Approve
           </Button>
           <ButtonLink
             data-testid="dapp-passphrase-cancel-button"

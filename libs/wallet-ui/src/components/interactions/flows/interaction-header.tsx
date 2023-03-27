@@ -17,7 +17,9 @@ export const InteractionHeader = ({
       </div>
       <div className="text-center mb-6 mt-10">
         <h1 className="mb-1 text-2xl">Connect to website</h1>
-        <p className="text-neutral-light">{hostname}</p>
+        <p data-testid="dapp-hostname" className="text-neutral-light">
+          {hostname}
+        </p>
       </div>
     </>
   )
