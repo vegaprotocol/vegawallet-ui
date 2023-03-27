@@ -3,7 +3,6 @@ import { useIsFairground } from '../../hooks/use-is-fairground'
 
 export function Onboard() {
   const isFairground = useIsFairground()
-  console.log(isFairground)
   if (isFairground) {
     return <Navigate to="/onboard/vega-home" />
   } else {
