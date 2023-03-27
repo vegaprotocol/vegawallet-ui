@@ -101,6 +101,7 @@ export type Service = {
   StartupBackend: () => Promise<Empty>
   InitialiseApp: (arg: InitialiseAppArg) => Promise<Empty>
   IsAppInitialised: () => Promise<boolean>
+  SuggestFairgroundFolder: () => Promise<string>
 
   // Telemetry
   EnableTelemetry: () => Promise<Empty>

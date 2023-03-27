@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
 import { mock } from '../support/mock'
 
-test.describe('Interactions', () => {
+test.describe('Service status', () => {
   let page: Page
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage()

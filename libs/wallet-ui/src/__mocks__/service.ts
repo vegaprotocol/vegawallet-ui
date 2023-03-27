@@ -108,6 +108,7 @@ export const service: Service = {
         latestHealthState: 'HEALTHY',
       })
     ),
+  SuggestFairgroundFolder: () => Promise.resolve('~/fairground/or/something'),
 
   // API
   EventsOn: (event: string, cb: CallbackFunctionTypes) => {

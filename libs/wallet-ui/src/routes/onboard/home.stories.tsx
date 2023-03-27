@@ -2,13 +2,13 @@ import type { Story } from '@storybook/react'
 import { service } from '../../__mocks__/service'
 import { client } from '../../__mocks__/client'
 import { runtime } from '../../__mocks__/runtime'
-import { Onboard } from './onboard'
+import { OnboardHome } from './home'
 import { MemoryRouter } from 'react-router-dom'
 import { GlobalProvider } from '../../contexts/global/global-provider'
 
 export default {
-  component: Onboard,
-  title: 'Pages/OnBoard',
+  component: OnboardHome,
+  title: 'Pages/OnBoardHome',
 }
 
 const Template: Story = ({ features }) => (
@@ -19,7 +19,7 @@ const Template: Story = ({ features }) => (
       runtime={runtime}
       features={features}
     >
-      <Onboard />
+      <OnboardHome />
     </GlobalProvider>
   </MemoryRouter>
 )
