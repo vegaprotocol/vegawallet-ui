@@ -37,6 +37,7 @@ export const TransactionPage = ({
   transaction: Transaction
 }) => {
   const explorerUrl = useExplorerUrl()
+  const { signature, txHash } = transaction
   return (
     <section>
       <h1 className="text-2xl mb-2" data-testid="transactions-header">
@@ -81,21 +82,21 @@ export const TransactionPage = ({
             )}
           />
         )}
-        {transaction.signature && (
+        {signature ? (
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
               <TransactionDetailsItem title="Signature">
-                <CopyWithTooltip text={transaction.signature}>
+                <CopyWithTooltip text={signature}>
                   <span>
-                    <span>{truncateMiddle(transaction.signature)}</span>
+                    <span>{truncateMiddle(signature)}</span>
                     <Copy className="w-3 ml-1" />
                   </span>
                 </CopyWithTooltip>
               </TransactionDetailsItem>
             )}
           />
-        )}
+        ) : null}
         {transaction.error && (
           <ListItem
             item={transaction}
@@ -148,13 +149,13 @@ export const TransactionPage = ({
             )}
           />
         ) : null}
-        {transaction.txHash ? (
+        {txHash ? (
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
               <TransactionDetailsItem title="Transaction hash">
-                <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
-                  {truncateMiddle(transaction.txHash)}
+                <ExternalLink href={`${explorerUrl}/txs/${txHash}`}>
+                  {truncateMiddle(txHash)}
                 </ExternalLink>
               </TransactionDetailsItem>
             )}
