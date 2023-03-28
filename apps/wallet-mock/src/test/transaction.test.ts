@@ -133,19 +133,18 @@ test.describe('Transaction review modal -- Approve + Success', () => {
       message: 'Info',
     })
     await percySnapshot(page, 'interaction_transaction_logs')
-
-    await expect(page.getByTestId('transaction-logs')).toBeVisible()
+    await expect(page.getByTestId('code-window')).toBeVisible()
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-success-light')
+      page.getByTestId('code-window').locator('.text-success-light')
     ).toHaveText('Success')
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-warning-light')
+      page.getByTestId('code-window').locator('.text-warning-light')
     ).toHaveText('Warning')
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-danger-light')
+      page.getByTestId('code-window').locator('.text-danger-light')
     ).toHaveText('Error')
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-neutral-light')
+      page.getByTestId('code-window').locator('.text-neutral-light')
     ).toHaveText('Info')
   })
 
@@ -165,18 +164,18 @@ test.describe('Transaction review modal -- Approve + Success', () => {
       'Order submission'
     )
 
-    await expect(page.getByTestId('transaction-logs')).toBeVisible()
+    await expect(page.getByTestId('code-window')).toBeVisible()
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-success-light')
+      page.getByTestId('code-window').locator('.text-success-light')
     ).toHaveText('Success')
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-warning-light')
+      page.getByTestId('code-window').locator('.text-warning-light')
     ).toHaveText('Warning')
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-danger-light')
+      page.getByTestId('code-window').locator('.text-danger-light')
     ).toHaveText('Error')
     await expect(
-      page.getByTestId('transaction-logs').locator('.text-neutral-light')
+      page.getByTestId('code-window').locator('.text-neutral-light')
     ).toHaveText('Info')
     await expect(page.getByTestId('transaction-header')).toHaveText(
       'Transaction ID'
