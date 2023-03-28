@@ -1,17 +1,17 @@
 import type { Meta, Story } from '@storybook/react'
-import { TransactionPage } from './transaction'
+import { TransactionDetails } from './transaction'
 import { service, client, runtime } from '../../../mocks'
 import { GlobalProvider } from '../../../contexts/global/global-provider'
 import { TransactionStatus } from '@vegaprotocol/wallet-types'
 
 export default {
-  component: TransactionPage,
+  component: TransactionDetails,
   title: 'Pages/Transactions/Transaction',
 } as Meta
 
 const Template: Story = ({ transaction }) => (
   <GlobalProvider service={service} client={client} runtime={runtime}>
-    <TransactionPage transaction={transaction} />
+    <TransactionDetails transaction={transaction} />
   </GlobalProvider>
 )
 
