@@ -62,7 +62,7 @@ export function AppFrame({ children }: AppFrameProps) {
     <div
       data-testid="app-frame"
       className={classnames(
-        'h-full bg-cover relative overflow-y-auto',
+        'h-full bg-cover relative overflow-y-hidden',
         `pt-9`,
         {
           'vega-bg': useVegaBg,
