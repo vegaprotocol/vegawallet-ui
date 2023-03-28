@@ -57,7 +57,7 @@ test.describe('Transaction review modal -- Approve + Success', () => {
   test('should see pending transaction', async () => {
     await percySnapshot(page, 'interaction_transaction_review')
     await expect(page.getByTestId('transaction-status')).toHaveText(
-      'In progress'
+      'In Progress'
     )
   })
 
@@ -158,7 +158,9 @@ test.describe('Transaction review modal -- Approve + Success', () => {
       deserializedInputData: JSON.stringify(transaction),
       sentAt: new Date().toISOString(),
     })
-    await expect(page.getByTestId('transaction-status')).toHaveText('Approved')
+    await expect(page.getByTestId('transaction-status')).toHaveText(
+      'Successful'
+    )
     await expect(page.getByTestId('transaction-type')).toHaveText(
       'Order submission'
     )
