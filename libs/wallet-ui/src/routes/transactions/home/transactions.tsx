@@ -19,6 +19,7 @@ export const TransactionHome = ({
         Transactions
       </h1>
       <List
+        clickable={true}
         empty={
           <p data-testid="transactions-empty" className="pt-8">
             You have no transactions this session.
