@@ -42,7 +42,7 @@ export const TransactionDetails = ({
   const explorerUrl = useExplorerUrl()
   const { signature, txHash } = transaction
   return (
-    <section>
+    <section className="mb-4">
       <h1 className="text-2xl mb-2" data-testid="transactions-header">
         {TRANSACTION_TITLES[transaction.type]}
       </h1>
