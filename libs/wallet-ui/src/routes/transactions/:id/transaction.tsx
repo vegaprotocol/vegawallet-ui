@@ -17,6 +17,9 @@ import { TransactionLogs } from '../../../components/transaction-logs'
 import { CodeWindow } from '../../../components/code-window'
 import { Copy } from '../../../components/icons/copy'
 import { CollapsiblePanel } from '../../../components/collapsible-panel'
+import { useParams } from 'react-router-dom'
+import { useGlobal } from '../../../contexts/global/global-context'
+import { TransactionNotFound } from './transaction-not-found'
 
 const TransactionDetailsItem = ({
   children,
@@ -31,7 +34,7 @@ const TransactionDetailsItem = ({
   </div>
 )
 
-export const TransactionPage = ({
+export const TransactionDetails = ({
   transaction,
 }: {
   transaction: Transaction
@@ -171,4 +174,17 @@ export const TransactionPage = ({
       )}
     </section>
   )
+}
+
+export const TransactionPage = () => {
+  const { id } = useParams<{ id: string }>()
+  const { state } = useGlobal()
+  if (!id) {
+    return <TransactionNotFound />
+  }
+  const transaction = state.transactions[id]
+  if (!transaction) {
+    return <TransactionNotFound />
+  }
+  return <TransactionDetails transaction={transaction} />
 }
