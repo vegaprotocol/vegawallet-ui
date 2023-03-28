@@ -1,4 +1,5 @@
 import type { Meta, Story } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
 import { TransactionHome } from './transactions'
 
 export default {
@@ -7,7 +8,9 @@ export default {
 } as Meta
 
 const Template: Story = ({ transactions }) => (
-  <TransactionHome transactions={transactions} />
+  <MemoryRouter>
+    <TransactionHome transactions={transactions} />
+  </MemoryRouter>
 )
 
 export const Empty = Template.bind({})
