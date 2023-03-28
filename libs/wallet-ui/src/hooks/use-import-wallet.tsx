@@ -3,12 +3,12 @@ import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import { AppStatus, useGlobal } from '../contexts/global/global-context'
+import { useGlobal } from '../contexts/global/global-context'
 import { useVegaHome } from './use-vega-home'
 
 export function useImportWallet() {
   const vegaHome = useVegaHome()
-  const { service, client, dispatch, state } = useGlobal()
+  const { service, client, dispatch } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseImportWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.ImportWalletResult | null>(null)
@@ -23,7 +23,7 @@ export function useImportWallet() {
     }) => {
       logger.debug('ImportWallet')
       try {
-        if (state.status !== AppStatus.Initialised) {
+        if (!(await service.IsAppInitialised())) {
           await service.InitialiseApp({ vegaHome })
         }
 
@@ -63,7 +63,7 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [dispatch, logger, service, client, state.status, vegaHome]
+    [dispatch, logger, service, client, vegaHome]
   )
 
   return {
