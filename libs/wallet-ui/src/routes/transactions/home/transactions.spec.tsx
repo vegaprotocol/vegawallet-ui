@@ -62,7 +62,7 @@ describe('Transactions', () => {
     )[1]
     expect(
       within(successfulTransaction).getByTestId('transaction-status')
-    ).toHaveTextContent('Approved')
+    ).toHaveTextContent('Successful')
     expect(
       within(successfulTransaction).getByTestId('transactions-type')
     ).toHaveTextContent('Withdraw')
