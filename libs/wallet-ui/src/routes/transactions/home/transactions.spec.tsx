@@ -78,7 +78,7 @@ describe('Transactions', () => {
 
     expect(
       within(pendingTransaction).getByTestId('transaction-status')
-    ).toHaveTextContent('In progress')
+    ).toHaveTextContent('In Progress')
     expect(
       within(pendingTransaction).getByTestId('transactions-type')
     ).toHaveTextContent('Vote submission')
