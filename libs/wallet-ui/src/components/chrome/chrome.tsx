@@ -27,7 +27,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           'pb-[70px]': state.status === AppStatus.Initialised,
         })}
       >
-        <main className="h-full overflow-y-auto">{children}</main>
+        <main className="h-full pb-[70px] overflow-y-auto">{children}</main>
         <NavBar />
       </div>
       {state.status === AppStatus.Initialised && (
