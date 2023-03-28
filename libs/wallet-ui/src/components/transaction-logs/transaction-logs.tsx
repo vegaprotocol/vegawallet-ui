@@ -11,7 +11,6 @@ type Props = {
 export const TransactionLogs = ({ logs, isVisible, className }: Props) => {
   return (
     <CodeWindow
-      data-testid="transaction-logs"
       text={logs.join('\n')}
       content={logs.map((entry, i) => (
         <p
