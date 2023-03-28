@@ -14,7 +14,7 @@ export const TransactionHome = ({
   transactions: Transaction[]
 }) => {
   return (
-    <section className="mt-8">
+    <section className="mt-4 p-4">
       <h1 className="text-2xl" data-testid="transactions-header">
         Transactions
       </h1>
