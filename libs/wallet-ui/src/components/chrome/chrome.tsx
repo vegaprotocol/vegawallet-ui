@@ -12,8 +12,8 @@ export const DRAWER_HEIGHT = 70
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state } = useGlobal()
   const { height } = useWindowSize()
-  const useVegaBg = state.status === AppStatus.Onboarding
   const isFairground = useIsFairground()
+  const useVegaBg = state.status === AppStatus.Onboarding && !isFairground
 
   return (
     <>
