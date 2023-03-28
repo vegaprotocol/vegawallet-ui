@@ -1,6 +1,7 @@
-export const LeftRightArrows = () => {
+export const LeftRightArrows = ({ className }: { className?: string }) => {
   return (
     <svg
+      className={className}
       width="23"
       height="21"
       viewBox="0 0 23 21"
