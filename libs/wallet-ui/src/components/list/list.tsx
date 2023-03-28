@@ -6,11 +6,13 @@ export function List<T>({
   empty,
   idProp,
   renderItem,
+  clickable = false,
 }: {
   items: T[]
   empty?: ReactNode
   idProp: keyof T
   renderItem: (item: T) => ReactNode
+  clickable?: boolean
 }) {
   if (!items.length) {
     return <>{empty}</>
@@ -19,6 +21,7 @@ export function List<T>({
     <ul data-testid="list" className="pt-4">
       {items.map((item) => (
         <ListItem
+          clickable={clickable}
           key={item[idProp]?.toString()}
           item={item}
           renderItem={renderItem}
