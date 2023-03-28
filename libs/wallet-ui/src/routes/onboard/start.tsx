@@ -28,8 +28,9 @@ export function OnboardStart() {
     try {
       setLoading(true)
 
-      await service.InitialiseApp({ vegaHome })
-
+      if (!(await service.IsAppInitialised())) {
+        await service.InitialiseApp({ vegaHome })
+      }
       // If use doesn't have networks go to the import network section on onboarding
       // otherwise go to home to complete onboarding
       if (initNetworks?.length) {
