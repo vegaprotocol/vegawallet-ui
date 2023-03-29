@@ -63,7 +63,7 @@ export function OnboardStart() {
   }
 
   const renderExistingMessage = () => {
-    if (!Object.keys(wallets).length && !isFairground) {
+    if (!Object.keys(wallets).length || isFairground) {
       return null
     }
 
