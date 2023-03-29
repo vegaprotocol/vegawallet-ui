@@ -13,22 +13,24 @@ import { useNavigate } from 'react-router-dom'
 export const OnboardHome = () => {
   const { service } = useGlobal()
   const navigate = useNavigate()
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<{ vegaHome: string }>({
+    reValidateMode: 'onChange',
+  })
 
   const [homeDirectory, setHomeDirectory] = useState<string>('')
   useEffect(() => {
     const getHomeDirectory = async () => {
       const vegaHome = await service.SuggestFairgroundFolder()
       setHomeDirectory(vegaHome)
+      setValue('vegaHome', vegaHome)
     }
     getHomeDirectory()
-  }, [service])
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<{ vegaHome: string }>({
-    reValidateMode: 'onChange',
-  })
+  }, [service, setValue])
 
   const onSubmit = useCallback(
     async ({ vegaHome }: { vegaHome: string }) => {
@@ -50,10 +52,7 @@ export const OnboardHome = () => {
   }
 
   return (
-    <section
-      className="w-[545px] m-auto text-center pt-10"
-      data-testid="onboard-home"
-    >
+    <section className="m-auto text-center pt-10" data-testid="onboard-home">
       <Title className="m-0 mb-7 text-white">
         <Vega />
       </Title>
