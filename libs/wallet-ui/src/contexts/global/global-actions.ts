@@ -240,14 +240,41 @@ export function createActions(service: Service, client: WalletAdmin) {
 
     completeOnboardAction(onComplete: () => void) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
+        const config = await service.GetAppConfig()
+
+        if (config.telemetry.enabled) {
+          service.EnableTelemetry()
+        }
+        const [wallets, networkNames] = await Promise.all([
+          client.ListWallets(),
+          client.ListNetworks(),
+        ])
+
+        const networkConfigs = await Promise.all(
+          networkNames.networks
+            .filter(({ name }) => !!name)
+            .map(({ name }) => client.DescribeNetwork({ name: name as string }))
+        )
+
+        const { currentNetwork, networks } = compileNetworks(
+          config,
+          networkConfigs
+        )
+        dispatch({
+          type: 'INIT_APP',
+          config: config,
+          wallets: wallets.wallets ?? [],
+          currentNetwork,
+          networks,
+        })
+        dispatch({
+          type: 'COMPLETE_ONBOARD',
+        })
         await startService({
           getState,
           logger,
           dispatch,
           service,
-        })
-        dispatch({
-          type: 'COMPLETE_ONBOARD',
         })
         onComplete()
       }
