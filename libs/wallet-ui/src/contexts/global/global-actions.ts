@@ -146,7 +146,7 @@ export function createActions(service: Service, client: WalletAdmin) {
   const logger = service.GetLogger('GlobalActions')
 
   const actions = {
-    initAppAction() {
+    initAppAction(isFairground: boolean) {
       return async (dispatch: GlobalDispatch) => {
         try {
           logger.debug('StartApp')
@@ -155,8 +155,13 @@ export function createActions(service: Service, client: WalletAdmin) {
           const isInit = await service.IsAppInitialised()
 
           if (!isInit) {
-            const existingConfig =
-              await service.SearchForExistingConfiguration()
+            // HACK, prevent the wallet from checking if there are existing wallets on fairground
+            const existingConfig = isFairground
+              ? {
+                  wallets: [],
+                  networks: [],
+                }
+              : await service.SearchForExistingConfiguration()
             dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
             return
           }

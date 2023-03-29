@@ -8,7 +8,7 @@ import { useVegaHome } from './use-vega-home'
 
 export function useCreateWallet() {
   const vegaHome = useVegaHome()
-  const { service, client, dispatch } = useGlobal()
+  const { service, client, dispatch, actions } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseCreateWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.CreateWalletResult | null>(null)
@@ -48,6 +48,7 @@ export function useCreateWallet() {
             type: 'ACTIVATE_WALLET',
             wallet: values.wallet,
           })
+          dispatch(actions.completeOnboardAction(() => undefined))
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
         }
@@ -56,7 +57,7 @@ export function useCreateWallet() {
         logger.error(err)
       }
     },
-    [dispatch, logger, service, client, vegaHome]
+    [logger, service, client, vegaHome, dispatch, actions]
   )
 
   return {

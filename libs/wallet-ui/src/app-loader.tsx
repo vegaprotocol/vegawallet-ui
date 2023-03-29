@@ -8,6 +8,7 @@ import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
+import { useIsFairground } from './hooks/use-is-fairground'
 import type { Logger } from './types/logger'
 
 /**
@@ -20,11 +21,12 @@ export function AppLoader({ children }: { children?: ReactNode }) {
     actions,
     dispatch,
   } = useGlobal()
+  const isFairground = useIsFairground()
 
   // Get wallets, service state and version
   useEffect(() => {
-    dispatch(actions.initAppAction())
-  }, [dispatch, actions])
+    dispatch(actions.initAppAction(isFairground))
+  }, [dispatch, actions, isFairground])
 
   if (status === AppStatus.Pending) {
     return (

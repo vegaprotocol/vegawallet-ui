@@ -8,7 +8,7 @@ import { useVegaHome } from './use-vega-home'
 
 export function useImportWallet() {
   const vegaHome = useVegaHome()
-  const { service, client, dispatch } = useGlobal()
+  const { service, client, dispatch, actions } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseImportWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.ImportWalletResult | null>(null)
@@ -53,6 +53,7 @@ export function useImportWallet() {
             intent: Intent.SUCCESS,
             timeout: 0,
           })
+          dispatch(actions.completeOnboardAction(() => undefined))
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
           setError(new Error('Something went wrong'))
@@ -63,7 +64,7 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [dispatch, logger, service, client, vegaHome]
+    [logger, service, client, vegaHome, dispatch, actions]
   )
 
   return {
