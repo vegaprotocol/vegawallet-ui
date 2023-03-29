@@ -52,7 +52,10 @@ export const OnboardHome = () => {
   }
 
   return (
-    <section className="m-auto text-center pt-10" data-testid="onboard-home">
+    <section
+      className="m-auto w-[545px] text-center pt-10"
+      data-testid="onboard-home"
+    >
       <Title className="m-0 mb-7 text-white">
         <Vega />
       </Title>
