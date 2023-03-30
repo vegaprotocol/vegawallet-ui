@@ -23,7 +23,8 @@ export function useImportWallet() {
     }) => {
       logger.debug('ImportWallet')
       try {
-        if (!(await service.IsAppInitialised())) {
+        const isInitialised = await service.IsAppInitialised()
+        if (!isInitialised) {
           await service.InitialiseApp({ vegaHome })
         }
 
@@ -43,6 +44,10 @@ export function useImportWallet() {
             publicKey: resp.key.publicKey,
           })
 
+          if (!isInitialised) {
+            dispatch(actions.completeOnboardAction(() => undefined))
+          }
+
           dispatch({
             type: 'ADD_WALLET',
             wallet: values.wallet,
@@ -53,7 +58,6 @@ export function useImportWallet() {
             intent: Intent.SUCCESS,
             timeout: 0,
           })
-          dispatch(actions.completeOnboardAction(() => undefined))
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
           setError(new Error('Something went wrong'))

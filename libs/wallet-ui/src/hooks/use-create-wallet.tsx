@@ -17,7 +17,8 @@ export function useCreateWallet() {
     async (values: { wallet: string; passphrase: string }) => {
       try {
         logger.debug('CreateWallet')
-        if (!(await service.IsAppInitialised())) {
+        const isInitialised = await service.IsAppInitialised()
+        if (!isInitialised) {
           await service.InitialiseApp({ vegaHome })
         }
 
@@ -34,6 +35,9 @@ export function useCreateWallet() {
             passphrase: values.passphrase,
             publicKey: resp.key.publicKey,
           })
+          if (!isInitialised) {
+            dispatch(actions.completeOnboardAction(() => undefined))
+          }
 
           AppToaster.show({
             message: 'Wallet created!',
@@ -48,7 +52,6 @@ export function useCreateWallet() {
             type: 'ACTIVATE_WALLET',
             wallet: values.wallet,
           })
-          dispatch(actions.completeOnboardAction(() => undefined))
         } else {
           AppToaster.show({ message: 'Error: Unknown', intent: Intent.DANGER })
         }
