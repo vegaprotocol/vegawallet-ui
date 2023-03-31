@@ -11,7 +11,7 @@ env:
   PROJECT_ID: ${{ secrets.FRONT_END_PROJECT_ID }}
   ISSUE_ID: ${{ github.event.issue.node_id }}
   USER: ${{ github.actor }}
-  LABEL_ID: "MDU6TGFiZWwzMjExODE0NTM0"
+  LABEL_ID: "LA_kwDOIXuppM8AAAABG8jLTQ"
 
 jobs:
   add_issue:
