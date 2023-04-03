@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { useFullscreenContext } from '../../contexts/fullscreen/fullscreen-context'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useIsFairground } from '../../hooks/use-is-fairground'
 import { useWindowSize } from '../../hooks/use-window-size'
@@ -15,7 +16,8 @@ export function Chrome({ children }: { children: React.ReactNode }) {
   const { height } = useWindowSize()
   const isFairground = useIsFairground()
   const useVegaBg = state.status === AppStatus.Onboarding && !isFairground
-
+  const { isFullscreen } = useFullscreenContext()
+  console.log(isFullscreen)
   return (
     <>
       <div
@@ -24,13 +26,19 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           'border-vega-yellow-500': !useVegaBg && isFairground,
           'border-t-[3px]': !useVegaBg,
           'bg-dark-100': !useVegaBg,
-          'pb-[70px]': state.status === AppStatus.Initialised,
+          'pb-[70px]': state.status === AppStatus.Initialised && !isFullscreen,
         })}
       >
-        <main className="h-full pb-[70px] overflow-y-auto">{children}</main>
-        <NavBar />
+        <main
+          className={classnames('h-full overflow-y-auto', {
+            'pb-[70px]': !isFullscreen,
+          })}
+        >
+          {children}
+        </main>
+        {!isFullscreen && <NavBar />}
       </div>
-      {state.status === AppStatus.Initialised && (
+      {state.status === AppStatus.Initialised && !isFullscreen && (
         <div
           style={{
             height: state.status === AppStatus.Initialised ? DRAWER_HEIGHT : 0,
