@@ -9,6 +9,7 @@ import { Intent } from '../../config/intent'
 import { AppToaster } from '../../components/toaster'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useNavigate } from 'react-router-dom'
+import { Paths } from '..'
 
 export const OnboardHome = () => {
   const { service } = useGlobal()
@@ -36,7 +37,7 @@ export const OnboardHome = () => {
     async ({ vegaHome }: { vegaHome: string }) => {
       try {
         await service.InitialiseApp({ vegaHome })
-        navigate('/onboard/start')
+        navigate(Paths.Onboard.Start)
       } catch (err) {
         AppToaster.show({
           intent: Intent.DANGER,

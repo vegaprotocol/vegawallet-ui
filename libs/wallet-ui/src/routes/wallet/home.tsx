@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { Paths } from '..'
 
 import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
@@ -90,7 +91,7 @@ export function WalletList() {
             type: 'DEACTIVATE_WALLET',
             wallet: wallet.name,
           })
-          navigate('/')
+          navigate(Paths.Home)
         }}
       />
       <div className="pb-[20px] px-[20px] pt-0">
@@ -100,9 +101,7 @@ export function WalletList() {
             wallet={wallet}
             onClick={(publicKey) =>
               navigate(
-                `/wallet/${encodeURIComponent(
-                  wallet.name
-                )}/keypair/${publicKey}`
+                Paths.Wallet.Keypair(encodeURIComponent(wallet.name), publicKey)
               )
             }
           />

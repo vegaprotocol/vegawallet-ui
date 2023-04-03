@@ -29,7 +29,7 @@ export const Home = () => {
   )
 
   if (status === AppStatus.Onboarding) {
-    return <Navigate to={Paths.Onboard} />
+    return <Navigate to={Paths.Onboard.Home} />
   }
 
   return (
@@ -82,6 +82,7 @@ export const Home = () => {
             </Button>
           </Link>
         </ButtonGroup>
+        {/* TODO remove this */}
         <p>
           <ButtonUnstyled
             onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}

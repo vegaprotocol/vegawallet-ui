@@ -8,6 +8,7 @@ import { ExternalLink } from '../../../components/external-link'
 import { TransactionHistory } from '../../../components/transaction-history'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { useExplorerUrl } from '../../../hooks/use-explorer-url'
+import { Paths } from '../..'
 
 export function Transactions() {
   const navigate = useNavigate()
@@ -15,7 +16,7 @@ export function Transactions() {
   const { wallet, pubkey } = useParams<{ wallet: string; pubkey: string }>()
   const { keypair } = useCurrentKeypair()
 
-  if (!keypair) {
+  if (!keypair || !wallet || !pubkey) {
     return null
   }
 
@@ -25,7 +26,7 @@ export function Transactions() {
         title="Transactions"
         breadcrumb={keypair.name}
         onBack={() => {
-          navigate(`/wallet/${wallet}/keypair/${pubkey}`)
+          navigate(Paths.Wallet.Keypair(wallet, pubkey))
         }}
       />
       <PublicKey publicKey={keypair.publicKey} />

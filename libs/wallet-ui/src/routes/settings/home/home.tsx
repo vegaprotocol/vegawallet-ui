@@ -1,6 +1,7 @@
 import { Icon } from '@vegaprotocol/ui-toolkit'
 import { List } from '../../../components/list'
 import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 
 export const SettingsHome = () => {
   const items = useMemo(
@@ -29,13 +30,13 @@ export const SettingsHome = () => {
         items={items}
         idProp="path"
         clickable={true}
-        renderItem={({ title }) => (
-          <div className="flex justify-between">
+        renderItem={({ title, path }) => (
+          <Link to={{ pathname: path }} className="flex justify-between">
             <div>{title}</div>
             <div>
               <Icon name="chevron-right" />
             </div>
-          </div>
+          </Link>
         )}
       />
     </section>
