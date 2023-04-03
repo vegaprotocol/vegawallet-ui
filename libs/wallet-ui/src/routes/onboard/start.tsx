@@ -94,13 +94,13 @@ export function OnboardStart() {
       <ButtonGroup orientation="vertical" className="mb-4">
         <Button
           data-testid="create-new-wallet"
-          onClick={() => navigate('/wallet-create')}
+          onClick={() => navigate(Paths.Wallet.Create)}
         >
           Create new wallet
         </Button>
         <Button
           data-testid="import-wallet"
-          onClick={() => navigate('/wallet-import')}
+          onClick={() => navigate(Paths.Wallet.Import)}
         >
           Use recovery phrase
         </Button>

@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useGlobal } from '../contexts/global/global-context'
+import { Paths } from '../routes'
 
 export const useRenameWallet = () => {
   const navigate = useNavigate()
@@ -25,7 +26,7 @@ export const useRenameWallet = () => {
         wallet: to,
       })
 
-      navigate(`/wallet/${encodeURIComponent(to)}`)
+      navigate(Paths.Wallet.Wallet(encodeURIComponent(to)))
     },
     [dispatch, client, navigate]
   )

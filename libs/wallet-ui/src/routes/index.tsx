@@ -15,25 +15,45 @@ import { TransactionHomePage } from './transactions/home'
 import { TransactionPage } from './transactions/:id/transaction'
 import { SettingsHome } from './settings'
 
-// Root paths start with '/'
-export enum Paths {
-  Home = '/',
-  Onboard = '/onboard',
-  Wallet = '/wallet',
+export const Paths = {
+  Home: '/',
+  Onboard: {
+    Home: '/onboard',
+    Start: '/onboard/start',
+    VegaHome: '/onboard/vega-home',
+  },
+  Wallet: {
+    Home: '/wallet',
+    Create: '/wallet-create',
+    Import: '/wallet-import',
+    Wallet: (wallet: string) => `/wallet/${wallet}`,
+    Transactions: (wallet: string, pubkey: string) =>
+      `/wallet/${wallet}/keypair/${pubkey}/transactions`,
+    Keypair: (wallet: string, pubkey: string) =>
+      `/wallet/${wallet}/keypair/${pubkey}`,
+  },
+  Transactions: {
+    Home: '/transactions',
+    Transaction: (id: string) => `/transactions/${id}`,
+  },
+  Settings: {
+    Home: '/settings',
+  },
 }
 
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<Outlet />}>
+      <Route element={<Outlet />}>
         <Route index={true} element={<Home />} />
-        <Route path="onboard" element={<Outlet />}>
+        <Route path={Paths.Onboard.Home} element={<Outlet />}>
           <Route index={true} element={<Onboard />} />
           <Route path="start" element={<OnboardStart />} />
           <Route path="vega-home" element={<OnboardHome />} />
         </Route>
-        <Route path="wallet-create" element={<WalletCreate />} />
-        <Route path="wallet-import" element={<WalletImport />} />
+        {/* TODO should be using subroutes */}
+        <Route path={Paths.Wallet.Create} element={<WalletCreate />} />
+        <Route path={Paths.Wallet.Import} element={<WalletImport />} />
         <Route path="wallet/:wallet" element={<Wallet />}>
           <Route index={true} element={<WalletList />} />
           <Route path="keypair/:pubkey" element={<WalletKeyPair />}>
@@ -41,11 +61,11 @@ export const AppRouter = () => {
             <Route path="transactions" element={<Transactions />} />
           </Route>
         </Route>
-        <Route path="transactions" element={<Outlet />}>
+        <Route path={Paths.Transactions.Home} element={<Outlet />}>
           <Route index={true} element={<TransactionHomePage />} />
           <Route path=":id" element={<TransactionPage />} />
         </Route>
-        <Route path="settings" element={<Outlet />}>
+        <Route path={Paths.Settings.Home} element={<Outlet />}>
           <Route index={true} element={<SettingsHome />} />
         </Route>
       </Route>
