@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
+  "ignorePatterns": ["**/*", "**/node_modules/**"],
   "plugins": ["@nrwl/nx", "eslint-plugin-unicorn", "jsx-a11y", "jest"],
   "settings": {
     "jsx-a11y": {
