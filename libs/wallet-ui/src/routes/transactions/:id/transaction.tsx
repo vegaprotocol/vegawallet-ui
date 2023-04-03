@@ -17,9 +17,11 @@ import { TransactionLogs } from '../../../components/transaction-logs'
 import { CodeWindow } from '../../../components/code-window'
 import { Copy } from '../../../components/icons/copy'
 import { CollapsiblePanel } from '../../../components/collapsible-panel'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { TransactionNotFound } from './transaction-not-found'
+import { useFullscreenRoute } from '../../../contexts/fullscreen/hooks'
+import { Cross } from '../../../components/icons/cross'
 
 const TransactionDetailsItem = ({
   children,
@@ -27,12 +29,15 @@ const TransactionDetailsItem = ({
 }: {
   children: ReactNode
   title: string
-}) => (
-  <div>
-    <div className="text-dark-300 uppercase">{title}</div>
-    <div>{children}</div>
-  </div>
-)
+}) => {
+  useFullscreenRoute()
+  return (
+    <div>
+      <div className="text-dark-300 uppercase">{title}</div>
+      <div>{children}</div>
+    </div>
+  )
+}
 
 export const TransactionDetails = ({
   transaction,
@@ -41,11 +46,20 @@ export const TransactionDetails = ({
 }) => {
   const explorerUrl = useExplorerUrl()
   const { signature, txHash } = transaction
+  const navigate = useNavigate()
   return (
     <section className="p-4">
-      <h1 className="text-2xl mb-2" data-testid="transactions-header">
-        {TRANSACTION_TITLES[transaction.type]}
-      </h1>
+      <div className="flex justify-between">
+        <h1
+          className="flex flex-col justify-center text-2xl mb-2"
+          data-testid="transactions-header"
+        >
+          {TRANSACTION_TITLES[transaction.type]}
+        </h1>
+        <button onClick={() => navigate('/transactions')}>
+          <Cross className="h-10" />
+        </button>
+      </div>
       <TransactionStatus transaction={transaction} />
       <ul>
         <ListItem

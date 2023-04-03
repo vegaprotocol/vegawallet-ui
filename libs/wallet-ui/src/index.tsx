@@ -20,6 +20,7 @@ import type { Runtime } from './types/runtime'
 import type { Features } from './types/features'
 import { useEffect } from 'react'
 import { Globals } from 'react-spring'
+import { FullscreenProvider } from './contexts/fullscreen/fullscreen-provider'
 
 export { FeatureMap } from './types/features'
 
@@ -68,23 +69,25 @@ export function App({ service, client, runtime, features }: AppProps) {
           runtime={runtime}
           features={features}
         >
-          <div id={ROOT} className="h-full text-white font-sans bg-black">
-            <Router>
-              <AppFrame>
-                <Chrome>
-                  <AppLoader>
-                    <AppRouter />
-                    <TelemetryDialog />
-                    <PassphraseModal />
-                    <InteractionsProvider />
-                    <NetworkCompatibilityDialog />
-                    <TransactionDetailsDialog />
-                    <Settings />
-                  </AppLoader>
-                </Chrome>
-              </AppFrame>
-            </Router>
-          </div>
+          <FullscreenProvider>
+            <div id={ROOT} className="h-full text-white font-sans bg-black">
+              <Router>
+                <AppFrame>
+                  <Chrome>
+                    <AppLoader>
+                      <AppRouter />
+                      <TelemetryDialog />
+                      <PassphraseModal />
+                      <InteractionsProvider />
+                      <NetworkCompatibilityDialog />
+                      <TransactionDetailsDialog />
+                      <Settings />
+                    </AppLoader>
+                  </Chrome>
+                </AppFrame>
+              </Router>
+            </div>
+          </FullscreenProvider>
         </GlobalProvider>
       </ThemeProvider>
     </ErrorBoundary>
