@@ -7,6 +7,7 @@ import { truncateMiddle } from '../../../lib/truncate-middle'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Page } from '../../../components/page'
 
 export const TransactionHome = ({
   transactions,
@@ -14,10 +15,7 @@ export const TransactionHome = ({
   transactions: Transaction[]
 }) => {
   return (
-    <section className="mt-4 p-4">
-      <h1 className="text-2xl" data-testid="transactions-header">
-        Transactions
-      </h1>
+    <Page name="Transaction">
       <List
         clickable={true}
         empty={
@@ -53,7 +51,7 @@ export const TransactionHome = ({
           </NavLink>
         )}
       />
-    </section>
+    </Page>
   )
 }
 

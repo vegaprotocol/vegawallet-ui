@@ -1,3 +1,9 @@
+import { Page } from '../../../components/page'
+
 export const AppSettings = () => {
-  return <section data-testid="app-settings">App Settings</section>
+  return (
+    <Page name="App settings" back={true}>
+      <div>Content</div>
+    </Page>
+  )
 }

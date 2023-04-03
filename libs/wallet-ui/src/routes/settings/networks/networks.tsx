@@ -1,3 +1,9 @@
+import { Page } from '../../../components/page'
+
 export const Networks = () => {
-  return <section data-testid="networks">Networks</section>
+  return (
+    <Page name="Networks" back={true}>
+      <div>Content</div>
+    </Page>
+  )
 }
