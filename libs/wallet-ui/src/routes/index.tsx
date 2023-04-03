@@ -13,6 +13,7 @@ import { OnboardHome } from './onboard/home'
 import { OnboardStart } from './onboard/start'
 import { TransactionHomePage } from './transactions/home'
 import { TransactionPage } from './transactions/:id/transaction'
+import { SettingsHome } from './settings'
 
 // Root paths start with '/'
 export enum Paths {
@@ -43,6 +44,9 @@ export const AppRouter = () => {
         <Route path="transactions" element={<Outlet />}>
           <Route index={true} element={<TransactionHomePage />} />
           <Route path=":id" element={<TransactionPage />} />
+        </Route>
+        <Route path="settings" element={<Outlet />}>
+          <Route index={true} element={<SettingsHome />} />
         </Route>
       </Route>
     </Routes>
