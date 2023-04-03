@@ -200,71 +200,69 @@ test.describe('Transaction review modal -- Approve + Success', () => {
       await page.getByTestId('transaction-close').click()
     })
   })
+})
 
-  test.describe('Transaction review modal -- Approve + Error', () => {
-    let page: Page
-    test.beforeAll(async ({ browser }) => {
-      page = await browser.newPage()
-      await mock(page)
-      await page.goto('/')
-      await beginInteractionSession(page, 'TRANSACTION_REVIEW')
-      await sendBackendInteraction(
-        page,
-        'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
-        data
-      )
-    })
-
-    test.afterAll(async () => {
-      await endInteractionSession(page)
-    })
-
-    test('should show the transaction logs for all levels and error message', async () => {
-      await page.getByTestId('transaction-approve-button').click()
-      await sendBackendInteraction(page, 'LOG', {
-        type: 'Info',
-        message: 'Info',
-      })
-      await sendBackendInteraction(page, 'ERROR_OCCURRED', {
-        type: 'Network error',
-        error: 'Error message',
-      })
-      await expect(
-        page.getByTestId('interaction-error-description')
-      ).toHaveText(
-        "We couldn't fulfill your request due to network issues. Make sure your connection is stable, and give it another go."
-      )
-      await expect(page.getByTestId('interaction-error-message')).toHaveText(
-        'Error message'
-      )
-
-      await percySnapshot(page, 'interaction_transaction_failed')
-    })
+test.describe('Transaction review modal -- Approve + Error', () => {
+  let page: Page
+  test.beforeAll(async ({ browser }) => {
+    page = await browser.newPage()
+    await mock(page)
+    await page.goto('/')
+    await beginInteractionSession(page, 'TRANSACTION_REVIEW')
+    await sendBackendInteraction(
+      page,
+      'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+      data
+    )
   })
 
-  test.describe('Transaction review modal -- Reject', () => {
-    let page: Page
-    test.beforeAll(async ({ browser }) => {
-      page = await browser.newPage()
-      await mock(page)
-      await page.goto('/')
-      await beginInteractionSession(page, 'TRANSACTION_REVIEW')
-      await sendBackendInteraction(
-        page,
-        'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
-        data
-      )
-    })
+  test.afterAll(async () => {
+    await endInteractionSession(page)
+  })
 
-    test('should show home page', async () => {
-      await page.getByTestId('transaction-reject-button').click()
-      await sendBackendInteraction(page, 'LOG', {
-        type: 'Info',
-        message: 'Info',
-      })
-      await endInteractionSession(page)
-      await expect(page.getByTestId('wallet-home')).toBeVisible()
-      await percySnapshot(page, 'interaction_transaction_rejected')
+  test('should show the transaction logs for all levels and error message', async () => {
+    await page.getByTestId('transaction-approve-button').click()
+    await sendBackendInteraction(page, 'LOG', {
+      type: 'Info',
+      message: 'Info',
     })
+    await sendBackendInteraction(page, 'ERROR_OCCURRED', {
+      type: 'Network error',
+      error: 'Error message',
+    })
+    await expect(page.getByTestId('interaction-error-description')).toHaveText(
+      "We couldn't fulfill your request due to network issues. Make sure your connection is stable, and give it another go."
+    )
+    await expect(page.getByTestId('interaction-error-message')).toHaveText(
+      'Error message'
+    )
+
+    await percySnapshot(page, 'interaction_transaction_failed')
+  })
+})
+
+test.describe('Transaction review modal -- Reject', () => {
+  let page: Page
+  test.beforeAll(async ({ browser }) => {
+    page = await browser.newPage()
+    await mock(page)
+    await page.goto('/')
+    await beginInteractionSession(page, 'TRANSACTION_REVIEW')
+    await sendBackendInteraction(
+      page,
+      'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+      data
+    )
+  })
+
+  test('should show home page', async () => {
+    await page.getByTestId('transaction-reject-button').click()
+    await sendBackendInteraction(page, 'LOG', {
+      type: 'Info',
+      message: 'Info',
+    })
+    await endInteractionSession(page)
+    await expect(page.getByTestId('wallet-home')).toBeVisible()
+    await percySnapshot(page, 'interaction_transaction_rejected')
   })
 })
