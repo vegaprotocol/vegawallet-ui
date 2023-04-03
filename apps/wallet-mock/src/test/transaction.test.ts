@@ -55,6 +55,7 @@ test.describe('Transaction review modal -- Approve + Success', () => {
   })
 
   test('should see pending transaction', async () => {
+    await setTime(page)
     await percySnapshot(page, 'interaction_transaction_review')
     await expect(page.getByTestId('transaction-status')).toHaveText(
       'In Progress'
@@ -252,3 +253,23 @@ test.describe('Transaction review modal -- Reject', () => {
     await percySnapshot(page, 'interaction_transaction_rejected')
   })
 })
+
+async function setTime(page: Page) {
+  const fakeNow = new Date('January 01 2023 00:00:00').valueOf()
+
+  await page.addInitScript(`{
+  Date = class extends Date {
+    constructor(...args) {
+      if (args.length === 0) {
+        super(${fakeNow});
+      } else {
+        super(...args);
+      }
+    }
+  }
+  const __DateNowOffset = ${fakeNow} - Date.now();
+  const __DateNow = Date.now;
+  Date.now = () => __DateNow() + __DateNowOffset;
+}`)
+  await page.reload()
+}
