@@ -8,7 +8,7 @@ import { GlobalProvider } from '../../contexts/global/global-provider'
 
 export default {
   component: OnboardStart,
-  title: 'Pages/OnboardStart',
+  title: 'Pages/Onboard/Start',
 }
 
 const Template: Story = ({ features }) => (

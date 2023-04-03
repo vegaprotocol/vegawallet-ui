@@ -1,4 +1,5 @@
 import type { Meta, Story } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
 import { Page } from './page'
 
 export default {
@@ -7,9 +8,11 @@ export default {
 } as Meta
 
 const Template: Story = ({ name, back }) => (
-  <Page name={name} back={back}>
-    <div>Content</div>
-  </Page>
+  <MemoryRouter>
+    <Page name={name} back={back}>
+      <div>Content</div>
+    </Page>
+  </MemoryRouter>
 )
 
 export const Default = Template.bind({})
