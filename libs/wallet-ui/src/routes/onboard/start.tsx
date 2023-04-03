@@ -9,11 +9,13 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useVegaHome } from '../../hooks/use-vega-home'
 import { Paths } from '..'
 import { indexBy } from '../../lib/index-by'
+import { useIsFairground } from '../../hooks/use-is-fairground'
 
 export function OnboardStart() {
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
   const vegaHome = useVegaHome()
+  const isFairground = useIsFairground()
 
   const {
     dispatch,
@@ -61,7 +63,7 @@ export function OnboardStart() {
   }
 
   const renderExistingMessage = () => {
-    if (!Object.keys(wallets).length) {
+    if (!Object.keys(wallets).length || isFairground) {
       return null
     }
 

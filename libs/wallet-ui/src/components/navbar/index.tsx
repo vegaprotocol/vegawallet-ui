@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react'
-import { Settings } from '../icons/settings'
+// import { Settings } from '../icons/settings'
 import { Wallet } from '../icons/wallet'
 import type { To } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
+import { LeftRightArrows } from '../icons/left-right-arrows'
 
 export interface NavButtonProps {
   end?: boolean
@@ -36,11 +37,13 @@ export const NavButton = ({ icon, text, to, end }: NavButtonProps) => {
   )
 }
 
+export const NAVBAR_HEIGHT = 80
+
 export const NavBar = () => {
   return (
     <nav
       data-testid="nav-bar"
-      className="w-full h-20 grid gap-0 grid-cols-[1fr_1fr]"
+      className="absolute z-10 bg-black w-full h-20 grid gap-0 grid-cols-[1fr_1fr] border-t border-dark-200"
     >
       <NavButton
         end={true}
@@ -49,10 +52,15 @@ export const NavBar = () => {
         text="Wallets"
       />
       <NavButton
+        icon={<LeftRightArrows className="m-auto" />}
+        to={{ pathname: '/transactions' }}
+        text="Transactions"
+      />
+      {/* <NavButton
         icon={<Settings className="m-auto" />}
         to={{ pathname: '/settings' }}
         text="Settings"
-      />
+      /> */}
     </nav>
   )
 }

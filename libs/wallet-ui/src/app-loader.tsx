@@ -8,6 +8,7 @@ import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
+import { useIsFairground } from './hooks/use-is-fairground'
 import type { Logger } from './types/logger'
 
 /**
@@ -20,11 +21,12 @@ export function AppLoader({ children }: { children?: ReactNode }) {
     actions,
     dispatch,
   } = useGlobal()
+  const isFairground = useIsFairground()
 
   // Get wallets, service state and version
   useEffect(() => {
-    dispatch(actions.initAppAction())
-  }, [dispatch, actions])
+    dispatch(actions.initAppAction(isFairground))
+  }, [dispatch, actions, isFairground])
 
   if (status === AppStatus.Pending) {
     return (
@@ -46,7 +48,7 @@ export function AppLoader({ children }: { children?: ReactNode }) {
   return <ServiceLoader>{children}</ServiceLoader>
 }
 
-export const APP_FRAME_HEIGHT = 35
+export const APP_FRAME_HEIGHT = 20
 interface AppFrameProps {
   children: ReactNode
 }
@@ -62,7 +64,7 @@ export function AppFrame({ children }: AppFrameProps) {
     <div
       data-testid="app-frame"
       className={classnames(
-        'h-full bg-cover relative overflow-y-auto',
+        'h-full bg-cover relative overflow-y-hidden',
         `pt-9`,
         {
           'vega-bg': useVegaBg,

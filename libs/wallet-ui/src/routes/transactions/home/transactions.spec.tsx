@@ -1,6 +1,16 @@
 import { render, screen, within } from '@testing-library/react'
 import { TransactionKeys, TransactionStatus } from '@vegaprotocol/wallet-types'
+import type { Transaction } from '../../../lib/transactions'
+import { MemoryRouter } from 'react-router-dom'
 import { TransactionHome } from './transactions'
+
+const renderComponent = (transactions: Transaction[]) => {
+  return render(
+    <MemoryRouter>
+      <TransactionHome transactions={transactions} />
+    </MemoryRouter>
+  )
+}
 
 describe('Transactions', () => {
   beforeEach(() => {
@@ -11,48 +21,45 @@ describe('Transactions', () => {
     jest.useRealTimers()
   })
   it('renders header state', () => {
-    render(<TransactionHome transactions={[]} />)
+    renderComponent([])
     expect(screen.getByTestId('transactions-header')).toHaveTextContent(
       'Transactions'
     )
   })
   it('renders empty state', () => {
-    render(<TransactionHome transactions={[]} />)
+    renderComponent([])
     expect(screen.getByTestId('transactions-empty')).toHaveTextContent(
       'You have no transactions this session.'
     )
   })
   it('renders an list of items for each transaction', () => {
-    render(
-      <TransactionHome
-        transactions={[
-          {
-            id: '1',
-            type: TransactionKeys.WITHDRAW_SUBMISSION,
-            wallet: 'wallet',
-            publicKey: 'publicKey',
-            txHash: 'txHashtxHashtxHashtxHashtxHash',
-            status: TransactionStatus.SUCCESS,
-            receivedAt: new Date(),
-            hostname: 'something.com',
-            logs: [],
-            payload: {},
-          },
-          {
-            id: '2',
-            type: TransactionKeys.VOTE_SUBMISSION,
-            wallet: 'wallet',
-            publicKey: 'publicKey',
-            txHash: null,
-            status: TransactionStatus.PENDING,
-            receivedAt: new Date(),
-            hostname: 'something.com',
-            logs: [],
-            payload: {},
-          },
-        ]}
-      />
-    )
+    const transactions = [
+      {
+        id: '1',
+        type: TransactionKeys.WITHDRAW_SUBMISSION,
+        wallet: 'wallet',
+        publicKey: 'publicKey',
+        txHash: 'txHashtxHashtxHashtxHashtxHash',
+        status: TransactionStatus.SUCCESS,
+        receivedAt: new Date(),
+        hostname: 'something.com',
+        logs: [],
+        payload: {},
+      },
+      {
+        id: '2',
+        type: TransactionKeys.VOTE_SUBMISSION,
+        wallet: 'wallet',
+        publicKey: 'publicKey',
+        txHash: null,
+        status: TransactionStatus.PENDING,
+        receivedAt: new Date(),
+        hostname: 'something.com',
+        logs: [],
+        payload: {},
+      },
+    ]
+    renderComponent(transactions)
 
     const successfulTransaction = screen.queryAllByTestId(
       'transactions-transaction'
@@ -62,7 +69,7 @@ describe('Transactions', () => {
     )[1]
     expect(
       within(successfulTransaction).getByTestId('transaction-status')
-    ).toHaveTextContent('Approved')
+    ).toHaveTextContent('Successful')
     expect(
       within(successfulTransaction).getByTestId('transactions-type')
     ).toHaveTextContent('Withdraw')
@@ -78,7 +85,7 @@ describe('Transactions', () => {
 
     expect(
       within(pendingTransaction).getByTestId('transaction-status')
-    ).toHaveTextContent('In progress')
+    ).toHaveTextContent('In Progress')
     expect(
       within(pendingTransaction).getByTestId('transactions-type')
     ).toHaveTextContent('Vote submission')

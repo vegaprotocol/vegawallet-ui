@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useIsFairground } from '../../hooks/use-is-fairground'
 import { useWindowSize } from '../../hooks/use-window-size'
+import { NavBar } from '../navbar'
 import { ChromeDrawer } from './chrome-drawer'
 
 export const DRAWER_HEIGHT = 70
@@ -26,14 +27,15 @@ export function Chrome({ children }: { children: React.ReactNode }) {
           'pb-[70px]': state.status === AppStatus.Initialised,
         })}
       >
-        <main className="h-full overflow-y-auto">{children}</main>
+        <main className="h-full pb-[70px] overflow-y-auto">{children}</main>
+        <NavBar />
       </div>
       {state.status === AppStatus.Initialised && (
         <div
           style={{
             height: state.status === AppStatus.Initialised ? DRAWER_HEIGHT : 0,
           }}
-          className="fixed bottom-0 left-0 w-full transition-all duration-200"
+          className="m-auto absolute bottom-[70px] left-0 w-full transition-all duration-200"
         >
           <ChromeDrawer height={height} />
         </div>

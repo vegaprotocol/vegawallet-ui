@@ -8,7 +8,7 @@ import { useVegaHome } from './use-vega-home'
 
 export function useImportWallet() {
   const vegaHome = useVegaHome()
-  const { service, client, dispatch } = useGlobal()
+  const { service, client, dispatch, actions } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseImportWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.ImportWalletResult | null>(null)
@@ -23,7 +23,8 @@ export function useImportWallet() {
     }) => {
       logger.debug('ImportWallet')
       try {
-        if (!(await service.IsAppInitialised())) {
+        const isInitialised = await service.IsAppInitialised()
+        if (!isInitialised) {
           await service.InitialiseApp({ vegaHome })
         }
 
@@ -42,6 +43,10 @@ export function useImportWallet() {
             passphrase: values.passphrase,
             publicKey: resp.key.publicKey,
           })
+
+          if (!isInitialised) {
+            dispatch(actions.completeOnboardAction(() => undefined))
+          }
 
           dispatch({
             type: 'ADD_WALLET',
@@ -63,7 +68,7 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [dispatch, logger, service, client, vegaHome]
+    [logger, service, client, vegaHome, dispatch, actions]
   )
 
   return {
