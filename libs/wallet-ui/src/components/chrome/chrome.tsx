@@ -17,7 +17,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
   const isFairground = useIsFairground()
   const useVegaBg = state.status === AppStatus.Onboarding && !isFairground
   const { isFullscreen } = useFullscreenContext()
-  console.log(isFullscreen)
+
   return (
     <>
       <div
