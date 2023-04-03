@@ -209,7 +209,7 @@ export const TransactionDetails = ({
             </AnchorButton>
           </div>
         )}
-      </div>
+      </>
     </Page>
   )
 }

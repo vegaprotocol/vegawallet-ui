@@ -1,15 +1,13 @@
 import { Icon } from '@vegaprotocol/ui-toolkit'
 import { useNavigate } from 'react-router-dom'
 
-export const Page = ({
-  name,
-  children,
-  back = false,
-}: {
+export interface PageProps {
   name: string
   children: React.ReactElement
   back?: boolean
-}) => {
+}
+
+export const Page = ({ name, children, back = false }: PageProps) => {
   const navigate = useNavigate()
   return (
     <section className="p-4" data-testid={name}>
@@ -23,7 +21,7 @@ export const Page = ({
           {name}
         </h1>
       </button>
-      {children}
+      <div>{children}</div>
     </section>
   )
 }
