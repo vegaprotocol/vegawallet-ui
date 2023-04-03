@@ -2,6 +2,7 @@ import { Icon } from '@vegaprotocol/ui-toolkit'
 import { List } from '../../../components/list'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { Page } from '../../../components/page'
 
 export const SettingsHome = () => {
   const items = useMemo(
@@ -22,10 +23,7 @@ export const SettingsHome = () => {
     []
   )
   return (
-    <section className="p-4" data-testid="settings">
-      <h1 className="text-2xl" data-testid="settings-header">
-        Settings
-      </h1>
+    <Page name="Settings">
       <List
         items={items}
         idProp="path"
@@ -39,6 +37,6 @@ export const SettingsHome = () => {
           </Link>
         )}
       />
-    </section>
+    </Page>
   )
 }
