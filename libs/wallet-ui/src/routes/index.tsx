@@ -14,6 +14,9 @@ import { OnboardStart } from './onboard/start'
 import { TransactionHomePage } from './transactions/home'
 import { TransactionPage } from './transactions/:id/transaction'
 import { SettingsHome } from './settings'
+import { AppSettings } from './settings/app-settings'
+import { Networks } from './settings/networks'
+import { Service } from './settings/service'
 
 export const Paths = {
   Home: '/',
@@ -38,6 +41,9 @@ export const Paths = {
   },
   Settings: {
     Home: '/settings',
+    AppSettings: '/settings/app-settings',
+    Networks: '/settings/networks',
+    Service: '/settings/service',
   },
 }
 
@@ -54,7 +60,7 @@ export const AppRouter = () => {
         {/* TODO should be using subroutes */}
         <Route path={Paths.Wallet.Create} element={<WalletCreate />} />
         <Route path={Paths.Wallet.Import} element={<WalletImport />} />
-        <Route path="wallet/:wallet" element={<Wallet />}>
+        <Route path={Paths.Wallet.Wallet(':wallet')} element={<Wallet />}>
           <Route index={true} element={<WalletList />} />
           <Route path="keypair/:pubkey" element={<WalletKeyPair />}>
             <Route index={true} element={<KeyPairHome />} />
@@ -67,6 +73,9 @@ export const AppRouter = () => {
         </Route>
         <Route path={Paths.Settings.Home} element={<Outlet />}>
           <Route index={true} element={<SettingsHome />} />
+          <Route path={Paths.Settings.AppSettings} element={<AppSettings />} />
+          <Route path={Paths.Settings.Networks} element={<Networks />} />
+          <Route path={Paths.Settings.Service} element={<Service />} />
         </Route>
       </Route>
     </Routes>
