@@ -3,6 +3,7 @@ import { TransactionDetails } from './transaction'
 import { service, client, runtime } from '../../../mocks'
 import { GlobalProvider } from '../../../contexts/global/global-provider'
 import { TransactionStatus } from '@vegaprotocol/wallet-types'
+import { MemoryRouter } from 'react-router-dom'
 
 export default {
   component: TransactionDetails,
@@ -10,9 +11,11 @@ export default {
 } as Meta
 
 const Template: Story = ({ transaction }) => (
-  <GlobalProvider service={service} client={client} runtime={runtime}>
-    <TransactionDetails transaction={transaction} />
-  </GlobalProvider>
+  <MemoryRouter>
+    <GlobalProvider service={service} client={client} runtime={runtime}>
+      <TransactionDetails transaction={transaction} />
+    </GlobalProvider>
+  </MemoryRouter>
 )
 
 export const Default = Template.bind({})
