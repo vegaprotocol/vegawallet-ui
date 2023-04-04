@@ -59,6 +59,6 @@ describe('NavBar', () => {
   it('renders with two NavButtons', () => {
     renderNav()
     expect(screen.getByTestId('nav-bar')).toBeInTheDocument()
-    expect(screen.getAllByTestId('nav-button')).toHaveLength(2)
+    expect(screen.getAllByTestId('nav-button')).toHaveLength(3)
   })
 })
