@@ -15,7 +15,7 @@ export const CodeWindow = ({
     >
       <code
         data-testid="code-window-content"
-        className="overflow-y-scroll w-full"
+        className="overflow-y-scroll w-full scrollbar-hide"
       >
         {content}
       </code>
