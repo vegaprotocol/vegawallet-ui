@@ -14,7 +14,10 @@ export const Page = ({ name, children, back = false }: PageProps) => {
       <button onClick={() => navigate(-1)}>
         <h1 className="text-2xl flex" data-testid={`${name}-header`}>
           {back && (
-            <div className="flex flex-col justify-center mr-2">
+            <div
+              data-testid="page-back"
+              className="flex flex-col justify-center mr-2"
+            >
               <Icon size={6} name="chevron-left" />
             </div>
           )}
