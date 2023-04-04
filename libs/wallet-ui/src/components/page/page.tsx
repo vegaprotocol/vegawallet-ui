@@ -21,7 +21,7 @@ export const Page = ({ name, children, back = false }: PageProps) => {
           {name}
         </h1>
       </button>
-      <div>{children}</div>
+      <div className="mt-4">{children}</div>
     </section>
   )
 }

@@ -18,7 +18,7 @@ export function List<T>({
     return <>{empty}</>
   }
   return (
-    <ul data-testid="list" className="pt-4">
+    <ul data-testid="list">
       {items.map((item) => (
         <ListItem
           clickable={clickable}
