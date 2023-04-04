@@ -101,9 +101,10 @@ export const TransactionDetails = ({
             renderItem={(transaction) => (
               <TransactionDetailsItem title="Block height">
                 <ExternalLink
+                  className="underline"
                   href={`${explorerUrl}/block/${transaction.blockHeight}`}
                 >
-                  {transaction.blockHeight}
+                  {transaction.blockHeight?.toString()}
                 </ExternalLink>
               </TransactionDetailsItem>
             )}
