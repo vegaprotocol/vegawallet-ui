@@ -48,7 +48,6 @@ export const initialGlobalState: GlobalState = {
   isSignMessageModalOpen: false,
   isTaintKeyModalOpen: false,
   isUpdateKeyModalOpen: false,
-  isSettingsModalOpen: false,
   isNetworkCompatibilityModalOpen: false,
   showTransactionDetails: null,
 }
@@ -217,10 +216,6 @@ export type GlobalAction =
   // Modals
   | {
       type: 'SET_PASSPHRASE_MODAL'
-      open: boolean
-    }
-  | {
-      type: 'SET_SETTINGS_MODAL'
       open: boolean
     }
   | {
@@ -650,12 +645,6 @@ export function globalReducer(
       return {
         ...state,
         isPassphraseModalOpen: action.open,
-      }
-    }
-    case 'SET_SETTINGS_MODAL': {
-      return {
-        ...state,
-        isSettingsModalOpen: action.open,
       }
     }
     case 'SET_TAINT_KEY_MODAL': {

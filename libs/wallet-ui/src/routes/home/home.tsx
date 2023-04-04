@@ -20,7 +20,6 @@ export const Home = () => {
   const { open } = useOpenWallet()
   const {
     state: { wallets, status },
-    dispatch,
   } = useGlobal()
 
   const walletsList = useMemo(
@@ -82,15 +81,6 @@ export const Home = () => {
             </Button>
           </Link>
         </ButtonGroup>
-        {/* TODO remove this */}
-        <p>
-          <ButtonUnstyled
-            onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
-            data-testid="home-settings"
-          >
-            App settings
-          </ButtonUnstyled>
-        </p>
       </div>
     </div>
   )

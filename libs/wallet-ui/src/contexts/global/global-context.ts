@@ -102,7 +102,6 @@ export interface GlobalState {
   isSignMessageModalOpen: boolean
   isTaintKeyModalOpen: boolean
   isUpdateKeyModalOpen: boolean
-  isSettingsModalOpen: boolean
   isNetworkCompatibilityModalOpen: boolean
   showTransactionDetails: null | string
 }
