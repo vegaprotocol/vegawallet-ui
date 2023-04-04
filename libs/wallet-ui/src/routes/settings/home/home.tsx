@@ -11,14 +11,14 @@ export const SettingsHome = () => {
         title: 'App settings',
         path: '/settings/app-settings',
       },
-      {
-        title: 'Networks',
-        path: '/settings/networks',
-      },
-      {
-        title: 'Service',
-        path: '/settings/service',
-      },
+      // {
+      //   title: 'Networks',
+      //   path: '/settings/networks',
+      // },
+      // {
+      //   title: 'Service',
+      //   path: '/settings/service',
+      // },
     ],
     []
   )

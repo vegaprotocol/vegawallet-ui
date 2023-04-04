@@ -11,7 +11,19 @@ export default {
 
 const Template: Story = () => (
   <MemoryRouter>
-    <GlobalProvider service={service} client={client} runtime={runtime}>
+    <GlobalProvider
+      initialState={{
+        config: {
+          vegaHome: '/Users/vega',
+          logLevel: 'info',
+          defaultNetwork: 'mainnet',
+          telemetry: { enabled: false, consentAsked: true },
+        },
+      }}
+      service={service}
+      client={client}
+      runtime={runtime}
+    >
       <AppSettings />
     </GlobalProvider>
   </MemoryRouter>
