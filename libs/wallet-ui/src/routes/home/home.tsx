@@ -34,7 +34,7 @@ export const Home = () => {
   return (
     <div data-testid="wallet-home" className="p-[20px]">
       <Title className="m-0 mb-[30px] text-white">Wallets</Title>
-      <div className="pb-[144px] w-full">
+      <div data-testid="wallet-list" className="pb-[144px] w-full">
         <div
           className={`border-b-${
             walletsList.length > 0 ? '1' : '0'

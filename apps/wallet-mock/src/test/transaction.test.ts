@@ -51,7 +51,7 @@ test.describe('Transaction review modal -- Approve + Success', () => {
   })
 
   test.afterAll(async () => {
-    await endInteractionSession(page)
+    await page.close()
   })
 
   test('should see pending transaction', async () => {
@@ -186,6 +186,10 @@ test.describe('Transaction review modal -- Approve + Success', () => {
     await expect(page.getByTestId('wallet-home')).toBeVisible()
     await page.getByTestId('transaction-close').click()
   })
+
+  test.afterAll(async () => {
+    await page.close()
+  })
 })
 
 test.describe('Transaction review modal -- Approve + Error', () => {
@@ -203,7 +207,7 @@ test.describe('Transaction review modal -- Approve + Error', () => {
   })
 
   test.afterAll(async () => {
-    await endInteractionSession(page)
+    await page.close()
   })
 
   test('should show the transaction logs for all levels and error message', async () => {
@@ -250,5 +254,9 @@ test.describe('Transaction review modal -- Reject', () => {
     await endInteractionSession(page)
     await expect(page.getByTestId('wallet-home')).toBeVisible()
     await percySnapshot(page, 'interaction_transaction_rejected')
+  })
+
+  test.afterAll(async () => {
+    await page.close()
   })
 })
