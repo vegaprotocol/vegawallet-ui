@@ -10,7 +10,6 @@ import { InteractionsProvider } from './components/interactions'
 import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
 import { PassphraseModal } from './components/passphrase-modal'
 import { TransactionDetailsDialog } from './components/transaction-details-dialog'
-import { Settings } from './components/settings'
 import { SplashError } from './components/splash-error'
 import { TelemetryDialog } from './components/telemetry-dialog'
 import { GlobalProvider } from './contexts/global/global-provider'
@@ -81,7 +80,6 @@ export function App({ service, client, runtime, features }: AppProps) {
                       <InteractionsProvider />
                       <NetworkCompatibilityDialog />
                       <TransactionDetailsDialog />
-                      <Settings />
                     </AppLoader>
                   </Chrome>
                 </AppFrame>
