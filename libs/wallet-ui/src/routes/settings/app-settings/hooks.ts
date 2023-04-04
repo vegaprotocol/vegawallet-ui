@@ -4,11 +4,16 @@ import { useMemo } from 'react'
 import { FormStatus, useFormState } from '../../../hooks/use-form-state'
 import { Intent } from '../../../config/intent'
 
+export enum YesNo {
+  Yes = 'yes',
+  No = 'no',
+}
+
 export interface FormFields {
   vegaHome: string
   logLevel: string
   defaultNetwork: string
-  telemetry: 'yes' | 'no' // radio group requires string value
+  telemetry: YesNo.Yes | YesNo.No // radio group requires string value
 }
 
 export const useUpdateConfig = () => {
@@ -24,7 +29,7 @@ export const useUpdateConfig = () => {
         logLevel: fields.logLevel,
         defaultNetwork: fields.defaultNetwork,
         telemetry: {
-          enabled: fields.telemetry === 'yes' ? true : false,
+          enabled: fields.telemetry === YesNo.Yes ? true : false,
           consentAsked: true,
         },
       })

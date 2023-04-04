@@ -3,21 +3,22 @@ import { List } from '../../../components/list'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Page } from '../../../components/page'
+import { Paths } from '../..'
 
 export const SettingsHome = () => {
   const items = useMemo(
     () => [
       {
         title: 'App settings',
-        path: '/settings/app-settings',
+        path: Paths.Settings.AppSettings,
       },
       // {
       //   title: 'Networks',
-      //   path: '/settings/networks',
+      //   path: Paths.Settings.Networks,
       // },
       // {
       //   title: 'Service',
-      //   path: '/settings/service',
+      //   path: Paths.Settings.Service,
       // },
     ],
     []

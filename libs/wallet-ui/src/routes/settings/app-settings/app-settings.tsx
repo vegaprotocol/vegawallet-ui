@@ -11,17 +11,13 @@ import { Page } from '../../../components/page'
 import { LogLevels } from '../../../config/log-levels'
 import { Controller, useForm } from 'react-hook-form'
 import type { FormFields } from './hooks'
+import { YesNo } from './hooks'
 import { useUpdateConfig } from './hooks'
 import { FormStatus } from '../../../hooks/use-form-state'
 
 const HelperText = ({ text }: { text: string }) => (
   <div className="mt-1 text-sm text-neutral-light">{text}</div>
 )
-
-enum YesNo {
-  Yes = 'yes',
-  No = 'no',
-}
 
 export const AppSettings = () => {
   const {
@@ -76,13 +72,6 @@ export const AppSettings = () => {
               </RadioGroup>
             )}
           />
-          {/* <RadioGroup
-              onChange={(v) => setValue('telemetry', v as YesNo)}
-              // value={getValues('telemetry')}
-            >
-              <Radio id="yes" label={'Yes'} value={YesNo.Yes} />
-              <Radio id="no" label={'No'} value={YesNo.No} />
-            </RadioGroup> */}
           <HelperText text="Selecting yes will help developers improve the software." />
         </FormGroup>
         <Button
