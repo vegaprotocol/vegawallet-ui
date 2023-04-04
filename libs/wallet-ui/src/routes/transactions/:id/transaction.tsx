@@ -94,123 +94,109 @@ export const TransactionDetails = ({
               </TransactionDetailsItem>
             )}
           />
+        )}
+        {transaction.blockHeight && (
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
-              <TransactionDetailsItem title="Wallet">
+              <TransactionDetailsItem title="Block height">
                 <ExternalLink
-                  className="uppercase"
-                  href={`${explorerUrl}/parties/${transaction.publicKey}`}
+                  href={`${explorerUrl}/block/${transaction.blockHeight}`}
                 >
-                  {truncateMiddle(transaction.publicKey)}
+                  {transaction.blockHeight}
                 </ExternalLink>
               </TransactionDetailsItem>
             )}
           />
-          {transaction.blockHeight && (
-            <ListItem
-              item={transaction}
-              renderItem={(transaction) => (
-                <TransactionDetailsItem title="Block height">
-                  <ExternalLink
-                    className="uppercase"
-                    href={`${explorerUrl}/block/${transaction.publicKey}`}
-                  >
-                    {transaction.blockHeight}
-                  </ExternalLink>
-                </TransactionDetailsItem>
-              )}
+        )}
+        {signature ? (
+          <ListItem
+            item={transaction}
+            renderItem={(transaction) => (
+              <TransactionDetailsItem title="Signature">
+                <CopyWithTooltip text={signature}>
+                  <span>
+                    <span>{truncateMiddle(signature)}</span>
+                    <Copy className="w-3 ml-1" />
+                  </span>
+                </CopyWithTooltip>
+              </TransactionDetailsItem>
+            )}
+          />
+        ) : null}
+        {transaction.error && (
+          <ListItem
+            item={transaction}
+            renderItem={(transaction) => (
+              <TransactionDetailsItem title="Error">
+                <div className="mt-2">
+                  <Notification
+                    intent={Intent.Danger}
+                    message={transaction.error}
+                  />
+                </div>
+              </TransactionDetailsItem>
+            )}
+          />
+        )}
+        <ListItem
+          item={transaction}
+          renderItem={(transaction) => (
+            <CollapsiblePanel
+              title="Details"
+              initiallyOpen={true}
+              panelContent={
+                <CodeWindow
+                  content={JSON.stringify(transaction.payload, null, 2)}
+                  text={JSON.stringify(transaction.payload)}
+                />
+              }
             />
           )}
-          {signature ? (
-            <ListItem
-              item={transaction}
-              renderItem={(transaction) => (
-                <TransactionDetailsItem title="Signature">
-                  <CopyWithTooltip text={signature}>
-                    <span>
-                      <span>{truncateMiddle(signature)}</span>
-                      <Copy className="w-3 ml-1" />
-                    </span>
-                  </CopyWithTooltip>
-                </TransactionDetailsItem>
-              )}
-            />
-          ) : null}
-          {transaction.error && (
-            <ListItem
-              item={transaction}
-              renderItem={(transaction) => (
-                <TransactionDetailsItem title="Error">
-                  <div className="mt-2">
-                    <Notification
-                      intent={Intent.Danger}
-                      message={transaction.error}
-                    />
-                  </div>
-                </TransactionDetailsItem>
-              )}
-            />
+        />
+        <ListItem
+          item={transaction}
+          renderItem={(transaction) => (
+            <TransactionDetailsItem title="Received At">
+              {formatDate(transaction.receivedAt)}
+            </TransactionDetailsItem>
           )}
+        />
+        {transaction.logs.length ? (
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
               <CollapsiblePanel
-                title="Details"
-                initiallyOpen={true}
+                title="Event logs"
+                initiallyOpen={false}
                 panelContent={
-                  <CodeWindow
-                    content={JSON.stringify(transaction.payload, null, 2)}
-                    text={JSON.stringify(transaction.payload)}
-                  />
+                  <TransactionLogs logs={transaction.logs} isVisible={true} />
                 }
               />
             )}
           />
+        ) : null}
+        {txHash ? (
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
-              <TransactionDetailsItem title="Received At">
-                {formatDate(transaction.receivedAt)}
+              <TransactionDetailsItem title="Transaction hash">
+                <ExternalLink href={`${explorerUrl}/txs/${txHash}`}>
+                  {truncateMiddle(txHash)}
+                </ExternalLink>
               </TransactionDetailsItem>
             )}
           />
-          {transaction.logs.length ? (
-            <ListItem
-              item={transaction}
-              renderItem={(transaction) => (
-                <CollapsiblePanel
-                  title="Event logs"
-                  initiallyOpen={false}
-                  panelContent={
-                    <TransactionLogs logs={transaction.logs} isVisible={true} />
-                  }
-                />
-              )}
-            />
-          ) : null}
-          {txHash ? (
-            <ListItem
-              item={transaction}
-              renderItem={(transaction) => (
-                <TransactionDetailsItem title="Transaction hash">
-                  <ExternalLink href={`${explorerUrl}/txs/${txHash}`}>
-                    {truncateMiddle(txHash)}
-                  </ExternalLink>
-                </TransactionDetailsItem>
-              )}
-            />
-          ) : null}
-        </ul>
-        {transaction.txHash && (
-          <div className="mt-6 flex justify-center">
-            <AnchorButton href={`${explorerUrl}/txs/${transaction.txHash}`}>
-              View on block explorer
-            </AnchorButton>
-          </div>
-        )}
-      </>
-    </Page>
+        ) : null}
+      </ul>
+      {transaction.txHash && (
+        <div className="mt-6 flex justify-center">
+          <AnchorButton href={`${explorerUrl}/txs/${transaction.txHash}`}>
+            View on block explorer
+          </AnchorButton>
+        </div>
+      )}
+    </section>
   )
 }
 
