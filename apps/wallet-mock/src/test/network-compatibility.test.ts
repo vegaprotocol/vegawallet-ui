@@ -42,11 +42,17 @@ test.describe('Network incompatible warning', () => {
     await mock(page, serviceMock.GetVersion, getVersion)
     await page.goto('/')
   })
+
+  test.afterAll(async () => {
+    await page.close()
+  })
+
   test('should see network incompatible warning button', async () => {
     await expect(
       page.getByTestId('network-compatibility-warning')
     ).toBeVisible()
   })
+
   test('should open network incompatible warning dialog', async () => {
     await page.getByTestId('network-compatibility-warning').click()
     await expect(page.getByTestId('network-compatibility-dialog')).toBeVisible()
@@ -60,6 +66,10 @@ test.describe('Network incompatible dialog validations', () => {
     await mock(page, serviceMock.GetVersion, getVersion)
     await page.goto('/')
     await page.getByTestId('network-compatibility-warning').click()
+  })
+
+  test.afterAll(async () => {
+    await page.close()
   })
 
   test('should see dialog title', async () => {
@@ -103,15 +113,13 @@ test.describe('Network incompatible dialog validations', () => {
 })
 
 test.describe('Network incompatible dialog actions', async () => {
-  let page: Page
-  test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage()
+  test.beforeEach(async ({ page }) => {
     await mock(page, serviceMock.GetVersion, getVersion)
     await page.goto('/')
     await page.getByTestId('network-compatibility-warning').click()
   })
 
-  test('should be shown compatible networks dialog', async () => {
+  test('should be shown compatible networks dialog', async ({ page }) => {
     await page.getByTestId('network-compatibility-change').click()
     const dialog = page.getByTestId('network-compatibility-dialog')
 
@@ -124,7 +132,7 @@ test.describe('Network incompatible dialog actions', async () => {
     ])
   })
 
-  test('should close the dialog', async () => {
+  test('should close the dialog', async ({ page }) => {
     await page.getByTestId('network-compatibility-continue').click()
     await expect(page.getByTestId('network-compatibility-dialog')).toHaveCount(
       0
@@ -142,6 +150,11 @@ test.describe('Network compatible icon', async () => {
     await mock(page, serviceMock.GetVersion, versionMock)
     await page.goto('/')
   })
+
+  test.afterAll(async () => {
+    await page.close()
+  })
+
   test('should see status icon green and blinking', async () => {
     await expect(
       page.getByTestId('service-status').locator('.bg-green.blink')

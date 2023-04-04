@@ -7,7 +7,7 @@ export default function getStorageMock(
     window.localStorage.getItem(`MOCK.${functionName}`) !== null
   ) {
     return JSON.parse(
-      window.localStorage.getItem(`MOCK.${functionName}`)?.toString() || 'null'
+      window.localStorage.getItem(`MOCK.${functionName}`)?.toString() || ''
     )
   } else {
     return defaultValue || null

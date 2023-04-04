@@ -1,5 +1,5 @@
 import log from 'loglevel'
-import storageMock from './storage-mock'
+import storageMock from '../../../../scripts/storage-mock'
 import type { Service, ServiceConfig } from '../types/service'
 import type { RawInteraction } from '../types'
 

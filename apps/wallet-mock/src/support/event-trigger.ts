@@ -6,7 +6,7 @@ export async function sendBackendInteraction(
   interaction: InteractionType,
   data?: object
 ) {
-  page.evaluate(
+  await page.evaluate(
     ({ interaction, data }) =>
       window.document.body.dispatchEvent(
         new CustomEvent('new_interaction', {
