@@ -68,11 +68,11 @@ export const service: Service = {
     Promise.resolve(
       storageMock(ServiceMock.GetAppConfig, {
         logLevel: 'debug',
-        vegaHome: '',
+        vegaHome: '/some/vega/home',
         defaultNetwork: 'test',
         telemetry: {
           consentAsked: true,
-          enabled: true,
+          enabled: false,
         },
       })
     ),
