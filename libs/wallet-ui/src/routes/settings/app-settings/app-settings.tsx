@@ -14,10 +14,7 @@ import type { FormFields } from './hooks'
 import { YesNo } from './hooks'
 import { useUpdateConfig } from './hooks'
 import { FormStatus } from '../../../hooks/use-form-state'
-
-const HelperText = ({ text }: { text: string }) => (
-  <div className="mt-1 text-sm text-neutral-light">{text}</div>
-)
+import { HelperText } from '../../../components/helper-text'
 
 export const AppSettings = () => {
   const {

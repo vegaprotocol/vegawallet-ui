@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import type { FormFields } from './hooks'
 import { useUpdateServiceConfig } from './hooks'
 import { FormStatus } from '../../../hooks/use-form-state'
+import { HelperText } from '../../../components/helper-text'
 
 export const Service = () => {
   const {
@@ -24,6 +25,7 @@ export const Service = () => {
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup label="Port" labelFor="wallet-directory">
           <Input {...register('port')} type="number" id="port" />
+          <HelperText text="This specifies the port that the service will run on." />
         </FormGroup>
         <FormGroup label="Log level" labelFor="log-level">
           <Select id="log-level" {...register('logLevel')}>
@@ -33,6 +35,7 @@ export const Service = () => {
               </option>
             ))}
           </Select>
+          <HelperText text="Logs can be found in your Vega home directory." />
         </FormGroup>
         <Button
           disabled={isPending}
