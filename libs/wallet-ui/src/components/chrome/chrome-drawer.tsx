@@ -38,7 +38,7 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
         'overflow-y-hidden': !state.drawerState.isOpen,
         'overflow-y-scroll': state.drawerState.isOpen,
         'vega-border-image': !isFairground,
-        'border-vega-yellow-500': isFairground,
+        'fairground-border-image': isFairground,
       })}
     >
       <DrawerContent />

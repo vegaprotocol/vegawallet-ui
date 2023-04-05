@@ -65,7 +65,7 @@ export const Home = () => {
       <div
         className={classnames('text-center p-[20px] w-full bg-dark-100', {
           fixed: wallets.length,
-          [`bottom-[70px]`]: wallets.length,
+          [`bottom-[88px]`]: wallets.length,
           'left-0': wallets.length,
         })}
       >
