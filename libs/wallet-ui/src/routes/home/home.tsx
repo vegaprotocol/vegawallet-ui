@@ -50,7 +50,7 @@ export const Home = () => {
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
               key={w.name}
             >
-              <div>{w.name}</div>
+              <div data-testid="wallet-name">{w.name}</div>
               <div className="text-neutral">
                 {w.auth ? (
                   <OpenLock className="w-[20px] mx-[20px]" />
