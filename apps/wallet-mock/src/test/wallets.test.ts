@@ -10,10 +10,8 @@ test.describe('Wallets view', () => {
     wallets = walletsPage(page)
   })
 
-  test('should see wallets header', async ({ page }) => {
-    await expect(
-      page.getByTestId('wallet-home').getByRole('heading')
-    ).toHaveText('Wallets')
+  test('should see wallets header', async () => {
+    await expect(wallets.home.getByRole('heading')).toHaveText('Wallets')
   })
 
   test('should see wallets list', async () => {
@@ -63,7 +61,7 @@ test.describe('Wallets list', () => {
 
     await expect(wallets.walletList).toBeVisible()
     expect(await wallets.walletList.getByRole('button').all()).toHaveLength(100)
-    await expect(page.getByTestId('wallet-wallet-99')).toBeVisible()
+    await expect(wallets.wallet('wallet-99')).toBeVisible()
   })
 })
 
