@@ -10,22 +10,24 @@ export interface FormFields {
   port: number
 }
 
-export const useUpdateServiceConfig = (config: ServiceConfig | null) => {
+export const useUpdateServiceConfig = (
+  existingConfig: ServiceConfig | null
+) => {
   const { service, runtime } = useGlobal()
   const logger = useMemo(() => service.GetLogger('Settings'), [service])
   const [status, setStatus] = useFormState()
   const submit = async (fields: FormFields) => {
     try {
-      if (!config) throw new Error('Could not load service config')
+      if (!existingConfig) throw new Error('Could not load service config')
       logger.debug('UpdateAppConfig')
       setStatus(FormStatus.Pending)
       await service.UpdateServiceConfig({
-        ...config,
+        ...existingConfig,
         ...{
           logLevel: fields.logLevel,
           server: {
             port: fields.port,
-            host: config.server.host,
+            host: existingConfig.server.host,
           },
         },
       })
