@@ -23,27 +23,28 @@ export function Chrome({ children }: { children: React.ReactNode }) {
       <div
         className={classnames('relative block h-full bg-cover', {
           'vega-border-image': !useVegaBg && !isFairground,
+          'fairground-border-image': !useVegaBg && isFairground,
           'border-vega-yellow-500': !useVegaBg && isFairground,
           'border-t-[3px]': !useVegaBg,
           'bg-dark-100': !useVegaBg,
-          'pb-[70px]': state.status === AppStatus.Initialised && !isFullscreen,
+          'pb-[88px]': state.status === AppStatus.Initialised && !isFullscreen,
         })}
       >
         <main
           className={classnames('h-full overflow-y-auto', {
-            'pb-[70px]': !isFullscreen,
+            'pb-[88px]': !isFullscreen,
           })}
         >
           {children}
         </main>
-        {!isFullscreen && <NavBar />}
+        {!isFullscreen && <NavBar isFairground={isFairground} />}
       </div>
       {state.status === AppStatus.Initialised && !isFullscreen && (
         <div
           style={{
             height: state.status === AppStatus.Initialised ? DRAWER_HEIGHT : 0,
           }}
-          className="m-auto absolute bottom-[70px] left-0 w-full transition-all duration-200"
+          className="m-auto absolute bottom-[88px] left-0 w-full transition-all duration-200"
         >
           <ChromeDrawer height={height} />
         </div>

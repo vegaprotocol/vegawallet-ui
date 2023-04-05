@@ -1,4 +1,10 @@
-export const Wallet = ({ className }: { className?: string }) => {
+export const Wallet = ({
+  className,
+  squareFill,
+}: {
+  className?: string
+  squareFill?: string
+}) => {
   return (
     <svg
       className={className}
@@ -14,7 +20,7 @@ export const Wallet = ({ className }: { className?: string }) => {
         y="6"
         width="7"
         height="7"
-        fill="black"
+        fill={squareFill}
         stroke="currentColor"
       />
       <rect x="15.8333" y="8.5" width="2" height="2" fill="currentColor" />

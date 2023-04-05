@@ -31,6 +31,10 @@ https://create-react-app.dev/docs/adding-images-fonts-and-files/
   border-image: url('./images/vega-bg.png') 15%;
 }
 
+.fairground-border-image {
+  border-image: url('./images/fairground-border.png') 15%;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
