@@ -11,7 +11,23 @@ export default {
 
 const Template: Story = () => (
   <MemoryRouter>
-    <GlobalProvider service={service} client={client} runtime={runtime}>
+    <GlobalProvider
+      initialState={{
+        serviceConfig: {
+          logLevel: 'debug',
+          server: {
+            host: 'localhost',
+            port: 1789,
+          },
+          apiV1: {
+            maximumTokenDuration: 3600,
+          },
+        },
+      }}
+      service={service}
+      client={client}
+      runtime={runtime}
+    >
       <Service />
     </GlobalProvider>
   </MemoryRouter>

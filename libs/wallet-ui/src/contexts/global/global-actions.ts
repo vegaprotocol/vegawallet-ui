@@ -169,7 +169,10 @@ export function createActions(service: Service, client: WalletAdmin) {
           // else continue with app setup, get wallets/networks
           logger.debug('InitApp')
 
-          const config = await service.GetAppConfig()
+          const [config, serviceConfig] = await Promise.all([
+            service.GetAppConfig(),
+            service.GetServiceConfig(),
+          ])
 
           if (config.telemetry.enabled) {
             service.EnableTelemetry()
@@ -197,6 +200,7 @@ export function createActions(service: Service, client: WalletAdmin) {
           dispatch({
             type: 'INIT_APP',
             config: config,
+            serviceConfig,
             wallets: wallets.wallets ?? [],
             currentNetwork,
             networks,
@@ -240,8 +244,10 @@ export function createActions(service: Service, client: WalletAdmin) {
 
     completeOnboardAction(onComplete: () => void) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
-        const config = await service.GetAppConfig()
-
+        const [config, serviceConfig] = await Promise.all([
+          service.GetAppConfig(),
+          service.GetServiceConfig(),
+        ])
         if (config.telemetry.enabled) {
           service.EnableTelemetry()
         }
@@ -263,6 +269,7 @@ export function createActions(service: Service, client: WalletAdmin) {
         dispatch({
           type: 'INIT_APP',
           config: config,
+          serviceConfig,
           wallets: wallets.wallets ?? [],
           currentNetwork,
           networks,

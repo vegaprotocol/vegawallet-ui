@@ -4,7 +4,11 @@ import type { WalletModel } from '@vegaprotocol/wallet-admin'
 import { indexBy } from '../../lib/index-by'
 import type { Transaction } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
-import type { AppConfig, GetVersionResponse } from '../../types/service'
+import type {
+  AppConfig,
+  GetVersionResponse,
+  ServiceConfig,
+} from '../../types/service'
 import type { LogContent } from '../../types/interaction'
 
 import type {
@@ -21,6 +25,7 @@ export const initialGlobalState: GlobalState = {
   initError: null,
   version: null,
   config: null,
+  serviceConfig: null,
 
   // Wallet
   wallet: null,
@@ -57,6 +62,7 @@ export type GlobalAction =
       type: 'INIT_APP'
       config: AppConfig
       wallets: string[]
+      serviceConfig: ServiceConfig
       currentNetwork: string | null
       networks: Record<string, WalletModel.DescribeNetworkResult>
     }
@@ -249,6 +255,7 @@ export function globalReducer(
         ...state,
         initError: null,
         config: action.config,
+        serviceConfig: action.serviceConfig,
         wallets: action.wallets.reduce(
           (acc, name) => ({
             ...acc,
