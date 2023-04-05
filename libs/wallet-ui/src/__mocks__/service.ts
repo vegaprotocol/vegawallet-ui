@@ -1,6 +1,6 @@
 import log from 'loglevel'
 import storageMock from './storage-mock'
-import type { Service } from '../types/service'
+import type { Service, ServiceConfig } from '../types/service'
 import type { RawInteraction } from '../types'
 
 const logger = log.getLogger('test')
@@ -119,4 +119,21 @@ export const service: Service = {
   },
   EventsOff: noop,
   RespondToInteraction: () => Promise.resolve(undefined),
+  GetServiceConfig: function (): Promise<ServiceConfig> {
+    return Promise.resolve({
+      logLevel: 'debug',
+      server: {
+        host: 'localhost',
+        port: 1789,
+      },
+      apiV1: {
+        maximumTokenDuration: 3600,
+      },
+    })
+  },
+  UpdateServiceConfig: function (
+    arg: ServiceConfig
+  ): Promise<void | Error | undefined> {
+    return Promise.resolve(undefined)
+  },
 }

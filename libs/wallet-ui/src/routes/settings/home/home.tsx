@@ -16,10 +16,10 @@ export const SettingsHome = () => {
       //   title: 'Networks',
       //   path: Paths.Settings.Networks,
       // },
-      // {
-      //   title: 'Service',
-      //   path: Paths.Settings.Service,
-      // },
+      {
+        title: 'Service',
+        path: Paths.Settings.Service,
+      },
     ],
     []
   )
