@@ -4,6 +4,7 @@ import { FormStatus, useFormState } from '../../../hooks/use-form-state'
 import { Intent } from '../../../config/intent'
 import { AppToaster } from '../../../components/toaster'
 import type { ServiceConfig } from '../../../types'
+import { useRestartService } from '../../../hooks/use-restart-service'
 
 export interface FormFields {
   logLevel: string
@@ -13,7 +14,8 @@ export interface FormFields {
 export const useUpdateServiceConfig = (
   existingConfig: ServiceConfig | null
 ) => {
-  const { service, runtime } = useGlobal()
+  const restartService = useRestartService()
+  const { service } = useGlobal()
   const logger = useMemo(() => service.GetLogger('Settings'), [service])
   const [status, setStatus] = useFormState()
   const submit = async (fields: FormFields) => {
@@ -31,7 +33,7 @@ export const useUpdateServiceConfig = (
           },
         },
       })
-      runtime.WindowReload()
+      restartService()
     } catch (err) {
       const message = 'Failed to update config'
       AppToaster.show({ message, intent: Intent.DANGER })
