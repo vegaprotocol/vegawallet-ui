@@ -59,6 +59,7 @@ interface AppFrameProps {
  */
 export function AppFrame({ children }: AppFrameProps) {
   const { state } = useGlobal()
+  const isFairground = useIsFairground()
   const useVegaBg = state.status === AppStatus.Onboarding
   return (
     <div
@@ -85,7 +86,21 @@ export function AppFrame({ children }: AppFrameProps) {
           // @ts-ignore: Allow custom css property for wails
           '--wails-draggable': 'drag',
         }}
-      />
+      >
+        <div className="pt-2 flex justify-center">
+          {state.version?.version && (
+            <>
+              <span className="text-white">
+                {isFairground ? 'Fairground wallet' : 'Vega Wallet'}
+              </span>
+              &nbsp;
+              <span className="text-dark-300">
+                {state.version.version.replace('v', '')}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
       {children}
     </div>
   )
