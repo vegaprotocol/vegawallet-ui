@@ -13,10 +13,10 @@ const renderNavButton = (
     </MemoryRouter>
   )
 
-const renderNav = () =>
+const renderNav = ({ isFairground }: { isFairground: boolean }) =>
   render(
     <MemoryRouter>
-      <NavBar />
+      <NavBar isFairground={isFairground} />
     </MemoryRouter>
   )
 
@@ -29,6 +29,7 @@ describe('NavButton', () => {
         text: 'Test Button',
         to: '/',
         end: false,
+        isFairground: false,
       },
       ['/foo']
     )
@@ -47,18 +48,41 @@ describe('NavButton', () => {
         text: 'Test Button',
         to: '/settings',
         end: false,
+        isFairground: false,
       },
       ['/settings']
     )
 
     expect(screen.getByTestId('link-active')).toHaveClass('bg-vega-yellow')
   })
+
+  it('changes style when in fairground mode', () => {
+    const icon = <svg data-testid="test-icon" />
+    renderNavButton(
+      {
+        icon: icon,
+        text: 'Test Button',
+        to: '/settings',
+        end: false,
+        isFairground: true,
+      },
+      ['/settings']
+    )
+
+    expect(screen.getByTestId('link-active')).toHaveClass('bg-black')
+  })
 })
 
 describe('NavBar', () => {
-  it('renders with two NavButtons', () => {
-    renderNav()
+  it('renders with all three NavButtons', () => {
+    renderNav({ isFairground: false })
     expect(screen.getByTestId('nav-bar')).toBeInTheDocument()
+    expect(screen.getByTestId('nav-bar')).toHaveClass('bg-black')
     expect(screen.getAllByTestId('nav-button')).toHaveLength(3)
+  })
+
+  it('changes color if in fairground mode', () => {
+    renderNav({ isFairground: true })
+    expect(screen.getByTestId('nav-bar')).toHaveClass('bg-vega-yellow-500')
   })
 })
