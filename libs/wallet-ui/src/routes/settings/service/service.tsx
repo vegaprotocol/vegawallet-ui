@@ -17,7 +17,7 @@ export const Service = () => {
   const { register, handleSubmit } = useForm<FormFields>({
     defaultValues: {
       logLevel: serviceConfig?.logLevel,
-      port: serviceConfig?.server.port,
+      port: serviceConfig?.server.port?.toString(),
     },
   })
   return (
@@ -25,7 +25,7 @@ export const Service = () => {
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup label="Port" labelFor="wallet-directory">
           <Input {...register('port')} type="number" id="port" />
-          <HelperText text="This specifies the port that the service will run on." />
+          <HelperText text="This specifies the port that the service will run on. Warning! Changing this will remove existing connections." />
         </FormGroup>
         <FormGroup label="Log level" labelFor="log-level">
           <Select id="log-level" {...register('logLevel')}>
