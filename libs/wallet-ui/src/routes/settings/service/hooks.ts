@@ -8,7 +8,7 @@ import { useRestartService } from '../../../hooks/use-restart-service'
 
 export interface FormFields {
   logLevel: string
-  port: number
+  port: string
 }
 
 export const useUpdateServiceConfig = (
@@ -28,10 +28,14 @@ export const useUpdateServiceConfig = (
         ...{
           logLevel: fields.logLevel,
           server: {
-            port: fields.port,
+            port: Number(fields.port),
             host: existingConfig.server.host,
           },
         },
+      })
+      AppToaster.show({
+        message: `Service config updated`,
+        intent: Intent.SUCCESS,
       })
       restartService()
     } catch (err) {
