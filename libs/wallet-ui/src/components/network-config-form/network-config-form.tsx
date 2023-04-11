@@ -187,14 +187,14 @@ function fieldsToConfig(
   return {
     name: values.name,
     api: {
-      grpcConfig: {
+      grpc: {
         hosts: values.grpcHosts.map((x) => x.value),
         retries: Number(values.grpcNodeRetries),
       },
-      graphQLConfig: {
+      graphQL: {
         hosts: values.graphqlHosts.map((x) => x.value),
       },
-      restConfig: {
+      rest: {
         hosts: values.restHosts.map((x) => x.value),
       },
     },
@@ -209,12 +209,11 @@ function fieldsToConfig(
 function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
   return {
     name: config.name,
-    grpcNodeRetries: config.api?.grpcConfig?.retries || 0,
+    grpcNodeRetries: config.api?.grpc?.retries || 0,
     // @ts-ignore any resulting from generated types
-    grpcHosts: config.api.grpcConfig?.hosts.map((x) => ({ value: x })) || [],
+    grpcHosts: config.api.grpc?.hosts.map((x) => ({ value: x })) || [],
     // @ts-ignore any resulting from generated types
-    graphqlHosts:
-      config.api.graphQLConfig?.hosts.map((x) => ({ value: x })) || [],
+    graphqlHosts: config.api.graphQL?.hosts.map((x) => ({ value: x })) || [],
     // @ts-ignore any resulting from generated types
     restHosts: config.api.restConfig?.hosts.map((x) => ({ value: x })) || [],
     consoleUrl: config.apps.console,
