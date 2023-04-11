@@ -31,17 +31,17 @@ export const protobufPackage = 'vega.commands.v1'
  * "spam.protection.max.batchSize"
  */
 export interface BatchMarketInstructions {
-  /** A list of order cancellations to be processed sequentially */
+  /** A list of order cancellations to be processed sequentially. */
   cancellations: OrderCancellation[]
-  /** A list of order amendments to be processed sequentially */
+  /** A list of order amendments to be processed sequentially. */
   amendments: OrderAmendment[]
-  /** A list of order submissions to be processed sequentially */
+  /** A list of order submissions to be processed sequentially. */
   submissions: OrderSubmission[]
 }
 
 /** An order submission is a request to submit or create a new order on Vega */
 export interface OrderSubmission {
-  /** Market identifier for the order, required field */
+  /** Market identifier for the order, required field. */
   marketId: string
   /**
    * Price for the order, the price is an integer, for example `123456` is a correctly
@@ -55,49 +55,46 @@ export interface OrderSubmission {
    * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
    */
   size: number
-  /**
-   * Side for the order, e.g. SIDE_BUY or SIDE_SELL, required field
-   * - See `Side`
-   */
+  /** Side for the order, e.g. SIDE_BUY or SIDE_SELL, required field. */
   side: Side
-  /**
-   * Time in force indicates how long an order will remain active before it is executed or expires, required field
-   * - See `Order.TimeInForce`
-   */
+  /** Time in force indicates how long an order will remain active before it is executed or expires, required field. */
   timeInForce: Order_TimeInForce
   /**
-   * Timestamp for when the order will expire, in nanoseconds since the epoch,
-   * required field only for `Order.TimeInForce`.TIME_IN_FORCE_GTT`
-   * - See `VegaTimeResponse`.`timestamp`
+   * Timestamp for when the order will expire, in nanoseconds,
+   * required field only for `Order.TimeInForce`.TIME_IN_FORCE_GTT`.
    */
   expiresAt: number
-  /** Type for the order, required field - See `Order.Type` */
+  /** Type for the order, required field - See `Order.Type`. */
   type: Order_Type
   /**
    * Reference given for the order, this is typically used to retrieve an order submitted through consensus, currently
-   * set internally by the node to return a unique reference identifier for the order submission
+   * set internally by the node to return a unique reference identifier for the order submission.
    */
   reference: string
-  /**
-   * Used to specify the details for a pegged order
-   * - See `PeggedOrder`
-   */
+  /** Used to specify the details for a pegged order. */
   peggedOrder: PeggedOrder | undefined
+  /** Only valid for Limit orders. Cannot be True at the same time as Reduce-Only. */
+  postOnly: boolean
+  /**
+   * Only valid for Non-Persistent orders. Cannot be True at the same time as Post-Only.
+   * If set, order will only be executed if the outcome of the trade moves the trader's position closer to 0.
+   */
+  reduceOnly: boolean
 }
 
 /** An order cancellation is a request to cancel an existing order on Vega */
 export interface OrderCancellation {
-  /** Unique identifier for the order (set by the system after consensus), required field */
+  /** Unique identifier for the order (set by the system after consensus), required field. */
   orderId: string
-  /** Market identifier for the order, required field */
+  /** Market identifier for the order, required field. */
   marketId: string
 }
 
 /** An order amendment is a request to amend or update an existing order on Vega */
 export interface OrderAmendment {
-  /** Order identifier, this is required to find the order and will not be updated, required field */
+  /** Order identifier, this is required to find the order and will not be updated, required field. */
   orderId: string
-  /** Market identifier, this is required to find the order and will not be updated */
+  /** Market identifier, this is required to find the order and will not be updated. */
   marketId: string
   /**
    * Amend the price for the order if the price value is set, otherwise price will remain unchanged.
@@ -112,58 +109,49 @@ export interface OrderAmendment {
    * This field needs to be scaled using the market's position decimal places.
    */
   sizeDelta: number
-  /**
-   * Amend the expiry time for the order, if the Timestamp value is set, otherwise expiry time will remain unchanged
-   * - See [`VegaTimeResponse`](#api.VegaTimeResponse).`timestamp`
-   */
+  /** Amend the expiry time for the order, if the Timestamp value is set, otherwise expiry time will remain unchanged. */
   expiresAt?: number | undefined
-  /**
-   * Amend the time in force for the order, set to TIME_IN_FORCE_UNSPECIFIED to remain unchanged
-   * - See [`TimeInForce`](#api.VegaTimeResponse).`timestamp`
-   */
+  /** Amend the time in force for the order, set to TIME_IN_FORCE_UNSPECIFIED to remain unchanged. */
   timeInForce: Order_TimeInForce
   /**
    * Amend the pegged order offset for the order
    * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   peggedOffset: string
-  /**
-   * Amend the pegged order reference for the order
-   * - See [`PeggedReference`](#vega.PeggedReference)
-   */
+  /** Amend the pegged order reference for the order. */
   peggedReference: PeggedReference
 }
 
 /** A liquidity provision submitted for a given market */
 export interface LiquidityProvisionSubmission {
-  /** Market identifier for the order, required field */
+  /** Market identifier for the order, required field. */
   marketId: string
   /**
    * Specified as a unitless number that represents the amount of settlement asset of the market
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places.
    */
   commitmentAmount: string
-  /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers */
+  /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers. */
   fee: string
-  /** A set of liquidity sell orders to meet the liquidity provision obligation */
+  /** A set of liquidity sell orders to meet the liquidity provision obligation. */
   sells: LiquidityOrder[]
-  /** A set of liquidity buy orders to meet the liquidity provision obligation */
+  /** A set of liquidity buy orders to meet the liquidity provision obligation. */
   buys: LiquidityOrder[]
-  /** A reference to be added to every order created out of this liquidityProvisionSubmission */
+  /** A reference to be added to every order created out of this liquidityProvisionSubmission. */
   reference: string
 }
 
 /** Cancel a liquidity provision request */
 export interface LiquidityProvisionCancellation {
-  /** Unique ID for the market with the liquidity provision to be cancelled */
+  /** Unique ID for the market with the liquidity provision to be cancelled. */
   marketId: string
 }
 
 /** Amend a liquidity provision request */
 export interface LiquidityProvisionAmendment {
-  /** Unique ID for the market with the liquidity provision to be amended */
+  /** Unique ID for the market with the liquidity provision to be amended. */
   marketId: string
-  /** From here at least one of the following is required to consider the command valid */
+  /** From here at least one of the following is required to consider the command valid. */
   commitmentAmount: string
   /** an empty strings means no change */
   fee: string
@@ -182,9 +170,9 @@ export interface WithdrawSubmission {
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
-  /** The asset to be withdrawn */
+  /** The asset to be withdrawn. */
   asset: string
-  /** Foreign chain specifics */
+  /** Foreign chain specifics. */
   ext: WithdrawExt | undefined
 }
 
@@ -193,9 +181,9 @@ export interface WithdrawSubmission {
  * Vega network governance
  */
 export interface ProposalSubmission {
-  /** Proposal reference */
+  /** Proposal reference. */
   reference: string
-  /** Proposal configuration and the actual change that is meant to be executed when proposal is enacted */
+  /** Proposal configuration and the actual change that is meant to be executed when proposal is enacted. */
   terms: ProposalTerms | undefined
   /** The rationale behind a proposal. */
   rationale: ProposalRationale | undefined
@@ -208,13 +196,13 @@ export interface ProposalSubmission {
 export interface VoteSubmission {
   /** The ID of the proposal to vote for. */
   proposalId: string
-  /** The actual value of the vote */
+  /** The actual value of the vote. */
   value: Vote_Value
 }
 
 /** A command to submit an instruction to delegate some stake to a node */
 export interface DelegateSubmission {
-  /** The ID for the node to delegate to */
+  /** The ID for the node to delegate to. */
   nodeId: string
   /**
    * The amount of stake to delegate
@@ -224,12 +212,14 @@ export interface DelegateSubmission {
 }
 
 export interface UndelegateSubmission {
+  /** The id of the node to delegate to. */
   nodeId: string
   /**
    * optional, if not specified = ALL
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
    */
   amount: string
+  /** The method of delegation. */
   method: UndelegateSubmission_Method
 }
 
@@ -244,12 +234,12 @@ export enum UndelegateSubmission_Method {
 export interface Transfer {
   /**
    * The account type from which the funds of the party
-   * should be taken
+   * should be taken.
    */
   fromAccountType: AccountType
-  /** The public key of the destination account */
+  /** The public key of the destination account. */
   to: string
-  /** The type of the destination account */
+  /** The type of the destination account. */
   toAccountType: AccountType
   /** The asset */
   asset: string
@@ -258,7 +248,7 @@ export interface Transfer {
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
-  /** The reference to be attached to the transfer */
+  /** The reference to be attached to the transfer. */
   reference: string
   oneOff?: OneOffTransfer | undefined
   recurring?: RecurringTransfer | undefined
@@ -267,36 +257,36 @@ export interface Transfer {
 /** Specific details for a one off transfer */
 export interface OneOffTransfer {
   /**
-   * A unix timestamp in seconds. Time at which the
-   * transfer should be delivered into the To account
+   * A unix timestamp in nanoseconds. Time at which the
+   * transfer should be delivered into the To account.
    */
   deliverOn: number
 }
 
 /** Specific details for a recurring transfer */
 export interface RecurringTransfer {
-  /** The first epoch from which this transfer shall be paid */
+  /** The first epoch from which this transfer shall be paid. */
   startEpoch: number
-  /** The last epoch at which this transfer shall be paid */
+  /** The last epoch at which this transfer shall be paid. */
   endEpoch?: number | undefined
-  /** factor needs to be > 0 */
+  /** factor needs to be > 0. */
   factor: string
-  /** optional parameter defining how a transfer is dispatched */
+  /** optional parameter defining how a transfer is dispatched. */
   dispatchStrategy: DispatchStrategy | undefined
 }
 
 /** A request for cancelling a recurring transfer */
 export interface CancelTransfer {
-  /** The ID of the transfer to cancel */
+  /** The ID of the transfer to cancel. */
   transferId: string
 }
 
 /** A transaction for a validator to submit signatures to a smart contract */
 export interface IssueSignatures {
-  /** The ethereum address which will submit the signatures to the smart contract */
+  /** The ethereum address which will submit the signatures to the smart contract. */
   submitter: string
-  /** The kind of signatures to generate, namely for whether a signer is being added or removed */
+  /** The kind of signatures to generate, namely for whether a signer is being added or removed. */
   kind: NodeSignatureKind
-  /** The ID of the node that will be signed in or out of the smart contract */
+  /** The ID of the node that will be signed in or out of the smart contract. */
   validatorNodeId: string
 }

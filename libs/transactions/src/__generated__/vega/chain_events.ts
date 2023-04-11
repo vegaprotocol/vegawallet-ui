@@ -4,9 +4,9 @@ export const protobufPackage = 'vega'
 
 /** A deposit for a Vega built-in asset */
 export interface BuiltinAssetDeposit {
-  /** A Vega network internal asset identifier */
+  /** A Vega network internal asset identifier. */
   vegaAssetId: string
-  /** A Vega party identifier (pub-key) */
+  /** A Vega party identifier (pub-key). */
   partyId: string
   /**
    * The amount to be deposited
@@ -17,9 +17,9 @@ export interface BuiltinAssetDeposit {
 
 /** A withdrawal for a Vega built-in asset */
 export interface BuiltinAssetWithdrawal {
-  /** A Vega network internal asset identifier */
+  /** A Vega network internal asset identifier. */
   vegaAssetId: string
-  /** A Vega network party identifier (pub-key) */
+  /** A Vega network party identifier (pub-key). */
   partyId: string
   /**
    * The amount to be withdrawn
@@ -30,78 +30,78 @@ export interface BuiltinAssetWithdrawal {
 
 /** An event related to a Vega built-in asset */
 export interface BuiltinAssetEvent {
-  /** Built-in asset deposit */
+  /** Built-in asset deposit. */
   deposit?: BuiltinAssetDeposit | undefined
-  /** Built-in asset withdrawal */
+  /** Built-in asset withdrawal. */
   withdrawal?: BuiltinAssetWithdrawal | undefined
 }
 
 /** An asset allow-listing for an ERC20 token */
 export interface ERC20AssetList {
-  /** The Vega network internal identifier of the asset */
+  /** The Vega network internal identifier of the asset. */
   vegaAssetId: string
-  /** The ethereum address of the asset */
+  /** The ethereum address of the asset. */
   assetSource: string
 }
 
 /** An asset deny-listing for an ERC20 token */
 export interface ERC20AssetDelist {
-  /** The Vega network internal identifier of the asset */
+  /** The Vega network internal identifier of the asset. */
   vegaAssetId: string
 }
 
 export interface ERC20AssetLimitsUpdated {
-  /** The Vega network internal identifier of the asset */
+  /** The Vega network internal identifier of the asset. */
   vegaAssetId: string
-  /** The Ethereum wallet that initiated the deposit */
+  /** The Ethereum wallet that initiated the deposit. */
   sourceEthereumAddress: string
-  /** The updated lifetime limits */
+  /** The updated lifetime limits. */
   lifetimeLimits: string
-  /** The updated withdrawal threshold */
+  /** The updated withdrawal threshold. */
   withdrawThreshold: string
 }
 
 /** An asset deposit for an ERC20 token */
 export interface ERC20Deposit {
-  /** The vega network internal identifier of the asset */
+  /** The vega network internal identifier of the asset. */
   vegaAssetId: string
-  /** The Ethereum wallet that initiated the deposit */
+  /** The Ethereum wallet that initiated the deposit. */
   sourceEthereumAddress: string
-  /** The Vega party identifier (pub-key) which is the target of the deposit */
+  /** The Vega party identifier (pub-key) which is the target of the deposit. */
   targetPartyId: string
-  /** The amount to be deposited */
+  /** The amount to be deposited. */
   amount: string
 }
 
 /** An asset withdrawal for an ERC20 token */
 export interface ERC20Withdrawal {
-  /** The Vega network internal identifier of the asset */
+  /** The Vega network internal identifier of the asset. */
   vegaAssetId: string
-  /** The target Ethereum wallet address */
+  /** The target Ethereum wallet address. */
   targetEthereumAddress: string
-  /** The reference nonce used for the transaction */
+  /** The reference nonce used for the transaction. */
   referenceNonce: string
 }
 
 /** An event related to an ERC20 token */
 export interface ERC20Event {
-  /** Index of the log in the transaction */
+  /** Index of the log in the transaction. */
   index: number
-  /** The block in which the transaction was added */
+  /** The block in which the transaction was added. */
   block: number
-  /** List an ERC20 asset */
+  /** List an ERC20 asset. */
   assetList?: ERC20AssetList | undefined
-  /** De-list an ERC20 asset */
+  /** De-list an ERC20 asset. */
   assetDelist?: ERC20AssetDelist | undefined
-  /** Deposit ERC20 asset */
+  /** Deposit ERC20 asset. */
   deposit?: ERC20Deposit | undefined
-  /** Withdraw ERC20 asset */
+  /** Withdraw ERC20 asset. */
   withdrawal?: ERC20Withdrawal | undefined
-  /** Update an ERC20 asset */
+  /** Update an ERC20 asset. */
   assetLimitsUpdated?: ERC20AssetLimitsUpdated | undefined
-  /** Bridge operations has been stopped */
+  /** Bridge operations has been stopped. */
   bridgeStopped?: boolean | undefined
-  /** Bridge operations has been resumed */
+  /** Bridge operations has been resumed. */
   bridgeResumed?: boolean | undefined
 }
 

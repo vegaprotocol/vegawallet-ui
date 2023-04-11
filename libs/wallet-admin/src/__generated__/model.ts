@@ -220,14 +220,14 @@ export namespace WalletModel {
      * The API configuration for the network.
      */
     api: {
-      grpcConfig: {
+      grpc: {
         hosts: string[]
         retries: number
       }
-      graphQLConfig?: {
+      graphQL?: {
         hosts: string[]
       }
-      restConfig?: {
+      rest?: {
         hosts: string[]
       }
     }
@@ -256,14 +256,14 @@ export namespace WalletModel {
    * The API configuration for the network.
    */
   export interface NetworkApiConfig {
-    grpcConfig: {
+    grpc: {
       hosts: string[]
       retries: number
     }
-    graphQLConfig?: {
+    graphQL?: {
       hosts: string[]
     }
-    restConfig?: {
+    rest?: {
       hosts: string[]
     }
   }
