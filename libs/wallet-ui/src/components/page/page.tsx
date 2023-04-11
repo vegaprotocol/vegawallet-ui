@@ -12,7 +12,7 @@ export const Page = ({ name, children, back = false }: PageProps) => {
   return (
     <section className="p-4" data-testid={name}>
       <button onClick={() => navigate(-1)}>
-        <h1 className="text-2xl flex" data-testid={`${name}-header`}>
+        <h1 className="pl-2 text-2xl flex" data-testid={`${name}-header`}>
           {back && (
             <div
               data-testid="page-back"
