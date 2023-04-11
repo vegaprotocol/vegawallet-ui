@@ -102,133 +102,133 @@ export enum ProposalError {
 
 /** Future product configuration */
 export interface FutureProduct {
-  /** Asset ID for the product's settlement asset */
+  /** Asset ID for the product's settlement asset. */
   settlementAsset: string
-  /** Product quote name */
+  /** Product quote name. */
   quoteName: string
-  /** The data source spec describing the data source for settlement */
+  /** The data source spec describing the data source for settlement. */
   dataSourceSpecForSettlementData: DataSourceDefinition | undefined
-  /** The external data source spec describing the data source of trading termination */
+  /** The external data source spec describing the data source of trading termination. */
   dataSourceSpecForTradingTermination: DataSourceDefinition | undefined
-  /** The binding between the data source spec and the settlement data */
+  /** The binding between the data source spec and the settlement data. */
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
 }
 
 /** Instrument configuration */
 export interface InstrumentConfiguration {
-  /** Instrument name */
+  /** Instrument name. */
   name: string
-  /** Instrument code, human-readable shortcode used to describe the instrument */
+  /** Instrument code, human-readable shortcode used to describe the instrument. */
   code: string
-  /** Future */
+  /** Future. */
   future?: FutureProduct | undefined
 }
 
 /** Configuration for a new market on Vega */
 export interface NewMarketConfiguration {
-  /** New market instrument configuration */
+  /** New market instrument configuration. */
   instrument: InstrumentConfiguration | undefined
-  /** Decimal places used for the new market, sets the smallest price increment on the book */
+  /** Decimal places used for the new market, sets the smallest price increment on the book. */
   decimalPlaces: number
-  /** Optional new market metadata, tags */
+  /** Optional new market metadata, tags. */
   metadata: string[]
-  /** Price monitoring parameters */
+  /** Price monitoring parameters. */
   priceMonitoringParameters: PriceMonitoringParameters | undefined
-  /** Liquidity monitoring parameters */
+  /** Liquidity monitoring parameters. */
   liquidityMonitoringParameters: LiquidityMonitoringParameters | undefined
-  /** Simple risk model parameters, valid only if MODEL_SIMPLE is selected */
+  /** Simple risk model parameters, valid only if MODEL_SIMPLE is selected. */
   simple?: SimpleModelParams | undefined
-  /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected */
+  /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected. */
   logNormal?: LogNormalRiskModel | undefined
-  /** Decimal places for order sizes, sets what size the smallest order / position on the market can be */
+  /** Decimal places for order sizes, sets what size the smallest order / position on the market can be. */
   positionDecimalPlaces: number
   /**
    * Percentage move up and down from the mid price which specifies the range of
-   * price levels over which automated liquidity provision orders will be deployed
+   * price levels over which automated liquidity provision orders will be deployed.
    */
   lpPriceRange: string
-  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume */
+  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
-  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume */
+  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
 }
 
 /** New market on Vega */
 export interface NewMarket {
-  /** The configuration of the new market */
+  /** The configuration of the new market. */
   changes: NewMarketConfiguration | undefined
 }
 
 /** Update an existing market on Vega */
 export interface UpdateMarket {
-  /** The identifier of the market to update */
+  /** The identifier of the market to update. */
   marketId: string
-  /** The updated configuration of the market */
+  /** The updated configuration of the market. */
   changes: UpdateMarketConfiguration | undefined
 }
 
 /** Configuration to update a market on Vega */
 export interface UpdateMarketConfiguration {
-  /** Updated market instrument configuration */
+  /** Updated market instrument configuration. */
   instrument: UpdateInstrumentConfiguration | undefined
-  /** Optional market metadata, tags */
+  /** Optional market metadata, tags. */
   metadata: string[]
-  /** Price monitoring parameters */
+  /** Price monitoring parameters. */
   priceMonitoringParameters: PriceMonitoringParameters | undefined
-  /** Liquidity monitoring parameters */
+  /** Liquidity monitoring parameters. */
   liquidityMonitoringParameters: LiquidityMonitoringParameters | undefined
-  /** Simple risk model parameters, valid only if MODEL_SIMPLE is selected */
+  /** Simple risk model parameters, valid only if MODEL_SIMPLE is selected. */
   simple?: SimpleModelParams | undefined
-  /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected */
+  /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected. */
   logNormal?: LogNormalRiskModel | undefined
   /**
    * Percentage move up and down from the mid price which specifies the range of
-   * price levels over which automated liquidity provision orders will be deployed
+   * price levels over which automated liquidity provision orders will be deployed.
    */
   lpPriceRange: string
-  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume */
+  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
-  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume */
+  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
 }
 
 /** Instrument configuration */
 export interface UpdateInstrumentConfiguration {
-  /** Instrument code, human-readable shortcode used to describe the instrument */
+  /** Instrument code, human-readable shortcode used to describe the instrument. */
   code: string
-  /** Future */
+  /** Future. */
   future?: UpdateFutureProduct | undefined
 }
 
 /** Future product configuration */
 export interface UpdateFutureProduct {
-  /** Human-readable name/abbreviation of the quote name */
+  /** Human-readable name/abbreviation of the quote name. */
   quoteName: string
-  /** The data source spec describing the data of settlement data */
+  /** The data source spec describing the data of settlement data. */
   dataSourceSpecForSettlementData: DataSourceDefinition | undefined
-  /** The data source spec describing the data source for trading termination */
+  /** The data source spec describing the data source for trading termination. */
   dataSourceSpecForTradingTermination: DataSourceDefinition | undefined
-  /** The binding between the data source spec and the settlement data */
+  /** The binding between the data source spec and the settlement data. */
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
 }
 
 /** Update network configuration on Vega */
 export interface UpdateNetworkParameter {
-  /** The network parameter to update */
+  /** The network parameter to update. */
   changes: NetworkParameter | undefined
 }
 
 /** New asset on Vega */
 export interface NewAsset {
-  /** The configuration of the new asset */
+  /** The configuration of the new asset. */
   changes: AssetDetails | undefined
 }
 
 /** Update an existing asset on Vega */
 export interface UpdateAsset {
-  /** The ID of the asset to be updated */
+  /** The ID of the asset to be updated. */
   assetId: string
-  /** The changes to apply on an existing asset */
+  /** The changes to apply on an existing asset. */
   changes: AssetDetailsUpdate | undefined
 }
 
@@ -243,30 +243,30 @@ export interface NewFreeform {}
 export interface ProposalTerms {
   /**
    * Timestamp (Unix time in seconds) when voting closes for this proposal,
-   * constrained by `minClose` and `maxClose` network parameters
+   * constrained by `minClose` and `maxClose` network parameters.
    */
   closingTimestamp: number
   /**
    * Timestamp (Unix time in seconds) when proposal gets enacted (if passed),
-   * constrained by `minEnact` and `maxEnact` network parameters
+   * constrained by `minEnact` and `maxEnact` network parameters.
    */
   enactmentTimestamp: number
-  /** Validation timestamp (Unix time in seconds) */
+  /** Validation timestamp (Unix time in seconds). */
   validationTimestamp: number
-  /** Proposal change for modifying an existing market on Vega */
+  /** Proposal change for modifying an existing market on Vega. */
   updateMarket?: UpdateMarket | undefined
-  /** Proposal change for creating new market on Vega */
+  /** Proposal change for creating new market on Vega. */
   newMarket?: NewMarket | undefined
-  /** Proposal change for updating Vega network parameters */
+  /** Proposal change for updating Vega network parameters. */
   updateNetworkParameter?: UpdateNetworkParameter | undefined
-  /** Proposal change for creating new assets on Vega */
+  /** Proposal change for creating new assets on Vega. */
   newAsset?: NewAsset | undefined
   /**
    * Proposal change for a freeform request, which can be voted on but does not change the behaviour of the system,
-   * and can be used to gauge community sentiment
+   * and can be used to gauge community sentiment.
    */
   newFreeform?: NewFreeform | undefined
-  /** Proposal change for updating an asset */
+  /** Proposal change for updating an asset. */
   updateAsset?: UpdateAsset | undefined
 }
 
@@ -288,22 +288,22 @@ export interface ProposalRationale {
 
 /** Governance data */
 export interface GovernanceData {
-  /** The governance proposal */
+  /** The governance proposal. */
   proposal: Proposal | undefined
-  /** All YES votes in favour of the proposal above */
+  /** All YES votes in favour of the proposal above. */
   yes: Vote[]
-  /** All NO votes against the proposal above */
+  /** All NO votes against the proposal above. */
   no: Vote[]
   /**
    * All latest YES votes by party (guaranteed to be unique),
    * where key (string) is the party ID (public key) and
-   * value (Vote) is the vote cast by the given party
+   * value (Vote) is the vote cast by the given party.
    */
   yesParty: { [key: string]: Vote }
   /**
    * All latest NO votes by party (guaranteed to be unique),
    * where key (string) is the party ID (public key) and
-   * value (Vote) is the vote cast by the given party
+   * value (Vote) is the vote cast by the given party.
    */
   noParty: { [key: string]: Vote }
 }
@@ -320,31 +320,31 @@ export interface GovernanceData_NoPartyEntry {
 
 /** Governance proposal */
 export interface Proposal {
-  /** Unique proposal identifier */
+  /** Unique proposal identifier. */
   id: string
-  /** Proposal reference */
+  /** Proposal reference. */
   reference: string
-  /** Party identifier (public key) of the author (the party submitting the proposal) */
+  /** Party identifier (public key) of the author (the party submitting the proposal). */
   partyId: string
-  /** Proposal state - See (Proposal.State)[#vega.Proposal.State] definition */
+  /** Proposal state. */
   state: Proposal_State
-  /** Proposal timestamp for date and time (in nanoseconds) when proposal was submitted to the network */
+  /** Proposal timestamp for date and time (in nanoseconds) when proposal was submitted to the network. */
   timestamp: number
-  /** Proposal configuration and the actual change that is meant to be executed when proposal is enacted */
+  /** Proposal configuration and the actual change that is meant to be executed when proposal is enacted. */
   terms: ProposalTerms | undefined
-  /** A reason for the current state of the proposal, this may be set in case of REJECTED and FAILED statuses */
+  /** A reason for the current state of the proposal, this may be set in case of REJECTED and FAILED statuses. */
   reason?: ProposalError | undefined
-  /** The detailed error associated to the reason */
+  /** The detailed error associated to the reason. */
   errorDetails?: string | undefined
-  /** The rationale behind a proposal */
+  /** The rationale behind a proposal. */
   rationale: ProposalRationale | undefined
-  /** The required vote participation for this proposal */
+  /** The required vote participation for this proposal. */
   requiredParticipation: string
-  /** The required majority for this proposal */
+  /** The required majority for this proposal. */
   requiredMajority: string
-  /** The required participation from liquidity providers, optional (required for market update proposal) */
+  /** The required participation from liquidity providers, optional (required for market update proposal). */
   requiredLiquidityProviderParticipation?: string | undefined
-  /** The require majority from liquidity providers, optional (required for market update proposal) */
+  /** The require majority from liquidity providers, optional (required for market update proposal). */
   requiredLiquidityProviderMajority?: string | undefined
 }
 
@@ -379,19 +379,19 @@ export enum Proposal_State {
 
 /** Governance vote */
 export interface Vote {
-  /** Voter's party identifier */
+  /** Voter's party identifier. */
   partyId: string
-  /** Actual vote */
+  /** Actual vote. */
   value: Vote_Value
-  /** Identifier of the proposal being voted on */
+  /** Identifier of the proposal being voted on. */
   proposalId: string
-  /** Vote timestamp for date and time (in nanoseconds) when vote was submitted to the network */
+  /** Vote timestamp for date and time (in nanoseconds) when vote was submitted to the network. */
   timestamp: number
-  /** Total number of governance token for the party that cast the vote */
+  /** Total number of governance token for the party that cast the vote. */
   totalGovernanceTokenBalance: string
-  /** The weight of this vote based on the total number of governance tokens */
+  /** The weight of this vote based on the total number of governance tokens. */
   totalGovernanceTokenWeight: string
-  /** The weight of the vote compared to the total amount of equity-like share on the market */
+  /** The weight of the vote compared to the total amount of equity-like share on the market. */
   totalEquityLikeShareWeight: string
 }
 

@@ -13,23 +13,23 @@ export const protobufPackage = 'vega'
  *   The auction will take at least N seconds, but can end sooner if the market can trade a certain volume
  */
 export interface AuctionDuration {
-  /** Duration of the auction in seconds */
+  /** Duration of the auction in seconds. */
   duration: number
-  /** Target uncrossing trading volume */
+  /** Target uncrossing trading volume. */
   volume: number
 }
 
 /** Future product definition */
 export interface Future {
-  /** The asset for the future */
+  /** The asset for the future. */
   settlementAsset: string
-  /** Quote name of the instrument */
+  /** Quote name of the instrument. */
   quoteName: string
-  /** The data source specification that describes the settlement data source filter */
+  /** The data source specification that describes the settlement data source filter. */
   dataSourceSpecForSettlementData: DataSourceSpec | undefined
-  /** The data source specification that describes the trading termination data source filter */
+  /** The data source specification that describes the trading termination data source filter. */
   dataSourceSpecForTradingTermination: DataSourceSpec | undefined
-  /** The binding between the data spec and the data source */
+  /** The binding between the data spec and the data source. */
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
 }
 
@@ -45,124 +45,124 @@ export interface DataSourceSpecToFutureBinding {
    * this property as settlement data.
    */
   settlementDataProperty: string
-  /** the name of the property in the data source data that signals termination of trading */
+  /** the name of the property in the data source data that signals termination of trading. */
   tradingTerminationProperty: string
 }
 
 /** Instrument metadata definition */
 export interface InstrumentMetadata {
-  /** A list of 0 or more tags */
+  /** A list of 0 or more tags. */
   tags: string[]
 }
 
 /** Instrument definition */
 export interface Instrument {
-  /** Instrument identifier */
+  /** Instrument identifier. */
   id: string
-  /** Code for the instrument */
+  /** Code for the instrument. */
   code: string
-  /** Name of the instrument */
+  /** Name of the instrument. */
   name: string
-  /** A collection of instrument meta-data */
+  /** A collection of instrument meta-data. */
   metadata: InstrumentMetadata | undefined
-  /** Future */
+  /** Future. */
   future?: Future | undefined
 }
 
 /** Risk model for log normal */
 export interface LogNormalRiskModel {
-  /** Risk Aversion Parameter */
+  /** Risk Aversion Parameter. */
   riskAversionParameter: number
-  /** Tau parameter of the risk model, projection horizon measured as a year fraction used in the expected shortfall calculation to obtain the maintenance margin, must be a strictly non-negative real number */
+  /** Tau parameter of the risk model, projection horizon measured as a year fraction used in the expected shortfall calculation to obtain the maintenance margin, must be a strictly non-negative real number. */
   tau: number
-  /** Risk model parameters for log normal */
+  /** Risk model parameters for log normal. */
   params: LogNormalModelParams | undefined
 }
 
 /** Risk model parameters for log normal */
 export interface LogNormalModelParams {
-  /** Mu parameter, annualised growth rate of the underlying asset */
+  /** Mu parameter, annualised growth rate of the underlying asset. */
   mu: number
-  /** R parameter, annualised growth rate of the risk-free asset, used for discounting of future cash flows, can be any real number */
+  /** R parameter, annualised growth rate of the risk-free asset, used for discounting of future cash flows, can be any real number. */
   r: number
-  /** Sigma parameter, annualised volatility of the underlying asset, must be a strictly non-negative real number */
+  /** Sigma parameter, annualised volatility of the underlying asset, must be a strictly non-negative real number. */
   sigma: number
 }
 
 /** Risk model for simple modelling */
 export interface SimpleRiskModel {
-  /** Risk model params for simple modelling */
+  /** Risk model params for simple modelling. */
   params: SimpleModelParams | undefined
 }
 
 /** Risk model parameters for simple modelling */
 export interface SimpleModelParams {
-  /** Pre-defined risk factor value for long */
+  /** Pre-defined risk factor value for long. */
   factorLong: number
-  /** Pre-defined risk factor value for short */
+  /** Pre-defined risk factor value for short. */
   factorShort: number
-  /** Pre-defined maximum price move up that the model considers as valid */
+  /** Pre-defined maximum price move up that the model considers as valid. */
   maxMoveUp: number
-  /** Pre-defined minimum price move down that the model considers as valid */
+  /** Pre-defined minimum price move down that the model considers as valid. */
   minMoveDown: number
-  /** Pre-defined constant probability of trading */
+  /** Pre-defined constant probability of trading. */
   probabilityOfTrading: number
 }
 
 /** Scaling Factors (for use in margin calculation) */
 export interface ScalingFactors {
-  /** Search level */
+  /** Search level. */
   searchLevel: number
-  /** Initial margin level */
+  /** Initial margin level. */
   initialMargin: number
-  /** Collateral release level */
+  /** Collateral release level. */
   collateralRelease: number
 }
 
 /** Margin Calculator definition */
 export interface MarginCalculator {
-  /** Scaling factors for margin calculation */
+  /** Scaling factors for margin calculation. */
   scalingFactors: ScalingFactors | undefined
 }
 
 /** Tradable Instrument definition */
 export interface TradableInstrument {
-  /** Instrument details */
+  /** Instrument details. */
   instrument: Instrument | undefined
-  /** Margin calculator for the instrument */
+  /** Margin calculator for the instrument. */
   marginCalculator: MarginCalculator | undefined
-  /** Log normal */
+  /** Log normal. */
   logNormalRiskModel?: LogNormalRiskModel | undefined
-  /** Simple */
+  /** Simple. */
   simpleRiskModel?: SimpleRiskModel | undefined
 }
 
 /** Fee factors definition */
 export interface FeeFactors {
-  /** Maker fee */
+  /** Maker fee. */
   makerFee: string
-  /** Infrastructure fee */
+  /** Infrastructure fee. */
   infrastructureFee: string
-  /** Liquidity fee */
+  /** Liquidity fee. */
   liquidityFee: string
 }
 
 /** Fees definition */
 export interface Fees {
-  /** Fee factors */
+  /** Fee factors. */
   factors: FeeFactors | undefined
 }
 
 /** PriceMonitoringTrigger holds together price projection horizon τ, probability level p, and auction extension duration */
 export interface PriceMonitoringTrigger {
-  /** Price monitoring projection horizon τ in seconds */
+  /** Price monitoring projection horizon τ in seconds. */
   horizon: number
-  /** Price monitoring probability level p */
+  /** Price monitoring probability level p. */
   probability: string
   /**
    * Price monitoring auction extension duration in seconds should the price
    * breach its theoretical level over the specified horizon at the specified
-   * probability level
+   * probability level.
    */
   auctionExtension: number
 }
@@ -174,67 +174,67 @@ export interface PriceMonitoringParameters {
 
 /** PriceMonitoringSettings contains the settings for price monitoring */
 export interface PriceMonitoringSettings {
-  /** Specifies price monitoring parameters to be used for price monitoring purposes */
+  /** Specifies price monitoring parameters to be used for price monitoring purposes. */
   parameters: PriceMonitoringParameters | undefined
 }
 
 /** LiquidityMonitoringParameters contains settings used for liquidity monitoring */
 export interface LiquidityMonitoringParameters {
-  /** Specifies parameters related to target stake calculation */
+  /** Specifies parameters related to target stake calculation. */
   targetStakeParameters: TargetStakeParameters | undefined
-  /** Specifies the triggering ratio for entering liquidity auction */
+  /** Specifies the triggering ratio for entering liquidity auction. */
   triggeringRatio: string
-  /** Specifies by how many seconds an auction should be extended if leaving the auction were to trigger a liquidity auction */
+  /** Specifies by how many seconds an auction should be extended if leaving the auction were to trigger a liquidity auction. */
   auctionExtension: number
 }
 
 /** TargetStakeParameters contains parameters used in target stake calculation */
 export interface TargetStakeParameters {
-  /** Specifies length of time window expressed in seconds for target stake calculation */
+  /** Specifies length of time window expressed in seconds for target stake calculation. */
   timeWindow: number
-  /** Specifies scaling factors used in target stake calculation */
+  /** Specifies scaling factors used in target stake calculation. */
   scalingFactor: number
 }
 
 /** Market definition */
 export interface Market {
-  /** Unique identifier */
+  /** Unique identifier. */
   id: string
-  /** Tradable instrument configuration */
+  /** Tradable instrument configuration. */
   tradableInstrument: TradableInstrument | undefined
   /**
    * Number of decimal places that a price must be shifted by in order to get a
    * correct price denominated in the currency of the market, for example:
-   * `realPrice = price / 10^decimalPlaces`
+   * `realPrice = price / 10^decimalPlaces`.
    */
   decimalPlaces: number
-  /** Fees configuration */
+  /** Fees configuration. */
   fees: Fees | undefined
   /**
    * Auction duration specifies how long the opening auction will run (minimum
-   * duration and optionally a minimum traded volume)
+   * duration and optionally a minimum traded volume).
    */
   openingAuction: AuctionDuration | undefined
-  /** PriceMonitoringSettings for the market */
+  /** PriceMonitoringSettings for the market. */
   priceMonitoringSettings: PriceMonitoringSettings | undefined
-  /** LiquidityMonitoringParameters for the market */
+  /** LiquidityMonitoringParameters for the market. */
   liquidityMonitoringParameters: LiquidityMonitoringParameters | undefined
-  /** Current mode of execution of the market */
+  /** Current mode of execution of the market. */
   tradingMode: Market_TradingMode
-  /** Current state of the market */
+  /** Current state of the market. */
   state: Market_State
-  /** Timestamps for when the market state changes */
+  /** Timestamps for when the market state changes. */
   marketTimestamps: MarketTimestamps | undefined
-  /** The number of decimal places for a position */
+  /** The number of decimal places for a position. */
   positionDecimalPlaces: number
   /**
    * Percentage move up and down from the mid price which specifies the range of
-   * price levels over which automated liquidity provision orders will be deployed
+   * price levels over which automated liquidity provision orders will be deployed.
    */
   lpPriceRange: string
-  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume */
+  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
-  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume */
+  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
 }
 
@@ -288,12 +288,12 @@ export enum Market_TradingMode {
 
 /** Time stamps for important times about creating, enacting etc the market */
 export interface MarketTimestamps {
-  /** Time when the market is first proposed */
+  /** Time when the market is first proposed. */
   proposed: number
-  /** Time when the market has been voted in and began its opening auction */
+  /** Time when the market has been voted in and began its opening auction. */
   pending: number
-  /** Time when the market has left the opening auction and is ready to accept trades */
+  /** Time when the market has left the opening auction and is ready to accept trades. */
   open: number
-  /** Time when the market closed */
+  /** Time when the market closed. */
   close: number
 }

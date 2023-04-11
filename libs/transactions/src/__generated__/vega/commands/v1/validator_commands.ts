@@ -32,55 +32,57 @@ export enum NodeSignatureKind {
  * or ready to validate blocks when they are still a pending validator
  */
 export interface ValidatorHeartbeat {
-  /** the id of the node emitting the heartbeat */
+  /** the id of the node emitting the heartbeat. */
   nodeId: string
-  /** Signature from the validator made using the ethereum wallet */
+  /** Signature from the validator made using the ethereum wallet. */
   ethereumSignature: Signature | undefined
-  /** Signature from the validator made using the vega wallet */
+  /** Signature from the validator made using the vega wallet. */
   vegaSignature: Signature | undefined
+  /** Message which has been signed. */
+  message: string
 }
 
 /** Used to announce a node as a new pending validator */
 export interface AnnounceNode {
-  /** Vega public key, required field */
+  /** Vega public key, required field. */
   vegaPubKey: string
-  /** Ethereum public key, required field */
+  /** Ethereum public key, required field. */
   ethereumAddress: string
-  /** Public key for the blockchain, required field */
+  /** Public key for the blockchain, required field. */
   chainPubKey: string
-  /** URL with more info on the node */
+  /** URL with more info on the node. */
   infoUrl: string
-  /** Country code (ISO 3166-1 alpha-2) for the location of the node */
+  /** Country code (ISO 3166-1 alpha-2) for the location of the node. */
   country: string
-  /** ID of the validator, (public master key) */
+  /** ID of the validator, (public master key). */
   id: string
-  /** Name of the validator */
+  /** Name of the validator. */
   name: string
-  /** AvatarURL of the validator */
+  /** AvatarURL of the validator. */
   avatarUrl: string
-  /** Vega public key derivation index */
+  /** Vega public key derivation index. */
   vegaPubKeyIndex: number
   /**
    * The epoch from which the validator is expected
-   * to be ready to validate blocks
+   * to be ready to validate blocks.
    */
   fromEpoch: number
-  /** Signature from the validator made using the ethereum wallet */
+  /** Signature from the validator made using the ethereum wallet. */
   ethereumSignature: Signature | undefined
-  /** Signature from the validator made using the Vega wallet */
+  /** Signature from the validator made using the Vega wallet. */
   vegaSignature: Signature | undefined
-  /** Ethereum public key to use as a submitter to allow automatic signature generation */
+  /** Ethereum public key to use as a submitter to allow automatic signature generation. */
   submitterAddress: string
 }
 
 /**
  * Used when a node votes for validating that a given resource exists or is valid,
- * for example, an ERC20 deposit is valid and exists on ethereum
+ * for example, an ERC20 deposit is valid and exists on ethereum.
  */
 export interface NodeVote {
-  /** Reference, required field */
+  /** Reference, required field. */
   reference: string
-  /** type of NodeVote, also required */
+  /** type of NodeVote, also required. */
   type: NodeVote_Type
 }
 
@@ -116,66 +118,66 @@ export enum NodeVote_Type {
 
 /** Represents a signature from a validator, to be used by a foreign chain in order to recognise a decision taken by the Vega network */
 export interface NodeSignature {
-  /** The identifier of the resource being signed */
+  /** The identifier of the resource being signed. */
   id: string
-  /** The signature */
+  /** The signature. */
   sig: Uint8Array
-  /** The kind of resource being signed */
+  /** The kind of resource being signed. */
   kind: NodeSignatureKind
 }
 
 /** An event forwarded to the Vega network to provide information on events happening on other networks */
 export interface ChainEvent {
-  /** The identifier of the transaction in which the events happened, usually a hash */
+  /** The identifier of the transaction in which the events happened, usually a hash. */
   txId: string
-  /** Arbitrary one-time integer used to prevent replay attacks */
+  /** Arbitrary one-time integer used to prevent replay attacks. */
   nonce: number
-  /** Built-in asset event */
+  /** Built-in asset event. */
   builtin?: BuiltinAssetEvent | undefined
-  /** Ethereum ERC20 event */
+  /** Ethereum ERC20 event. */
   erc20?: ERC20Event | undefined
-  /** Ethereum Staking event */
+  /** Ethereum Staking event. */
   stakingEvent?: StakingEvent | undefined
-  /** Ethereum ERC20 multisig event */
+  /** Ethereum ERC20 multisig event. */
   erc20Multisig?: ERC20MultiSigEvent | undefined
 }
 
 /** A transaction to allow a validator to rotate their Vega keys */
 export interface KeyRotateSubmission {
-  /** New Vega public key derivation index */
+  /** New Vega public key derivation index. */
   newPubKeyIndex: number
-  /** Target block at which the key rotation will take effect on */
+  /** Target block at which the key rotation will take effect on. */
   targetBlock: number
-  /** The new public key to rotate to */
+  /** The new public key to rotate to. */
   newPubKey: string
-  /** Hash of currently used public key */
+  /** Hash of currently used public key. */
   currentPubKeyHash: string
 }
 
 /** A transaction to allow a validator to rotate their ethereum keys */
 export interface EthereumKeyRotateSubmission {
-  /** Target block at which the key rotation will take effect on */
+  /** Target block at which the key rotation will take effect on. */
   targetBlock: number
-  /** The new address to rotate to */
+  /** The new address to rotate to. */
   newAddress: string
-  /** Currently used public address */
+  /** Currently used public address. */
   currentAddress: string
-  /** Ethereum public key to use as a submitter to allow automatic signature generation */
+  /** Ethereum public key to use as a submitter to allow automatic signature generation. */
   submitterAddress: string
-  /** Signature that can be verified using the new ethereum address */
+  /** Signature that can be verified using the new ethereum address. */
   ethereumSignature: Signature | undefined
 }
 
 /** A transaction for a validator to submit a floating point value */
 export interface StateVariableProposal {
-  /** The state value proposal details */
+  /** The state value proposal details. */
   proposal: StateValueProposal | undefined
 }
 
 /** A transaction for a validator to suggest a protocol upgrade */
 export interface ProtocolUpgradeProposal {
-  /** The block height at which to perform the upgrade */
+  /** The block height at which to perform the upgrade. */
   upgradeBlockHeight: number
-  /** the release tag for the Vega binary */
+  /** the release tag for the Vega binary. */
   vegaReleaseTag: string
 }
