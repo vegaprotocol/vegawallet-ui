@@ -32,9 +32,9 @@ jobs:
         run: yarn e2e:percy --record
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-      # always() set for testing now
+
       - name: Upload test report artifact in case of failure
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: test-results
