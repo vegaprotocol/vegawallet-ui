@@ -33,6 +33,14 @@ jobs:
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 
+      - name: Show test summary
+        if: success() || failure()
+        uses: dorny/test-reporter@v1
+        with:
+          name: UI Tests
+          path: apps/wallet-mock/test-results/junit-report/report.xml
+          reporter: jest-junit
+
       - name: Upload test report artifact in case of failure
         if: failure()
         uses: actions/upload-artifact@v3
