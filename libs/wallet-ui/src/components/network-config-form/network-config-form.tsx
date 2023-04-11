@@ -215,7 +215,7 @@ function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
     // @ts-ignore any resulting from generated types
     graphqlHosts: config.api.graphQL?.hosts.map((x) => ({ value: x })) || [],
     // @ts-ignore any resulting from generated types
-    restHosts: config.api.restConfig?.hosts.map((x) => ({ value: x })) || [],
+    restHosts: config.api.rest?.hosts.map((x) => ({ value: x })) || [],
     consoleUrl: config.apps.console,
     explorerUrl: config.apps.explorer,
     governanceUrl: config.apps.governance,
