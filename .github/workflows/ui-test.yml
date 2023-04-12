@@ -39,7 +39,7 @@ jobs:
         with:
           name: UI Tests
           path: apps/wallet-mock/test-results/junit-report/report.xml
-          reporter: jest-junit
+          reporter: java-junit
 
       - name: Upload test report artifact in case of failure
         if: failure()

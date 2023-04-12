@@ -68,7 +68,7 @@ test.describe('Transaction review modal -- Approve + Success', () => {
   })
 
   test('should see wallet header', async () => {
-    await expect(page.getByTestId('wallet-key')).toHaveText('Wallet')
+    await expect(page.getByTestId('wallet-key')).toHaveText('FAILURE')
   })
 
   test('should see wallet value', async () => {
