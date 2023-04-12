@@ -11,7 +11,7 @@
     "build:all": "nx run-many --all --target=build",
     "lint:all": "nx run-many --all --target=lint",
     "e2e": "nx run wallet-mock:e2e",
-    "e2e:open": "yarn e2e --headed",
+    "e2e:open": "yarn e2e --ui",
     "e2e:percy": "percy exec -- yarn e2e"
   },
   "engines": {
@@ -68,7 +68,6 @@
   "devDependencies": {
     "@commitlint/cli": "17.2.0",
     "@commitlint/config-conventional": "17.2.0",
-    "@mands/nx-playwright": "^0.2.3",
     "@nrwl/cli": "15.6.3",
     "@nrwl/devkit": "15.6.3",
     "@nrwl/esbuild": "15.1.1",

@@ -5,10 +5,9 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@mands/nx-playwright:playwright-executor",
+      "executor": "nx:run-commands",
       "options": {
-        "e2eFolder": "apps/wallet-mock",
-        "packageRunner": "yarn"
+        "command": "yarn playwright test -c apps/wallet-mock/playwright.config.ts"
       }
     },
     "lint": {
