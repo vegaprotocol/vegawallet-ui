@@ -48,7 +48,7 @@ export function AppLoader({ children }: { children?: ReactNode }) {
   return <ServiceLoader>{children}</ServiceLoader>
 }
 
-export const APP_FRAME_HEIGHT = 20
+export const APP_FRAME_HEIGHT = 36
 interface AppFrameProps {
   children: ReactNode
 }

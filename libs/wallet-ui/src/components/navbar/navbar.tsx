@@ -60,7 +60,7 @@ export const NavButton = ({
   )
 }
 
-export const NAVBAR_HEIGHT = 80
+export const NAVBAR_HEIGHT = 88
 
 export const NavBar = ({ isFairground }: { isFairground: boolean }) => {
   return (
