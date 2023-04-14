@@ -3,12 +3,12 @@ import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
-import { useGlobal } from '../contexts/global/global-context'
+import { AppStatus, useGlobal } from '../contexts/global/global-context'
 import { useVegaHome } from './use-vega-home'
 
 export function useCreateWallet() {
   const vegaHome = useVegaHome()
-  const { service, client, dispatch, actions } = useGlobal()
+  const { service, client, dispatch, actions, state } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseCreateWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.CreateWalletResult | null>(null)
@@ -35,7 +35,7 @@ export function useCreateWallet() {
             passphrase: values.passphrase,
             publicKey: resp.key.publicKey,
           })
-          if (!isInitialised) {
+          if (state.status === AppStatus.Onboarding) {
             dispatch(actions.completeOnboardAction(() => undefined))
           }
 
@@ -60,7 +60,7 @@ export function useCreateWallet() {
         logger.error(err)
       }
     },
-    [logger, service, client, vegaHome, dispatch, actions]
+    [logger, service, client, vegaHome, state.status, dispatch, actions]
   )
 
   return {
