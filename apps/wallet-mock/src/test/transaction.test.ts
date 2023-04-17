@@ -247,10 +247,6 @@ test.describe('Transaction review modal -- Reject', () => {
 
   test('should show home page', async () => {
     await page.getByTestId('transaction-reject-button').click()
-    await sendBackendInteraction(page, 'LOG', {
-      type: 'Info',
-      message: 'Info',
-    })
     await endInteractionSession(page)
     await expect(page.getByTestId('wallet-home')).toBeVisible()
     await percySnapshot(page, 'interaction_transaction_rejected')
@@ -260,3 +256,81 @@ test.describe('Transaction review modal -- Reject', () => {
     await page.close()
   })
 })
+
+test.describe('Transaction history tests', () => {
+  let page: Page
+  test.beforeEach(async ({ browser }) => {
+    page = await browser.newPage()
+    await mock(page)
+    await page.goto('/')
+    await beginInteractionSession(page, 'TRANSACTION_REVIEW')
+    await sendBackendInteraction(
+      page,
+      'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+      data
+    )
+  })
+
+  test.afterEach(async () => {
+    await page.close()
+  })
+
+  test.fixme('should list rejected transactions', async () => {
+    //This test will fail until https://github.com/vegaprotocol/vegawallet-ui/issues/162 is fixed
+    // 0001-WALL-037 - I can see transactions that were rejected by the wallet user (me)
+    await page.getByTestId('transaction-reject-button').click()
+    await goToTransactionsAndCheckStatusAndCount(page, 'Rejected', 1)
+  })
+
+  test('should list successful transactions', async () => {
+    // 0001-WALL-034 - I can see a history of transactions the wallet has signed. As read from the local app
+    await page.getByTestId('transaction-approve-button').click()
+    await sendSuccessBackendInteractions(page)
+    await page.getByTestId('transaction-close').click()
+    await goToTransactionsAndCheckStatusAndCount(page, 'Successful', 1)
+  })
+
+  test.fixme('should list multiple transactions', async () => {
+    await page.getByTestId('transaction-approve-button').click()
+    await sendSuccessBackendInteractions(page)
+    await page.getByTestId('transaction-close').click()
+
+    await sendBackendInteraction(
+      page,
+      'REQUEST_TRANSACTION_REVIEW_FOR_SENDING',
+      data
+    )
+    await page.getByTestId('transaction-approve-button').click()
+    await sendSuccessBackendInteractions(page)
+    await page.getByTestId('transaction-close').click()
+    await goToTransactionsAndCheckStatusAndCount(page, 'Successful', 2)
+  })
+})
+
+async function sendSuccessBackendInteractions(page: Page) {
+  await sendBackendInteraction(page, 'LOG', {
+    type: 'Success',
+    message: 'Success',
+  })
+  await sendBackendInteraction(page, 'TRANSACTION_SUCCEEDED', {
+    txHash: 'a3aac02a3f7788a7261512530a5b6ca22cbd81313081df93f3d44f3aa526445d',
+    transaction:
+      'CnwI2dvuvK2c1rXlARCU2QfKPmoKQDEwYzdkNDBhZmQ5MTBlZWFjMGMyY2FkMTg2ZDc5Y2IxOTQwOTBkNWQ1ZjEzYmQzMWUxNGM0OWZkMWJkZWQ3ZTISATAYQCACKAIwnum7lPmlt6YXOAFCCXRyYWRlcmJvdEoGCAMSAjE1EpMBCoABNThiYmFlOWY0MzI5OTUzYmJlNTVmNWY3OWMxOWFjN2QwZmY1MzE4ZGM4ODUwMjI3NDMwYWE5MTg4NDZjMjhlNjg5YzZkNzc0ZmU2MThmODczMjdlYTljMjE0MDQxOWFjY2UwYjI4ZmIzNTU5MzdhNTUxNWJlZThmMDNhYjU5MDUSDHZlZ2EvZWQyNTUxORgBgH0DwrsBRgpAMDFEQkY0RDMyQzRDNzlBN0NEMzUxNzg1MzQ1MDE1OEY1RjdFRUM4MDAzREFCNDEyNEVBNUY0RjlEMUUxMzlBMhCmuQLSPkBlOGYwYWVkZGM0MDU2OGM4OTQxOTE1NjI2ODY3MGNkODA3MzhiYWUzNWE0ZjJmMDQ0YzNjNTI4OTc4Y2E2NzNj',
+    deserializedInputData: JSON.stringify(transaction),
+    sentAt: new Date().toISOString(),
+  })
+}
+
+async function goToTransactionsAndCheckStatusAndCount(
+  page: Page,
+  expectedStatus: string,
+  expectedCount: number
+) {
+  await page.click('text=Transactions')
+  expect(await page.getByTestId('transaction-status').count()).toBe(
+    expectedCount
+  )
+  expect(await page.getByTestId('transaction-status').textContent()).toBe(
+    expectedStatus
+  )
+}
