@@ -1,6 +1,5 @@
 import { useCallback, useState, useMemo } from 'react'
 
-import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import type { GlobalActions } from '../contexts/global/global-actions'
@@ -30,17 +29,14 @@ export const useKeypairUpdate = (
           return
         }
 
-        const passphrase = await requestPassphrase()
         await client.AnnotateKey({
           wallet,
-          passphrase,
           publicKey: pubKey,
           metadata,
         })
 
         const keypair = await client.DescribeKey({
           wallet,
-          passphrase,
           publicKey: pubKey,
         })
 

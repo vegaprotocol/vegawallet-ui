@@ -8,7 +8,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
-import { requestPassphrase } from '../passphrase-modal'
 import { AppToaster } from '../toaster'
 import { PermissionSection } from './connection-manage-section'
 
@@ -131,11 +130,9 @@ export const ManagePermissions = ({
     async (formData: NormalizedPermissionMap) => {
       try {
         const permissions = compileSubmissionData(formData)
-        const passphrase = await requestPassphrase()
 
         const { permissions: result } = await client.UpdatePermissions({
           wallet: wallet.name,
-          passphrase,
           hostname,
           permissions,
         })

@@ -39,7 +39,6 @@ export function useImportWallet() {
 
           const keypair = await client.DescribeKey({
             wallet: values.wallet,
-            passphrase: values.passphrase,
             publicKey: resp.key.publicKey,
           })
 

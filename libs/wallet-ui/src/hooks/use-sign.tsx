@@ -1,6 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
 
-import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { useGlobal } from '../contexts/global/global-context'
@@ -16,10 +15,8 @@ export const useSign = (pubKey?: string, wallet?: string) => {
           return
         }
 
-        const passphrase = await requestPassphrase()
         const resp = await client.SignMessage({
           wallet,
-          passphrase,
           pubKey,
           encodedMessage: btoa(values.message),
         })

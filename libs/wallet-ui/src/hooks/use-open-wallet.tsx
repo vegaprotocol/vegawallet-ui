@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import type { Connection } from '../contexts/global/global-context'
@@ -13,13 +12,13 @@ export const useOpenWallet = () => {
   const { dispatch, client, state } = useGlobal()
 
   const getWalletData = useCallback(
-    async (wallet: string, passphrase: string) => {
+    async (wallet: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_w, { keys = [] }, { permissions }, { activeConnections }] =
         await Promise.all([
-          client.DescribeWallet({ wallet, passphrase }),
-          client.ListKeys({ wallet, passphrase }),
-          client.ListPermissions({ wallet, passphrase }),
+          client.DescribeWallet({ wallet }),
+          client.ListKeys({ wallet }),
+          client.ListPermissions({ wallet }),
           client.ListConnections({}),
         ])
 
@@ -27,7 +26,6 @@ export const useOpenWallet = () => {
         keys.map((key) =>
           client.DescribeKey({
             wallet,
-            passphrase,
             publicKey: key.publicKey ?? '',
           })
         )
@@ -47,7 +45,6 @@ export const useOpenWallet = () => {
         Object.keys(permissions).map(async (hostname) => {
           const result = await client.DescribePermissions({
             wallet,
-            passphrase,
             hostname,
           })
           return {
@@ -92,10 +89,8 @@ export const useOpenWallet = () => {
         return
       }
 
-      const passphrase = await requestPassphrase()
-
       try {
-        await getWalletData(wallet, passphrase)
+        await getWalletData(wallet)
         navigate(`/wallet/${encodeURIComponent(wallet)}`)
       } catch (err) {
         AppToaster.show({

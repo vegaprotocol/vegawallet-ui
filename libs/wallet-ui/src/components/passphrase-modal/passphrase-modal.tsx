@@ -117,15 +117,3 @@ function PassphraseModalForm({
     </form>
   )
 }
-
-export function requestPassphrase(): Promise<string> {
-  return new Promise((resolve, reject) => {
-    handler.open()
-    handler.resolve = (passphrase: string) => {
-      resolve(passphrase)
-    }
-    handler.close = () => {
-      reject('dismissed')
-    }
-  })
-}

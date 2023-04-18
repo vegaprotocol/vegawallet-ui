@@ -55,11 +55,11 @@ export function NetworkInfo({ network }: NetworkInfoProps) {
         </>
       )}
       <Title>gRPC Nodes</Title>
-      <NodeList items={config.api?.grpcConfig?.hosts ?? []} />
+      <NodeList items={config.api?.grpc?.hosts ?? []} />
       <Title>GraphQL Nodes</Title>
-      <NodeList items={config.api?.graphQLConfig?.hosts ?? []} />
+      <NodeList items={config.api?.graphQL?.hosts ?? []} />
       <Title>REST Nodes</Title>
-      <NodeList items={config.api?.restConfig?.hosts ?? []} />
+      <NodeList items={config.api?.rest?.hosts ?? []} />
     </>
   )
 }
