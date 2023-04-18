@@ -16,23 +16,23 @@ export interface PubKey {
 
 export interface Signer {
   /**
-   * pubKeys is the list of authorized public keys that signed the data for this
+   * List of authorized public keys that signed the data for this
    * source. All the public keys in the data should be contained in these
    * public keys.
    */
   pubKey?: PubKey | undefined
-  /** in case of an open oracle - Ethereum address will be submitted */
+  /** In case of an open oracle - Ethereum address will be submitted */
   ethAddress?: ETHAddress | undefined
 }
 
 /** Property describes one property of data spec with a key with its value. */
 export interface Property {
-  /** name is the name of the property. */
+  /** Name of the property. */
   name: string
-  /** value is the value of the property. */
+  /** Value of the property. */
   value: string
   /**
-   * An optional decimal place to be be applied on the provided value
+   * Optional decimal place to be be applied on the provided value
    * valid only for PropertyType of type DECIMAL and INTEGER
    */
   numberDecimalPlaces?: number | undefined
@@ -44,7 +44,7 @@ export interface Property {
  */
 export interface Data {
   signers: Signer[]
-  /** data holds all the properties of the data */
+  /** Data holds all the properties of the data */
   data: Property[]
   /**
    * matched_specs_ids lists all the specs that matched this data.

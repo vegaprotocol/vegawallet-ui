@@ -42,38 +42,38 @@ export interface DataSourceDefinitionExternal {
  */
 export interface DataSourceSpecConfiguration {
   /**
-   * signers is the list of authorized signatures that signed the data for this
+   * Signers is the list of authorized signatures that signed the data for this
    * source. All the signatures in the data source data should be contained in this
    * external source. All the signatures in the data should be contained in this list.
    */
   signers: Signer[]
   /**
-   * filters describes which source data are considered of interest or not for
+   * Filters describes which source data are considered of interest or not for
    * the product (or the risk model).
    */
   filters: Filter[]
 }
 
 /**
- * A data source spec describes the data source base that a product (or a risk model)
+ * Data source spec describes the data source base that a product or a risk model
  * wants to get from the data source engine.
  * This message contains additional information used by the API.
  */
 export interface DataSourceSpec {
-  /** id is a hash generated from the DataSpec data. */
+  /** Hash generated from the DataSpec data. */
   id: string
-  /** Creation Date time */
+  /** Creation date and time */
   createdAt: number
   /** Last Updated timestamp */
   updatedAt: number
   data: DataSourceDefinition | undefined
-  /** status describes the status of the data source spec */
+  /** Status describes the status of the data source spec */
   status: DataSourceSpec_Status
 }
 
 /** Status describe the status of the data source spec */
 export enum DataSourceSpec_Status {
-  /** STATUS_UNSPECIFIED - The default value. */
+  /** STATUS_UNSPECIFIED - Default value. */
   STATUS_UNSPECIFIED = 0,
   /** STATUS_ACTIVE - STATUS_ACTIVE describes an active data source spec. */
   STATUS_ACTIVE = 1,

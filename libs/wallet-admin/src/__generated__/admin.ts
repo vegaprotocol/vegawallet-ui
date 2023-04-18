@@ -10,6 +10,18 @@ export class WalletAdmin {
   }
 
   /**
+   * Unlock the wallet to allow other methods to access it.
+   */
+
+  // tslint:disable-next-line:max-line-length
+  public UnlockWallet = (params: WalletModel.UnlockWalletParams) => {
+    return this.request({
+      method: Identifier.UnlockWallet,
+      params,
+    })
+  }
+
+  /**
    * Creates a wallet with its first key-pair.
    */
 

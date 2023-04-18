@@ -3,6 +3,10 @@ import type { WalletModel, WalletAPIRequest } from './'
 import { Identifier } from './'
 
 export function MockAPIRequest(req: {
+  method: Identifier.UnlockWallet
+  params: WalletModel.UnlockWalletParams
+}): Promise<WalletModel.UnlockWalletResult>
+export function MockAPIRequest(req: {
   method: Identifier.CreateWallet
   params: WalletModel.CreateWalletParams
 }): Promise<WalletModel.CreateWalletResult>
@@ -156,6 +160,9 @@ export function MockAPIRequest(req: {
 }): Promise<WalletModel.CloseConnectionsToWalletResult>
 export function MockAPIRequest({ method }: WalletAPIRequest) {
   switch (method) {
+    case Identifier.UnlockWallet: {
+      return Promise.resolve<WalletModel.UnlockWalletResult>(null)
+    }
     case Identifier.CreateWallet: {
       return Promise.resolve<WalletModel.CreateWalletResult>({
         wallet: {
@@ -261,14 +268,14 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
           },
         ],
         api: {
-          grpcConfig: {
+          grpc: {
             hosts: ['localhost:3028'],
             retries: 5,
           },
-          graphQLConfig: {
+          graphQL: {
             hosts: ['localhost:3028'],
           },
-          restConfig: {
+          rest: {
             hosts: ['localhost:3029'],
           },
         },
