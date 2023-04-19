@@ -19,7 +19,7 @@ export enum ServiceMock {
   EventsOn = 'service.EventsOn',
   GetAppConfig = 'service.GetAppConfig',
   GetCurrentServiceInfo = 'service.GetCurrentServiceInfo',
-  GetLatestRelease = 'service.service.GetLatestRelease',
+  GetLatestRelease = 'service.GetLatestRelease',
   GetLogger = 'service.GetLogger',
   GetVersion = 'service.GetVersion',
   InitialiseApp = 'service.InitialiseApp',

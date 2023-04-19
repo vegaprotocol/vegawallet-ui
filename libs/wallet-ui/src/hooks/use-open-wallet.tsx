@@ -6,6 +6,7 @@ import { Intent } from '../config/intent'
 import type { Connection } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
 import { indexBy } from '../lib/index-by'
+import { requestPassphrase } from '../components/passphrase-modal'
 
 export const useOpenWallet = () => {
   const navigate = useNavigate()
@@ -13,6 +14,15 @@ export const useOpenWallet = () => {
 
   const getWalletData = useCallback(
     async (wallet: string) => {
+      if (!state.wallets[wallet]?.auth) {
+        const passphrase = await requestPassphrase()
+
+        await client.UnlockWallet({
+          wallet,
+          passphrase,
+        })
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_w, { keys = [] }, { permissions }, { activeConnections }] =
         await Promise.all([
@@ -73,7 +83,7 @@ export const useOpenWallet = () => {
         wallet,
       })
     },
-    [client, dispatch]
+    [client, state.wallets, dispatch]
   )
 
   const open = useCallback(
