@@ -1,29 +1,31 @@
 import type { ReactNode } from 'react'
+import { ListItem } from './list-item'
 
 export function List<T>({
   items,
   empty,
   idProp,
   renderItem,
+  clickable = false,
 }: {
   items: T[]
   empty?: ReactNode
   idProp: keyof T
   renderItem: (item: T) => ReactNode
+  clickable?: boolean
 }) {
   if (!items.length) {
     return <>{empty}</>
   }
   return (
-    <ul data-testid="list" className="pt-4">
+    <ul data-testid="list">
       {items.map((item) => (
-        <li
-          data-testid="list-item"
-          className="border-b border-1 border-dark-200 py-4"
-          key={(item[idProp] as string | number).toString()}
-        >
-          {renderItem(item)}
-        </li>
+        <ListItem
+          clickable={clickable}
+          key={item[idProp]?.toString()}
+          item={item}
+          renderItem={renderItem}
+        />
       ))}
     </ul>
   )

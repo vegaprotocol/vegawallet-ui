@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
-import { mock } from '../support/mock'
 import percySnapshot from '@percy/playwright'
 
 const wallet = 'wallet-1'
@@ -21,9 +20,12 @@ test.describe('Dapp remove connection validations', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
     await page.goto('/')
     await removeWalletConnection(page)
+  })
+
+  test.afterAll(async () => {
+    await page.close()
   })
 
   test('should see remove connection modal', async () => {
@@ -65,37 +67,37 @@ test.describe('Dapp remove connection validations', () => {
 
 test.describe('Dapp remove connection actions', () => {
   //  0001-WALL-023 #MOCK - must be able to retrospectively revoke Dapp's access to a Wallet
-  let page: Page
-  test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage()
-    await mock(page)
+  test.beforeEach(async ({ page }) => {
     await page.goto('/')
     await removeWalletConnection(page)
   })
 
-  test('should close remove connection modal', async () => {
+  test('should close remove connection modal', async ({ page }) => {
     await page.getByTestId('remove-connection-cancel-button').click()
     await expect(page.getByTestId('remove-connection-modal')).toBeHidden()
   })
 
-  test('should show error when passphrase is empty', async () => {
+  test('should show error when passphrase is empty', async ({ page }) => {
     await page.getByTestId('remove-connection-remove-button').click()
     await page.getByTestId('input-submit').click()
     await expect(page.getByTestId('helper-text')).toBeVisible()
     await expect(page.getByTestId('helper-text')).toHaveText('Required')
   })
 
-  test.fixme('should show error when passphrase is invalid', async () => {
-    await page.getByTestId('remove-connection-remove-button').click()
-    await page.getByTestId('input-passphrase').fill('1234')
-    await page.getByTestId('input-submit').click()
-    await expect(page.getByTestId('helper-text')).toBeVisible()
-    await expect(page.getByTestId('helper-text')).toHaveText(
-      'Invalid passphrase'
-    )
-  })
+  test.fixme(
+    'should show error when passphrase is invalid',
+    async ({ page }) => {
+      await page.getByTestId('remove-connection-remove-button').click()
+      await page.getByTestId('input-passphrase').fill('1234')
+      await page.getByTestId('input-submit').click()
+      await expect(page.getByTestId('helper-text')).toBeVisible()
+      await expect(page.getByTestId('helper-text')).toHaveText(
+        'Invalid passphrase'
+      )
+    }
+  )
 
-  test('should remove connection', async () => {
+  test('should remove connection', async ({ page }) => {
     await page.getByTestId('remove-connection-remove-button').click()
     await page.getByTestId('input-passphrase').fill('123')
     await page.getByTestId('input-submit').click()

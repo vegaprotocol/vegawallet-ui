@@ -8,6 +8,7 @@ import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
+import { useIsFairground } from './hooks/use-is-fairground'
 import type { Logger } from './types/logger'
 
 /**
@@ -20,11 +21,12 @@ export function AppLoader({ children }: { children?: ReactNode }) {
     actions,
     dispatch,
   } = useGlobal()
+  const isFairground = useIsFairground()
 
   // Get wallets, service state and version
   useEffect(() => {
-    dispatch(actions.initAppAction())
-  }, [dispatch, actions])
+    dispatch(actions.initAppAction(isFairground))
+  }, [dispatch, actions, isFairground])
 
   if (status === AppStatus.Pending) {
     return (
@@ -46,7 +48,7 @@ export function AppLoader({ children }: { children?: ReactNode }) {
   return <ServiceLoader>{children}</ServiceLoader>
 }
 
-export const APP_FRAME_HEIGHT = 35
+export const APP_FRAME_HEIGHT = 36
 interface AppFrameProps {
   children: ReactNode
 }
@@ -57,12 +59,13 @@ interface AppFrameProps {
  */
 export function AppFrame({ children }: AppFrameProps) {
   const { state } = useGlobal()
+  const isFairground = useIsFairground()
   const useVegaBg = state.status === AppStatus.Onboarding
   return (
     <div
       data-testid="app-frame"
       className={classnames(
-        'h-full bg-cover relative overflow-y-auto',
+        'h-full bg-cover relative overflow-y-hidden',
         `pt-9`,
         {
           'vega-bg': useVegaBg,
@@ -83,7 +86,21 @@ export function AppFrame({ children }: AppFrameProps) {
           // @ts-ignore: Allow custom css property for wails
           '--wails-draggable': 'drag',
         }}
-      />
+      >
+        <div className="pt-2 flex justify-center">
+          {state.version?.version && (
+            <>
+              <span className="text-white">
+                {isFairground ? 'Fairground wallet' : 'Vega Wallet'}
+              </span>
+              &nbsp;
+              <span className="text-dark-300">
+                {state.version.version.replace('v', '')}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
       {children}
     </div>
   )

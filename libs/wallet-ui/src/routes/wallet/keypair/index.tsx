@@ -10,7 +10,7 @@ export function WalletKeyPair() {
   const { keypair } = useCurrentKeypair()
 
   if (!keypair) {
-    return <Navigate to={Paths.Wallet} />
+    return <Navigate to={Paths.Wallet.Home} />
   }
 
   return (

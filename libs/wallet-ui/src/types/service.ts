@@ -52,6 +52,17 @@ export type AppConfig = {
   telemetry: TelemetryConfig
 }
 
+export type ServiceConfig = {
+  logLevel: string
+  server: {
+    port: number
+    host: string
+  }
+  apiV1: {
+    maximumTokenDuration: number
+  }
+}
+
 type Empty = void | undefined | Error
 
 export type EventType =
@@ -96,11 +107,14 @@ export type Service = {
   GetAppConfig: () => Promise<AppConfig>
   SearchForExistingConfiguration: () => Promise<SearchForExistingConfigurationResponse>
   UpdateAppConfig: (arg: AppConfig) => Promise<Empty>
+  GetServiceConfig: () => Promise<ServiceConfig>
+  UpdateServiceConfig: (arg: ServiceConfig) => Promise<Empty>
 
   // Initialization
   StartupBackend: () => Promise<Empty>
   InitialiseApp: (arg: InitialiseAppArg) => Promise<Empty>
   IsAppInitialised: () => Promise<boolean>
+  SuggestFairgroundFolder: () => Promise<string>
 
   // Telemetry
   EnableTelemetry: () => Promise<Empty>

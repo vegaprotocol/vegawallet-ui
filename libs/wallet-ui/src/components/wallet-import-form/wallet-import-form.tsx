@@ -43,7 +43,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
   }, [setFocus])
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
+    <form data-testid="import-wallet-form" onSubmit={handleSubmit(submit)}>
       <FormGroup
         label="Name"
         labelFor="wallet"

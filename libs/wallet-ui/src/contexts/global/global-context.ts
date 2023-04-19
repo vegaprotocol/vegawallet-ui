@@ -7,6 +7,7 @@ import type {
   Service,
   GetVersionResponse,
   AppConfig,
+  ServiceConfig,
 } from '../../types/service'
 import type { Runtime } from '../../types/runtime'
 import type { Features } from '../../types/features'
@@ -78,6 +79,7 @@ export interface GlobalState {
   initError: string | null
   version: GetVersionResponse | null
   config: AppConfig | null
+  serviceConfig: ServiceConfig | null
 
   // Wallet
   wallet: string | null
@@ -102,7 +104,6 @@ export interface GlobalState {
   isSignMessageModalOpen: boolean
   isTaintKeyModalOpen: boolean
   isUpdateKeyModalOpen: boolean
-  isSettingsModalOpen: boolean
   isNetworkCompatibilityModalOpen: boolean
   showTransactionDetails: null | string
 }

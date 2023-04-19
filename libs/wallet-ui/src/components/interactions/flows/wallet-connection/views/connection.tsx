@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { Title } from '../../../../title'
-import { Button } from '../../../../button'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { ButtonGroup } from '../../../../button-group'
 import { Tick } from '../../../../icons/tick'
 import { useGlobal } from '../../../../../contexts/global/global-context'
 import { CONNECTION_RESPONSE } from '../../../../../types/interaction'
 
 import type { WalletConnectionProps } from '../'
+import { Frame } from '../../../../../components/frame'
+import { InteractionHeader } from '../../interaction-header'
 
 export const ConnectionView = ({
   data,
@@ -45,28 +46,29 @@ export const ConnectionView = ({
 
   return (
     <div data-testid="dapp-connect-modal">
-      <div className="text-center mt-[100px] mb-[32px]">
-        <Title className="mb-[5px]">Connect to website</Title>
-        <p data-testid="dapp-connect-hostname" className="text-neutral-light">
-          {data.hostname}
+      <InteractionHeader hostname={data.hostname} />
+      <Frame>
+        <p className="mb-3" data-testid="dapp-connect-access-list-title">
+          Allow this site to:
         </p>
-      </div>
-      <div
-        data-testid="dapp-connect-access-list"
-        className="border border-neutral rounded p-[10px] mb-[20px]"
-      >
-        <p className="mb-[5px]">Allow this site to:</p>
         <ul className="list-none">
-          <li className="flex mb-[5px]">
-            <Tick className="w-[12px] mr-[10px] text-success-light" />
-            <p className="text-light-200">Request access to your key(s)</p>
+          <li className="flex">
+            <Tick className="w-3 mr-2 text-success-light" />
+            <p
+              data-testid="dapp-connect-access-list-access"
+              className="text-light-200"
+            >
+              Request access to your key(s)
+            </p>
           </li>
         </ul>
-      </div>
+      </Frame>
       <ButtonGroup inline>
         <Button
           data-testid="dapp-connect-approve-button"
-          loading={isLoading === 'approve'}
+          variant="primary"
+          // TODO need a loading spinner but UI toolkit doesn't support this
+          // rightIcon={isLoading === 'approve' ? '' : undefined}
           disabled={!!isLoading}
           onClick={() => handleDecision(true)}
         >
@@ -74,7 +76,9 @@ export const ConnectionView = ({
         </Button>
         <Button
           data-testid="dapp-connect-deny-button"
-          loading={isLoading === 'reject'}
+          // TODO need a loading spinner but UI toolkit doesn't support this
+          // loading={isLoading === 'reject'}
+          disabled={!!isLoading}
           onClick={() => handleDecision(false)}
         >
           Deny

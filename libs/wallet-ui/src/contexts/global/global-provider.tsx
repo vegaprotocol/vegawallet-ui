@@ -5,6 +5,7 @@ import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 
 import type { Service, Runtime, Features } from '../../types'
 import { createActions } from './global-actions'
+import type { GlobalState } from './global-context'
 import { GlobalContext } from './global-context'
 import { globalReducer, initialGlobalState } from './global-reducer'
 
@@ -20,6 +21,7 @@ interface GlobalProviderProps {
   runtime: Runtime
   features?: Partial<Features>
   children: React.ReactElement
+  initialState?: Partial<GlobalState>
 }
 
 export function GlobalProvider({
@@ -28,8 +30,12 @@ export function GlobalProvider({
   runtime,
   features: partialFeatures,
   children,
+  initialState,
 }: GlobalProviderProps) {
-  const [state, dispatch] = useThunkReducer(globalReducer, initialGlobalState)
+  const [state, dispatch] = useThunkReducer(globalReducer, {
+    ...initialGlobalState,
+    ...initialState,
+  })
   const actions = useMemo(
     () => createActions(service, client),
     [service, client]

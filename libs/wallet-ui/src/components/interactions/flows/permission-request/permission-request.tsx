@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 
-import { Button } from '../../../button'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { ButtonGroup } from '../../../button-group'
 import { Tick } from '../../../icons/tick'
 import { useGlobal } from '../../../../contexts/global/global-context'
@@ -9,10 +9,11 @@ import type {
   PermissionTargetType,
   PermissionTypes,
 } from '../../../../types/interaction'
-import { Title } from '../../../title'
 import type { InteractionErrorType } from '../../views/error'
 import { InteractionError } from '../../views/error'
 import { InteractionSuccess } from '../../views/success'
+import { InteractionHeader } from '../interaction-header'
+import { Frame } from '../../../frame'
 
 export type PermissionRequestData = {
   traceID: string
@@ -107,33 +108,35 @@ export const PermissionRequest = ({
 
   return (
     <div>
-      <div className="text-center mt-[100px] mb-[32px]">
-        <Title className="mb-[5px]">Website permissions</Title>
-        <p className="text-neutral-light">{data.hostname}</p>
-      </div>
-      <div className="border border-neutral rounded p-[10px] mb-[20px]">
-        <p className="mb-[5px]">Allows this site to:</p>
+      <InteractionHeader hostname={data.hostname} />
+      <Frame>
+        <p data-testid="dapp-connect-access-list" className="mb-1">
+          Allows this site to:
+        </p>
         <ul>
           {permissions.map((permissionText, i) => (
-            <li key={i} className="mb-[5px]">
-              <Tick className="w-[10px] mr-[6px] text-success-light" />
+            <li key={i} className="mb-1">
+              <Tick className="w-2 mr-2 text-success-light" />
               {permissionText}
             </li>
           ))}
         </ul>
-      </div>
+      </Frame>
       <ButtonGroup inline>
         <Button
           data-testid="wallet-request-permissions-approve"
-          loading={isLoading === 'approve'}
+          // TODO loading spinner
+          // loading={isLoading === 'approve'}
           disabled={!!isLoading}
+          variant="primary"
           onClick={() => handleDecision(true)}
         >
           Approve
         </Button>
         <Button
           data-testid="wallet-request-permissions-reject"
-          loading={isLoading === 'reject'}
+          // TODO loading spinner
+          // loading={isLoading === 'rejecßt'}
           disabled={!!isLoading}
           onClick={() => handleDecision(false)}
         >

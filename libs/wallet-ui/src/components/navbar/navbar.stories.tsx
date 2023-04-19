@@ -7,11 +7,18 @@ export default {
   title: 'Navbar',
 } as Meta
 
-const Template: Story = () => (
+const Template: Story = ({ isFairground }) => (
   <Router>
-    <NavBar />
+    <NavBar isFairground={isFairground} />
   </Router>
 )
 
 export const Default = Template.bind({})
-Default.args = {}
+Default.args = {
+  isFairground: false,
+}
+
+export const Fairground = Template.bind({})
+Fairground.args = {
+  isFairground: true,
+}

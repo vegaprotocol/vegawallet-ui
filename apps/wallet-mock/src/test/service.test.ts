@@ -1,15 +1,12 @@
 import { test, expect } from '@playwright/test'
-import type { Page } from '@playwright/test'
 import { mock } from '../support/mock'
 
-test.describe('Interactions', () => {
-  let page: Page
-  test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage()
+test.describe('Service status', () => {
+  test.beforeEach(async ({ page }) => {
     await mock(page)
     await page.goto('/')
   })
-  test('should display unhealthy status', async () => {
+  test('should display unhealthy status', async ({ page }) => {
     await page.evaluate(() => {
       window.document.body.dispatchEvent(
         new CustomEvent('service_is_unhealthy')
@@ -21,7 +18,7 @@ test.describe('Interactions', () => {
     )
   })
 
-  test('should display healthy status', async () => {
+  test('should display healthy status', async ({ page }) => {
     await page.evaluate(() => {
       window.document.body.dispatchEvent(new CustomEvent('service_is_healthy'))
     })
@@ -30,7 +27,7 @@ test.describe('Interactions', () => {
     )
   })
 
-  test('should display unreachable status', async () => {
+  test('should display unreachable status', async ({ page }) => {
     await page.evaluate(() => {
       window.document.body.dispatchEvent(new CustomEvent('service_unreachable'))
     })
@@ -39,7 +36,7 @@ test.describe('Interactions', () => {
     )
   })
 
-  test('should display service stopped with error status', async () => {
+  test('should display service stopped with error status', async ({ page }) => {
     await page.evaluate(() => {
       window.document.body.dispatchEvent(
         new CustomEvent('service_stopped_with_error')
@@ -50,7 +47,7 @@ test.describe('Interactions', () => {
     )
   })
 
-  test('should display service stopped status', async () => {
+  test('should display service stopped status', async ({ page }) => {
     await page.evaluate(() => {
       window.document.body.dispatchEvent(new CustomEvent('service_stopped'))
     })

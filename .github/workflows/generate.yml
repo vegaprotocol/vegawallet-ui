@@ -53,7 +53,7 @@ jobs:
           commit-message: 'chore: regenerate wallet libraries for v{{ github.event.data.version }}'
           branch: chore/v{{ github.event.data.version }}-automated-updates
           delete-branch: true
-          base: main
+          base: develop
           title: 'chore: v{{ github.event.data.version }} automated wallet updates'
           labels: wallet-ui
           team-reviewers: vegaprotocol/frontend

@@ -31,6 +31,10 @@ https://create-react-app.dev/docs/adding-images-fonts-and-files/
   border-image: url('./images/vega-bg.png') 15%;
 }
 
+.fairground-border-image {
+  border-image: url('./images/fairground-border.png') 15%;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -74,4 +78,14 @@ https://create-react-app.dev/docs/adding-images-fonts-and-files/
   to {
     width: 14px;
   }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

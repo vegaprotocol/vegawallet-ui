@@ -6,6 +6,7 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { DRAWER_HEIGHT } from '.'
 import { DrawerContent } from './drawer-content'
 import { useIsFairground } from '../../hooks/use-is-fairground'
+import { NAVBAR_HEIGHT } from '../navbar'
 
 interface ChromeDrawerProps {
   height: number
@@ -21,7 +22,7 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
   const styles = useSpring({
     to: {
       y: state.drawerState.isOpen
-        ? -(height - APP_FRAME_HEIGHT - DRAWER_HEIGHT)
+        ? -(height - APP_FRAME_HEIGHT - DRAWER_HEIGHT - NAVBAR_HEIGHT)
         : 0,
     },
     config: { ...config.default, duration: 170 },
@@ -33,11 +34,11 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
         height: height - APP_FRAME_HEIGHT,
         translateY: styles.y,
       }}
-      className={classnames('bg-black border-t-[3px]', {
+      className={classnames('bg-black border-t-[3px] pb-[88px]', {
         'overflow-y-hidden': !state.drawerState.isOpen,
         'overflow-y-scroll': state.drawerState.isOpen,
         'vega-border-image': !isFairground,
-        'border-vega-yellow-500': isFairground,
+        'fairground-border-image': isFairground,
       })}
     >
       <DrawerContent />

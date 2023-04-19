@@ -23,6 +23,10 @@ test.describe('Telemetry dialog elements', () => {
     await page.goto('/')
   })
 
+  test.afterAll(async () => {
+    await page.close()
+  })
+
   test('should see telemetry dialog', async () => {
     await expect(page.getByTestId('telemetry-option-dialog')).toBeVisible()
   })
@@ -63,14 +67,12 @@ test.describe('Telemetry dialog elements', () => {
 })
 
 test.describe('Telemetry dialog action', () => {
-  let page: Page
-  test.beforeAll(async ({ browser }) => {
-    page = await browser.newPage()
+  test.beforeEach(async ({ page }) => {
     await mock(page, serviceMock.GetAppConfig, appConfigMock)
     await page.goto('/')
   })
 
-  test('should be able to submit telemetry form', async () => {
+  test('should be able to submit telemetry form', async ({ page }) => {
     await page.getByTestId('telemetry-option-form').locator('#yes').click()
     await page.getByTestId('telemetry-option-continue').click()
     await expect(page.getByTestId('telemetry-option-dialog')).toBeHidden()

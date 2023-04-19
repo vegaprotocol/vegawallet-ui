@@ -8,7 +8,7 @@ import { useVegaHome } from './use-vega-home'
 
 export function useCreateWallet() {
   const vegaHome = useVegaHome()
-  const { service, client, dispatch, state } = useGlobal()
+  const { service, client, dispatch, actions, state } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseCreateWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.CreateWalletResult | null>(null)
@@ -17,7 +17,8 @@ export function useCreateWallet() {
     async (values: { wallet: string; passphrase: string }) => {
       try {
         logger.debug('CreateWallet')
-        if (state.status !== AppStatus.Initialised) {
+        const isInitialised = await service.IsAppInitialised()
+        if (!isInitialised) {
           await service.InitialiseApp({ vegaHome })
         }
 
@@ -33,6 +34,9 @@ export function useCreateWallet() {
             wallet: values.wallet,
             publicKey: resp.key.publicKey,
           })
+          if (state.status === AppStatus.Onboarding) {
+            dispatch(actions.completeOnboardAction(() => undefined))
+          }
 
           AppToaster.show({
             message: 'Wallet created!',
@@ -55,7 +59,7 @@ export function useCreateWallet() {
         logger.error(err)
       }
     },
-    [dispatch, logger, service, client, state.status, vegaHome]
+    [logger, service, client, vegaHome, state.status, dispatch, actions]
   )
 
   return {

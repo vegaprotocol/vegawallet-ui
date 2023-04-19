@@ -8,7 +8,7 @@ const getTransactionInfo = (status?: TransactionStatusTypes) => {
       return {
         background: 'bg-vega-green-500',
         textColor: 'text-black',
-        text: 'Approved',
+        text: 'Successful',
       }
     }
     case TransactionStatusTypes.FAILURE: {
@@ -20,7 +20,7 @@ const getTransactionInfo = (status?: TransactionStatusTypes) => {
     }
     case TransactionStatusTypes.REJECTED: {
       return {
-        background: 'bg-vega-pink-500',
+        background: 'bg-dark-200',
         textColor: 'text-white',
         text: 'Rejected',
       }
@@ -29,13 +29,13 @@ const getTransactionInfo = (status?: TransactionStatusTypes) => {
       return {
         background: 'bg-vega-blue-500',
         textColor: 'text-white',
-        text: 'In progress',
+        text: 'In Progress',
       }
     }
     default: {
       return {
         background: 'bg-neutral',
-        textColor: 'text-white',
+        textColor: 'text-black',
         text: 'Unknown',
       }
     }

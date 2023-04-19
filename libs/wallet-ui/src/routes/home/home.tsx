@@ -20,7 +20,6 @@ export const Home = () => {
   const { open } = useOpenWallet()
   const {
     state: { wallets, status },
-    dispatch,
   } = useGlobal()
 
   const walletsList = useMemo(
@@ -29,13 +28,13 @@ export const Home = () => {
   )
 
   if (status === AppStatus.Onboarding) {
-    return <Navigate to={Paths.Onboard} />
+    return <Navigate to={Paths.Onboard.Home} />
   }
 
   return (
     <div data-testid="wallet-home" className="p-[20px]">
       <Title className="m-0 mb-[30px] text-white">Wallets</Title>
-      <div className="pb-[144px] w-full">
+      <div data-testid="wallet-list" className="pb-[144px] w-full">
         <div
           className={`border-b-${
             walletsList.length > 0 ? '1' : '0'
@@ -51,7 +50,7 @@ export const Home = () => {
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
               key={w.name}
             >
-              <div>{w.name}</div>
+              <div data-testid="wallet-name">{w.name}</div>
               <div className="text-neutral">
                 {w.auth ? (
                   <OpenLock className="w-[20px] mx-[20px]" />
@@ -66,7 +65,7 @@ export const Home = () => {
       <div
         className={classnames('text-center p-[20px] w-full bg-dark-100', {
           fixed: wallets.length,
-          [`bottom-[70px]`]: wallets.length,
+          [`bottom-[88px]`]: wallets.length,
           'left-0': wallets.length,
         })}
       >
@@ -82,14 +81,6 @@ export const Home = () => {
             </Button>
           </Link>
         </ButtonGroup>
-        <p>
-          <ButtonUnstyled
-            onClick={() => dispatch({ type: 'SET_SETTINGS_MODAL', open: true })}
-            data-testid="home-settings"
-          >
-            App settings
-          </ButtonUnstyled>
-        </p>
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Paths } from '../..'
 
 import { Button } from '../../../components/button'
 import { ButtonUnstyled } from '../../../components/button-unstyled'
@@ -16,7 +17,7 @@ export function KeyPairHome() {
   const { dispatch } = useGlobal()
   const { wallet: currentWallet, keypair } = useCurrentKeypair()
 
-  if (!keypair) {
+  if (!keypair || !wallet || !pubkey) {
     return null
   }
 
@@ -26,7 +27,7 @@ export function KeyPairHome() {
         title={keypair.name}
         breadcrumb={currentWallet?.name}
         onBack={() => {
-          navigate(`/wallet/${encodeURIComponent(wallet ?? '')}`)
+          navigate(Paths.Wallet.Wallet(encodeURIComponent(wallet)))
         }}
       />
       <PublicKey publicKey={keypair.publicKey} />
@@ -99,7 +100,7 @@ export function KeyPairHome() {
               className="mb-[8px]"
               data-testid="keypair-transactions"
               onClick={() =>
-                navigate(`/wallet/${wallet}/keypair/${pubkey}/transactions`)
+                Paths.Wallet.Transactions(encodeURIComponent(wallet), pubkey)
               }
             >
               View transactions

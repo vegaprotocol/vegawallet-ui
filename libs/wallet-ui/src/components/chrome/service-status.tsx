@@ -1,11 +1,9 @@
-import { useCallback } from 'react'
-
-import { Intent } from '../../config/intent'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { StatusCircle } from '../status-circle'
-import { AppToaster } from '../toaster'
 import { Warning } from '../icons/warning'
+import { useStartService } from '../../hooks/use-start-service'
+import { useRestartService } from '../../hooks/use-restart-service'
 
 export function ServiceStatus() {
   const {
@@ -19,46 +17,8 @@ export function ServiceStatus() {
     },
   } = useGlobal()
   const serviceUrl = service.TYPE === 'http' ? httpServiceUrl : ''
-
-  const startService = useCallback(async () => {
-    if (currentNetwork) {
-      dispatch({
-        type: 'SET_SERVICE_STATUS',
-        status: ServiceState.Loading,
-      })
-      try {
-        await service.StartService({ network: currentNetwork })
-      } catch (err) {
-        dispatch({
-          type: 'SET_SERVICE_STATUS',
-          status: ServiceState.Error,
-        })
-        AppToaster.show({
-          intent: Intent.DANGER,
-          message: `${err}`,
-        })
-      }
-    }
-  }, [dispatch, service, currentNetwork])
-
-  const restartService = useCallback(async () => {
-    if (currentNetwork) {
-      try {
-        await service.StopService()
-      } catch (err) {
-        dispatch({
-          type: 'SET_SERVICE_STATUS',
-          status: ServiceState.Error,
-        })
-        AppToaster.show({
-          intent: Intent.DANGER,
-          message: `${err}`,
-        })
-      }
-
-      await startService()
-    }
-  }, [startService, dispatch, service, currentNetwork])
+  const startService = useStartService()
+  const restartService = useRestartService()
 
   switch (serviceStatus) {
     case ServiceState.Started: {

@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
 import {
   beginInteractionSession,
-  endInteractionSession,
   sendBackendInteraction,
 } from '../support/event-trigger'
 import { mock } from '../support/mock'
@@ -47,7 +46,7 @@ test.describe('Connect to Dapp modal validations', () => {
   })
 
   test.afterAll(async () => {
-    await endInteractionSession(page)
+    await page.close()
   })
 
   test('should see connect to website modal', async () => {
@@ -58,19 +57,20 @@ test.describe('Connect to Dapp modal validations', () => {
   })
 
   test('should see hostname', async () => {
-    await expect(page.getByTestId('dapp-connect-hostname')).toBeVisible()
-    await expect(page.getByTestId('dapp-connect-hostname')).toHaveText(
+    await expect(page.getByTestId('dapp-hostname')).toBeVisible()
+    await expect(page.getByTestId('dapp-hostname')).toHaveText(
       connectionContent.hostname
     )
   })
 
   test('should see request access list', async () => {
     await Promise.all([
-      expect(page.getByTestId('dapp-connect-access-list')).toBeVisible(),
-      expect(page.getByTestId('dapp-connect-access-list')).toContainText(
+      expect(page.getByTestId('dapp-connect-access-list-title')).toBeVisible(),
+      expect(page.getByTestId('dapp-connect-access-list-access')).toBeVisible(),
+      expect(page.getByTestId('dapp-connect-access-list-title')).toContainText(
         'Allow this site to:'
       ),
-      expect(page.getByTestId('dapp-connect-access-list')).toContainText(
+      expect(page.getByTestId('dapp-connect-access-list-access')).toContainText(
         'Request access to your key(s)'
       ),
     ])
@@ -96,9 +96,7 @@ test.describe('Connect to Dapp modal validations', () => {
 })
 
 test.describe('Connect to Dapp modal actions', () => {
-  let page: Page
-  test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage()
+  test.beforeEach(async ({ page }) => {
     await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
@@ -109,11 +107,7 @@ test.describe('Connect to Dapp modal actions', () => {
     )
   })
 
-  test.afterEach(async () => {
-    await endInteractionSession(page)
-  })
-
-  test('should close modal on deny', async () => {
+  test('should close modal on deny', async ({ page }) => {
     await page.getByTestId('dapp-connect-deny-button').click()
     await expect(page.getByTestId('dapp-connect-modal')).toBeHidden()
   })
@@ -144,7 +138,7 @@ test.describe('Connect to Dapp - wallet selection validations', () => {
   })
 
   test.afterAll(async () => {
-    await endInteractionSession(page)
+    await page.close()
   })
 
   test('should see wallet selection modal', async () => {
@@ -155,8 +149,8 @@ test.describe('Connect to Dapp - wallet selection validations', () => {
   })
 
   test('should see hostname', async () => {
-    await expect(page.getByTestId('dapp-select-hostname')).toBeVisible()
-    await expect(page.getByTestId('dapp-select-hostname')).toHaveText(
+    await expect(page.getByTestId('dapp-hostname')).toBeVisible()
+    await expect(page.getByTestId('dapp-hostname')).toHaveText(
       connectionContent.hostname
     )
   })
@@ -200,9 +194,7 @@ test.describe('Connect to Dapp - wallet selection validations', () => {
 })
 
 test.describe('Connect to Dapp - wallet selection actions', () => {
-  let page: Page
-  test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage()
+  test.beforeEach(async ({ page }) => {
     await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
@@ -218,16 +210,12 @@ test.describe('Connect to Dapp - wallet selection actions', () => {
     )
   })
 
-  test.afterEach(async () => {
-    await endInteractionSession(page)
-  })
-
-  test('should close modal on deny', async () => {
+  test('should close modal on deny', async ({ page }) => {
     await page.getByTestId('dapp-select-deny-button').click()
     await expect(page.getByTestId('dapp-select-wallet')).toBeHidden()
   })
 
-  test('should enable approve button when wallet chosen', async () => {
+  test('should enable approve button when wallet chosen', async ({ page }) => {
     await page
       .getByTestId('dapp-select-wallet-form')
       .getByRole('radio')
@@ -243,7 +231,6 @@ test.describe('Connect to Dapp - wallet selection actions', () => {
 
 test.describe('Connect to Dapp - passphrase request validations', () => {
   // 0001-WALL-022 #MOCK must enter wallet passphrase before wallet details are shared (assuming a password has not recently been entered)
-
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
@@ -269,7 +256,7 @@ test.describe('Connect to Dapp - passphrase request validations', () => {
   })
 
   test.afterAll(async () => {
-    await endInteractionSession(page)
+    await page.close()
   })
 
   test('should see passphrase modal', async () => {
@@ -280,8 +267,8 @@ test.describe('Connect to Dapp - passphrase request validations', () => {
   })
 
   test('should see hostname', async () => {
-    await expect(page.getByTestId('dapp-passphrase-hostname')).toBeVisible()
-    await expect(page.getByTestId('dapp-passphrase-hostname')).toHaveText(
+    await expect(page.getByTestId('dapp-hostname')).toBeVisible()
+    await expect(page.getByTestId('dapp-hostname')).toHaveText(
       connectionContent.hostname
     )
   })
@@ -321,9 +308,7 @@ test.describe('Connect to Dapp - passphrase request validations', () => {
 })
 
 test.describe('Connect to Dapp - passphrase request actions', () => {
-  let page: Page
-  test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage()
+  test.beforeEach(async ({ page }) => {
     await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
@@ -345,16 +330,12 @@ test.describe('Connect to Dapp - passphrase request actions', () => {
     await sendBackendInteraction(page, 'REQUEST_PASSPHRASE', passphraseContent)
   })
 
-  test.afterEach(async () => {
-    await endInteractionSession(page)
-  })
-
-  test('should close modal on cancel', async () => {
+  test('should close modal on cancel', async ({ page }) => {
     await page.getByTestId('dapp-passphrase-cancel-button').click()
     await expect(page.getByTestId('dapp-passphrase-modal')).toBeHidden()
   })
 
-  test('should not allow to proceed with empty password', async () => {
+  test('should not allow to proceed with empty password', async ({ page }) => {
     await page.getByTestId('dapp-passphrase-approve-button').click()
     await expect(
       page.getByTestId('dapp-passphrase-approve-button')
@@ -363,20 +344,23 @@ test.describe('Connect to Dapp - passphrase request actions', () => {
     await expect(page.getByTestId('helper-text')).toHaveText('Required')
   })
 
-  test.fixme('should not allow to proceed with invalid password', async () => {
-    //Just suggestion how the test could look like (created by Github Copilot)
-    await page.getByTestId('input-passphrase').type('invalid')
-    await page.getByTestId('dapp-passphrase-approve-button').click()
-    await expect(
-      page.getByTestId('dapp-passphrase-approve-button')
-    ).toBeDisabled()
-    await expect(page.getByTestId('helper-text')).toBeVisible()
-    await expect(page.getByTestId('helper-text')).toHaveText(
-      'Invalid passphrase'
-    )
-  })
+  test.fixme(
+    'should not allow to proceed with invalid password',
+    async ({ page }) => {
+      //Just suggestion how the test could look like (created by Github Copilot)
+      await page.getByTestId('input-passphrase').type('invalid')
+      await page.getByTestId('dapp-passphrase-approve-button').click()
+      await expect(
+        page.getByTestId('dapp-passphrase-approve-button')
+      ).toBeDisabled()
+      await expect(page.getByTestId('helper-text')).toBeVisible()
+      await expect(page.getByTestId('helper-text')).toHaveText(
+        'Invalid passphrase'
+      )
+    }
+  )
 
-  test.fixme('should close modal on approve', async () => {
+  test.fixme('should close modal on approve', async ({ page }) => {
     await page.getByTestId('input-passphrase').type('passphrase')
     await page.getByTestId('dapp-passphrase-approve-button').click()
     //TODO: add approve action logic, add test for approve action
@@ -414,7 +398,7 @@ test.describe('Connect to Dapp - request succeeded validations', () => {
   })
 
   test.afterAll(async () => {
-    await endInteractionSession(page)
+    await page.close()
   })
 
   test('should see request succeeded modal', async () => {
