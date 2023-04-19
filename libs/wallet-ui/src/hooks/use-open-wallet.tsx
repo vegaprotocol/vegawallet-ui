@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
@@ -8,6 +9,24 @@ import { useGlobal } from '../contexts/global/global-context'
 import { indexBy } from '../lib/index-by'
 import { requestPassphrase } from '../components/passphrase-modal'
 
+const unlockWalletLoop = async (client: WalletAdmin, wallet: string) => {
+  const passphrase = await requestPassphrase()
+
+  try {
+    await client.UnlockWallet({
+      wallet,
+      passphrase,
+    })
+  } catch (err) {
+    AppToaster.show({
+      intent: Intent.DANGER,
+      message: `${err}`,
+    })
+
+    await unlockWalletLoop(client, wallet)
+  }
+}
+
 export const useOpenWallet = () => {
   const navigate = useNavigate()
   const { dispatch, client, state } = useGlobal()
@@ -15,12 +34,7 @@ export const useOpenWallet = () => {
   const getWalletData = useCallback(
     async (wallet: string) => {
       if (!state.wallets[wallet]?.auth) {
-        const passphrase = await requestPassphrase()
-
-        await client.UnlockWallet({
-          wallet,
-          passphrase,
-        })
+        await unlockWalletLoop(client, wallet)
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -103,10 +117,12 @@ export const useOpenWallet = () => {
         await getWalletData(wallet)
         navigate(`/wallet/${encodeURIComponent(wallet)}`)
       } catch (err) {
-        AppToaster.show({
-          intent: Intent.DANGER,
-          message: `${err}`,
-        })
+        if (err !== 'dismissed') {
+          AppToaster.show({
+            intent: Intent.DANGER,
+            message: `${err}`,
+          })
+        }
       }
     },
     [getWalletData, state, navigate, dispatch]
