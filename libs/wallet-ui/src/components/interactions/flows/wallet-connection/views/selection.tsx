@@ -49,6 +49,11 @@ export const SelectionView = ({
           wallet,
         },
       })
+
+      onUpdate({
+        ...data,
+        selectedWallet: wallet,
+      })
     } catch (err) {
       onUpdate({
         ...data,
