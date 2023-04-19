@@ -1,25 +1,48 @@
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 
-import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import type { Connection } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
 import { indexBy } from '../lib/index-by'
+import { requestPassphrase } from '../components/passphrase-modal'
+
+const unlockWalletLoop = async (client: WalletAdmin, wallet: string) => {
+  const passphrase = await requestPassphrase()
+
+  try {
+    await client.UnlockWallet({
+      wallet,
+      passphrase,
+    })
+  } catch (err) {
+    AppToaster.show({
+      intent: Intent.DANGER,
+      message: `${err}`,
+    })
+
+    await unlockWalletLoop(client, wallet)
+  }
+}
 
 export const useOpenWallet = () => {
   const navigate = useNavigate()
   const { dispatch, client, state } = useGlobal()
 
   const getWalletData = useCallback(
-    async (wallet: string, passphrase: string) => {
+    async (wallet: string) => {
+      if (!state.wallets[wallet]?.auth) {
+        await unlockWalletLoop(client, wallet)
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_w, { keys = [] }, { permissions }, { activeConnections }] =
         await Promise.all([
-          client.DescribeWallet({ wallet, passphrase }),
-          client.ListKeys({ wallet, passphrase }),
-          client.ListPermissions({ wallet, passphrase }),
+          client.DescribeWallet({ wallet }),
+          client.ListKeys({ wallet }),
+          client.ListPermissions({ wallet }),
           client.ListConnections({}),
         ])
 
@@ -27,7 +50,6 @@ export const useOpenWallet = () => {
         keys.map((key) =>
           client.DescribeKey({
             wallet,
-            passphrase,
             publicKey: key.publicKey ?? '',
           })
         )
@@ -47,7 +69,6 @@ export const useOpenWallet = () => {
         Object.keys(permissions).map(async (hostname) => {
           const result = await client.DescribePermissions({
             wallet,
-            passphrase,
             hostname,
           })
           return {
@@ -76,7 +97,7 @@ export const useOpenWallet = () => {
         wallet,
       })
     },
-    [client, dispatch]
+    [client, state.wallets, dispatch]
   )
 
   const open = useCallback(
@@ -92,16 +113,16 @@ export const useOpenWallet = () => {
         return
       }
 
-      const passphrase = await requestPassphrase()
-
       try {
-        await getWalletData(wallet, passphrase)
+        await getWalletData(wallet)
         navigate(`/wallet/${encodeURIComponent(wallet)}`)
       } catch (err) {
-        AppToaster.show({
-          intent: Intent.DANGER,
-          message: `${err}`,
-        })
+        if (err !== 'dismissed') {
+          AppToaster.show({
+            intent: Intent.DANGER,
+            message: `${err}`,
+          })
+        }
       }
     },
     [getWalletData, state, navigate, dispatch]

@@ -12,37 +12,37 @@ import type { NetworkParameter } from './vega'
 
 export const protobufPackage = 'vega'
 
-/** A list of possible errors that can cause a proposal to be in state rejected or failed */
+/** List of possible errors that can cause a proposal to be in state rejected or failed */
 export enum ProposalError {
   /** PROPOSAL_ERROR_UNSPECIFIED - Default value */
   PROPOSAL_ERROR_UNSPECIFIED = 0,
-  /** PROPOSAL_ERROR_CLOSE_TIME_TOO_SOON - The specified close time is too early based on network parameters */
+  /** PROPOSAL_ERROR_CLOSE_TIME_TOO_SOON - Specified close time is too early based on network parameters */
   PROPOSAL_ERROR_CLOSE_TIME_TOO_SOON = 1,
-  /** PROPOSAL_ERROR_CLOSE_TIME_TOO_LATE - The specified close time is too late based on network parameters */
+  /** PROPOSAL_ERROR_CLOSE_TIME_TOO_LATE - Specified close time is too late based on network parameters */
   PROPOSAL_ERROR_CLOSE_TIME_TOO_LATE = 2,
-  /** PROPOSAL_ERROR_ENACT_TIME_TOO_SOON - The specified enactment time is too early based on network parameters */
+  /** PROPOSAL_ERROR_ENACT_TIME_TOO_SOON - Specified enactment time is too early based on network parameters */
   PROPOSAL_ERROR_ENACT_TIME_TOO_SOON = 3,
-  /** PROPOSAL_ERROR_ENACT_TIME_TOO_LATE - The specified enactment time is too late based on network parameters */
+  /** PROPOSAL_ERROR_ENACT_TIME_TOO_LATE - Specified enactment time is too late based on network parameters */
   PROPOSAL_ERROR_ENACT_TIME_TOO_LATE = 4,
-  /** PROPOSAL_ERROR_INSUFFICIENT_TOKENS - The proposer for this proposal has insufficient tokens */
+  /** PROPOSAL_ERROR_INSUFFICIENT_TOKENS - Proposer for this proposal has insufficient tokens */
   PROPOSAL_ERROR_INSUFFICIENT_TOKENS = 5,
-  /** PROPOSAL_ERROR_INVALID_INSTRUMENT_SECURITY - The instrument quote name and base name were the same */
+  /** PROPOSAL_ERROR_INVALID_INSTRUMENT_SECURITY - Instrument quote name and base name were the same */
   PROPOSAL_ERROR_INVALID_INSTRUMENT_SECURITY = 6,
-  /** PROPOSAL_ERROR_NO_PRODUCT - The proposal has no product */
+  /** PROPOSAL_ERROR_NO_PRODUCT - Proposal has no product */
   PROPOSAL_ERROR_NO_PRODUCT = 7,
-  /** PROPOSAL_ERROR_UNSUPPORTED_PRODUCT - The specified product is not supported */
+  /** PROPOSAL_ERROR_UNSUPPORTED_PRODUCT - Specified product is not supported */
   PROPOSAL_ERROR_UNSUPPORTED_PRODUCT = 8,
-  /** PROPOSAL_ERROR_NO_TRADING_MODE - The proposal has no trading mode */
+  /** PROPOSAL_ERROR_NO_TRADING_MODE - Proposal has no trading mode */
   PROPOSAL_ERROR_NO_TRADING_MODE = 11,
-  /** PROPOSAL_ERROR_UNSUPPORTED_TRADING_MODE - The proposal has an unsupported trading mode */
+  /** PROPOSAL_ERROR_UNSUPPORTED_TRADING_MODE - Proposal has an unsupported trading mode */
   PROPOSAL_ERROR_UNSUPPORTED_TRADING_MODE = 12,
-  /** PROPOSAL_ERROR_NODE_VALIDATION_FAILED - The proposal failed node validation */
+  /** PROPOSAL_ERROR_NODE_VALIDATION_FAILED - Proposal failed node validation */
   PROPOSAL_ERROR_NODE_VALIDATION_FAILED = 13,
-  /** PROPOSAL_ERROR_MISSING_BUILTIN_ASSET_FIELD - A field is missing in a builtin asset source */
+  /** PROPOSAL_ERROR_MISSING_BUILTIN_ASSET_FIELD - Field is missing in a builtin asset source */
   PROPOSAL_ERROR_MISSING_BUILTIN_ASSET_FIELD = 14,
-  /** PROPOSAL_ERROR_MISSING_ERC20_CONTRACT_ADDRESS - The contract address is missing in the ERC20 asset source */
+  /** PROPOSAL_ERROR_MISSING_ERC20_CONTRACT_ADDRESS - Contract address is missing in the ERC20 asset source */
   PROPOSAL_ERROR_MISSING_ERC20_CONTRACT_ADDRESS = 15,
-  /** PROPOSAL_ERROR_INVALID_ASSET - The asset ID is invalid or does not exist on the Vega network */
+  /** PROPOSAL_ERROR_INVALID_ASSET - Asset ID is invalid or does not exist on the Vega network */
   PROPOSAL_ERROR_INVALID_ASSET = 16,
   /** PROPOSAL_ERROR_INCOMPATIBLE_TIMESTAMPS - Proposal terms timestamps are not compatible (Validation < Closing < Enactment) */
   PROPOSAL_ERROR_INCOMPATIBLE_TIMESTAMPS = 17,
@@ -77,25 +77,25 @@ export enum ProposalError {
   /** PROPOSAL_ERROR_INVALID_FREEFORM - Validation failed for freeform proposal */
   PROPOSAL_ERROR_INVALID_FREEFORM = 36,
   /**
-   * PROPOSAL_ERROR_INSUFFICIENT_EQUITY_LIKE_SHARE - The party doesn't have enough equity-like share to propose an update on the market
+   * PROPOSAL_ERROR_INSUFFICIENT_EQUITY_LIKE_SHARE - Party doesn't have enough equity-like share to propose an update on the market
    * targeted by the proposal
    */
   PROPOSAL_ERROR_INSUFFICIENT_EQUITY_LIKE_SHARE = 37,
-  /** PROPOSAL_ERROR_INVALID_MARKET - The market targeted by the proposal does not exist or is not eligible for modification */
+  /** PROPOSAL_ERROR_INVALID_MARKET - Market targeted by the proposal does not exist or is not eligible for modification */
   PROPOSAL_ERROR_INVALID_MARKET = 38,
-  /** PROPOSAL_ERROR_TOO_MANY_MARKET_DECIMAL_PLACES - The market proposal decimal place is higher than the market settlement asset decimal places */
+  /** PROPOSAL_ERROR_TOO_MANY_MARKET_DECIMAL_PLACES - Market proposal decimal place is higher than the market settlement asset decimal places */
   PROPOSAL_ERROR_TOO_MANY_MARKET_DECIMAL_PLACES = 39,
-  /** PROPOSAL_ERROR_TOO_MANY_PRICE_MONITORING_TRIGGERS - The market proposal contains too many price monitoring triggers */
+  /** PROPOSAL_ERROR_TOO_MANY_PRICE_MONITORING_TRIGGERS - Market proposal contains too many price monitoring triggers */
   PROPOSAL_ERROR_TOO_MANY_PRICE_MONITORING_TRIGGERS = 40,
-  /** PROPOSAL_ERROR_ERC20_ADDRESS_ALREADY_IN_USE - The market proposal contains too many price monitoring triggers */
+  /** PROPOSAL_ERROR_ERC20_ADDRESS_ALREADY_IN_USE - Market proposal contains too many price monitoring triggers */
   PROPOSAL_ERROR_ERC20_ADDRESS_ALREADY_IN_USE = 41,
-  /** PROPOSAL_ERROR_LP_PRICE_RANGE_NONPOSITIVE - The LP price range must be larger than 0 */
+  /** PROPOSAL_ERROR_LP_PRICE_RANGE_NONPOSITIVE - LP price range must be larger than 0 */
   PROPOSAL_ERROR_LP_PRICE_RANGE_NONPOSITIVE = 42,
-  /** PROPOSAL_ERROR_LP_PRICE_RANGE_TOO_LARGE - The LP price range must not be larger than 100 */
+  /** PROPOSAL_ERROR_LP_PRICE_RANGE_TOO_LARGE - LP price range must not be larger than 100 */
   PROPOSAL_ERROR_LP_PRICE_RANGE_TOO_LARGE = 43,
-  /** PROPOSAL_ERROR_LINEAR_SLIPPAGE_FACTOR_OUT_OF_RANGE - The linear slippage factor is out of range (either negative or too large) */
+  /** PROPOSAL_ERROR_LINEAR_SLIPPAGE_FACTOR_OUT_OF_RANGE - Linear slippage factor is out of range, either negative or too large */
   PROPOSAL_ERROR_LINEAR_SLIPPAGE_FACTOR_OUT_OF_RANGE = 44,
-  /** PROPOSAL_ERROR_QUADRATIC_SLIPPAGE_FACTOR_OUT_OF_RANGE - The quadratic slippage factor is out of range (either negative or too large) */
+  /** PROPOSAL_ERROR_QUADRATIC_SLIPPAGE_FACTOR_OUT_OF_RANGE - Quadratic slippage factor is out of range, either negative or too large */
   PROPOSAL_ERROR_QUADRATIC_SLIPPAGE_FACTOR_OUT_OF_RANGE = 45,
   UNRECOGNIZED = -1,
 }
@@ -106,11 +106,11 @@ export interface FutureProduct {
   settlementAsset: string
   /** Product quote name. */
   quoteName: string
-  /** The data source spec describing the data source for settlement. */
+  /** Data source spec describing the data source for settlement. */
   dataSourceSpecForSettlementData: DataSourceDefinition | undefined
   /** The external data source spec describing the data source of trading termination. */
   dataSourceSpecForTradingTermination: DataSourceDefinition | undefined
-  /** The binding between the data source spec and the settlement data. */
+  /** Binding between the data source spec and the settlement data. */
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
 }
 
@@ -147,23 +147,23 @@ export interface NewMarketConfiguration {
    * price levels over which automated liquidity provision orders will be deployed.
    */
   lpPriceRange: string
-  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume. */
+  /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
-  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume. */
+  /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
 }
 
 /** New market on Vega */
 export interface NewMarket {
-  /** The configuration of the new market. */
+  /** Configuration of the new market. */
   changes: NewMarketConfiguration | undefined
 }
 
 /** Update an existing market on Vega */
 export interface UpdateMarket {
-  /** The identifier of the market to update. */
+  /** Market ID the update is for. */
   marketId: string
-  /** The updated configuration of the market. */
+  /** Updated configuration of the market. */
   changes: UpdateMarketConfiguration | undefined
 }
 
@@ -186,9 +186,9 @@ export interface UpdateMarketConfiguration {
    * price levels over which automated liquidity provision orders will be deployed.
    */
   lpPriceRange: string
-  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume. */
+  /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
-  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume. */
+  /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
 }
 
@@ -220,15 +220,15 @@ export interface UpdateNetworkParameter {
 
 /** New asset on Vega */
 export interface NewAsset {
-  /** The configuration of the new asset. */
+  /** Configuration of the new asset. */
   changes: AssetDetails | undefined
 }
 
 /** Update an existing asset on Vega */
 export interface UpdateAsset {
-  /** The ID of the asset to be updated. */
+  /** Asset ID the update is for. */
   assetId: string
-  /** The changes to apply on an existing asset. */
+  /** Changes to apply on an existing asset. */
   changes: AssetDetailsUpdate | undefined
 }
 
@@ -242,16 +242,16 @@ export interface NewFreeform {}
 /** Terms for a governance proposal on Vega */
 export interface ProposalTerms {
   /**
-   * Timestamp (Unix time in seconds) when voting closes for this proposal,
+   * Timestamp as Unix time in seconds when voting closes for this proposal,
    * constrained by `minClose` and `maxClose` network parameters.
    */
   closingTimestamp: number
   /**
-   * Timestamp (Unix time in seconds) when proposal gets enacted (if passed),
+   * Timestamp as Unix time in seconds when proposal gets enacted if passed,
    * constrained by `minEnact` and `maxEnact` network parameters.
    */
   enactmentTimestamp: number
-  /** Validation timestamp (Unix time in seconds). */
+  /** Validation timestamp as Unix time in seconds. */
   validationTimestamp: number
   /** Proposal change for modifying an existing market on Vega. */
   updateMarket?: UpdateMarket | undefined
@@ -270,7 +270,7 @@ export interface ProposalTerms {
   updateAsset?: UpdateAsset | undefined
 }
 
-/** The rationale behind a proposal. */
+/** Rationale behind a proposal. */
 export interface ProposalRationale {
   /**
    * Description to show a short title / something in case the link goes offline.
@@ -288,21 +288,21 @@ export interface ProposalRationale {
 
 /** Governance data */
 export interface GovernanceData {
-  /** The governance proposal. */
+  /** Governance proposal. */
   proposal: Proposal | undefined
   /** All YES votes in favour of the proposal above. */
   yes: Vote[]
   /** All NO votes against the proposal above. */
   no: Vote[]
   /**
-   * All latest YES votes by party (guaranteed to be unique),
-   * where key (string) is the party ID (public key) and
+   * All latest YES votes by party which is guaranteed to be unique,
+   * where key (string) is the party ID i.e. public key and
    * value (Vote) is the vote cast by the given party.
    */
   yesParty: { [key: string]: Vote }
   /**
-   * All latest NO votes by party (guaranteed to be unique),
-   * where key (string) is the party ID (public key) and
+   * All latest NO votes by party which is guaranteed to be unique,
+   * where key (string) is the party ID i.e. public key and
    * value (Vote) is the vote cast by the given party.
    */
   noParty: { [key: string]: Vote }
@@ -320,31 +320,31 @@ export interface GovernanceData_NoPartyEntry {
 
 /** Governance proposal */
 export interface Proposal {
-  /** Unique proposal identifier. */
+  /** Unique proposal ID. */
   id: string
   /** Proposal reference. */
   reference: string
-  /** Party identifier (public key) of the author (the party submitting the proposal). */
+  /** Party ID i.e. public key of the party submitting the proposal. */
   partyId: string
   /** Proposal state. */
   state: Proposal_State
-  /** Proposal timestamp for date and time (in nanoseconds) when proposal was submitted to the network. */
+  /** Proposal timestamp for date and time as Unix time in nanoseconds when proposal was submitted to the network. */
   timestamp: number
   /** Proposal configuration and the actual change that is meant to be executed when proposal is enacted. */
   terms: ProposalTerms | undefined
-  /** A reason for the current state of the proposal, this may be set in case of REJECTED and FAILED statuses. */
+  /** Reason for the current state of the proposal, this may be set in case of REJECTED and FAILED statuses. */
   reason?: ProposalError | undefined
-  /** The detailed error associated to the reason. */
+  /** Detailed error associated to the reason. */
   errorDetails?: string | undefined
-  /** The rationale behind a proposal. */
+  /** Rationale behind a proposal. */
   rationale: ProposalRationale | undefined
-  /** The required vote participation for this proposal. */
+  /** Required vote participation for this proposal. */
   requiredParticipation: string
-  /** The required majority for this proposal. */
+  /** Required majority for this proposal. */
   requiredMajority: string
-  /** The required participation from liquidity providers, optional (required for market update proposal). */
+  /** Required participation from liquidity providers, optional but is required for market update proposal. */
   requiredLiquidityProviderParticipation?: string | undefined
-  /** The require majority from liquidity providers, optional (required for market update proposal). */
+  /** Required majority from liquidity providers, optional but is required for market update proposal. */
   requiredLiquidityProviderMajority?: string | undefined
 }
 
@@ -366,9 +366,9 @@ export enum Proposal_State {
   STATE_OPEN = 2,
   /** STATE_PASSED - Proposal has gained enough support to be executed */
   STATE_PASSED = 3,
-  /** STATE_REJECTED - Proposal wasn't accepted (proposal terms failed validation due to wrong configuration or failing to meet network requirements) */
+  /** STATE_REJECTED - Proposal wasn't accepted i.e. proposal terms failed validation due to wrong configuration or failed to meet network requirements. */
   STATE_REJECTED = 4,
-  /** STATE_DECLINED - Proposal didn't get enough votes (either failing to gain required participation or majority level) */
+  /** STATE_DECLINED - Proposal didn't get enough votes, e.g. either failed to gain required participation or majority level. */
   STATE_DECLINED = 5,
   /** STATE_ENACTED - Proposal enacted */
   STATE_ENACTED = 6,
@@ -379,13 +379,13 @@ export enum Proposal_State {
 
 /** Governance vote */
 export interface Vote {
-  /** Voter's party identifier. */
+  /** Voter's party ID. */
   partyId: string
   /** Actual vote. */
   value: Vote_Value
-  /** Identifier of the proposal being voted on. */
+  /** Proposal ID being voted on. */
   proposalId: string
-  /** Vote timestamp for date and time (in nanoseconds) when vote was submitted to the network. */
+  /** Vote timestamp for date and time as Unix time in nanoseconds when vote was submitted to the network. */
   timestamp: number
   /** Total number of governance token for the party that cast the vote. */
   totalGovernanceTokenBalance: string
@@ -399,9 +399,9 @@ export interface Vote {
 export enum Vote_Value {
   /** VALUE_UNSPECIFIED - Default value, always invalid */
   VALUE_UNSPECIFIED = 0,
-  /** VALUE_NO - A vote against the proposal */
+  /** VALUE_NO - Vote against the proposal */
   VALUE_NO = 1,
-  /** VALUE_YES - A vote in favour of the proposal */
+  /** VALUE_YES - Vote in favour of the proposal */
   VALUE_YES = 2,
   UNRECOGNIZED = -1,
 }

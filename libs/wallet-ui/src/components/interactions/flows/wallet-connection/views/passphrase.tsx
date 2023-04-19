@@ -23,7 +23,7 @@ export const PassphraseView = ({
   onClose,
 }: WalletConnectionProps) => {
   const [isLoading, setLoading] = useState(false)
-  const { service } = useGlobal()
+  const { service, client, dispatch } = useGlobal()
   const {
     register,
     handleSubmit,
@@ -56,25 +56,37 @@ export const PassphraseView = ({
   }
 
   const onSubmit = async ({ passphrase }: Result) => {
-    setLoading(true)
-    try {
-      await service.RespondToInteraction({
-        traceID: data.traceID,
-        name: 'ENTERED_PASSPHRASE',
-        data: {
+    if (data.selectedWallet) {
+      setLoading(true)
+      try {
+        await client.UnlockWallet({
+          wallet: data.selectedWallet,
           passphrase,
-        },
-      })
-    } catch (err) {
-      onUpdate({
-        ...data,
-        error: {
-          type: 'Backend error',
-          error: `${err}`,
-        },
-      })
-    } finally {
-      setLoading(false)
+        })
+
+        dispatch({
+          type: 'ACTIVATE_WALLET',
+          wallet: data.selectedWallet,
+        })
+
+        await service.RespondToInteraction({
+          traceID: data.traceID,
+          name: 'ENTERED_PASSPHRASE',
+          data: {
+            passphrase,
+          },
+        })
+      } catch (err) {
+        onUpdate({
+          ...data,
+          error: {
+            type: 'Backend error',
+            error: `${err}`,
+          },
+        })
+      } finally {
+        setLoading(false)
+      }
     }
   }
 

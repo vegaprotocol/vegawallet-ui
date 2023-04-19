@@ -3,14 +3,14 @@
 export const protobufPackage = 'vega.commands.v1'
 
 /**
- * A signature to authenticate a transaction and to be verified by the Vega
+ * Signature to authenticate a transaction and to be verified by the Vega
  * network.
  */
 export interface Signature {
-  /** The bytes of the signature (hex-encoded). */
+  /** Hex encoded bytes of the signature. */
   value: string
-  /** The algorithm used to create the signature. */
+  /** Algorithm used to create the signature. */
   algo: string
-  /** The version of the signature used to create the signature. */
+  /** Version of the signature used to create the signature. */
   version: number
 }

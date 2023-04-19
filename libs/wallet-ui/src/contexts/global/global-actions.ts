@@ -2,7 +2,6 @@ import type { WalletModel, WalletAdmin } from '@vegaprotocol/wallet-admin'
 
 import type { Service, AppConfig } from '../../types/service'
 import type { Logger } from '../../types/logger'
-import { requestPassphrase } from '../../components/passphrase-modal'
 import { AppToaster } from '../../components/toaster'
 import { Intent } from '../../config/intent'
 import type { GlobalDispatch, GlobalState } from './global-context'
@@ -291,16 +290,13 @@ export function createActions(service: Service, client: WalletAdmin) {
       return async (dispatch: GlobalDispatch) => {
         logger.debug('AddKeyPair')
         try {
-          const passphrase = await requestPassphrase()
           const res = await client.GenerateKey({
             wallet,
-            passphrase,
             metadata: [],
           })
 
           const keypair = await client.DescribeKey({
             wallet,
-            passphrase,
             publicKey: res.publicKey ?? '',
           })
 

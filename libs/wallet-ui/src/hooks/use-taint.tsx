@@ -1,6 +1,5 @@
 import { useCallback, useState, useMemo } from 'react'
 
-import { requestPassphrase } from '../components/passphrase-modal'
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import type { GlobalActions } from '../contexts/global/global-actions'
@@ -24,16 +23,13 @@ export const useTaint = (
         return
       }
 
-      const passphrase = await requestPassphrase()
       await client.TaintKey({
         wallet,
-        passphrase,
         publicKey: publicKey,
       })
 
       const keypair = await client.DescribeKey({
         wallet,
-        passphrase,
         publicKey,
       })
 
@@ -58,12 +54,10 @@ export const useTaint = (
         return
       }
 
-      const passphrase = await requestPassphrase()
-      await client.UntaintKey({ wallet, passphrase, publicKey })
+      await client.UntaintKey({ wallet, publicKey })
 
       const keypair = await client.DescribeKey({
         wallet,
-        passphrase,
         publicKey,
       })
 

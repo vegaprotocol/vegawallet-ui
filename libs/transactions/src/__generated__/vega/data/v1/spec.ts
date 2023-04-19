@@ -18,19 +18,19 @@ export interface Filter {
 
 /** PropertyKey describes the property key contained in data source data. */
 export interface PropertyKey {
-  /** name is the name of the property. */
+  /** Name of the property. */
   name: string
-  /** type is the type of the property. */
+  /** Data type of the property. */
   type: PropertyKey_Type
   /**
-   * An optional decimal place to be be applied on the provided value
+   * Optional decimal place to be be applied on the provided value
    * valid only for PropertyType of type DECIMAL and INTEGER
    */
   numberDecimalPlaces?: number | undefined
 }
 
 /**
- * Type describes the type of properties that are supported by the data source
+ * Type describes the data type of properties that are supported by the data source
  * engine.
  */
 export enum PropertyKey_Type {
@@ -53,13 +53,13 @@ export enum PropertyKey_Type {
 
 /** Condition describes the condition that must be validated by the network */
 export interface Condition {
-  /** comparator is the type of comparison to make on the value. */
+  /** Type of comparison to make on the value. */
   operator: Condition_Operator
-  /** value is used by the comparator. */
+  /** Value to be compared with by the operator. */
   value: string
 }
 
-/** Comparator describes the type of comparison. */
+/** Operator describes the type of comparison. */
 export enum Condition_Operator {
   /** OPERATOR_UNSPECIFIED - The default value */
   OPERATOR_UNSPECIFIED = 0,

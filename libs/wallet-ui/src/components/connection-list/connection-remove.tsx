@@ -5,7 +5,6 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { ButtonUnstyled } from '../button-unstyled'
-import { requestPassphrase } from '..//passphrase-modal'
 
 type RemoveDialogProps = {
   wallet: Wallet
@@ -20,11 +19,9 @@ export const Remove = ({ wallet, hostname, onClose }: RemoveDialogProps) => {
   const handleRemoval = useCallback(async () => {
     setLoading(true)
     const hostConnection = wallet.connections?.[hostname]
-    const passphrase = await requestPassphrase()
 
     await client.RevokePermissions({
       wallet: wallet.name,
-      passphrase,
       hostname,
     })
 

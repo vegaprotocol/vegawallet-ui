@@ -2,24 +2,24 @@
 
 export const protobufPackage = 'vega'
 
-/** A deposit for a Vega built-in asset */
+/** Deposit for a Vega built-in asset */
 export interface BuiltinAssetDeposit {
-  /** A Vega network internal asset identifier. */
+  /** Vega network internal asset ID. */
   vegaAssetId: string
-  /** A Vega party identifier (pub-key). */
+  /** Vega party ID i.e. public key. */
   partyId: string
   /**
-   * The amount to be deposited
+   * Amount to be deposited
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
 }
 
-/** A withdrawal for a Vega built-in asset */
+/** Withdrawal for a Vega built-in asset */
 export interface BuiltinAssetWithdrawal {
-  /** A Vega network internal asset identifier. */
+  /** Vega network internal asset ID. */
   vegaAssetId: string
-  /** A Vega network party identifier (pub-key). */
+  /** Vega network party ID i.e. public key. */
   partyId: string
   /**
    * The amount to be withdrawn
@@ -28,7 +28,7 @@ export interface BuiltinAssetWithdrawal {
   amount: string
 }
 
-/** An event related to a Vega built-in asset */
+/** Event related to a Vega built-in asset */
 export interface BuiltinAssetEvent {
   /** Built-in asset deposit. */
   deposit?: BuiltinAssetDeposit | undefined
@@ -36,58 +36,58 @@ export interface BuiltinAssetEvent {
   withdrawal?: BuiltinAssetWithdrawal | undefined
 }
 
-/** An asset allow-listing for an ERC20 token */
+/** Asset allow-listing for an ERC20 token */
 export interface ERC20AssetList {
-  /** The Vega network internal identifier of the asset. */
+  /** Vega network internal asset ID. */
   vegaAssetId: string
-  /** The ethereum address of the asset. */
+  /** Ethereum address of the asset. */
   assetSource: string
 }
 
-/** An asset deny-listing for an ERC20 token */
+/** Asset deny-listing for an ERC20 token */
 export interface ERC20AssetDelist {
-  /** The Vega network internal identifier of the asset. */
+  /** Vega network internal asset ID. */
   vegaAssetId: string
 }
 
 export interface ERC20AssetLimitsUpdated {
-  /** The Vega network internal identifier of the asset. */
+  /** Vega network internal asset ID. */
   vegaAssetId: string
-  /** The Ethereum wallet that initiated the deposit. */
+  /** Ethereum wallet that initiated the deposit. */
   sourceEthereumAddress: string
-  /** The updated lifetime limits. */
+  /** Updated lifetime limits. */
   lifetimeLimits: string
-  /** The updated withdrawal threshold. */
+  /** Updated withdrawal threshold. */
   withdrawThreshold: string
 }
 
-/** An asset deposit for an ERC20 token */
+/** Asset deposit for an ERC20 token */
 export interface ERC20Deposit {
-  /** The vega network internal identifier of the asset. */
+  /** Vega network internal asset ID. */
   vegaAssetId: string
-  /** The Ethereum wallet that initiated the deposit. */
+  /** Ethereum wallet that initiated the deposit. */
   sourceEthereumAddress: string
-  /** The Vega party identifier (pub-key) which is the target of the deposit. */
+  /** Vega party ID i.e. public key that is the target of the deposit. */
   targetPartyId: string
-  /** The amount to be deposited. */
+  /** Amount to be deposited. */
   amount: string
 }
 
-/** An asset withdrawal for an ERC20 token */
+/** Asset withdrawal for an ERC20 token */
 export interface ERC20Withdrawal {
-  /** The Vega network internal identifier of the asset. */
+  /** Vega network internal asset ID. */
   vegaAssetId: string
-  /** The target Ethereum wallet address. */
+  /** Target Ethereum wallet address. */
   targetEthereumAddress: string
-  /** The reference nonce used for the transaction. */
+  /** Reference nonce used for the transaction. */
   referenceNonce: string
 }
 
-/** An event related to an ERC20 token */
+/** Event related to an ERC20 token */
 export interface ERC20Event {
   /** Index of the log in the transaction. */
   index: number
-  /** The block in which the transaction was added. */
+  /** Block in which the transaction was added. */
   block: number
   /** List an ERC20 asset. */
   assetList?: ERC20AssetList | undefined
@@ -105,53 +105,53 @@ export interface ERC20Event {
   bridgeResumed?: boolean | undefined
 }
 
-/** A new signer added to the ERC20 bridge */
+/** New signer added to the ERC20 bridge */
 export interface ERC20SignerAdded {
-  /** The ethereum address of the new signer */
+  /** Ethereum address of the new signer */
   newSigner: string
-  /** The nonce create by the vega network used for this new signer */
+  /** Nonce created by the Vega network used for this new signer */
   nonce: string
   /**
-   * The time at which the block was produced
+   * Time at which the block was produced
    * will be used to inform the core at what time
    * the stake was made unavailable.
    */
   blockTime: number
 }
 
-/** A signer removed from the ERC20 bridge */
+/** Signer removed from the ERC20 bridge */
 export interface ERC20SignerRemoved {
-  /** The ethereum address of the old signer */
+  /** Ethereum address of the old signer */
   oldSigner: string
-  /** The nonce create by the vega network used for this old signer */
+  /** Nonce created by the Vega network used for this old signer */
   nonce: string
   /**
-   * The time at which the block was produced
-   * will be used to inform the core at what time
+   * Time at which the block was produced.
+   * Will be used to inform the core at what time
    * the stake was made unavailable.
    */
   blockTime: number
 }
 
-/** The threshold has been updated on the multisig control */
+/** Threshold has been updated on the multisig control */
 export interface ERC20ThresholdSet {
-  /** The new threshold */
+  /** New threshold value to set */
   newThreshold: number
-  /** The nonce created by the Vega network */
+  /** Nonce created by the Vega network */
   nonce: string
   /**
-   * The time at which the block was produced
-   * will be used to inform the core at what time
+   * Time at which the block was produced.
+   * Will be used to inform the core at what time
    * the stake was made unavailable.
    */
   blockTime: number
 }
 
-/** An event related to the ERC20 MultiSig */
+/** Event related to the ERC20 MultiSig */
 export interface ERC20MultiSigEvent {
   /** Index of the log in the transaction */
   index: number
-  /** The block in which the transaction was added */
+  /** Block in which the transaction was added */
   block: number
   /** Add a signer to the erc20 bridge */
   signerAdded?: ERC20SignerAdded | undefined
@@ -161,10 +161,11 @@ export interface ERC20MultiSigEvent {
   thresholdSet?: ERC20ThresholdSet | undefined
 }
 
+/** Event related to staking on the Vega network. */
 export interface StakingEvent {
-  /** Index of the log in the transaction */
+  /** Index of the log in the transaction. */
   index: number
-  /** The block in which the transaction was added */
+  /** Block in which the transaction was added. */
   block: number
   stakeDeposited?: StakeDeposited | undefined
   stakeRemoved?: StakeRemoved | undefined
@@ -174,28 +175,28 @@ export interface StakingEvent {
 export interface StakeDeposited {
   /** Ethereum Address of the user depositing stake (hex encode with 0x prefix) */
   ethereumAddress: string
-  /** The public of the party receiving the stake deposit (hex encode) */
+  /** Hex encoded public key of the party receiving the stake deposit. */
   vegaPublicKey: string
   /**
-   * The amount deposited (base 10)
+   * Amount deposited as an unsigned base 10 integer.
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
   /**
-   * The time at which the block was produced
-   * will be used to inform the core at what time
+   * Time at which the block was produced.
+   * Will be used to inform the core at what time
    * the stake started to be available.
    */
   blockTime: number
 }
 
 export interface StakeRemoved {
-  /** Ethereum address of the user removing stake (hex encode with 0x prefix) */
+  /** Ethereum address of the user removing stake. This should be hex encoded with 0x prefix. */
   ethereumAddress: string
-  /** The public key of the party from which to remove stake (hex encode) */
+  /** Hex encoded public key of the party from which to remove stake. */
   vegaPublicKey: string
   /**
-   * The amount removed (base 10)
+   * Amount removed as a base 10 unsigned integer.
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the staking token.
    */
   amount: string
@@ -208,10 +209,10 @@ export interface StakeRemoved {
 }
 
 export interface StakeTotalSupply {
-  /** The address of the staking asset */
+  /** Address of the staking asset */
   tokenAddress: string
   /**
-   * The total supply observed for the token
+   * Total supply observed for the token as an unsigned based 10 integer.
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the staking token.
    */
   totalSupply: string

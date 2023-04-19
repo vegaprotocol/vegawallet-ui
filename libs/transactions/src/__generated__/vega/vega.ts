@@ -7,7 +7,7 @@ import type {
 
 export const protobufPackage = 'vega'
 
-/** A side relates to the direction of an order, to Buy, or Sell */
+/** Side relates to the direction of an order, to Buy, or Sell */
 export enum Side {
   /** SIDE_UNSPECIFIED - Default value, always invalid */
   SIDE_UNSPECIFIED = 0,
@@ -22,7 +22,7 @@ export enum Side {
 export enum Interval {
   /** INTERVAL_UNSPECIFIED - Default value, always invalid */
   INTERVAL_UNSPECIFIED = 0,
-  /** INTERVAL_BLOCK - The block interval is not a fixed amount of time, rather it used to indicate grouping of events that occur in a single block. It is usually about a second. */
+  /** INTERVAL_BLOCK - Block interval is not a fixed amount of time, rather it is used to indicate grouping of events that occur in a single block. It is usually about a second. */
   INTERVAL_BLOCK = -1,
   /** INTERVAL_I1M - 1 minute. */
   INTERVAL_I1M = 60,
@@ -39,6 +39,7 @@ export enum Interval {
   UNRECOGNIZED = -1,
 }
 
+/** Represents the status of a position */
 export enum PositionStatus {
   POSITION_STATUS_UNSPECIFIED = 0,
   POSITION_STATUS_ORDERS_CLOSED = 1,
@@ -67,7 +68,7 @@ export enum AuctionTrigger {
 }
 
 /**
- * A pegged reference defines which price point a pegged order is linked to - meaning
+ * Pegged reference defines which price point a pegged order is linked to - meaning
  * the price for a pegged order is calculated from the value of the reference price point
  */
 export enum PeggedReference {
@@ -91,7 +92,7 @@ export enum OrderError {
   ORDER_ERROR_UNSPECIFIED = 0,
   /** ORDER_ERROR_INVALID_MARKET_ID - Order was submitted for a market that does not exist */
   ORDER_ERROR_INVALID_MARKET_ID = 1,
-  /** ORDER_ERROR_INVALID_ORDER_ID - Order was submitted with an invalid identifier */
+  /** ORDER_ERROR_INVALID_ORDER_ID - Order was submitted with an invalid ID */
   ORDER_ERROR_INVALID_ORDER_ID = 2,
   /** ORDER_ERROR_OUT_OF_SEQUENCE - Order was amended with a sequence number that was not previous version + 1 */
   ORDER_ERROR_OUT_OF_SEQUENCE = 3,
@@ -102,19 +103,19 @@ export enum OrderError {
   /** ORDER_ERROR_REMOVAL_FAILURE - Failed to remove an order from the book */
   ORDER_ERROR_REMOVAL_FAILURE = 6,
   /**
-   * ORDER_ERROR_INVALID_EXPIRATION_DATETIME - An order with `TimeInForce.TIME_IN_FORCE_GTT` was submitted or amended
+   * ORDER_ERROR_INVALID_EXPIRATION_DATETIME - Order with `TimeInForce.TIME_IN_FORCE_GTT` was submitted or amended
    * with an expiration that was badly formatted or otherwise invalid
    */
   ORDER_ERROR_INVALID_EXPIRATION_DATETIME = 7,
   /** ORDER_ERROR_INVALID_ORDER_REFERENCE - Order was submitted or amended with an invalid reference field */
   ORDER_ERROR_INVALID_ORDER_REFERENCE = 8,
-  /** ORDER_ERROR_EDIT_NOT_ALLOWED - Order amend was submitted for an order field that cannot not be amended (e.g. order identifier) */
+  /** ORDER_ERROR_EDIT_NOT_ALLOWED - Order amend was submitted for an order field that cannot not be amended (e.g. order ID) */
   ORDER_ERROR_EDIT_NOT_ALLOWED = 9,
   /** ORDER_ERROR_AMEND_FAILURE - Amend failure because amend details do not match original order */
   ORDER_ERROR_AMEND_FAILURE = 10,
   /** ORDER_ERROR_NOT_FOUND - Order not found in an order book or store */
   ORDER_ERROR_NOT_FOUND = 11,
-  /** ORDER_ERROR_INVALID_PARTY_ID - Order was submitted with an invalid or missing party identifier */
+  /** ORDER_ERROR_INVALID_PARTY_ID - Order was submitted with an invalid or missing party ID */
   ORDER_ERROR_INVALID_PARTY_ID = 12,
   /** ORDER_ERROR_MARKET_CLOSED - Order was submitted for a market that has closed */
   ORDER_ERROR_MARKET_CLOSED = 13,
@@ -138,9 +139,9 @@ export enum OrderError {
   ORDER_ERROR_INCORRECT_MARKET_TYPE = 22,
   /** ORDER_ERROR_INVALID_TIME_IN_FORCE - Order was submitted with invalid time in force */
   ORDER_ERROR_INVALID_TIME_IN_FORCE = 23,
-  /** ORDER_ERROR_CANNOT_SEND_GFN_ORDER_DURING_AN_AUCTION - A GFN order has got to the market when it is in auction mode */
+  /** ORDER_ERROR_CANNOT_SEND_GFN_ORDER_DURING_AN_AUCTION - Good For Normal order has reached the market when it is in auction mode */
   ORDER_ERROR_CANNOT_SEND_GFN_ORDER_DURING_AN_AUCTION = 24,
-  /** ORDER_ERROR_CANNOT_SEND_GFA_ORDER_DURING_CONTINUOUS_TRADING - A GFA order has got to the market when it is in continuous trading mode */
+  /** ORDER_ERROR_CANNOT_SEND_GFA_ORDER_DURING_CONTINUOUS_TRADING - Good For Auction order has reached the market when it is in continuous trading mode */
   ORDER_ERROR_CANNOT_SEND_GFA_ORDER_DURING_CONTINUOUS_TRADING = 25,
   /** ORDER_ERROR_CANNOT_AMEND_TO_GTT_WITHOUT_EXPIRYAT - Attempt to amend order to GTT without ExpiryAt */
   ORDER_ERROR_CANNOT_AMEND_TO_GTT_WITHOUT_EXPIRYAT = 26,
@@ -173,7 +174,7 @@ export enum OrderError {
   /** ORDER_ERROR_OFFSET_MUST_BE_GREATER_THAN_ZERO - Pegged order offset must be > zero */
   ORDER_ERROR_OFFSET_MUST_BE_GREATER_THAN_ZERO = 42,
   /**
-   * ORDER_ERROR_INSUFFICIENT_ASSET_BALANCE - The party has an insufficient balance, or does not have
+   * ORDER_ERROR_INSUFFICIENT_ASSET_BALANCE - Party has an insufficient balance, or does not have
    * a general account to submit the order (no deposits made
    * for the required asset)
    */
@@ -184,18 +185,18 @@ export enum OrderError {
   ORDER_ERROR_UNABLE_TO_REPRICE_PEGGED_ORDER = 45,
   /** ORDER_ERROR_UNABLE_TO_AMEND_PRICE_ON_PEGGED_ORDER - It is not possible to amend the price of an existing pegged order */
   ORDER_ERROR_UNABLE_TO_AMEND_PRICE_ON_PEGGED_ORDER = 46,
-  /** ORDER_ERROR_NON_PERSISTENT_ORDER_OUT_OF_PRICE_BOUNDS - An FOK, IOC, or GFN order was rejected because it resulted in trades outside the price bounds */
+  /** ORDER_ERROR_NON_PERSISTENT_ORDER_OUT_OF_PRICE_BOUNDS - FOK, IOC, or GFN order was rejected because it resulted in trades outside the price bounds */
   ORDER_ERROR_NON_PERSISTENT_ORDER_OUT_OF_PRICE_BOUNDS = 47,
   /** ORDER_ERROR_TOO_MANY_PEGGED_ORDERS - Unable to submit pegged order, temporarily too many pegged orders across all markets */
   ORDER_ERROR_TOO_MANY_PEGGED_ORDERS = 48,
-  /** ORDER_ERROR_POST_ONLY_ORDER_WOULD_TRADE - The post order would trade */
+  /** ORDER_ERROR_POST_ONLY_ORDER_WOULD_TRADE - Post order would trade */
   ORDER_ERROR_POST_ONLY_ORDER_WOULD_TRADE = 49,
-  /** ORDER_ERROR_REDUCE_ONLY_ORDER_WOULD_NOT_REDUCE_POSITION - The post order would trade */
+  /** ORDER_ERROR_REDUCE_ONLY_ORDER_WOULD_NOT_REDUCE_POSITION - Post order would trade */
   ORDER_ERROR_REDUCE_ONLY_ORDER_WOULD_NOT_REDUCE_POSITION = 50,
   UNRECOGNIZED = -1,
 }
 
-/** The Vega blockchain status as reported by the node the caller is connected to */
+/** Vega blockchain status as reported by the node the caller is connected to */
 export enum ChainStatus {
   /** CHAIN_STATUS_UNSPECIFIED - Default value, always invalid */
   CHAIN_STATUS_UNSPECIFIED = 0,
@@ -219,10 +220,10 @@ export enum AccountType {
   /**
    * ACCOUNT_TYPE_MARGIN - Margin accounts contain funds set aside for the margin needed to support a party's open positions.
    * Each party will have a margin account for each market they have traded in.
-   * The required initial margin is allocated to each market from your general account.
+   * Required initial margin is allocated to each market from user's general account.
    * Collateral in the margin account can't be withdrawn or used as margin on another market until
    * it is released back to the general account.
-   * The Vega protocol uses an internal accounting system to segregate funds held as
+   * Vega protocol uses an internal accounting system to segregate funds held as
    * margin from other funds to ensure they are never lost or 'double spent'
    *
    * Margin account funds will vary as margin requirements on positions change
@@ -310,9 +311,9 @@ export enum TransferType {
   TRANSFER_TYPE_BOND_SLASHING = 20,
   /** TRANSFER_TYPE_REWARD_PAYOUT - Reward payout received */
   TRANSFER_TYPE_REWARD_PAYOUT = 21,
-  /** TRANSFER_TYPE_TRANSFER_FUNDS_SEND - A network internal instruction for the collateral engine to move funds from a user's general account into the pending transfers pool */
+  /** TRANSFER_TYPE_TRANSFER_FUNDS_SEND - Internal Vega network instruction for the collateral engine to move funds from a user's general account into the pending transfers pool */
   TRANSFER_TYPE_TRANSFER_FUNDS_SEND = 22,
-  /** TRANSFER_TYPE_TRANSFER_FUNDS_DISTRIBUTE - A network internal instruction for the collateral engine to move funds from the pending transfers pool account into the destination account */
+  /** TRANSFER_TYPE_TRANSFER_FUNDS_DISTRIBUTE - Internal Vega network instruction for the collateral engine to move funds from the pending transfers pool account into the destination account */
   TRANSFER_TYPE_TRANSFER_FUNDS_DISTRIBUTE = 23,
   /** TRANSFER_TYPE_CLEAR_ACCOUNT - Market-related accounts emptied because market has closed */
   TRANSFER_TYPE_CLEAR_ACCOUNT = 24,
@@ -337,9 +338,9 @@ export enum DispatchMetric {
 /** Node status type */
 export enum NodeStatus {
   NODE_STATUS_UNSPECIFIED = 0,
-  /** NODE_STATUS_VALIDATOR - The node is validating */
+  /** NODE_STATUS_VALIDATOR - Node is a validating node */
   NODE_STATUS_VALIDATOR = 1,
-  /** NODE_STATUS_NON_VALIDATOR - The node is non-validating */
+  /** NODE_STATUS_NON_VALIDATOR - Node is a non-validating node */
   NODE_STATUS_NON_VALIDATOR = 2,
   UNRECOGNIZED = -1,
 }
@@ -347,9 +348,9 @@ export enum NodeStatus {
 /** What epoch action has occurred */
 export enum EpochAction {
   EPOCH_ACTION_UNSPECIFIED = 0,
-  /** EPOCH_ACTION_START - The epoch update is for a new epoch. */
+  /** EPOCH_ACTION_START - Epoch update is for a new epoch. */
   EPOCH_ACTION_START = 1,
-  /** EPOCH_ACTION_END - The epoch update is for the end of an epoch. */
+  /** EPOCH_ACTION_END - Epoch update is for the end of an epoch. */
   EPOCH_ACTION_END = 2,
   UNRECOGNIZED = -1,
 }
@@ -357,18 +358,18 @@ export enum EpochAction {
 /** Validation status of the node */
 export enum ValidatorNodeStatus {
   VALIDATOR_NODE_STATUS_UNSPECIFIED = 0,
-  /** VALIDATOR_NODE_STATUS_TENDERMINT - The node is a tendermint validator */
+  /** VALIDATOR_NODE_STATUS_TENDERMINT - Node is a tendermint validator */
   VALIDATOR_NODE_STATUS_TENDERMINT = 1,
-  /** VALIDATOR_NODE_STATUS_ERSATZ - The node is an ersatz validator */
+  /** VALIDATOR_NODE_STATUS_ERSATZ - Node is an ersatz validator */
   VALIDATOR_NODE_STATUS_ERSATZ = 2,
-  /** VALIDATOR_NODE_STATUS_PENDING - The node is a pending validator */
+  /** VALIDATOR_NODE_STATUS_PENDING - Node is a pending validator */
   VALIDATOR_NODE_STATUS_PENDING = 3,
   UNRECOGNIZED = -1,
 }
 
-/** A party represents an entity who wishes to trade on or query a Vega network */
+/** Party represents an entity who wishes to trade on or query a Vega network */
 export interface Party {
-  /** A unique identifier for the party, typically represented by a public key. */
+  /** Unique ID for the party, typically represented by a public key. */
   id: string
 }
 
@@ -387,19 +388,19 @@ export interface RiskFactor {
  * They can be used for any limit order that is valid during continuous trading
  */
 export interface PeggedOrder {
-  /** The price point the order is linked to. */
+  /** Price point the order is linked to. */
   reference: PeggedReference
   /** Offset from the price reference. */
   offset: string
 }
 
-/** An order can be submitted, amended and cancelled on Vega in an attempt to make trades with other parties */
+/** Orders can be submitted, amended and cancelled on Vega in an attempt to make trades with other parties */
 export interface Order {
-  /** Unique identifier for the order (set by the system after consensus). */
+  /** Unique ID generated for the order. This is set by the system after consensus. */
   id: string
-  /** Market identifier for the order. */
+  /** Market ID for the order. */
   marketId: string
-  /** Party identifier for the order. */
+  /** Party ID for the order. */
   partyId: string
   /** Side for the order, e.g. SIDE_BUY or SIDE_SELL. */
   side: Side
@@ -429,7 +430,7 @@ export interface Order {
   /** Timestamp for when the order was created at, in nanoseconds. */
   createdAt: number
   /**
-   * The current status for the order.
+   * Current status for the order.
    * - For detail on `STATUS_REJECTED` please check the OrderError value given in the `reason` field.
    */
   status: Order_Status
@@ -437,7 +438,7 @@ export interface Order {
   expiresAt: number
   /**
    * Reference given for the order, this is typically used to retrieve an order submitted through consensus
-   * - Currently set internally by the node to return a unique reference identifier for the order submission.
+   * - Currently set internally by the node to return a unique reference ID for the order submission.
    */
   reference: string
   /**
@@ -447,10 +448,10 @@ export interface Order {
   reason?: OrderError | undefined
   /** Timestamp for when the order was last updated, in nanoseconds. */
   updatedAt: number
-  /** The version for the order, initial value is version 1 and is incremented after each successful amend */
+  /** Version for the order, initial value is version 1 and is incremented after each successful amend */
   version: number
   /**
-   * Batch identifier for the order, used internally for orders submitted during auctions
+   * Batch ID for the order, used internally for orders submitted during auctions
    * to keep track of the auction batch this order falls under (required for fees calculation)
    */
   batchId: number
@@ -488,8 +489,8 @@ export enum Order_TimeInForce {
    */
   TIME_IN_FORCE_IOC = 3,
   /**
-   * TIME_IN_FORCE_FOK - Fill or kill, The order either trades completely (remainingSize == 0 after adding)
-   * or not at all, does not remain on the book if it doesn't trade
+   * TIME_IN_FORCE_FOK - Fill or kill, the order either trades completely i.e. remainingSize == 0 after adding,
+   * or not at all, and does not remain on the book if it doesn't trade
    */
   TIME_IN_FORCE_FOK = 4,
   /** TIME_IN_FORCE_GFA - Good for auction, this order is only accepted during an auction period */
@@ -540,13 +541,13 @@ export enum Order_Status {
 
 /** Used when cancelling an order */
 export interface OrderCancellationConfirmation {
-  /** The order that was cancelled. */
+  /** Order that was cancelled. */
   order: Order | undefined
 }
 
 /** Used when confirming an order */
 export interface OrderConfirmation {
-  /** The order that was confirmed. */
+  /** Order that was confirmed. */
   order: Order | undefined
   /** 0 or more trades that were emitted. */
   trades: Trade[]
@@ -556,23 +557,23 @@ export interface OrderConfirmation {
 
 /** AuctionIndicativeState is used to emit an event with the indicative price/volume per market during an auction */
 export interface AuctionIndicativeState {
-  /** The market identifier for which this state relates to. */
+  /** Market ID for which this state relates to. */
   marketId: string
-  /** The Indicative Uncrossing Price is the price at which all trades would occur if the auction uncrossed now. */
+  /** Indicative uncrossing price is the price at which all trades would occur if the auction uncrossed now. */
   indicativePrice: string
-  /** The Indicative Uncrossing Volume is the volume available at the Indicative crossing price if the auction uncrossed now. */
+  /** Indicative uncrossing volume is the volume available at the indicative crossing price if the auction uncrossed now. */
   indicativeVolume: number
-  /** The timestamp at which the auction started. */
+  /** Timestamp at which the auction started. */
   auctionStart: number
-  /** The timestamp at which the auction is meant to stop. */
+  /** Timestamp at which the auction is meant to stop. */
   auctionEnd: number
 }
 
 /** A trade occurs when an aggressive order crosses one or more passive orders on the order book for a market on Vega */
 export interface Trade {
-  /** Unique identifier for the trade (generated by Vega). */
+  /** Unique ID for the trade (generated by Vega). */
   id: string
-  /** Market identifier (the market that the trade occurred on). */
+  /** Market ID (the market that the trade occurred on). */
   marketId: string
   /**
    * Price for the trade, the price is an integer, for example `123456` is a correctly
@@ -585,9 +586,9 @@ export interface Trade {
    * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
    */
   size: number
-  /** Unique party identifier for the buyer. */
+  /** Unique party ID for the buyer. */
   buyer: string
-  /** Unique party identifier for the seller. */
+  /** Unique party ID for the seller. */
   seller: string
   /** Direction of the aggressive party e.g. SIDE_BUY or SIDE_SELL. */
   aggressor: Side
@@ -648,7 +649,7 @@ export interface Fee {
 }
 
 export interface TradeSet {
-  /** A set of one or more trades. */
+  /** Set of one or more trades. */
   trades: Trade[]
 }
 
@@ -659,7 +660,7 @@ export interface TradeSet {
 export interface Candle {
   /** Timestamp for the point in time when the candle was initially created/opened, in nanoseconds. */
   timestamp: number
-  /** An ISO-8601 datetime with nanosecond precision for when the candle was last updated. */
+  /** ISO-8601 datetime with nanosecond precision for when the candle was last updated. */
   datetime: string
   /**
    * Highest price for trading during the candle interval
@@ -709,7 +710,7 @@ export interface PriceLevel {
 
 /** Represents market depth or order book data for the specified market on Vega */
 export interface MarketDepth {
-  /** Market identifier. */
+  /** Market ID. */
   marketId: string
   /** Collection of price levels for the buy side of the book. */
   buy: PriceLevel[]
@@ -721,7 +722,7 @@ export interface MarketDepth {
 
 /** Represents the changed market depth since the last update */
 export interface MarketDepthUpdate {
-  /** Market identifier. */
+  /** Market ID. */
   marketId: string
   /** Collection of updated price levels for the buy side of the book. */
   buy: PriceLevel[]
@@ -735,9 +736,9 @@ export interface MarketDepthUpdate {
 
 /** Represents position data for a party on the specified market on Vega */
 export interface Position {
-  /** Market identifier. */
+  /** Market ID. */
   marketId: string
-  /** Party identifier. */
+  /** Party ID. */
   partyId: string
   /**
    * Open volume for the position, value is signed +ve for long and -ve for short
@@ -782,22 +783,22 @@ export interface PositionTrade {
   price: string
 }
 
-/** A deposit on to the Vega network */
+/** Deposit on to the Vega network */
 export interface Deposit {
-  /** Unique identifier for the deposit. */
+  /** Unique ID for the deposit. */
   id: string
   /** Status of the deposit. */
   status: Deposit_Status
-  /** Party identifier of the user initiating the deposit. */
+  /** Party ID of the user initiating the deposit. */
   partyId: string
-  /** The Vega asset targeted by this deposit. */
+  /** Vega asset targeted by this deposit. */
   asset: string
   /**
-   * The amount to be deposited
+   * Amount to be deposited
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
-  /** The hash of the transaction from the foreign chain. */
+  /** Hash of the transaction from the foreign chain. */
   txHash: string
   /** Timestamp for when the Vega account was updated with the deposit. */
   creditedTimestamp: number
@@ -805,40 +806,40 @@ export interface Deposit {
   createdTimestamp: number
 }
 
-/** The status of the deposit */
+/** Status of the deposit */
 export enum Deposit_Status {
   /** STATUS_UNSPECIFIED - Default value, always invalid */
   STATUS_UNSPECIFIED = 0,
-  /** STATUS_OPEN - The deposit is being processed by the network */
+  /** STATUS_OPEN - Deposit is being processed by the network */
   STATUS_OPEN = 1,
-  /** STATUS_CANCELLED - The deposit has been cancelled by the network */
+  /** STATUS_CANCELLED - Deposit has been cancelled by the network */
   STATUS_CANCELLED = 2,
-  /** STATUS_FINALIZED - The deposit has been finalised and accounts have been updated */
+  /** STATUS_FINALIZED - Deposit has been finalised and accounts have been updated */
   STATUS_FINALIZED = 3,
   UNRECOGNIZED = -1,
 }
 
-/** A withdrawal from the Vega network */
+/** Withdrawal from the Vega network */
 export interface Withdrawal {
-  /** Unique identifier for the withdrawal. */
+  /** Unique ID for the withdrawal. */
   id: string
-  /** Unique party identifier of the user initiating the withdrawal. */
+  /** Unique party ID of the user initiating the withdrawal. */
   partyId: string
   /**
-   * The amount to be withdrawn
+   * Amount to be withdrawn
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
-  /** The asset to withdraw funds from. */
+  /** Asset to withdraw funds from. */
   asset: string
-  /** The status of the withdrawal. */
+  /** Status of the withdrawal. */
   status: Withdrawal_Status
   /**
-   * The reference which is used by the foreign chain
+   * Reference which is used by the foreign chain
    * to refer to this withdrawal.
    */
   ref: string
-  /** The hash of the foreign chain for this transaction. */
+  /** Hash of the foreign chain for this transaction. */
   txHash: string
   /** Timestamp for when the network started to process this withdrawal. */
   createdTimestamp: number
@@ -848,16 +849,16 @@ export interface Withdrawal {
   ext: WithdrawExt | undefined
 }
 
-/** The status of the withdrawal */
+/** Status of the withdrawal */
 export enum Withdrawal_Status {
   /** STATUS_UNSPECIFIED - Default value, always invalid */
   STATUS_UNSPECIFIED = 0,
-  /** STATUS_OPEN - The withdrawal is open and being processed by the network */
+  /** STATUS_OPEN - Withdrawal is open and being processed by the network */
   STATUS_OPEN = 1,
-  /** STATUS_REJECTED - The withdrawal have been cancelled */
+  /** STATUS_REJECTED - Withdrawal have been cancelled */
   STATUS_REJECTED = 2,
   /**
-   * STATUS_FINALIZED - The withdrawal went through and is fully finalised, the funds are removed from the
+   * STATUS_FINALIZED - Withdrawal went through and is fully finalised, the funds are removed from the
    * Vega network and are unlocked on the foreign chain bridge, for example, on the Ethereum network
    */
   STATUS_FINALIZED = 3,
@@ -870,18 +871,18 @@ export interface WithdrawExt {
   erc20?: Erc20WithdrawExt | undefined
 }
 
-/** An extension of data required for the withdraw submissions */
+/** Extension of data required for the withdraw submissions */
 export interface Erc20WithdrawExt {
-  /** The address into which the bridge will release the funds. */
+  /** Address into which the bridge will release the funds. */
   receiverAddress: string
 }
 
 /** Represents an account for an asset on Vega for a particular owner or party */
 export interface Account {
-  /** Unique account identifier (used internally by Vega). */
+  /** Unique account ID, used internally by Vega. */
   id: string
   /**
-   * The party that the account belongs to, special values include `network`, which represents the Vega network and is
+   * Party that the account belongs to, special values include `network`, which represents the Vega network and is
    * most commonly seen during liquidation of distressed trading positions.
    */
   owner: string
@@ -892,38 +893,38 @@ export interface Account {
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   balance: string
-  /** Asset identifier for the account. */
+  /** Asset ID for the account. */
   asset: string
-  /** Market identifier for the account, if `AccountType.ACCOUNT_TYPE_GENERAL` this will be empty. */
+  /** Market ID for the account, if `AccountType.ACCOUNT_TYPE_GENERAL` this will be empty. */
   marketId: string
-  /** The account type related to this account. */
+  /** Account type related to this account. */
   type: AccountType
 }
 
 /** Asset value information used within a transfer */
 export interface FinancialAmount {
   /**
-   * An unsigned integer amount of asset
+   * Unsigned integer amount of asset
    * This field is passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
-  /** Asset identifier. */
+  /** Asset ID. */
   asset: string
 }
 
 /** Represents a financial transfer within Vega */
 export interface Transfer {
-  /** Party identifier for the owner of the transfer. */
+  /** Party ID for the owner of the transfer. */
   owner: string
   /**
-   * A financial amount (of an asset) to transfer
+   * Financial amount of an asset to transfer
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: FinancialAmount | undefined
-  /** The type of transfer, gives the reason for the transfer. */
+  /** Type of transfer, gives the reason for the transfer. */
   type: TransferType
   /**
-   * A minimum amount
+   * Minimum amount
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   minAmount: string
@@ -932,9 +933,9 @@ export interface Transfer {
 }
 
 export interface DispatchStrategy {
-  /** The asset to use for metric. */
+  /** Asset to use for metric. */
   assetForMetric: string
-  /** The metric to apply. */
+  /** Metric to apply. */
   metric: DispatchMetric
   /** Optional markets in scope. */
   markets: string[]
@@ -947,29 +948,29 @@ export interface TransferRequest {
   /** One or more accounts to transfer to. */
   toAccount: Account[]
   /**
-   * An amount to transfer for the asset
+   * Amount to transfer for the asset
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
   /**
-   * The minimum amount that needs to be transferred for the transfer request. If this minimum isn't reached, it will error
+   * Minimum amount that needs to be transferred for the transfer request. If this minimum isn't reached, it will error
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   minAmount: string
-  /** Asset identifier. */
+  /** Asset ID. */
   asset: string
-  /** The type of the request for transfer. */
+  /** Type of the request for transfer. */
   type: TransferType
 }
 
 export interface AccountDetails {
-  /** The id of the asset of this account. */
+  /** Asset ID of this account. */
   assetId: string
-  /** The type of the account. */
+  /** Type of the account. */
   type: AccountType
-  /** not specified if network account. */
+  /** Not specified if network account. */
   owner?: string | undefined
-  /** not specified is account is not related to a market. */
+  /** Not specified if account is not related to a market. */
   marketId?: string | undefined
 }
 
@@ -980,7 +981,7 @@ export interface LedgerEntry {
   /** One or more accounts to transfer to. */
   toAccount: AccountDetails | undefined
   /**
-   * An amount to transfer
+   * Amount to transfer
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   amount: string
@@ -996,10 +997,10 @@ export interface LedgerEntry {
 
 /** Represents the balance for an account during a transfer */
 export interface PostTransferBalance {
-  /** The account relating to the transfer. */
+  /** Account relating to the transfer. */
   account: AccountDetails | undefined
   /**
-   * The balance relating to the transfer
+   * Balance relating to the transfer
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   balance: string
@@ -1008,7 +1009,7 @@ export interface PostTransferBalance {
 export interface LedgerMovement {
   /** All the entries for these ledger movements. */
   entries: LedgerEntry[]
-  /** The resulting balances once the ledger movement are applied. */
+  /** Resulting balances once the ledger movement are applied. */
   balances: PostTransferBalance[]
 }
 
@@ -1034,11 +1035,11 @@ export interface MarginLevels {
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
    */
   collateralReleaseLevel: string
-  /** Party identifier. */
+  /** Party ID. */
   partyId: string
-  /** Market identifier. */
+  /** Market ID. */
   marketId: string
-  /** Asset identifier. */
+  /** Asset ID. */
   asset: string
   /** Timestamp for the time the ledger entry was created, in nanoseconds. */
   timestamp: number
@@ -1105,12 +1106,12 @@ export interface MarketData {
    * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   staticMidPrice: string
-  /** Market identifier for the data */
+  /** Market ID for the data */
   market: string
   /** Timestamp at which this mark price was relevant, in nanoseconds. */
   timestamp: number
   /**
-   * The sum of the size of all positions greater than zero on the market
+   * Sum of the size of all positions greater than zero on the market
    * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
    */
   openInterest: number
@@ -1128,7 +1129,7 @@ export interface MarketData {
    * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
    */
   indicativeVolume: number
-  /** The current trading mode for the market. */
+  /** Current trading mode for the market. */
   marketTradingMode: Market_TradingMode
   /** When a market is in an auction trading mode, this field indicates what triggered the auction. */
   trigger: AuctionTrigger
@@ -1150,7 +1151,7 @@ export interface MarketData {
   marketValueProxy: string
   /** the equity like share of liquidity fee for each liquidity provider. */
   liquidityProviderFeeShare: LiquidityProviderFeeShare[]
-  /** The current state of the market. */
+  /** Current state of the market. */
   marketState: Market_State
   /** next MTM timestamp. */
   nextMarkToMarket: number
@@ -1161,15 +1162,15 @@ export interface MarketData {
   lastTradedPrice: string
 }
 
-/** The equity like share of liquidity fee for each liquidity provider */
+/** Equity like share of liquidity fee for each liquidity provider */
 export interface LiquidityProviderFeeShare {
-  /** The liquidity provider party id. */
+  /** Liquidity provider party ID. */
   party: string
-  /** The share own by this liquidity provider (float). */
+  /** Share own by this liquidity provider (float). */
   equityLikeShare: string
-  /** The average entry valuation of the liquidity provider for the market. */
+  /** Average entry valuation of the liquidity provider for the market. */
   averageEntryValuation: string
-  /** The average liquidity score. */
+  /** Average liquidity score. */
   averageScore: string
 }
 
@@ -1196,9 +1197,9 @@ export interface PriceMonitoringBounds {
 
 /** Represents Vega domain specific error information over gRPC/Protobuf */
 export interface ErrorDetail {
-  /** A Vega API domain specific unique error code, useful for client side mappings, e.g. 10004. */
+  /** Vega API domain specific unique error code, useful for client side mappings, e.g. 10004. */
   code: number
-  /** A message that describes the error in more detail, should describe the problem encountered. */
+  /** Message that describes the error in more detail, should describe the problem encountered. */
   message: string
   /** Any inner error information that could add more context, or be helpful for error reporting. */
   inner: string
@@ -1206,9 +1207,9 @@ export interface ErrorDetail {
 
 /** Represents a network parameter on Vega */
 export interface NetworkParameter {
-  /** The unique key. */
+  /** Unique key of the network parameter. */
   key: string
-  /** The value for the network parameter. */
+  /** Value for the network parameter. */
   value: string
 }
 
@@ -1224,44 +1225,44 @@ export interface NetworkLimits {
   proposeAssetEnabled: boolean
   /** True once the genesis file is loaded. */
   genesisLoaded: boolean
-  /** The date/timestamp in unix nanoseconds at which market proposals will be enabled (0 indicates not set). */
+  /** Date/timestamp in unix nanoseconds at which market proposals will be enabled (0 indicates not set). */
   proposeMarketEnabledFrom: number
-  /** The date/timestamp in unix nanoseconds at which asset proposals will be enabled (0 indicates not set). */
+  /** Date/timestamp in unix nanoseconds at which asset proposals will be enabled (0 indicates not set). */
   proposeAssetEnabledFrom: number
 }
 
 /** Represents a liquidity order */
 export interface LiquidityOrder {
-  /** The pegged reference point for the order. */
+  /** Pegged reference point for the order. */
   reference: PeggedReference
-  /** The relative proportion of the commitment to be allocated at a price level. */
+  /** Relative proportion of the commitment to be allocated at a price level. */
   proportion: number
   /**
-   * The offset/amount of units away for the order
+   * Offset/amount of units away for the order
    * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
    */
   offset: string
 }
 
-/** A pair of a liquidity order and the ID of the generated order by the core */
+/** Pair of a liquidity order and the ID of the generated order by the core */
 export interface LiquidityOrderReference {
-  /** Unique identifier of the pegged order generated by the core to fulfil this liquidity order. */
+  /** Unique ID of the pegged order generated by the core to fulfil this liquidity order. */
   orderId: string
-  /** The liquidity order from the original submission. */
+  /** Liquidity order from the original submission. */
   liquidityOrder: LiquidityOrder | undefined
 }
 
-/** An Liquidity provider commitment */
+/** Liquidity provider commitment */
 export interface LiquidityProvision {
-  /** Unique identifier. */
+  /** Unique ID. */
   id: string
-  /** Unique party identifier for the creator of the provision. */
+  /** Unique party ID for the creator of the provision. */
   partyId: string
   /** Timestamp for when the order was created at, in nanoseconds. */
   createdAt: number
   /** Timestamp for when the order was updated at, in nanoseconds. */
   updatedAt: number
-  /** Market identifier for the order, required field. */
+  /** Market ID for the order, required field. */
   marketId: string
   /**
    * Specified as a unitless number that represents the amount of settlement asset of the market
@@ -1270,34 +1271,34 @@ export interface LiquidityProvision {
   commitmentAmount: string
   /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers. */
   fee: string
-  /** A set of liquidity sell orders to meet the liquidity provision obligation. */
+  /** Set of liquidity sell orders to meet the liquidity provision obligation. */
   sells: LiquidityOrderReference[]
-  /** A set of liquidity buy orders to meet the liquidity provision obligation. */
+  /** Set of liquidity buy orders to meet the liquidity provision obligation. */
   buys: LiquidityOrderReference[]
   /** Version of this liquidity provision order. */
   version: number
   /** Status of this liquidity provision order. */
   status: LiquidityProvision_Status
-  /** A reference shared between this liquidity provision and all its orders. */
+  /** Reference shared between this liquidity provision and all its orders. */
   reference: string
 }
 
 /** Status of a liquidity provision order. */
 export enum LiquidityProvision_Status {
-  /** STATUS_UNSPECIFIED - The default value */
+  /** STATUS_UNSPECIFIED - Default value */
   STATUS_UNSPECIFIED = 0,
-  /** STATUS_ACTIVE - The liquidity provision is active */
+  /** STATUS_ACTIVE - Liquidity provision is active */
   STATUS_ACTIVE = 1,
-  /** STATUS_STOPPED - The liquidity provision was stopped by the network */
+  /** STATUS_STOPPED - Liquidity provision was stopped by the network */
   STATUS_STOPPED = 2,
-  /** STATUS_CANCELLED - The liquidity provision was cancelled by the liquidity provider */
+  /** STATUS_CANCELLED - Liquidity provision was cancelled by the liquidity provider */
   STATUS_CANCELLED = 3,
-  /** STATUS_REJECTED - The liquidity provision was invalid and got rejected */
+  /** STATUS_REJECTED - Liquidity provision was invalid and got rejected */
   STATUS_REJECTED = 4,
-  /** STATUS_UNDEPLOYED - The liquidity provision is valid and accepted by network, but orders aren't deployed */
+  /** STATUS_UNDEPLOYED - Liquidity provision is valid and accepted by network, but orders aren't deployed */
   STATUS_UNDEPLOYED = 5,
   /**
-   * STATUS_PENDING - The liquidity provision is valid and accepted by network
+   * STATUS_PENDING - Liquidity provision is valid and accepted by network
    * but has never been deployed. If when it's possible to deploy the orders for the first time
    * margin check fails, then they will be cancelled without any penalties.
    */
@@ -1307,9 +1308,9 @@ export enum LiquidityProvision_Status {
 
 /** Ethereum configuration details. */
 export interface EthereumConfig {
-  /** Network identifier of this Ethereum network. */
+  /** Network ID of this Ethereum network. */
   networkId: string
-  /** Chain identifier of this Ethereum network. */
+  /** Chain ID of this Ethereum network. */
   chainId: string
   /** // Contract configuration of the collateral bridge contract for this Ethereum network. */
   collateralBridgeContract: EthereumContractConfig | undefined
@@ -1351,7 +1352,7 @@ export interface EpochTimestamps {
 }
 
 export interface Epoch {
-  /** Sequence is used as epoch identifier. */
+  /** Sequence is used as epoch ID. */
   seq: number
   /** Timestamps for start/end etc. */
   timestamps: EpochTimestamps | undefined
@@ -1408,7 +1409,7 @@ export interface RewardScore {
 }
 
 export interface Node {
-  /** The node ID (wallet ID). */
+  /** Node ID i.e. the node's wallet ID. */
   id: string
   /** Pub key of the node operator. */
   pubKey: string
@@ -1416,17 +1417,17 @@ export interface Node {
   tmPubKey: string
   /** Ethereum public key of the node. */
   ethereumAddress: string
-  /** URL where I can find out more info on the node. */
+  /** URL where users can find out more information on the node. */
   infoUrl: string
   /** Country code for the location of the node. */
   location: string
   /**
-   * The amount the node has put up themselves
+   * Amount the node operator has put up themselves
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
    */
   stakedByOperator: string
   /**
-   * The amount of stake that has been delegated by token holders
+   * Amount of stake that has been delegated by token holders
    * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
    */
   stakedByDelegates: string
@@ -1550,11 +1551,11 @@ export interface EpochRewardSummary {
 }
 
 export interface StateValueProposal {
-  /** state variable identifier. */
+  /** State variable ID. */
   stateVarId: string
-  /** event identifier. */
+  /** Event ID. */
   eventId: string
-  /** key value tolerance triplets. */
+  /** Key value tolerance triplets. */
   kvb: KeyValueBundle[]
 }
 

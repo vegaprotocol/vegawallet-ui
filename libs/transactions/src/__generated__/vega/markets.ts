@@ -4,7 +4,7 @@ import type { DataSourceSpec } from './data_source'
 export const protobufPackage = 'vega'
 
 /**
- * An auction duration is used to configure 3 auction periods:
+ * Auction duration is used to configure 3 auction periods:
  * 1. `duration > 0`, `volume == 0`:
  *   The auction will last for at least N seconds
  * 2. `duration == 0`, `volume > 0`:
@@ -21,15 +21,15 @@ export interface AuctionDuration {
 
 /** Future product definition */
 export interface Future {
-  /** The asset for the future. */
+  /** Underlying asset for the future. */
   settlementAsset: string
   /** Quote name of the instrument. */
   quoteName: string
-  /** The data source specification that describes the settlement data source filter. */
+  /** Data source specification that describes the settlement data source filter. */
   dataSourceSpecForSettlementData: DataSourceSpec | undefined
-  /** The data source specification that describes the trading termination data source filter. */
+  /** Data source specification that describes the trading termination data source filter. */
   dataSourceSpecForTradingTermination: DataSourceSpec | undefined
-  /** The binding between the data spec and the data source. */
+  /** Binding between the data spec and the data source. */
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
 }
 
@@ -45,25 +45,25 @@ export interface DataSourceSpecToFutureBinding {
    * this property as settlement data.
    */
   settlementDataProperty: string
-  /** the name of the property in the data source data that signals termination of trading. */
+  /** Name of the property in the data source data that signals termination of trading. */
   tradingTerminationProperty: string
 }
 
 /** Instrument metadata definition */
 export interface InstrumentMetadata {
-  /** A list of 0 or more tags. */
+  /** List of 0 or more tags. */
   tags: string[]
 }
 
 /** Instrument definition */
 export interface Instrument {
-  /** Instrument identifier. */
+  /** Instrument ID. */
   id: string
   /** Code for the instrument. */
   code: string
   /** Name of the instrument. */
   name: string
-  /** A collection of instrument meta-data. */
+  /** Collection of instrument meta-data. */
   metadata: InstrumentMetadata | undefined
   /** Future. */
   future?: Future | undefined
@@ -73,7 +73,10 @@ export interface Instrument {
 export interface LogNormalRiskModel {
   /** Risk Aversion Parameter. */
   riskAversionParameter: number
-  /** Tau parameter of the risk model, projection horizon measured as a year fraction used in the expected shortfall calculation to obtain the maintenance margin, must be a strictly non-negative real number. */
+  /**
+   * Tau parameter of the risk model, projection horizon measured as a year fraction used in the expected shortfall
+   * calculation to obtain the maintenance margin, must be a strictly non-negative real number.
+   */
   tau: number
   /** Risk model parameters for log normal. */
   params: LogNormalModelParams | undefined
@@ -198,7 +201,7 @@ export interface TargetStakeParameters {
 
 /** Market definition */
 export interface Market {
-  /** Unique identifier. */
+  /** Unique ID for the market. */
   id: string
   /** Tradable instrument configuration. */
   tradableInstrument: TradableInstrument | undefined
@@ -232,17 +235,17 @@ export interface Market {
    * price levels over which automated liquidity provision orders will be deployed.
    */
   lpPriceRange: string
-  /** Linear slippage factor is used to cap the slippage component of maintainence margin - it is applied to the slippage volume. */
+  /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
-  /** Quadratic slippage factor is used to cap the slippage component of maintainence margin - it is applied to the square of the slippage volume. */
+  /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
 }
 
-/** The current state of the market */
+/** Current state of the market */
 export enum Market_State {
   /** STATE_UNSPECIFIED - Default value, invalid */
   STATE_UNSPECIFIED = 0,
-  /** STATE_PROPOSED - The governance proposal valid and accepted */
+  /** STATE_PROPOSED - Governance proposal valid and accepted */
   STATE_PROPOSED = 1,
   /** STATE_REJECTED - Outcome of governance votes is to reject the market */
   STATE_REJECTED = 2,
@@ -269,7 +272,7 @@ export enum Market_State {
   UNRECOGNIZED = -1,
 }
 
-/** The trading mode the market is currently running, also referred to as 'market state' */
+/** Trading mode the market is currently running, also referred to as 'market state' */
 export enum Market_TradingMode {
   /** TRADING_MODE_UNSPECIFIED - Default value, this is invalid */
   TRADING_MODE_UNSPECIFIED = 0,
