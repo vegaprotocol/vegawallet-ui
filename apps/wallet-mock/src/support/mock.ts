@@ -4,20 +4,15 @@ import type serviceMock from '../types/service-mock'
 
 export async function mock(
   page: Page,
-  mockedFunction?: adminMock | serviceMock,
-  result?: object
+  mockedFunction: adminMock | serviceMock,
+  result: object
 ) {
-  await page.addInitScript(() => {
-    localStorage.setItem('playwright', 'true')
-  })
-  if (mockedFunction && result) {
-    const fun = `MOCK.${mockedFunction}`
-    const res = JSON.stringify(result)
-    await page.addInitScript(
-      ({ fun, res }) => {
-        localStorage.setItem(fun, res)
-      },
-      { fun, res }
-    )
-  }
+  const fun = `MOCK.${mockedFunction}`
+  const res = JSON.stringify(result)
+  await page.addInitScript(
+    ({ fun, res }) => {
+      localStorage.setItem(fun, res)
+    },
+    { fun, res }
+  )
 }

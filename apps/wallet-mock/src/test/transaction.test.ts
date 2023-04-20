@@ -5,7 +5,6 @@ import {
   endInteractionSession,
   sendBackendInteraction,
 } from '../support/event-trigger'
-import { mock } from '../support/mock'
 import percySnapshot from '@percy/playwright'
 
 const transaction = {
@@ -40,7 +39,7 @@ test.describe('Transaction review modal -- Approve + Success', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
+
     await page.goto('/')
     await beginInteractionSession(page, 'TRANSACTION_REVIEW')
     await sendBackendInteraction(
@@ -196,7 +195,7 @@ test.describe('Transaction review modal -- Approve + Error', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
+
     await page.goto('/')
     await beginInteractionSession(page, 'TRANSACTION_REVIEW')
     await sendBackendInteraction(
@@ -235,7 +234,7 @@ test.describe('Transaction review modal -- Reject', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
+
     await page.goto('/')
     await beginInteractionSession(page, 'TRANSACTION_REVIEW')
     await sendBackendInteraction(
@@ -261,7 +260,7 @@ test.describe('Transaction history tests', () => {
   let page: Page
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
+
     await page.goto('/')
     await beginInteractionSession(page, 'TRANSACTION_REVIEW')
     await sendBackendInteraction(
