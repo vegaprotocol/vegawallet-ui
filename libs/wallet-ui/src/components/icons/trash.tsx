@@ -4,7 +4,7 @@ import { className as defaultClassName } from './style'
 export function Trash({ className }: { className?: string }) {
   return (
     <svg
-      className={classnames(defaultClassName, 'fill-transparent', className)}
+      className={classnames(defaultClassName, className)}
       viewBox="0 0 16 16"
       xmlns="http://www.w3.org/2000/svg"
     >
