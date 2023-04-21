@@ -2,8 +2,6 @@
 import type { WalletModel, WalletAPIRequest } from './'
 import { Identifier } from './'
 
-import storageMock from '../../../../scripts/storage-mock'
-
 export function MockAPIRequest(req: {
   method: Identifier.UnlockWallet
   params: WalletModel.UnlockWalletParams
@@ -161,7 +159,11 @@ export function MockAPIRequest(req: {
   params: WalletModel.CloseConnectionsToWalletParams
 }): Promise<WalletModel.CloseConnectionsToWalletResult>
 export function MockAPIRequest({ method }: WalletAPIRequest) {
-  const defaultValue = () => {
+  if (window.localStorage.getItem(`MOCK.${method}`)) {
+    return JSON.parse(
+      window.localStorage.getItem(`MOCK.${method}`)?.toString() as string
+    )
+  } else {
     switch (method) {
       case Identifier.UnlockWallet: {
         return Promise.resolve<WalletModel.UnlockWalletResult>(null)
@@ -558,5 +560,4 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
       }
     }
   }
-  return Promise.resolve(storageMock(method, defaultValue()))
 }

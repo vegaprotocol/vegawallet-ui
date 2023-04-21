@@ -1,5 +1,4 @@
 import log from 'loglevel'
-import storageMock from '../../../../scripts/storage-mock'
 import type { Service, ServiceConfig } from '../types/service'
 import type { RawInteraction } from '../types'
 
@@ -136,4 +135,14 @@ export const service: Service = {
   ): Promise<void | Error | undefined> {
     return Promise.resolve(undefined)
   },
+}
+
+function storageMock(functionName: string, defaultValue?: unknown) {
+  if (window.localStorage.getItem(`MOCK.${functionName}`)) {
+    return JSON.parse(
+      window.localStorage.getItem(`MOCK.${functionName}`)?.toString() as string
+    )
+  } else {
+    return defaultValue
+  }
 }

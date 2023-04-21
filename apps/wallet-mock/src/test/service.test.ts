@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test'
-import { mock } from '../support/mock'
 
 test.describe('Service status', () => {
   test.beforeEach(async ({ page }) => {
-    await mock(page)
     await page.goto('/')
   })
   test('should display unhealthy status', async ({ page }) => {

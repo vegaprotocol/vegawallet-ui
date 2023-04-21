@@ -4,7 +4,6 @@ import {
   beginInteractionSession,
   sendBackendInteraction,
 } from '../support/event-trigger'
-import { mock } from '../support/mock'
 import type {
   RequestPassphraseContent,
   RequestSucceededContent,
@@ -35,7 +34,6 @@ test.describe('Connect to Dapp modal validations', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
     await sendBackendInteraction(
@@ -97,7 +95,6 @@ test.describe('Connect to Dapp modal validations', () => {
 
 test.describe('Connect to Dapp modal actions', () => {
   test.beforeEach(async ({ page }) => {
-    await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
     await sendBackendInteraction(
@@ -122,7 +119,6 @@ test.describe('Connect to Dapp - wallet selection validations', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
     await sendBackendInteraction(
@@ -195,7 +191,6 @@ test.describe('Connect to Dapp - wallet selection validations', () => {
 
 test.describe('Connect to Dapp - wallet selection actions', () => {
   test.beforeEach(async ({ page }) => {
-    await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
     await sendBackendInteraction(
@@ -234,7 +229,7 @@ test.describe('Connect to Dapp - passphrase request validations', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
+
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
     await sendBackendInteraction(
@@ -309,7 +304,6 @@ test.describe('Connect to Dapp - passphrase request validations', () => {
 
 test.describe('Connect to Dapp - passphrase request actions', () => {
   test.beforeEach(async ({ page }) => {
-    await mock(page)
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
     await sendBackendInteraction(
@@ -371,7 +365,7 @@ test.describe('Connect to Dapp - request succeeded validations', () => {
   let page: Page
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage()
-    await mock(page)
+
     await page.goto('/')
     await beginInteractionSession(page, 'WALLET_CONNECTION')
     await sendBackendInteraction(
