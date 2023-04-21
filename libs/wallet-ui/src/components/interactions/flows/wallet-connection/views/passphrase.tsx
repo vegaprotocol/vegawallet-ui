@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { FormGroup } from '../../../../form-group'
@@ -33,20 +33,6 @@ export const PassphraseView = ({
     reValidateMode: 'onChange',
   })
 
-  useEffect(() => {
-    if (data.error?.type === 'User error') {
-      setError(
-        'passphrase',
-        {
-          message: `Error: ${data.error.error}`,
-        },
-        {
-          shouldFocus: true,
-        }
-      )
-    }
-  }, [data.error, setError])
-
   const onDeny = async () => {
     await service.RespondToInteraction({
       traceID: data.traceID,
@@ -56,27 +42,53 @@ export const PassphraseView = ({
   }
 
   const onSubmit = async ({ passphrase }: Result) => {
-    if (data.selectedWallet) {
-      setLoading(true)
-      try {
-        await client.UnlockWallet({
-          wallet: data.selectedWallet,
+    const wallet = data.selectedWallet ? data.selectedWallet : data.wallet
+
+    if (!wallet) {
+      // we shouldnt get here, as either data.selectedWallet or data.selectedWallet
+      // should be populated
+      onUpdate({
+        ...data,
+        error: {
+          type: 'Application error',
+          error: 'No available wallet',
+        },
+      })
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      await client.UnlockWallet({
+        wallet,
+        passphrase,
+      })
+
+      dispatch({
+        type: 'ACTIVATE_WALLET',
+        wallet,
+      })
+
+      await service.RespondToInteraction({
+        traceID: data.traceID,
+        name: 'ENTERED_PASSPHRASE',
+        data: {
           passphrase,
-        })
-
-        dispatch({
-          type: 'ACTIVATE_WALLET',
-          wallet: data.selectedWallet,
-        })
-
-        await service.RespondToInteraction({
-          traceID: data.traceID,
-          name: 'ENTERED_PASSPHRASE',
-          data: {
-            passphrase,
+        },
+      })
+    } catch (err) {
+      if (err instanceof Error && err.message === 'wrong passphrase') {
+        setError(
+          'passphrase',
+          {
+            message: 'Wrong passphrase',
           },
-        })
-      } catch (err) {
+          {
+            shouldFocus: true,
+          }
+        )
+      } else {
         onUpdate({
           ...data,
           error: {
@@ -84,9 +96,9 @@ export const PassphraseView = ({
             error: `${err}`,
           },
         })
-      } finally {
-        setLoading(false)
       }
+    } finally {
+      setLoading(false)
     }
   }
 
