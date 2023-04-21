@@ -9,7 +9,8 @@ export type WalletConnectionData = {
   view?: 'connection' | 'selection' | 'passphrase' | 'success'
   hostname?: string
   availableWallets?: string[]
-  selectedWallet?: string
+  selectedWallet?: string // populated if multiple wallets are available
+  wallet?: string // populated if only a single wallet is available
   error?: InteractionErrorType
 }
 

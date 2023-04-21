@@ -81,6 +81,9 @@ const handleEvent = ({
       if (queueItem?.workflow === 'WALLET_CONNECTION') {
         q.set(event.traceID, {
           ...queueItem,
+          // add wallet name from event, as selectedWallet will not be populated if
+          // you don't go through the multiple wallet selection step
+          wallet: event.data.wallet,
           view: 'passphrase',
         })
       }
