@@ -2,7 +2,6 @@ import classnames from 'classnames'
 import { useMemo } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 
-import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Lock } from '../../components/icons/lock'
@@ -12,6 +11,7 @@ import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -32,7 +32,7 @@ export const Home = () => {
   }
 
   return (
-    <div data-testid="wallet-home" className="p-[20px]">
+    <div data-testid="wallet-home" className="p-5">
       <Title className="m-0 mb-[30px] text-white">Wallets</Title>
       <div data-testid="wallet-list" className="pb-[144px] w-full">
         <div
@@ -53,9 +53,9 @@ export const Home = () => {
               <div data-testid="wallet-name">{w.name}</div>
               <div className="text-neutral">
                 {w.auth ? (
-                  <OpenLock className="w-[20px] mx-[20px]" />
+                  <OpenLock className="w-5 mx-5" />
                 ) : (
-                  <Lock className="w-[20px] mx-[20px]" />
+                  <Lock className="w-5 mx-5" />
                 )}
               </div>
             </ButtonUnstyled>
@@ -63,13 +63,13 @@ export const Home = () => {
         </div>
       </div>
       <div
-        className={classnames('text-center p-[20px] w-full bg-dark-100', {
+        className={classnames('text-center p-5 w-full bg-dark-100', {
           fixed: wallets.length,
           [`bottom-[88px]`]: wallets.length,
           'left-0': wallets.length,
         })}
       >
-        <ButtonGroup className="mb-[20px]">
+        <ButtonGroup className="mb-5">
           <Link className="flex-1" to="/wallet-create">
             <Button data-testid="create-new-wallet" className="w-full">
               Create wallet
