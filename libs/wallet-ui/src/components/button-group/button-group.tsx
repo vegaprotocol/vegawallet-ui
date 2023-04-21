@@ -20,7 +20,7 @@ export function ButtonGroup({
       data-testid="button-group"
       {...props}
       className={classnames(
-        'flex justify-start gap-[20px]',
+        'flex justify-start gap-5',
         {
           'flex-row': orientation === 'horizontal',
           'flex-col': orientation !== 'horizontal',
