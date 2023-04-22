@@ -17,6 +17,7 @@ import { SettingsHome } from './settings'
 import { AppSettings } from './settings/app-settings'
 import { Networks } from './settings/networks'
 import { Service } from './settings/service'
+import { Layout } from '../layout'
 
 export const Paths = {
   Home: '/',
@@ -50,14 +51,15 @@ export const Paths = {
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route element={<Outlet />}>
-        <Route index={true} element={<Home />} />
-        <Route path={Paths.Onboard.Home} element={<Outlet />}>
+      {/* <Route index={true} element={<Home />} /> */}
+      {/* <Route path={Paths.Onboard.Home} element={<Outlet />}>
           <Route index={true} element={<Onboard />} />
           <Route path="start" element={<OnboardStart />} />
           <Route path="vega-home" element={<OnboardHome />} />
-        </Route>
-        {/* TODO should be using subroutes */}
+        </Route> */}
+      {/* This is the layout route for the main application */}
+      <Route path="/" element={<Layout />}>
+        <Route index={true} element={<Home />} />
         <Route path={Paths.Wallet.Create} element={<WalletCreate />} />
         <Route path={Paths.Wallet.Import} element={<WalletImport />} />
         <Route path={Paths.Wallet.Wallet(':wallet')} element={<Wallet />}>
@@ -67,16 +69,16 @@ export const AppRouter = () => {
             <Route path="transactions" element={<Transactions />} />
           </Route>
         </Route>
-        <Route path={Paths.Transactions.Home} element={<Outlet />}>
-          <Route index={true} element={<TransactionHomePage />} />
-          <Route path=":id" element={<TransactionPage />} />
-        </Route>
-        <Route path={Paths.Settings.Home} element={<Outlet />}>
-          <Route index={true} element={<SettingsHome />} />
-          <Route path={Paths.Settings.AppSettings} element={<AppSettings />} />
-          <Route path={Paths.Settings.Networks} element={<Networks />} />
-          <Route path={Paths.Settings.Service} element={<Service />} />
-        </Route>
+      </Route>
+      <Route path={Paths.Transactions.Home} element={<Layout />}>
+        <Route index={true} element={<TransactionHomePage />} />
+        <Route path=":id" element={<TransactionPage />} />
+      </Route>
+      <Route path={Paths.Settings.Home} element={<Layout />}>
+        <Route index={true} element={<SettingsHome />} />
+        <Route path={Paths.Settings.AppSettings} element={<AppSettings />} />
+        <Route path={Paths.Settings.Networks} element={<Networks />} />
+        <Route path={Paths.Settings.Service} element={<Service />} />
       </Route>
     </Routes>
   )

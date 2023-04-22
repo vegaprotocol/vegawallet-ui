@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { DrawerPanel, useGlobal } from '../../contexts/global/global-context'
 import { ButtonUnstyled } from '../button-unstyled'
 import { ChevronLeft } from '../icons/chevron-left'
-import { DRAWER_HEIGHT } from '.'
+import { DRAWER_HEIGHT } from '../drawer'
 import { DrawerAddNetwork } from './drawer-add-network'
 import { DrawerEditNetwork } from './drawer-edit-network'
 import { DrawerHead } from './drawer-head'
@@ -65,13 +65,13 @@ export function DrawerContent() {
     case DrawerPanel.Network: {
       return (
         <>
-          <DrawerHead
+          {/* <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
           >
             <ServiceStatus />
-          </DrawerHead>
+          </DrawerHead> */}
           <DrawerContentWrapper>
             <DrawerNetwork setView={setView} />
           </DrawerContentWrapper>
@@ -81,7 +81,7 @@ export function DrawerContent() {
     case DrawerPanel.Manage: {
       return (
         <>
-          <DrawerHead
+          {/* <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
@@ -95,7 +95,7 @@ export function DrawerContent() {
               <ChevronLeft className="w-[14px] mr-[6px]" />
               Back
             </ButtonUnstyled>
-          </DrawerHead>
+          </DrawerHead> */}
           <DrawerContentWrapper>
             <DrawerManageNetwork
               setView={setView}
@@ -109,7 +109,7 @@ export function DrawerContent() {
     case DrawerPanel.View: {
       return (
         <>
-          <DrawerHead
+          {/* <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
@@ -123,7 +123,7 @@ export function DrawerContent() {
               <ChevronLeft className="w-[14px] mr-[6px]" />
               Back
             </ButtonUnstyled>
-          </DrawerHead>
+          </DrawerHead> */}
           <DrawerContentWrapper>
             <NetworkInfo network={state.drawerState.selectedNetwork} />
           </DrawerContentWrapper>
@@ -133,7 +133,7 @@ export function DrawerContent() {
     case DrawerPanel.Edit: {
       return (
         <>
-          <DrawerHead
+          {/* <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             title={state.drawerState.selectedNetwork}
@@ -146,7 +146,7 @@ export function DrawerContent() {
             >
               Back
             </ButtonUnstyled>
-          </DrawerHead>
+          </DrawerHead> */}
           <DrawerContentWrapper>
             <DrawerEditNetwork
               selectedNetwork={state.drawerState.selectedNetwork}
@@ -158,7 +158,7 @@ export function DrawerContent() {
     case DrawerPanel.Add: {
       return (
         <>
-          <DrawerHead
+          {/* <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
@@ -171,7 +171,7 @@ export function DrawerContent() {
             >
               Back
             </ButtonUnstyled>
-          </DrawerHead>
+          </DrawerHead> */}
           <DrawerContentWrapper>
             <DrawerAddNetwork />
           </DrawerContentWrapper>

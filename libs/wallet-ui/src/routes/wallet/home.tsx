@@ -108,14 +108,15 @@ export function WalletList() {
         )}
         {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
         {tab === Tabs.KEYPAIRS && (
-          <Button
+          <button
+            className="underline"
             data-testid="generate-keypair"
             onClick={() => {
               dispatch(actions.addKeypairAction(wallet.name))
             }}
           >
             Generate key pair
-          </Button>
+          </button>
         )}
       </div>
       <Dialog size="lg" open={isRemoving} title="Remove wallet">

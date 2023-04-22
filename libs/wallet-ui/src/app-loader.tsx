@@ -65,8 +65,8 @@ export function AppFrame({ children }: AppFrameProps) {
     <div
       data-testid="app-frame"
       className={classnames(
+        'grid grid-rows-[min-content_1fr]',
         'h-full bg-cover relative overflow-y-hidden',
-        `pt-9`,
         {
           'vega-bg': useVegaBg,
           'bg-transparent': useVegaBg,
@@ -75,7 +75,7 @@ export function AppFrame({ children }: AppFrameProps) {
       )}
     >
       <div
-        className={classnames('absolute top-0 left-0 w-full ', `h-9`, {
+        className={classnames('h-9', {
           'bg-transparent': useVegaBg,
           'bg-black': !useVegaBg,
         })}
@@ -101,7 +101,7 @@ export function AppFrame({ children }: AppFrameProps) {
           )}
         </div>
       </div>
-      {children}
+      <div>{children}</div>
     </div>
   )
 }
