@@ -1,13 +1,8 @@
-import {
-  Button,
-  FormGroup,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-} from '@vegaprotocol/ui-toolkit'
+import { Button, Radio, RadioGroup } from '@vegaprotocol/ui-toolkit'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { Page } from '../../../components/page'
+import { FormGroup } from '../../../components/form-group'
+import { Input, Select } from '../../../components/forms'
 import { LogLevels } from '../../../config/log-levels'
 import { Controller, useForm } from 'react-hook-form'
 import type { FormFields } from './hooks'

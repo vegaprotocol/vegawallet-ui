@@ -1,6 +1,7 @@
-import { Button, FormGroup, Input, Select } from '@vegaprotocol/ui-toolkit'
+import { Button, FormGroup } from '@vegaprotocol/ui-toolkit'
 import { LogLevels } from '../../../config/log-levels'
 import { Page } from '../../../components/page'
+import { Input, Select } from '../../../components/forms'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useForm } from 'react-hook-form'
 import type { FormFields } from './hooks'

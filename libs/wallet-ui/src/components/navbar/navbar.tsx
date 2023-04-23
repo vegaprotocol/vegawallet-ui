@@ -5,6 +5,7 @@ import type { To } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import classnames from 'classnames'
 import { LeftRightArrows } from '../icons/left-right-arrows'
+import { Paths } from '../../routes'
 
 export interface NavButtonProps {
   end?: boolean
@@ -76,26 +77,25 @@ export const NavBar = ({ isFairground }: { isFairground: boolean }) => {
     >
       <NavButton
         isFairground={isFairground}
-        end={true}
         icon={
           <Wallet
             className="m-auto"
             squareFill={isFairground ? '#D7FB50' : 'black'}
           />
         }
-        to={{ pathname: '/' }}
+        to={{ pathname: Paths.Wallet.Home }}
         text="Wallets"
       />
       <NavButton
         isFairground={isFairground}
         icon={<LeftRightArrows className="m-auto" />}
-        to={{ pathname: '/transactions' }}
+        to={{ pathname: Paths.Transactions.Home }}
         text="Transactions"
       />
       <NavButton
         isFairground={isFairground}
         icon={<Settings className="m-auto" />}
-        to={{ pathname: '/settings' }}
+        to={{ pathname: Paths.Settings.Home }}
         text="Settings"
       />
     </nav>

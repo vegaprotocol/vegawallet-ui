@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { NavBar } from './components/navbar'
-import { Drawer } from './components/drawer/drawer'
+import { DRAWER_HEIGHT, Drawer } from './components/drawer/drawer'
 import { useIsFairground } from './hooks/use-is-fairground'
 import classNames from 'classnames'
 
@@ -19,10 +19,8 @@ export const Layout = () => {
   return (
     // must use 88px here for tw to compile with correct styles
     <div className={`grid grid-rows-[1fr_88px] h-full`}>
-      <main className={mainClasses}>
-        <div className="h-full p-5 overflow-y-auto">
-          <Outlet />
-        </div>
+      <main className={mainClasses} style={{ paddingBottom: DRAWER_HEIGHT }}>
+        <Outlet />
         <Drawer />
       </main>
       <NavBar isFairground={false} />

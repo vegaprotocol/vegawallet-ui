@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 import { Home } from './home'
 import { Onboard } from './onboard'
@@ -51,14 +51,13 @@ export const Paths = {
 export const AppRouter = () => {
   return (
     <Routes>
-      {/* <Route index={true} element={<Home />} /> */}
-      {/* <Route path={Paths.Onboard.Home} element={<Outlet />}>
-          <Route index={true} element={<Onboard />} />
-          <Route path="start" element={<OnboardStart />} />
-          <Route path="vega-home" element={<OnboardHome />} />
-        </Route> */}
-      {/* This is the layout route for the main application */}
-      <Route path="/" element={<Layout />}>
+      <Route index={true} element={<Navigate to={Paths.Wallet.Home} />} />
+      <Route path={Paths.Onboard.Home} element={<Outlet />}>
+        <Route index={true} element={<Onboard />} />
+        <Route path="start" element={<OnboardStart />} />
+        <Route path="vega-home" element={<OnboardHome />} />
+      </Route>
+      <Route path={Paths.Wallet.Home} element={<Layout />}>
         <Route index={true} element={<Home />} />
         <Route path={Paths.Wallet.Create} element={<WalletCreate />} />
         <Route path={Paths.Wallet.Import} element={<WalletImport />} />

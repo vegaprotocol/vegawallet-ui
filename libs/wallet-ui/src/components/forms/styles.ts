@@ -9,12 +9,12 @@ export const getDefaultClassName = ({
 }) => {
   return classnames(
     'block appearance-none w-full bg-transparent',
-    'py-[7px] px-[10px] border',
+    'py-[7px] px-[10px] border rounded',
     {
       'outline-red': hasError,
       'outline-white': !hasError,
       'border-red': hasError,
-      'border-white': !hasError,
+      'border-vega-dark-200': !hasError,
       'border-neutral': isDisabled,
       'text-neutral': isDisabled,
     }

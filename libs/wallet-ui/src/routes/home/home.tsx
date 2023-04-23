@@ -6,11 +6,11 @@ import { Button } from '@vegaprotocol/ui-toolkit'
 import { ButtonGroup } from '../../components/button-group'
 import { Lock } from '../../components/icons/lock'
 import { OpenLock } from '../../components/icons/open-lock'
-import { Title } from '../../components/title'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
+import { Page } from '../../components/page'
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -31,22 +31,22 @@ export const Home = () => {
   }
 
   return (
-    <div
-      data-testid="wallet-home"
-      className="grid grid-rows-[min-content_1fr_min-content] min-h-full"
-    >
-      <Title>Wallets</Title>
-      <div data-testid="wallet-list">
-        <div
-          className={`border-b-${
-            walletsList.length > 0 ? '1' : '0'
-          } border-black`}
-        >
+    <Page name="Wallets">
+      <div
+        data-testid="wallet-home"
+        className="grid grid-rows-[1fr_min-content] min-h-full"
+      >
+        <div data-testid="wallet-list">
           {walletsList.map((w) => (
             <button
               className={classnames(
                 'w-full flex items-center justify-between',
-                'border-t border-black py-4'
+                'border-b border-vega-dark-150 py-3',
+                'text-lg',
+                {
+                  'text-white': w.auth,
+                  'text-vega-dark-300': !w.auth,
+                }
               )}
               onClick={() => open(w.name)}
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
@@ -63,19 +63,19 @@ export const Home = () => {
             </button>
           ))}
         </div>
+        <ButtonGroup>
+          <Link className="flex-1" to="/wallet-create">
+            <Button data-testid="create-new-wallet" size="lg" fill={true}>
+              Create wallet
+            </Button>
+          </Link>
+          <Link className="flex-1" to="/wallet-import">
+            <Button data-testid="import-wallet" size="lg" fill={true}>
+              Import wallet
+            </Button>
+          </Link>
+        </ButtonGroup>
       </div>
-      <ButtonGroup>
-        <Link className="flex-1" to="/wallet-create">
-          <Button data-testid="create-new-wallet" className="w-full">
-            Create wallet
-          </Button>
-        </Link>
-        <Link className="flex-1" to="/wallet-import">
-          <Button data-testid="import-wallet" className="w-full">
-            Import wallet
-          </Button>
-        </Link>
-      </ButtonGroup>
-    </div>
+    </Page>
   )
 }

@@ -25,7 +25,7 @@ export function ServiceStatus() {
       const statusElement = isNetworkCompatible ? (
         <StatusCircle background="bg-green" blinking />
       ) : (
-        <ButtonUnstyled
+        <button
           data-testid="network-compatibility-warning"
           className="text-warning-light cursor-pointer inline-block"
           onClick={() => {
@@ -35,8 +35,8 @@ export function ServiceStatus() {
             })
           }}
         >
-          <Warning className="w-[16px] mr-[6px]" />
-        </ButtonUnstyled>
+          <Warning className="relative w-[16px] mr-[6px] top-[-1px]" />
+        </button>
       )
 
       return (

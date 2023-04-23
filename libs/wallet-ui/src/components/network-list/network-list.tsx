@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { useGlobal } from '../../contexts/global/global-context'
-import { Button } from '../button'
 import { Title } from '../title'
 
 const itemStyles = 'flex items-center justify-between my-[12px]'
@@ -25,9 +25,10 @@ const NetworkListItem = ({
       <div>{config.name}</div>
 
       {type && (
-        <div className="flex gap-[12px]">
+        <div className="flex gap-2">
           <Button
             data-testid={`view-network-${config.name}`}
+            size="sm"
             onClick={() => {
               setViewPanel(config.name)
             }}
@@ -38,9 +39,10 @@ const NetworkListItem = ({
       )}
 
       {!type && (
-        <div className="flex gap-[12px]">
+        <div className="flex gap-2">
           <Button
             data-testid={`remove-network-${config.name}`}
+            size="sm"
             onClick={() => {
               dispatch(actions.removeNetwork(config.name))
             }}
@@ -49,6 +51,7 @@ const NetworkListItem = ({
           </Button>
           <Button
             data-testid={`edit-network-${config.name}`}
+            size="sm"
             onClick={() => {
               setEditPanel(config.name)
             }}

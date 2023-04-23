@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
 import { DrawerPanel, useGlobal } from '../../contexts/global/global-context'
-import { ButtonUnstyled } from '../button-unstyled'
 import { ChevronLeft } from '../icons/chevron-left'
 import { DRAWER_HEIGHT } from '../drawer'
 import { DrawerAddNetwork } from './drawer-add-network'
@@ -65,13 +64,13 @@ export function DrawerContent() {
     case DrawerPanel.Network: {
       return (
         <>
-          {/* <DrawerHead
+          <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
           >
             <ServiceStatus />
-          </DrawerHead> */}
+          </DrawerHead>
           <DrawerContentWrapper>
             <DrawerNetwork setView={setView} />
           </DrawerContentWrapper>
@@ -81,21 +80,14 @@ export function DrawerContent() {
     case DrawerPanel.Manage: {
       return (
         <>
-          {/* <DrawerHead
+          <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
             title="Manage networks"
           >
-            <ButtonUnstyled
-              data-testid="back"
-              className="no-underline"
-              onClick={() => setView(DrawerPanel.Network)}
-            >
-              <ChevronLeft className="w-[14px] mr-[6px]" />
-              Back
-            </ButtonUnstyled>
-          </DrawerHead> */}
+            <DrawerBackButton onClick={() => setView(DrawerPanel.Network)} />
+          </DrawerHead>
           <DrawerContentWrapper>
             <DrawerManageNetwork
               setView={setView}
@@ -109,21 +101,14 @@ export function DrawerContent() {
     case DrawerPanel.View: {
       return (
         <>
-          {/* <DrawerHead
+          <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
             title="Manage networks"
           >
-            <ButtonUnstyled
-              data-testid="back"
-              className="no-underline"
-              onClick={() => setView(DrawerPanel.Network)}
-            >
-              <ChevronLeft className="w-[14px] mr-[6px]" />
-              Back
-            </ButtonUnstyled>
-          </DrawerHead> */}
+            <DrawerBackButton onClick={() => setView(DrawerPanel.Network)} />
+          </DrawerHead>
           <DrawerContentWrapper>
             <NetworkInfo network={state.drawerState.selectedNetwork} />
           </DrawerContentWrapper>
@@ -133,20 +118,14 @@ export function DrawerContent() {
     case DrawerPanel.Edit: {
       return (
         <>
-          {/* <DrawerHead
+          <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             title={state.drawerState.selectedNetwork}
             setOpen={handleToggle}
           >
-            <ButtonUnstyled
-              data-testid="back"
-              className="no-underline"
-              onClick={() => setView(DrawerPanel.Manage)}
-            >
-              Back
-            </ButtonUnstyled>
-          </DrawerHead> */}
+            <DrawerBackButton onClick={() => setView(DrawerPanel.Manage)} />
+          </DrawerHead>
           <DrawerContentWrapper>
             <DrawerEditNetwork
               selectedNetwork={state.drawerState.selectedNetwork}
@@ -158,20 +137,14 @@ export function DrawerContent() {
     case DrawerPanel.Add: {
       return (
         <>
-          {/* <DrawerHead
+          <DrawerHead
             height={DRAWER_HEIGHT}
             isOpen={state.drawerState.isOpen}
             setOpen={handleToggle}
             title="Add network"
           >
-            <ButtonUnstyled
-              data-testid="back"
-              className="no-underline"
-              onClick={() => setView(DrawerPanel.Manage)}
-            >
-              Back
-            </ButtonUnstyled>
-          </DrawerHead> */}
+            <DrawerBackButton onClick={() => setView(DrawerPanel.Manage)} />
+          </DrawerHead>
           <DrawerContentWrapper>
             <DrawerAddNetwork />
           </DrawerContentWrapper>
@@ -190,4 +163,13 @@ interface DrawerContentWrapperProps {
 
 function DrawerContentWrapper({ children }: DrawerContentWrapperProps) {
   return <div className="p-[20px]">{children}</div>
+}
+
+function DrawerBackButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button data-testid="back" className="flex items-center" onClick={onClick}>
+      <ChevronLeft className="w-[14px] mr-[6px]" />
+      Back
+    </button>
+  )
 }
