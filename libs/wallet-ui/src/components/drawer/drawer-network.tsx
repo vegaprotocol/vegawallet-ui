@@ -20,7 +20,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
     <>
       <Title className="mt-0">Network</Title>
       {hasNetworks ? (
-        <div className="flex items-center justify-between mb-[20px]">
+        <div className="flex items-center justify-between mb-5">
           <NetworkSwitcher />
           <ButtonUnstyled
             data-testid="manage-networks"
