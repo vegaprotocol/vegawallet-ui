@@ -22,7 +22,6 @@ export function WalletCreateFormSuccess({
         <Callout
           title="Warning"
           icon={<Warning className="w-[15px] h-[15px]" />}
-          className="text-black bg-white"
           data-testid="recovery-phrase-warning"
         >
           <p data-testid="wallet-warning">

@@ -4,7 +4,6 @@ import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { Validation } from '../../lib/form-validation'
 import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
 import { FormGroup } from '../form-group'
 import { Select } from '../forms'
 import { Input } from '../forms/input'

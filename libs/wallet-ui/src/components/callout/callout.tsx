@@ -2,30 +2,23 @@ import classnames from 'classnames'
 import type { ReactNode, HTMLAttributes } from 'react'
 import { Children, cloneElement } from 'react'
 
-import { Intent } from '../../config/intent'
-
 interface CalloutProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
   title?: string
   icon?: ReactNode
-  intent?: Intent
 }
 
 export function Callout({
   children,
   title,
   icon,
-  intent = Intent.NONE,
   style,
   ...htmlProps
 }: CalloutProps) {
   const childrenLength = Children.toArray(children).length
   return (
     <div
-      className={classnames(
-        'flex gap-[15px] py-[15px] px-[20px]',
-        `bg-${intent}`
-      )}
+      className={classnames('flex gap-[15px] py-3 px-4 text-black bg-white')}
       {...htmlProps}
     >
       {icon && <span>{icon}</span>}
