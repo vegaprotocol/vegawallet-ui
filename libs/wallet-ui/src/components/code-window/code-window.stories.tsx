@@ -8,7 +8,9 @@ export default {
   title: 'CodeWindow',
 } as Meta
 
-const Template: Story = () => <CodeWindow text="foo" content="foo" />
+const Template: Story = () => (
+  <CodeWindow text="text-to-copy" content="content" />
+)
 
 let count = 0
 export const ContentInsertion: Story = () => {
@@ -24,7 +26,7 @@ export const ContentInsertion: Story = () => {
       clearInterval(interval)
     }
   }, [])
-  return <CodeWindow text="foo" content={content} />
+  return <CodeWindow text="text-to-copy" content={content} />
 }
 
 export const Default = Template.bind({})
