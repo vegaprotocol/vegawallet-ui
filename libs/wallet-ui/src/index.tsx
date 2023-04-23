@@ -4,7 +4,7 @@ import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 import { ThemeProvider } from '@vegaprotocol/wallet-theme'
 
 import { AppFrame, AppLoader } from './app-loader'
-import { Button } from './components/button'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { InteractionsProvider } from './components/interactions'
 import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
 import { PassphraseModal } from './components/passphrase-modal'

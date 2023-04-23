@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import type { ErrorInfo, ReactNode } from 'react'
 import { Component, useEffect } from 'react'
 
-import { Button } from './components/button'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { ServiceLoader } from './components/service-loader'
 import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
@@ -101,7 +101,11 @@ export function AppFrame({ children }: AppFrameProps) {
           )}
         </div>
       </div>
-      <div>{children}</div>
+      <div
+        className="min-h-0" // prevent children from expanding to fit content
+      >
+        {children}
+      </div>
     </div>
   )
 }

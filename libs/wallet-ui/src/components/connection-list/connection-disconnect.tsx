@@ -64,7 +64,7 @@ export const Disconnect = ({
           site functionality.
         </p>
       </div>
-      <ButtonGroup inline className="p-[20px]">
+      <ButtonGroup inline className="p-5">
         <Button loading={isLoading} onClick={handleDisconnect}>
           Disconnect
         </Button>

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
-import { Button } from '../../components/button'
 import { Splash } from '../../components/splash'
 import { Title } from '../../components/title'
 import { WalletCreateForm } from '../../components/wallet-create-form'

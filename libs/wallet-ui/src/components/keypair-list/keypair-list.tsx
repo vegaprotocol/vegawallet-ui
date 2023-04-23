@@ -1,4 +1,3 @@
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { CopyWithTooltip } from '../../components/copy-with-tooltip'
 import { EyeOff } from '../../components/icons/eye-off'
 import type { Wallet } from '../../contexts/global/global-context'
@@ -21,16 +20,16 @@ export const KeypairList = ({ wallet, onClick }: KeypairListProps) => {
           <div
             data-testid="wallet-keypair"
             key={publicKey}
-            className="border-t border-black py-[20px]"
+            className="border-t border-black py-5"
           >
             <div>
-              <ButtonUnstyled
+              <button
                 data-testid={`wallet-keypair-${publicKey}`}
                 onClick={() => onClick(publicKey)}
               >
                 {isTainted && <EyeOff className="w-[13px] mr-[6px]" />}
                 {name}
-              </ButtonUnstyled>
+              </button>
             </div>
             <div className="text-deemphasise">
               <CopyWithTooltip text={publicKey ?? ''}>

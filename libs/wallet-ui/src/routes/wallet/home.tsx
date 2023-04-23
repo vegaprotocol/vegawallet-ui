@@ -4,7 +4,6 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import { Paths } from '..'
 
 import { ButtonGroup } from '../../components/button-group'
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { ConnectionList } from '../../components/connection-list'
 import { Dialog } from '../../components/dialog'
 import { Header } from '../../components/header'
@@ -16,7 +15,6 @@ import { Title } from '../../components/title'
 import { WalletEdit } from '../../components/wallet-edit'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
-import { Button } from '@vegaprotocol/ui-toolkit'
 
 enum Tabs {
   KEYPAIRS = 'Keypairs',
@@ -67,21 +65,19 @@ export function WalletList() {
         title={
           <>
             {wallet.name}
-            <ButtonGroup inline className="inline-flex ml-[20px] gap-[12px]">
-              <ButtonUnstyled
+            <ButtonGroup inline className="inline-flex ml-5 gap-[12px]">
+              <button
                 data-testid="edit-wallet"
-                className="no-underline"
                 onClick={() => setEditing(true)}
               >
                 <Edit className="w-[16px]" />
-              </ButtonUnstyled>
-              <ButtonUnstyled
+              </button>
+              <button
                 data-testid="remove-wallet"
-                className="no-underline"
                 onClick={() => setRemoving(true)}
               >
                 <Trash className="w-[16px]" />
-              </ButtonUnstyled>
+              </button>
             </ButtonGroup>
           </>
         }

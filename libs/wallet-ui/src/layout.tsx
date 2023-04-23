@@ -7,7 +7,8 @@ import classNames from 'classnames'
 export const Layout = () => {
   const isFairground = useIsFairground()
   const mainClasses = classNames(
-    'relative block h-full bg-cover pb-20',
+    'relative block h-full bg-cover pb-16',
+    'min-h-0',
     'border-t-[3px] border-vega-yellow-500 bg-dark-vega-yellow',
     {
       'vega-border-image': !isFairground,
@@ -18,7 +19,9 @@ export const Layout = () => {
   return (
     <div className="grid grid-rows-[1fr_88px] h-full">
       <main className={mainClasses}>
-        <Outlet />
+        <div className="h-full p-5 overflow-y-auto">
+          <Outlet />
+        </div>
         <Drawer />
       </main>
       <NavBar isFairground={false} />

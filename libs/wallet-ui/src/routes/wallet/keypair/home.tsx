@@ -2,14 +2,13 @@ import classnames from 'classnames'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from '../..'
 
-import { Button } from '../../../components/button'
-import { ButtonUnstyled } from '../../../components/button-unstyled'
 import { Header } from '../../../components/header'
 import { EyeOff } from '../../../components/icons/eye-off'
 import { PublicKey } from '../../../components/public-key'
 import { Title } from '../../../components/title'
 import { useGlobal } from '../../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 export function KeyPairHome() {
   const navigate = useNavigate()
@@ -45,14 +44,15 @@ export function KeyPairHome() {
           </div>
           <div>
             This key is marked as unsafe to use.{' '}
-            <ButtonUnstyled
+            <button
+              className="underline"
               data-testid="keypair-taint-toggle"
               onClick={() =>
                 dispatch({ type: 'SET_TAINT_KEY_MODAL', open: true })
               }
             >
               Untaint
-            </ButtonUnstyled>{' '}
+            </button>{' '}
             it to enable this key to be used to sign transactions.
           </div>
         </div>

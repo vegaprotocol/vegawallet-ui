@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import { useMemo } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { ButtonGroup } from '../../components/button-group'
 import { Lock } from '../../components/icons/lock'
@@ -10,7 +11,6 @@ import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
-import { Button } from '@vegaprotocol/ui-toolkit'
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -33,7 +33,7 @@ export const Home = () => {
   return (
     <div
       data-testid="wallet-home"
-      className="p-5 h-full grid grid-rows-[min-content_1fr_min-content]"
+      className="grid grid-rows-[min-content_1fr_min-content] min-h-full"
     >
       <Title>Wallets</Title>
       <div data-testid="wallet-list">

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
-import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { Vega } from '../../components/icons'
 import { Title } from '../../components/title'
@@ -10,6 +10,7 @@ import { useVegaHome } from '../../hooks/use-vega-home'
 import { Paths } from '..'
 import { indexBy } from '../../lib/index-by'
 import { useIsFairground } from '../../hooks/use-is-fairground'
+import { Spinner } from '../../components/spinner'
 
 export function OnboardStart() {
   const navigate = useNavigate()
@@ -73,11 +74,10 @@ export function OnboardStart() {
         <ButtonGroup>
           <Button
             data-testid="use-existing-wallet"
-            loading={isLoading}
             className="w-full"
             onClick={handleImportExistingWallet}
           >
-            Use existing
+            {isLoading ? <Spinner /> : 'Use existing'}
           </Button>
         </ButtonGroup>
         <p className="my-5">OR</p>

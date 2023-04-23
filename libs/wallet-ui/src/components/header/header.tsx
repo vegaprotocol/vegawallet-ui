@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { ChevronLeft } from '../../components/icons/chevron-left'
 import { Title } from '../../components/title'
 
@@ -13,16 +12,16 @@ interface HeaderProps {
 
 export function Header({ breadcrumb, title, subtitle, onBack }: HeaderProps) {
   return (
-    <div className="p-[20px]">
+    <div className="p-5">
       {breadcrumb && onBack && (
-        <ButtonUnstyled
+        <button
           data-testid="back"
           onClick={onBack}
-          className="flex gap-[10px] items-center no-underline"
+          className="flex gap-1 items-center"
         >
           <ChevronLeft className="w-[14px]" />
           <Title className="text-white m-0">{breadcrumb}</Title>
-        </ButtonUnstyled>
+        </button>
       )}
       <div>
         <Title

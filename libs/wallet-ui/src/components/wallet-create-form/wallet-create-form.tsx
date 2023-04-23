@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Validation } from '../../lib/form-validation'
-import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
@@ -77,7 +76,9 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         <Button data-testid="create-wallet-form-submit" type="submit">
           Submit
         </Button>
-        <ButtonUnstyled onClick={cancel}>Cancel</ButtonUnstyled>
+        <button className="underline" onClick={cancel}>
+          Cancel
+        </button>
       </ButtonGroup>
     </form>
   )
