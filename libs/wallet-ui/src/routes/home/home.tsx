@@ -64,12 +64,12 @@ export const Home = () => {
           ))}
         </div>
         <ButtonGroup>
-          <Link className="flex-1" to="/wallet-create">
+          <Link className="flex-1" to="wallet-create">
             <Button data-testid="create-new-wallet" size="lg" fill={true}>
               Create wallet
             </Button>
           </Link>
-          <Link className="flex-1" to="/wallet-import">
+          <Link className="flex-1" to="wallet-import">
             <Button data-testid="import-wallet" size="lg" fill={true}>
               Import wallet
             </Button>

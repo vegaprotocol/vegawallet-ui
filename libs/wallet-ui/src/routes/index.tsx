@@ -28,8 +28,8 @@ export const Paths = {
   },
   Wallet: {
     Home: '/wallet',
-    Create: '/wallet-create',
-    Import: '/wallet-import',
+    Create: 'wallet-create',
+    Import: 'wallet-import',
     Wallet: (wallet: string) => `/wallet/${wallet}`,
     Transactions: (wallet: string, pubkey: string) =>
       `/wallet/${wallet}/keypair/${pubkey}/transactions`,
