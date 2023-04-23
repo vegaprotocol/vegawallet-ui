@@ -8,7 +8,7 @@ export const Layout = () => {
   const isFairground = useIsFairground()
   const mainClasses = classNames(
     'relative block h-full bg-cover pb-16',
-    'min-h-0',
+    'min-h-0 overflow-hidden',
     'border-t-[3px] border-vega-yellow-500 bg-dark-vega-yellow',
     {
       'vega-border-image': !isFairground,

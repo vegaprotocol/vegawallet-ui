@@ -67,7 +67,7 @@ export const NavBar = ({ isFairground }: { isFairground: boolean }) => {
     <nav
       data-testid="nav-bar"
       className={classnames(
-        'z-10 w-full h-full grid gap-0 grid-cols-[1fr_1fr_1fr] border-t border-dark-200',
+        'w-full h-full grid gap-0 grid-cols-[1fr_1fr_1fr] border-t border-dark-200',
         {
           'bg-black': !isFairground,
           'bg-vega-yellow-500': isFairground,

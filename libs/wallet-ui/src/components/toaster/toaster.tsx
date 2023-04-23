@@ -40,12 +40,12 @@ export class Toaster extends Component<Readonly<any>, ToasterState> {
     container.style.display = 'flex'
     container.style.alignItems = 'center'
     container.style.flexFlow = 'column nowrap'
-    container.style.top = '0'
+    container.style.top = '30px'
     container.style.right = '0'
     container.style.left = '0'
     container.style.position = 'absolute'
     container.style.pointerEvents = 'none'
-    container.style.padding = '30px 20px 20px'
+    container.style.padding = '0 20px'
     container.style.zIndex = '10'
     document.body.appendChild(container)
     // @ts-ignore Ts gets confused by the self-refefence here

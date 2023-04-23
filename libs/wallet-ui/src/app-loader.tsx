@@ -75,10 +75,9 @@ export function AppFrame({ children }: AppFrameProps) {
       )}
     >
       <div
-        className={classnames('h-9', {
-          'bg-transparent': useVegaBg,
-          'bg-black': !useVegaBg,
-        })}
+        // !pointer-events-auto is required to allow the user to click and drag the app
+        // when dialogs are open, as radix-ui will apply pointer-events: none to the body
+        className="h-9 bg-transparent !pointer-events-auto"
         style={{
           // The app is frameless by default so this element creates a space at the top of the app
           // which you can click and drag to move the app around.
