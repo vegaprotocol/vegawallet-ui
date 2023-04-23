@@ -6,6 +6,9 @@ import { useIsFairground } from '../../hooks/use-is-fairground'
 import { DrawerHead } from './drawer-head'
 import { ServiceStatus } from './service-status'
 import { useCallback } from 'react'
+import { useWindowSize } from '../../hooks/use-window-size'
+import { APP_FRAME_HEIGHT } from '../../app-loader'
+import { NAVBAR_HEIGHT } from '../navbar'
 
 export const DRAWER_HEIGHT = 70
 
@@ -13,6 +16,7 @@ export const DRAWER_HEIGHT = 70
  * Renders and controls the slide up drawer showing network information.
  */
 export function Drawer() {
+  const { height } = useWindowSize()
   const { state, dispatch, actions } = useGlobal()
   const isFairground = useIsFairground()
 
@@ -20,7 +24,7 @@ export function Drawer() {
     to: {
       y: state.drawerState.isOpen
         ? -3 // -3 so it overlaps with top border
-        : window.innerHeight - 88 - 36 - DRAWER_HEIGHT,
+        : height - NAVBAR_HEIGHT - APP_FRAME_HEIGHT - DRAWER_HEIGHT,
     },
     config: { ...config.default, duration: 170 },
   })

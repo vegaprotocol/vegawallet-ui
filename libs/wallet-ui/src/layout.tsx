@@ -17,7 +17,8 @@ export const Layout = () => {
     }
   )
   return (
-    <div className="grid grid-rows-[1fr_88px] h-full">
+    // must use 88px here for tw to compile with correct styles
+    <div className={`grid grid-rows-[1fr_88px] h-full`}>
       <main className={mainClasses}>
         <div className="h-full p-5 overflow-y-auto">
           <Outlet />
