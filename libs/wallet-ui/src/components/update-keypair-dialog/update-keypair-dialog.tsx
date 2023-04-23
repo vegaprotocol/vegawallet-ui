@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import type { DropResult } from 'react-beautiful-dnd'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useFieldArray, useForm } from 'react-hook-form'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { Intent } from '../../config/intent'
 import type { KeyPair, Wallet } from '../../contexts/global/global-context'
@@ -11,12 +12,12 @@ import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import type { Meta } from '../../hooks/use-keypair-update'
 import { useKeypairUpdate } from '../../hooks/use-keypair-update'
 import { Validation } from '../../lib/form-validation'
-import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
 import { PublicKey } from '../public-key'
+import { ButtonGroup } from '../button-group'
 
 const notName = (value: string) =>
   value === 'name' ? 'Name is already in use' : true
@@ -34,7 +35,7 @@ export function UpdateKeypairDialog() {
   }
 
   return (
-    <Dialog open={state.isUpdateKeyModalOpen} title="Update key">
+    <Dialog open={state.isUpdateKeyModalOpen} title="Update key" size="lg">
       <PublicKey publicKey={keypair.publicKey} />
       <div className="px-[20px] pb-[20px]">
         <UpdateKeyForm keypair={keypair} wallet={wallet} />
@@ -234,18 +235,28 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
           Add metadata
         </button>
       </div>
-      <div className="flex mt-0 gap-[20px]">
-        <Button data-testid="metadata-submit" disabled={loading} type="submit">
-          Update
-        </Button>
-        <ButtonUnstyled
-          onClick={() =>
-            dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: false })
-          }
-        >
-          Cancel
-        </ButtonUnstyled>
-      </div>
+      <ButtonGroup>
+        <div className="flex-1">
+          <Button
+            data-testid="metadata-submit"
+            disabled={loading}
+            type="submit"
+            fill={true}
+          >
+            Update
+          </Button>
+        </div>
+        <div className="flex-1">
+          <button
+            onClick={() =>
+              dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: false })
+            }
+            className="underline w-full"
+          >
+            Cancel
+          </button>
+        </div>
+      </ButtonGroup>
     </form>
   )
 }
