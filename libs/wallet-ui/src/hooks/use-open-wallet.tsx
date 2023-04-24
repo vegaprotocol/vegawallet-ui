@@ -8,13 +8,17 @@ import type { Connection } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
 import { requestPassphrase } from '../components/passphrase-modal'
 
-const unlockWalletLoop = async (client: WalletAdmin, wallet: string) => {
-  const passphrase = await requestPassphrase()
+const unlockWalletLoop = async (
+  client: WalletAdmin,
+  wallet: string,
+  passphrase?: string
+) => {
+  const pass = passphrase || (await requestPassphrase())
 
   try {
     await client.UnlockWallet({
       wallet,
-      passphrase,
+      passphrase: pass,
     })
   } catch (err) {
     AppToaster.show({
@@ -59,9 +63,16 @@ export const useOpenWallet = () => {
   const { dispatch, client, state } = useGlobal()
 
   const getWalletData = useCallback(
-    async (wallet: string) => {
+    async (wallet: string, passphrase?: string) => {
       if (!state.wallets[wallet]?.auth) {
-        await unlockWalletLoop(client, wallet)
+        if (!passphrase) {
+          await unlockWalletLoop(client, wallet)
+        } else {
+          await client.UnlockWallet({
+            wallet,
+            passphrase,
+          })
+        }
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

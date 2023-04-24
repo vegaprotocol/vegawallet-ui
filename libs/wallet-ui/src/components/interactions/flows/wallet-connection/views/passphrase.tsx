@@ -8,6 +8,7 @@ import { ButtonGroup } from '../../../../button-group'
 import { Validation } from '../../../../../lib/form-validation'
 import { useGlobal } from '../../../../../contexts/global/global-context'
 import { Intent } from '../../../../../config/intent'
+import { useOpenWallet } from '../../../../../hooks/use-open-wallet'
 
 import type { WalletConnectionProps } from '../'
 import { Frame } from '../../../../frame'
@@ -23,7 +24,8 @@ export const PassphraseView = ({
   onClose,
 }: WalletConnectionProps) => {
   const [isLoading, setLoading] = useState(false)
-  const { service, client, dispatch } = useGlobal()
+  const { service } = useGlobal()
+  const { getWalletData } = useOpenWallet()
   const {
     register,
     handleSubmit,
@@ -60,16 +62,6 @@ export const PassphraseView = ({
     setLoading(true)
 
     try {
-      await client.UnlockWallet({
-        wallet,
-        passphrase,
-      })
-
-      dispatch({
-        type: 'ACTIVATE_WALLET',
-        wallet,
-      })
-
       await service.RespondToInteraction({
         traceID: data.traceID,
         name: 'ENTERED_PASSPHRASE',
@@ -77,6 +69,8 @@ export const PassphraseView = ({
           passphrase,
         },
       })
+
+      await getWalletData(wallet, passphrase)
     } catch (err) {
       if (err instanceof Error && err.message === 'wrong passphrase') {
         setError(
