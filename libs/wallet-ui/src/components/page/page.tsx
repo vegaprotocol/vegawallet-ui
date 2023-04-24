@@ -14,19 +14,18 @@ export const Page = ({ name, children, back = false }: PageProps) => {
       data-testid={name}
       className="h-full pt-8 pb-5 px-5 grid grid-rows-[min-content_1fr] overflow-y-auto"
     >
-      <button onClick={() => navigate(-1)}>
-        <h1 className="text-2xl flex" data-testid={`${name}-header`}>
-          {back && (
-            <div
-              data-testid="page-back"
-              className="flex flex-col justify-center mr-2"
-            >
-              <Icon size={6} name="chevron-left" />
-            </div>
-          )}
-          {name}
-        </h1>
-      </button>
+      <h1 className="text-2xl flex" data-testid={`${name}-header`}>
+        {back && (
+          <button
+            onClick={() => navigate(-1)}
+            className="flex flex-col justify-center mr-2"
+            data-testid="page-back"
+          >
+            <Icon size={6} name="chevron-left" />
+          </button>
+        )}
+        {name}
+      </h1>
       <div className="mt-4">{children}</div>
     </section>
   )
