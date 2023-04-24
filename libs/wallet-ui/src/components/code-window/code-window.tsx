@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { useEffect } from 'react'
 import { useRef } from 'react'
 import { CopyWithTooltip } from '../copy-with-tooltip'
 
@@ -13,11 +12,12 @@ export const CodeWindow = ({
   const codeElRef = useRef<HTMLDivElement>(null)
 
   // scroll to the dummy element when new logs arrive
-  useEffect(() => {
-    if (codeElRef.current) {
-      codeElRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [content])
+  // this fucks with the transaction page
+  // useEffect(() => {
+  //   if (codeElRef.current) {
+  //     codeElRef.current.scrollIntoView({ behavior: 'smooth' })
+  //   }
+  // }, [content])
 
   return (
     <div

@@ -3,10 +3,8 @@ import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { Paths } from '..'
 
-import { ButtonGroup } from '../../components/button-group'
 import { ConnectionList } from '../../components/connection-list'
 import { Dialog } from '../../components/dialog'
-import { Header } from '../../components/header'
 import { Edit } from '../../components/icons/edit'
 import { Trash } from '../../components/icons/trash'
 import { KeypairList } from '../../components/keypair-list'
@@ -15,6 +13,7 @@ import { Title } from '../../components/title'
 import { WalletEdit } from '../../components/wallet-edit'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
+import { Page } from '../../components/page'
 
 enum Tabs {
   KEYPAIRS = 'Keypairs',
@@ -28,7 +27,7 @@ type TabTitlesProps = {
 
 const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
   return (
-    <div className="flex gap-[20px]">
+    <div className="flex gap-5">
       {Object.values(Tabs).map((tab) => (
         <Title
           data-testid={`tab-${tab.toLowerCase()}`}
@@ -60,67 +59,55 @@ export function WalletList() {
   }
 
   return (
-    <>
-      <Header
-        title={
-          <>
-            {wallet.name}
-            <ButtonGroup inline className="inline-flex ml-5 gap-[12px]">
-              <button
-                data-testid="edit-wallet"
-                onClick={() => setEditing(true)}
-              >
-                <Edit className="w-[16px]" />
-              </button>
-              <button
-                data-testid="remove-wallet"
-                onClick={() => setRemoving(true)}
-              >
-                <Trash className="w-[16px]" />
-              </button>
-            </ButtonGroup>
-          </>
-        }
-        breadcrumb="Wallets"
-        onBack={() => {
-          dispatch({
-            type: 'DEACTIVATE_WALLET',
-            wallet: wallet.name,
-          })
-          navigate(Paths.Home)
-        }}
-      />
-      <div className="pb-[20px] px-[20px] pt-0">
-        <TabTitles activeTab={tab} setTab={setTab} />
-        {tab === Tabs.KEYPAIRS && (
-          <KeypairList
-            wallet={wallet}
-            onClick={(publicKey) =>
-              navigate(
-                Paths.Wallet.Keypair(encodeURIComponent(wallet.name), publicKey)
-              )
-            }
-          />
-        )}
-        {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
-        {tab === Tabs.KEYPAIRS && (
+    <Page name={wallet.name} back={true}>
+      <>
+        <div className="flex mb-5">
           <button
-            className="underline"
-            data-testid="generate-keypair"
-            onClick={() => {
-              dispatch(actions.addKeypairAction(wallet.name))
-            }}
+            className="mr-3"
+            data-testid="edit-wallet"
+            onClick={() => setEditing(true)}
           >
-            Generate key pair
+            <Edit className="w-[16px]" />
           </button>
-        )}
-      </div>
-      <Dialog size="lg" open={isRemoving} title="Remove wallet">
-        <RemoveWallet onClose={() => setRemoving(false)} />
-      </Dialog>
-      <Dialog open={isEditing} onChange={setEditing} title="Edit wallet">
-        <WalletEdit onClose={() => setEditing(false)} />
-      </Dialog>
-    </>
+          <button data-testid="remove-wallet" onClick={() => setRemoving(true)}>
+            <Trash className="w-[16px]" />
+          </button>
+        </div>
+        <div className="pb-5 px-5 pt-0">
+          <TabTitles activeTab={tab} setTab={setTab} />
+          {tab === Tabs.KEYPAIRS && (
+            <KeypairList
+              wallet={wallet}
+              onClick={(publicKey) =>
+                navigate(
+                  Paths.Wallet.Keypair(
+                    encodeURIComponent(wallet.name),
+                    publicKey
+                  )
+                )
+              }
+            />
+          )}
+          {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
+          {tab === Tabs.KEYPAIRS && (
+            <button
+              className="underline"
+              data-testid="generate-keypair"
+              onClick={() => {
+                dispatch(actions.addKeypairAction(wallet.name))
+              }}
+            >
+              Generate key pair
+            </button>
+          )}
+        </div>
+        <Dialog size="lg" open={isRemoving} title="Remove wallet">
+          <RemoveWallet onClose={() => setRemoving(false)} />
+        </Dialog>
+        <Dialog open={isEditing} onChange={setEditing} title="Edit wallet">
+          <WalletEdit onClose={() => setEditing(false)} />
+        </Dialog>
+      </>
+    </Page>
   )
 }
