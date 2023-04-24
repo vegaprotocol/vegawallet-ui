@@ -5,8 +5,6 @@ import { Paths } from '..'
 
 import { ConnectionList } from '../../components/connection-list'
 import { Dialog } from '../../components/dialog'
-import { Edit } from '../../components/icons/edit'
-import { Trash } from '../../components/icons/trash'
 import { KeypairList } from '../../components/keypair-list'
 import { RemoveWallet } from '../../components/remove-wallet'
 import { Title } from '../../components/title'
@@ -14,6 +12,7 @@ import { WalletEdit } from '../../components/wallet-edit'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
 import { Page } from '../../components/page'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 enum Tabs {
   KEYPAIRS = 'Keypairs',
@@ -61,46 +60,48 @@ export function WalletList() {
   return (
     <Page name={wallet.name} back={true}>
       <>
-        <div className="flex mb-5">
-          <button
+        <div className="flex mb-10">
+          <Button
             className="mr-3"
+            size="sm"
             data-testid="edit-wallet"
             onClick={() => setEditing(true)}
           >
-            <Edit className="w-[16px]" />
-          </button>
-          <button data-testid="remove-wallet" onClick={() => setRemoving(true)}>
-            <Trash className="w-[16px]" />
-          </button>
+            {/* <Edit className="w-[16px]" /> */}
+            Edit
+          </Button>
+          <Button
+            data-testid="remove-wallet"
+            size="sm"
+            onClick={() => setRemoving(true)}
+          >
+            {/* <Trash className="w-[16px]" /> */}
+            Delete
+          </Button>
         </div>
-        <div className="pb-5 px-5 pt-0">
-          <TabTitles activeTab={tab} setTab={setTab} />
-          {tab === Tabs.KEYPAIRS && (
-            <KeypairList
-              wallet={wallet}
-              onClick={(publicKey) =>
-                navigate(
-                  Paths.Wallet.Keypair(
-                    encodeURIComponent(wallet.name),
-                    publicKey
-                  )
-                )
-              }
-            />
-          )}
-          {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
-          {tab === Tabs.KEYPAIRS && (
-            <button
-              className="underline"
-              data-testid="generate-keypair"
-              onClick={() => {
-                dispatch(actions.addKeypairAction(wallet.name))
-              }}
-            >
-              Generate key pair
-            </button>
-          )}
-        </div>
+        <TabTitles activeTab={tab} setTab={setTab} />
+        {tab === Tabs.KEYPAIRS && (
+          <KeypairList
+            wallet={wallet}
+            onClick={(publicKey) =>
+              navigate(
+                Paths.Wallet.Keypair(encodeURIComponent(wallet.name), publicKey)
+              )
+            }
+          />
+        )}
+        {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
+        {tab === Tabs.KEYPAIRS && (
+          <button
+            className="underline"
+            data-testid="generate-keypair"
+            onClick={() => {
+              dispatch(actions.addKeypairAction(wallet.name))
+            }}
+          >
+            Generate key pair
+          </button>
+        )}
         <Dialog size="lg" open={isRemoving} title="Remove wallet">
           <RemoveWallet onClose={() => setRemoving(false)} />
         </Dialog>

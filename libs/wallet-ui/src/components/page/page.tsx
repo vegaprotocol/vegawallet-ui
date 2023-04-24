@@ -21,7 +21,12 @@ export const Page = ({ name, children, back = false }: PageProps) => {
             className="flex flex-col justify-center mr-2"
             data-testid="page-back"
           >
-            <Icon size={6} name="chevron-left" />
+            <Icon
+              size={6}
+              name="chevron-left"
+              // nudge icon left so it aligns with edge of container padding
+              className="ml-[-6px]"
+            />
           </button>
         )}
         {name}

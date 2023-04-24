@@ -20,7 +20,7 @@ export const KeypairList = ({ wallet, onClick }: KeypairListProps) => {
           <div
             data-testid="wallet-keypair"
             key={publicKey}
-            className="border-t border-black py-5"
+            className="border-t border-black mb-5"
           >
             <div>
               <button
