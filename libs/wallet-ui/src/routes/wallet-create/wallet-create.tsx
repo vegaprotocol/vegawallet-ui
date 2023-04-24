@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@vegaprotocol/ui-toolkit'
 
-import { Splash } from '../../components/splash'
-import { Title } from '../../components/title'
+import { Page } from '../../components/page'
 import { WalletCreateForm } from '../../components/wallet-create-form'
 import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
@@ -13,30 +12,31 @@ export const WalletCreate = () => {
   const { response, submit } = useCreateWallet()
 
   return (
-    <Splash>
-      <Title className="mt-0 text-white text-center">Create wallet</Title>
-      {response ? (
-        <WalletCreateFormSuccess
-          response={response}
-          callToAction={
-            <Button
-              data-testid="create-wallet-success-cta"
-              onClick={() => {
-                const path = response.wallet?.name
-                  ? Paths.Wallet.Wallet(
-                      encodeURIComponent(response.wallet.name)
-                    )
-                  : Paths.Home
-                navigate(path)
-              }}
-            >
-              View wallet
-            </Button>
-          }
-        />
-      ) : (
-        <WalletCreateForm submit={submit} cancel={() => navigate(-1)} />
-      )}
-    </Splash>
+    <Page name="Create wallet" back={false}>
+      <>
+        {response ? (
+          <WalletCreateFormSuccess
+            response={response}
+            callToAction={
+              <Button
+                data-testid="create-wallet-success-cta"
+                onClick={() => {
+                  const path = response.wallet?.name
+                    ? Paths.Wallet.Wallet(
+                        encodeURIComponent(response.wallet.name)
+                      )
+                    : Paths.Home
+                  navigate(path)
+                }}
+              >
+                View wallet
+              </Button>
+            }
+          />
+        ) : (
+          <WalletCreateForm submit={submit} cancel={() => navigate(-1)} />
+        )}
+      </>
+    </Page>
   )
 }
