@@ -57,7 +57,7 @@ export const enum PermissionType {
 export type Connection = {
   hostname: string
   active: boolean
-  permissions: WalletModel.Permissions
+  permissions: Partial<WalletModel.Permissions>
 }
 
 export interface KeyPair

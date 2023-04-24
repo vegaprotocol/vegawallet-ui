@@ -18,9 +18,11 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
   const connectionList = useMemo(() => {
     return Object.keys(wallet.connections || {}).filter((key) => {
       const c = wallet.connections?.[key]
-      return c && !(!c.active && c.permissions.publicKeys.access === 'none')
+      return c && !(!c.active && c.permissions.publicKeys?.access === 'none')
     })
   }, [wallet.connections])
+
+  console.log(wallet)
 
   const handleCloseDisconnect = useCallback(() => {
     setDisconnectHost(null)

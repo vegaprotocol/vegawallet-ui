@@ -2,6 +2,7 @@ import type { InteractionErrorType } from '../../views/error'
 import { InteractionError } from '../../views/error'
 import { InteractionSuccess } from '../../views/success'
 import { ConnectionView, SelectionView, PassphraseView } from './views'
+import { useGlobal } from '../../../../contexts/global/global-context'
 
 export type WalletConnectionData = {
   traceID: string
@@ -21,6 +22,8 @@ export type WalletConnectionProps = {
 }
 
 export const WalletConnection = (p: WalletConnectionProps) => {
+  const { dispatch } = useGlobal()
+
   if (p.data.error && p.data.error.type !== 'User error') {
     return (
       <InteractionError
@@ -43,7 +46,26 @@ export const WalletConnection = (p: WalletConnectionProps) => {
       return <PassphraseView {...p} />
     }
     case 'success': {
-      return <InteractionSuccess title="Connected" onClose={p.onClose} />
+      return (
+        <InteractionSuccess
+          title="Connected"
+          onClose={() => {
+            const wallet = p.data.wallet || p.data.selectedWallet
+            if (wallet && p.data.hostname) {
+              dispatch({
+                type: 'ADD_CONNECTION',
+                wallet,
+                connection: {
+                  hostname: p.data.hostname,
+                  active: true,
+                  permissions: {},
+                },
+              })
+            }
+            p.onClose()
+          }}
+        />
+      )
     }
     default: {
       return null

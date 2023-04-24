@@ -1,12 +1,11 @@
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
+import type { WalletAdmin, WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import type { Connection } from '../contexts/global/global-context'
 import { useGlobal } from '../contexts/global/global-context'
-import { indexBy } from '../lib/index-by'
 import { requestPassphrase } from '../components/passphrase-modal'
 
 const unlockWalletLoop = async (client: WalletAdmin, wallet: string) => {
@@ -25,6 +24,34 @@ const unlockWalletLoop = async (client: WalletAdmin, wallet: string) => {
 
     await unlockWalletLoop(client, wallet)
   }
+}
+
+const getConnections = (
+  wallet: string,
+  connections: WalletModel.ListConnectionsResult['activeConnections'],
+  permissionDetails: Connection[]
+) => {
+  const mapping: Record<string, Connection> = {}
+
+  connections.forEach((connection) => {
+    if (wallet === connection.wallet) {
+      mapping[connection.hostname] = {
+        hostname: connection.hostname,
+        active: true,
+        permissions: {},
+      }
+    }
+  })
+
+  permissionDetails.forEach((permission) => {
+    mapping[permission.hostname] = {
+      hostname: permission.hostname,
+      active: !!mapping[permission.hostname],
+      permissions: permission.permissions,
+    }
+  })
+
+  return mapping
 }
 
 export const useOpenWallet = () => {
@@ -55,16 +82,6 @@ export const useOpenWallet = () => {
         )
       )
 
-      const walletConnections = activeConnections.reduce<string[]>(
-        (acc, connection) => {
-          if (connection.wallet === wallet) {
-            acc.push(connection.hostname)
-          }
-          return acc
-        },
-        []
-      )
-
       const permissionDetails = await Promise.all(
         Object.keys(permissions).map(async (hostname) => {
           const result = await client.DescribePermissions({
@@ -73,10 +90,16 @@ export const useOpenWallet = () => {
           })
           return {
             hostname,
-            active: walletConnections.includes(hostname),
+            active: false,
             permissions: result.permissions,
           }
         })
+      )
+
+      const connections = getConnections(
+        wallet,
+        activeConnections,
+        permissionDetails
       )
 
       dispatch({
@@ -87,10 +110,7 @@ export const useOpenWallet = () => {
       dispatch({
         type: 'SET_CONNECTIONS',
         wallet,
-        connections: permissionDetails.reduce<Record<string, Connection>>(
-          indexBy('hostname'),
-          {}
-        ),
+        connections,
       })
       dispatch({
         type: 'ACTIVATE_WALLET',
