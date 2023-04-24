@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom'
 import classnames from 'classnames'
 import { LeftRightArrows } from '../icons/left-right-arrows'
 import { Paths } from '../../routes'
+import { useGlobal } from '../../contexts/global/global-context'
 
 export interface NavButtonProps {
   end?: boolean
@@ -34,8 +35,17 @@ export const NavButton = ({
   isFairground,
 }: NavButtonProps) => {
   const textColors = isFairground ? TEXT_COLOR.fairground : TEXT_COLOR.default
+  const { dispatch, actions } = useGlobal()
   return (
-    <NavLink end={end} data-testid="nav-button" to={to} className="text-center">
+    <NavLink
+      end={end}
+      data-testid="nav-button"
+      to={to}
+      className="text-center"
+      onClick={() => {
+        dispatch(actions.setDrawerAction(false))
+      }}
+    >
       {({ isActive }) => {
         const textColor = isActive ? textColors.active : textColors.inactive
 
