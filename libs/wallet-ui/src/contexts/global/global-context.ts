@@ -110,7 +110,7 @@ export interface GlobalState {
 
 export type GlobalDispatch = ThunkDispatch<GlobalState, GlobalAction>
 
-type GlobalContextShape = {
+export type GlobalContextShape = {
   state: GlobalState
   actions: GlobalActions
   dispatch: GlobalDispatch
