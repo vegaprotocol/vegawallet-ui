@@ -55,6 +55,10 @@ export default defineConfig({
         launchOptions: {
           args: ['--disable-web-security'],
         },
+        viewport: {
+          width: 760,
+          height: 760,
+        },
       },
     },
 
