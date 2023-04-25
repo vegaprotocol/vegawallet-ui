@@ -8,7 +8,8 @@ import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
 import { SplashLoader } from './components/splash-loader'
 import { AppStatus, useGlobal } from './contexts/global/global-context'
-import { useIsFairground } from './hooks/use-is-fairground'
+import { useNetworkMode } from './hooks/use-network-mode'
+import type { Features } from './types'
 import type { Logger } from './types/logger'
 
 /**
@@ -21,12 +22,12 @@ export function AppLoader({ children }: { children?: ReactNode }) {
     actions,
     dispatch,
   } = useGlobal()
-  const isFairground = useIsFairground()
+  const { mode } = useNetworkMode()
 
   // Get wallets, service state and version
   useEffect(() => {
-    dispatch(actions.initAppAction(isFairground))
-  }, [dispatch, actions, isFairground])
+    dispatch(actions.initAppAction(mode))
+  }, [dispatch, actions, mode])
 
   if (status === AppStatus.Pending) {
     return (
@@ -53,13 +54,24 @@ interface AppFrameProps {
   children: ReactNode
 }
 
+const getAppTitle = (networkMode: Features['NETWORK_MODE']) => {
+  switch (networkMode) {
+    case 'mainnet':
+      return 'Vega Wallet'
+    case 'fairground':
+      return 'Fairground Wallet'
+    default:
+      return 'Vega Wallet Dev'
+  }
+}
+
 /**
  * Renders a bar at the top of the app with the data-wails-drag attribute which lets you
  * drag the app window aroung. Also renders the vega-bg className if onboard mode
  */
 export function AppFrame({ children }: AppFrameProps) {
   const { state } = useGlobal()
-  const isFairground = useIsFairground()
+  const { mode } = useNetworkMode()
   const useVegaBg = state.status === AppStatus.Onboarding
   return (
     <div
@@ -90,9 +102,7 @@ export function AppFrame({ children }: AppFrameProps) {
         <div className="pt-2 flex justify-center">
           {state.version?.version && (
             <>
-              <span className="text-white">
-                {isFairground ? 'Fairground wallet' : 'Vega Wallet'}
-              </span>
+              <span className="text-white">{getAppTitle(mode)}</span>
               &nbsp;
               <span className="text-dark-300">
                 {state.version.version.replace('v', '')}

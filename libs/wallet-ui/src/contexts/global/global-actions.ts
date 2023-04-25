@@ -8,6 +8,7 @@ import type { GlobalDispatch, GlobalState } from './global-context'
 import { DrawerPanel, ServiceState } from './global-context'
 import type { GlobalAction } from './global-reducer'
 import { indexBy } from '../../lib/index-by'
+import type { Features } from '../../types'
 
 type ServiceAction = {
   getState: () => GlobalState
@@ -145,7 +146,7 @@ export function createActions(service: Service, client: WalletAdmin) {
   const logger = service.GetLogger('GlobalActions')
 
   const actions = {
-    initAppAction(isFairground: boolean) {
+    initAppAction(networkMode: Features['NETWORK_MODE']) {
       return async (dispatch: GlobalDispatch) => {
         try {
           logger.debug('StartApp')
@@ -155,12 +156,13 @@ export function createActions(service: Service, client: WalletAdmin) {
 
           if (!isInit) {
             // HACK, prevent the wallet from checking if there are existing wallets on fairground
-            const existingConfig = isFairground
-              ? {
-                  wallets: [],
-                  networks: [],
-                }
-              : await service.SearchForExistingConfiguration()
+            const existingConfig =
+              networkMode !== 'mainnet'
+                ? {
+                    wallets: [],
+                    networks: [],
+                  }
+                : await service.SearchForExistingConfiguration()
             dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
             return
           }

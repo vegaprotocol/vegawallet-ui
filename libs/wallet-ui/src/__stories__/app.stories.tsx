@@ -25,7 +25,19 @@ Fairground.args = {
   client,
   runtime,
   features: {
-    FAIRGROUND_MODE: true,
+    NETWORK_MODE: 'fairground',
+    TELEMETRY_CHECK: false,
+    NETWORK_COMPATIBILITY_WARNING: false,
+  },
+}
+
+export const Mainnet = Template.bind({})
+Mainnet.args = {
+  service,
+  client,
+  runtime,
+  features: {
+    NETWORK_MODE: 'mainnet',
     TELEMETRY_CHECK: false,
     NETWORK_COMPATIBILITY_WARNING: false,
   },
