@@ -76,7 +76,7 @@ export const TransactionReview = ({
 }: TransactionReviewProps) => {
   const explorerUrl = useExplorerUrl()
   const [isLoading, setLoading] = useState<'approve' | 'reject' | false>(false)
-  const { service } = useGlobal()
+  const { service, dispatch } = useGlobal()
   const isProcessing = data.transaction && data.transaction.logs.length > 0
 
   const handleDecision = async (decision: boolean) => {
@@ -89,6 +89,16 @@ export const TransactionReview = ({
           approved: decision,
         },
       })
+      if (data.transaction && !decision) {
+        // eagerly mark the current tx as rejected
+        dispatch({
+          type: 'UPDATE_TRANSACTION',
+          transaction: {
+            id: data.transaction?.id,
+            status: TransactionStatus.REJECTED,
+          },
+        })
+      }
     } catch (err) {
       onUpdate({
         ...data,
@@ -116,7 +126,20 @@ export const TransactionReview = ({
         title="Failed to send transaction"
         type={data.error.type}
         message={data.error.error}
-        onClose={onClose}
+        onClose={() => {
+          if (data.transaction) {
+            // this usually happens when there's a traceID mismatch
+            // eagerly mark the current tx as failure
+            dispatch({
+              type: 'UPDATE_TRANSACTION',
+              transaction: {
+                id: data.transaction?.id,
+                status: TransactionStatus.FAILURE,
+              },
+            })
+          }
+          onClose()
+        }}
       />
     )
   }
