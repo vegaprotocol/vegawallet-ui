@@ -30,6 +30,6 @@ Default.args = {}
 export const Fairground = Template.bind({})
 Fairground.args = {
   features: {
-    FAIRGROUND_MODE: true,
+    NETWORK_MODE: 'fairground',
   },
 }

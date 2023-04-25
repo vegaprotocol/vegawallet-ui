@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom'
-import { useIsFairground } from '../../hooks/use-is-fairground'
+import { useNetworkMode } from '../../hooks/use-network-mode'
 
 export function Onboard() {
-  const isFairground = useIsFairground()
+  const { isFairground } = useNetworkMode()
   if (isFairground) {
     return <Navigate to="/onboard/vega-home" />
   } else {

@@ -5,7 +5,7 @@ import { APP_FRAME_HEIGHT } from '../../app-loader'
 import { useGlobal } from '../../contexts/global/global-context'
 import { DRAWER_HEIGHT } from '.'
 import { DrawerContent } from './drawer-content'
-import { useIsFairground } from '../../hooks/use-is-fairground'
+import { useNetworkMode } from '../../hooks/use-network-mode'
 import { NAVBAR_HEIGHT } from '../navbar'
 
 interface ChromeDrawerProps {
@@ -17,7 +17,7 @@ interface ChromeDrawerProps {
  */
 export function ChromeDrawer({ height }: ChromeDrawerProps) {
   const { state } = useGlobal()
-  const isFairground = useIsFairground()
+  const { isFairground } = useNetworkMode()
 
   const styles = useSpring({
     to: {

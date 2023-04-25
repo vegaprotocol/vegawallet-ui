@@ -5,6 +5,7 @@ import type { To } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import classnames from 'classnames'
 import { LeftRightArrows } from '../icons/left-right-arrows'
+import type { Features } from '../../types'
 
 export interface NavButtonProps {
   end?: boolean
@@ -62,15 +63,22 @@ export const NavButton = ({
 
 export const NAVBAR_HEIGHT = 88
 
-export const NavBar = ({ isFairground }: { isFairground: boolean }) => {
+export const NavBar = ({
+  networkMode,
+}: {
+  networkMode: Features['NETWORK_MODE']
+}) => {
+  const isFairground = networkMode === 'fairground'
+
   return (
     <nav
       data-testid="nav-bar"
       className={classnames(
         'absolute z-10 w-full h-[88px] grid gap-0 grid-cols-[1fr_1fr_1fr] border-t border-dark-200',
         {
-          'bg-black': !isFairground,
-          'bg-vega-yellow-500': isFairground,
+          'bg-grey': !networkMode || networkMode === 'dev',
+          'bg-black': networkMode === 'mainnet',
+          'bg-vega-yellow-500': networkMode === 'fairground',
         }
       )}
     >

@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { useFullscreenContext } from '../../contexts/fullscreen/fullscreen-context'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
-import { useIsFairground } from '../../hooks/use-is-fairground'
+import { useNetworkMode } from '../../hooks/use-network-mode'
 import { useWindowSize } from '../../hooks/use-window-size'
 import { NavBar } from '../navbar'
 import { ChromeDrawer } from './chrome-drawer'
@@ -14,7 +14,7 @@ export const DRAWER_HEIGHT = 70
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state } = useGlobal()
   const { height } = useWindowSize()
-  const isFairground = useIsFairground()
+  const { isFairground } = useNetworkMode()
   const useVegaBg = state.status === AppStatus.Onboarding && !isFairground
   const { isFullscreen } = useFullscreenContext()
 
