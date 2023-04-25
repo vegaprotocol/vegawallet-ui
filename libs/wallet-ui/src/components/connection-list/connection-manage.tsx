@@ -164,9 +164,9 @@ export const ManagePermissions = ({
           <code>{hostname}</code> has not yet requested for any permissions.
         </p>
         <ButtonGroup className="pb-[20px]">
-          <ButtonUnstyled className="p-0" onClick={onClose}>
+          <button className="underline" onClick={onClose}>
             Cancel
-          </ButtonUnstyled>
+          </button>
         </ButtonGroup>
       </div>
     )

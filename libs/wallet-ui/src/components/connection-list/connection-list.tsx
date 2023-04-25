@@ -22,7 +22,6 @@ export const ConnectionList = ({ wallet }: ConnectionListProps) => {
     })
   }, [wallet.connections])
 
-
   const handleCloseDisconnect = useCallback(() => {
     setDisconnectHost(null)
   }, [setDisconnectHost])
