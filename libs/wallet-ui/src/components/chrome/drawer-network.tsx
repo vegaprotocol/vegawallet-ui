@@ -31,10 +31,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
         </div>
       ) : (
         <div>
-          <Button
-            data-testid="import"
-            onClick={() => setView(DrawerPanel.Manage)}
-          >
+          <Button data-testid="import" onClick={() => setView(DrawerPanel.Add)}>
             Import
           </Button>
         </div>
