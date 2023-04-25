@@ -17,7 +17,7 @@ interface ChromeDrawerProps {
  */
 export function ChromeDrawer({ height }: ChromeDrawerProps) {
   const { state } = useGlobal()
-  const { isFairground } = useNetworkMode()
+  const { mode } = useNetworkMode()
 
   const styles = useSpring({
     to: {
@@ -37,8 +37,9 @@ export function ChromeDrawer({ height }: ChromeDrawerProps) {
       className={classnames('bg-black border-t-[3px] pb-[88px]', {
         'overflow-y-hidden': !state.drawerState.isOpen,
         'overflow-y-scroll': state.drawerState.isOpen,
-        'vega-border-image': !isFairground,
-        'fairground-border-image': isFairground,
+        'vega-border-image': mode === 'mainnet',
+        'fairground-border-image': mode === 'fairground',
+        'border-white': !mode || mode === 'dev',
       })}
     >
       <DrawerContent />
