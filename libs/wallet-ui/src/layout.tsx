@@ -1,19 +1,21 @@
 import { Outlet } from 'react-router-dom'
 import { NavBar } from './components/navbar'
 import { DRAWER_HEIGHT, Drawer } from './components/drawer/drawer'
-import { useIsFairground } from './hooks/use-is-fairground'
+import { useNetworkMode } from './hooks/use-network-mode'
 import classNames from 'classnames'
 
 export const Layout = () => {
-  const isFairground = useIsFairground()
+  const { mode, isMainnet, isFairground, isDev } = useNetworkMode()
+
   const mainClasses = classNames(
     'relative block h-full bg-cover pb-16',
     'min-h-0 overflow-hidden',
     'border-t-[3px] border-vega-yellow-500 bg-dark-vega-yellow',
     {
-      'vega-border-image': !isFairground,
+      'vega-border-image': isMainnet,
       'fairground-border-image': isFairground,
       'border-vega-yellow-500': isFairground,
+      'border-white': isDev,
     }
   )
   return (
@@ -23,7 +25,7 @@ export const Layout = () => {
         <Outlet />
         <Drawer />
       </main>
-      <NavBar isFairground={false} />
+      <NavBar networkMode={mode} />
     </div>
   )
 }
