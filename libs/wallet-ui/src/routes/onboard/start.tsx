@@ -15,7 +15,7 @@ export function OnboardStart() {
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
   const vegaHome = useVegaHome()
-  const { isFairground } = useNetworkMode()
+  const { isMainnet } = useNetworkMode()
 
   const {
     dispatch,
@@ -63,7 +63,7 @@ export function OnboardStart() {
   }
 
   const renderExistingMessage = () => {
-    if (!Object.keys(wallets).length || isFairground) {
+    if (!Object.keys(wallets).length || !isMainnet) {
       return null
     }
 
