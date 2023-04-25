@@ -22,12 +22,12 @@ export function AppLoader({ children }: { children?: ReactNode }) {
     actions,
     dispatch,
   } = useGlobal()
-  const { isFairground } = useNetworkMode()
+  const { mode } = useNetworkMode()
 
   // Get wallets, service state and version
   useEffect(() => {
-    dispatch(actions.initAppAction(isFairground))
-  }, [dispatch, actions, isFairground])
+    dispatch(actions.initAppAction(mode))
+  }, [dispatch, actions, mode])
 
   if (status === AppStatus.Pending) {
     return (
