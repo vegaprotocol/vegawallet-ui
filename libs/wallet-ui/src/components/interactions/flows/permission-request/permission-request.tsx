@@ -14,6 +14,7 @@ import { InteractionError } from '../../views/error'
 import { InteractionSuccess } from '../../views/success'
 import { InteractionHeader } from '../interaction-header'
 import { Frame } from '../../../frame'
+import { useOpenWallet } from '../../../../hooks/use-open-wallet'
 
 export type PermissionRequestData = {
   traceID: string
@@ -62,6 +63,7 @@ export const PermissionRequest = ({
 }: PermissionRequestProps) => {
   const [isLoading, setLoading] = useState<'approve' | 'reject' | false>(false)
   const { service } = useGlobal()
+  const { getWalletData } = useOpenWallet()
   const permissions = useMemo(() => {
     return getDisplayDetails(data)
   }, [data])
@@ -76,6 +78,10 @@ export const PermissionRequest = ({
           approved: decision,
         },
       })
+
+      if (data.wallet && data.hostname) {
+        await getWalletData(data.wallet)
+      }
     } catch (err: unknown) {
       onUpdate({
         ...data,

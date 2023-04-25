@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import { animated, config, useSpring } from 'react-spring'
 import { useGlobal } from '../../contexts/global/global-context'
 import { DrawerContent } from './drawer-content'
-import { useIsFairground } from '../../hooks/use-is-fairground'
+import { useNetworkMode } from '../../hooks/use-network-mode'
 import { useWindowSize } from '../../hooks/use-window-size'
 import { APP_FRAME_HEIGHT } from '../../app-loader'
 import { NAVBAR_HEIGHT } from '../navbar'
@@ -15,7 +15,7 @@ export const DRAWER_HEIGHT = 45
 export function Drawer() {
   const { height } = useWindowSize()
   const { state } = useGlobal()
-  const isFairground = useIsFairground()
+  const { mode } = useNetworkMode()
 
   const styles = useSpring({
     to: {
@@ -37,8 +37,9 @@ export function Drawer() {
         {
           'overflow-y-hidden': !state.drawerState.isOpen,
           'overflow-y-scroll': state.drawerState.isOpen,
-          'vega-border-image': !isFairground,
-          'fairground-border-image': isFairground,
+          'vega-border-image': mode === 'mainnet',
+          'fairground-border-image': mode === 'fairground',
+          'border-white': !mode || mode === 'dev',
         }
       )}
     >

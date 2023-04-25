@@ -7,24 +7,29 @@ import classnames from 'classnames'
 import { LeftRightArrows } from '../icons/left-right-arrows'
 import { Paths } from '../../routes'
 import { useGlobal } from '../../contexts/global/global-context'
+import type { Features } from '../../types'
 
 export interface NavButtonProps {
   end?: boolean
   icon: ReactNode
   text: string
   to: To
-  isFairground: boolean
+  networkMode: Features['NETWORK_MODE']
 }
 
-const TEXT_COLOR = {
-  fairground: {
-    active: 'text-black',
-    inactive: 'text-dark-300',
-  },
-  default: {
-    active: 'text-white',
-    inactive: 'text-dark-300',
-  },
+const getTextColors = (networkMode: Features['NETWORK_MODE']) => {
+  switch (networkMode) {
+    case 'mainnet':
+      return {
+        active: 'text-white',
+        inactive: 'text-dark-300',
+      }
+    default:
+      return {
+        active: 'text-black',
+        inactive: 'text-dark-300',
+      }
+  }
 }
 
 export const NavButton = ({
@@ -32,10 +37,11 @@ export const NavButton = ({
   text,
   to,
   end,
-  isFairground,
+  networkMode,
 }: NavButtonProps) => {
-  const textColors = isFairground ? TEXT_COLOR.fairground : TEXT_COLOR.default
   const { dispatch, actions } = useGlobal()
+  const textColors = getTextColors(networkMode)
+
   return (
     <NavLink
       end={end}
@@ -60,8 +66,12 @@ export const NavButton = ({
             <div
               data-testid="link-active"
               className={classnames('h-2 w-full mt-3', {
-                'bg-vega-yellow': isActive && !isFairground,
-                'bg-black': isActive && isFairground,
+                'bg-vega-yellow': isActive && networkMode === 'mainnet',
+                'bg-black':
+                  isActive &&
+                  (!networkMode ||
+                    networkMode === 'dev' ||
+                    networkMode === 'fairground'),
               })}
             />
           </div>
@@ -73,37 +83,52 @@ export const NavButton = ({
 
 export const NAVBAR_HEIGHT = 88
 
-export const NavBar = ({ isFairground }: { isFairground: boolean }) => {
+const getSquareFill = (networkMode: Features['NETWORK_MODE']) => {
+  switch (networkMode) {
+    case 'mainnet':
+      return 'black'
+    // bg-vega-yellow
+    case 'fairground':
+      return '#D7FB50'
+    // bg-gray-300
+    default:
+      return '#D1D5DB'
+  }
+}
+
+export const NavBar = ({
+  networkMode,
+}: {
+  networkMode: Features['NETWORK_MODE']
+}) => {
   return (
     <nav
       data-testid="nav-bar"
       className={classnames(
         'w-full h-full grid gap-0 grid-cols-[1fr_1fr_1fr] border-t border-dark-200',
         {
-          'bg-black': !isFairground,
-          'bg-vega-yellow-500': isFairground,
+          'bg-gray-300': !networkMode || networkMode === 'dev',
+          'bg-black': networkMode === 'mainnet',
+          'bg-vega-yellow-500': networkMode === 'fairground',
         }
       )}
     >
       <NavButton
-        isFairground={isFairground}
+        networkMode={networkMode}
         icon={
-          <Wallet
-            className="m-auto"
-            squareFill={isFairground ? '#D7FB50' : 'black'}
-          />
+          <Wallet className="m-auto" squareFill={getSquareFill(networkMode)} />
         }
         to={{ pathname: Paths.Wallet.Home }}
         text="Wallets"
       />
       <NavButton
-        isFairground={isFairground}
+        networkMode={networkMode}
         icon={<LeftRightArrows className="m-auto" />}
         to={{ pathname: Paths.Transactions.Home }}
         text="Transactions"
       />
       <NavButton
-        isFairground={isFairground}
+        networkMode={networkMode}
         icon={<Settings className="m-auto" />}
         to={{ pathname: Paths.Settings.Home }}
         text="Settings"

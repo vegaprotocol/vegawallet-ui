@@ -1,7 +1,9 @@
+import { useCallback } from 'react'
 import type { InteractionErrorType } from '../../views/error'
 import { InteractionError } from '../../views/error'
 import { InteractionSuccess } from '../../views/success'
 import { ConnectionView, SelectionView, PassphraseView } from './views'
+import { useOpenWallet } from '../../../../hooks/use-open-wallet'
 
 export type WalletConnectionData = {
   traceID: string
@@ -21,6 +23,16 @@ export type WalletConnectionProps = {
 }
 
 export const WalletConnection = (p: WalletConnectionProps) => {
+  const { getWalletData } = useOpenWallet()
+
+  const onClose = useCallback(async () => {
+    const wallet = p.data.wallet || p.data.selectedWallet
+    if (wallet && p.data.hostname) {
+      await getWalletData(wallet)
+    }
+    p.onClose()
+  }, [getWalletData, p])
+
   if (p.data.error && p.data.error.type !== 'User error') {
     return (
       <InteractionError
@@ -43,7 +55,7 @@ export const WalletConnection = (p: WalletConnectionProps) => {
       return <PassphraseView {...p} />
     }
     case 'success': {
-      return <InteractionSuccess title="Connected" onClose={p.onClose} />
+      return <InteractionSuccess title="Connected" onClose={onClose} />
     }
     default: {
       return null

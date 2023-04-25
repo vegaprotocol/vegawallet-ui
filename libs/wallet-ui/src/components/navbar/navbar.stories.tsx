@@ -7,18 +7,23 @@ export default {
   title: 'Navbar',
 } as Meta
 
-const Template: Story = ({ isFairground }) => (
+const Template: Story = ({ networkMode }) => (
   <Router>
-    <NavBar isFairground={isFairground} />
+    <NavBar networkMode={networkMode} />
   </Router>
 )
 
 export const Default = Template.bind({})
 Default.args = {
-  isFairground: false,
+  networkMode: 'dev',
 }
 
 export const Fairground = Template.bind({})
 Fairground.args = {
-  isFairground: true,
+  networkMode: 'fairground',
+}
+
+export const Mainnet = Template.bind({})
+Mainnet.args = {
+  networkMode: 'mainnet',
 }

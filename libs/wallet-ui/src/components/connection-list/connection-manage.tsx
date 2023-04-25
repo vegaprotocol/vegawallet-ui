@@ -26,7 +26,7 @@ export type NormalizedPermission = {
 
 export type NormalizedPermissionMap = Record<
   keyof WalletModel.Permissions,
-  NormalizedPermission
+  Partial<NormalizedPermission>
 >
 
 type CompileResult = {
@@ -36,7 +36,7 @@ type CompileResult = {
 
 const compileDefaultValues = (
   wallet: Wallet,
-  walletPermissions?: WalletModel.Permissions
+  walletPermissions?: Partial<WalletModel.Permissions>
 ): CompileResult => {
   if (!walletPermissions) {
     throw new Error(`Missing permissions for wallet ${wallet.name}.`)
@@ -46,26 +46,26 @@ const compileDefaultValues = (
     keyof WalletModel.Permissions
   >
 
-  const keyList = Object.keys(wallet.keypairs)
+  const keyList = Object.keys(wallet.keypairs || {})
 
   const permissions = permissionAccessKeys.reduce<NormalizedPermissionMap>(
     (acc, key) => {
       const p = walletPermissions[key]
       const allowedKeys = keyList
-        .filter((key) => !wallet.keypairs[key].isTainted)
+        .filter((key) => !wallet.keypairs?.[key].isTainted)
         .map((key) => ({
           key,
-          name: wallet.keypairs[key].name,
-          value: p.allowedKeys?.length ? p.allowedKeys.includes(key) : true,
+          name: wallet.keypairs?.[key].name,
+          value: p?.allowedKeys?.length ? p?.allowedKeys.includes(key) : true,
         }))
 
       return {
         ...acc,
         [key]: {
           access:
-            p.allowedKeys?.length === 0 && p.access === 'read'
+            p?.allowedKeys?.length === 0 && p.access === 'read'
               ? 'read-all'
-              : p.access,
+              : p?.access,
           allowedKeys,
         },
       }
@@ -156,6 +156,21 @@ export const ManagePermissions = ({
     },
     [client, dispatch, wallet.name, hostname, onClose]
   )
+
+  if (permissionAccessKeys.length === 0) {
+    return (
+      <div className="p-5">
+        <p className="mb-[20px]">
+          <code>{hostname}</code> has not yet requested for any permissions.
+        </p>
+        <ButtonGroup className="pb-[20px]">
+          <button className="underline" onClick={onClose}>
+            Cancel
+          </button>
+        </ButtonGroup>
+      </div>
+    )
+  }
 
   return (
     <form onSubmit={handleSubmit(onUpdate)}>

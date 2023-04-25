@@ -9,14 +9,14 @@ import { useGlobal } from '../../contexts/global/global-context'
 import { useVegaHome } from '../../hooks/use-vega-home'
 import { Paths } from '..'
 import { indexBy } from '../../lib/index-by'
-import { useIsFairground } from '../../hooks/use-is-fairground'
+import { useNetworkMode } from '../../hooks/use-network-mode'
 import { Spinner } from '../../components/spinner'
 
 export function OnboardStart() {
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
   const vegaHome = useVegaHome()
-  const isFairground = useIsFairground()
+  const { isMainnet } = useNetworkMode()
 
   const {
     dispatch,
@@ -64,7 +64,7 @@ export function OnboardStart() {
   }
 
   const renderExistingMessage = () => {
-    if (!Object.keys(wallets).length || isFairground) {
+    if (!Object.keys(wallets).length || !isMainnet) {
       return null
     }
 
