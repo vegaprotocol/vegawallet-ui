@@ -159,7 +159,7 @@ export const ManagePermissions = ({
 
   if (permissionAccessKeys.length === 0) {
     return (
-      <div className="p-[20px]">
+      <div className="p-5">
         <p className="mb-[20px]">
           <code>{hostname}</code> has not yet requested for any permissions.
         </p>
