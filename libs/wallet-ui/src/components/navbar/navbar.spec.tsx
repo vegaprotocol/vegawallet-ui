@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import type { NavButtonProps } from '.'
 import { NavButton, NavBar } from '.'
 import { MemoryRouter } from 'react-router-dom'
+import type { Features } from '../../types'
 
 const renderNavButton = (
   props: NavButtonProps,
@@ -13,10 +14,14 @@ const renderNavButton = (
     </MemoryRouter>
   )
 
-const renderNav = ({ isFairground }: { isFairground: boolean }) =>
+const renderNav = ({
+  networkMode,
+}: {
+  networkMode: Features['NETWORK_MODE']
+}) =>
   render(
     <MemoryRouter>
-      <NavBar isFairground={isFairground} />
+      <NavBar networkMode={networkMode} />
     </MemoryRouter>
   )
 
@@ -29,7 +34,7 @@ describe('NavButton', () => {
         text: 'Test Button',
         to: '/',
         end: false,
-        isFairground: false,
+        networkMode: 'mainnet',
       },
       ['/foo']
     )
@@ -48,7 +53,7 @@ describe('NavButton', () => {
         text: 'Test Button',
         to: '/settings',
         end: false,
-        isFairground: false,
+        networkMode: 'mainnet',
       },
       ['/settings']
     )
@@ -64,7 +69,23 @@ describe('NavButton', () => {
         text: 'Test Button',
         to: '/settings',
         end: false,
-        isFairground: true,
+        networkMode: 'fairground',
+      },
+      ['/settings']
+    )
+
+    expect(screen.getByTestId('link-active')).toHaveClass('bg-black')
+  })
+
+  it('changes style when in dev mode', () => {
+    const icon = <svg data-testid="test-icon" />
+    renderNavButton(
+      {
+        icon: icon,
+        text: 'Test Button',
+        to: '/settings',
+        end: false,
+        networkMode: 'dev',
       },
       ['/settings']
     )
@@ -75,14 +96,19 @@ describe('NavButton', () => {
 
 describe('NavBar', () => {
   it('renders with all three NavButtons', () => {
-    renderNav({ isFairground: false })
+    renderNav({ networkMode: 'mainnet' })
     expect(screen.getByTestId('nav-bar')).toBeInTheDocument()
     expect(screen.getByTestId('nav-bar')).toHaveClass('bg-black')
     expect(screen.getAllByTestId('nav-button')).toHaveLength(3)
   })
 
   it('changes color if in fairground mode', () => {
-    renderNav({ isFairground: true })
+    renderNav({ networkMode: 'fairground' })
     expect(screen.getByTestId('nav-bar')).toHaveClass('bg-vega-yellow-500')
+  })
+
+  it('changes color if in dev mode', () => {
+    renderNav({ networkMode: 'dev' })
+    expect(screen.getByTestId('nav-bar')).toHaveClass('bg-gray-300')
   })
 })

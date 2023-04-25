@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { useFullscreenContext } from '../../contexts/fullscreen/fullscreen-context'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
-import { useIsFairground } from '../../hooks/use-is-fairground'
+import { useNetworkMode } from '../../hooks/use-network-mode'
 import { useWindowSize } from '../../hooks/use-window-size'
 import { NavBar } from '../navbar'
 import { ChromeDrawer } from './chrome-drawer'
@@ -14,17 +14,18 @@ export const DRAWER_HEIGHT = 70
 export function Chrome({ children }: { children: React.ReactNode }) {
   const { state } = useGlobal()
   const { height } = useWindowSize()
-  const isFairground = useIsFairground()
-  const useVegaBg = state.status === AppStatus.Onboarding && !isFairground
+  const { mode } = useNetworkMode()
+  const useVegaBg = state.status === AppStatus.Onboarding && mode === 'mainnet'
   const { isFullscreen } = useFullscreenContext()
 
   return (
     <>
       <div
         className={classnames('relative block h-full bg-cover', {
-          'vega-border-image': !useVegaBg && !isFairground,
-          'fairground-border-image': !useVegaBg && isFairground,
-          'border-vega-yellow-500': !useVegaBg && isFairground,
+          'vega-border-image': !useVegaBg && mode === 'mainnet',
+          'fairground-border-image': !useVegaBg && mode === 'fairground',
+          'border-white': !useVegaBg && (!mode || mode === 'dev'),
+          'border-vega-yellow-500': !useVegaBg && mode === 'fairground',
           'border-t-[3px]': !useVegaBg,
           'bg-dark-100': !useVegaBg,
           'pb-[88px]': state.status === AppStatus.Initialised && !isFullscreen,
@@ -37,7 +38,7 @@ export function Chrome({ children }: { children: React.ReactNode }) {
         >
           {children}
         </main>
-        {!isFullscreen && <NavBar isFairground={isFairground} />}
+        {!isFullscreen && <NavBar networkMode={mode} />}
       </div>
       {state.status === AppStatus.Initialised && !isFullscreen && (
         <div
