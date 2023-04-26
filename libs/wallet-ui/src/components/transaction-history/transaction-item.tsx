@@ -1,4 +1,4 @@
-import { useExplorerUrl } from '../../hooks/use-explorer-url'
+import { useExplorerLinks } from '../../hooks/use-explorer-url'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
@@ -16,22 +16,22 @@ type TransactionItemProps = {
 const TransactionId = ({
   transaction,
 }: Pick<TransactionItemProps, 'transaction'>) => {
-  const explorerUrl = useExplorerUrl()
+  const { getTxUrl } = useExplorerLinks()
 
   if (!transaction.txHash) {
     return <span className="invisible">No id</span>
   }
 
-  if (explorerUrl) {
-    return (
-      <ExternalLink href={`${explorerUrl}/txs/${transaction.txHash}`}>
-        {truncateMiddle(transaction.txHash)}
-        <ArrowTopRight className="w-[13px] ml-[6px]" />
-      </ExternalLink>
-    )
-  }
+  const txUrl = getTxUrl(transaction.txHash)
 
-  return <span>{truncateMiddle(transaction.txHash)}</span>
+  return txUrl ? (
+    <ExternalLink href={txUrl as string}>
+      {truncateMiddle(transaction.txHash)}
+      <ArrowTopRight className="w-[13px] ml-[6px]" />
+    </ExternalLink>
+  ) : (
+    <span>{truncateMiddle(transaction.txHash)}</span>
+  )
 }
 
 export const TransactionItem = ({

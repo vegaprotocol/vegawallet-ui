@@ -17,7 +17,7 @@ import { Tick } from '../../../icons/tick'
 import { Warning } from '../../../icons/warning'
 import type { InteractionErrorType } from '../../views/error'
 import { InteractionError } from '../../views/error'
-import { useExplorerUrl } from '../../../../hooks/use-explorer-url'
+import { useExplorerLinks } from '../../../../hooks/use-explorer-url'
 import { CopyWithTooltip } from '../../../copy-with-tooltip'
 import { ExternalLink } from '../../../external-link'
 import { ArrowTopRight } from '../../../icons/arrow-top-right'
@@ -74,7 +74,7 @@ export const TransactionReview = ({
   onClose,
   onUpdate,
 }: TransactionReviewProps) => {
-  const explorerUrl = useExplorerUrl()
+  const { getTxUrl } = useExplorerLinks()
   const [isLoading, setLoading] = useState<'approve' | 'reject' | false>(false)
   const { service, dispatch } = useGlobal()
   const isProcessing = data.transaction && data.transaction.logs.length > 0
@@ -145,6 +145,8 @@ export const TransactionReview = ({
     )
   }
 
+  const txUrl = getTxUrl(data.transaction.txHash)
+
   return (
     <div className="p-5">
       <div className="text-center mt-[32px] mb-[32px]">
@@ -178,10 +180,8 @@ export const TransactionReview = ({
                 </span>
               </CopyWithTooltip>
             )}
-            {data.transaction.txHash && explorerUrl && (
-              <ExternalLink
-                href={`${explorerUrl}/txs/${data.transaction.txHash}`}
-              >
+            {txUrl && (
+              <ExternalLink href={txUrl as string}>
                 View in block explorer
                 <ArrowTopRight className="w-[13px] ml-[6px]" />
               </ExternalLink>
