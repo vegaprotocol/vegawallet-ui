@@ -135,6 +135,7 @@ export const TransactionReview = ({
               transaction: {
                 id: data.transaction?.id,
                 status: TransactionStatus.FAILURE,
+                error: data.error?.error,
               },
             })
           }
