@@ -6,17 +6,19 @@ import { Title } from '../../../components/title'
 import { ExternalLink } from '../../../components/external-link'
 import { TransactionHistory } from '../../../components/transaction-history'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
-import { useExplorerUrl } from '../../../hooks/use-explorer-url'
+import { useExplorerLinks } from '../../../hooks/use-explorer-url'
 import { Page } from '../../../components/page'
 
 export function Transactions() {
-  const explorerUrl = useExplorerUrl()
+  const { getPartyUrl } = useExplorerLinks()
   const { wallet, pubkey } = useParams<{ wallet: string; pubkey: string }>()
   const { keypair } = useCurrentKeypair()
 
   if (!keypair || !wallet || !pubkey) {
     return null
   }
+
+  const partyUrl = getPartyUrl(keypair.publicKey)
 
   return (
     <Page name="Transactions" back={true}>
@@ -25,10 +27,8 @@ export function Transactions() {
         <div className="pt-0 px-5 pb-5" data-testid="keypair-home">
           <div className="flex items-center justify-between gap-5 my-5">
             <Title className="m-0">Current session transactions</Title>
-            {explorerUrl && (
-              <ExternalLink
-                href={`${explorerUrl}/parties/${keypair.publicKey}`}
-              >
+            {partyUrl && (
+              <ExternalLink href={partyUrl}>
                 View full history
                 <ArrowTopRight className="w-[13px] ml-[6px]" />
               </ExternalLink>

@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { useExplorerUrl } from '../../hooks/use-explorer-url'
+import { useExplorerLinks } from '../../hooks/use-explorer-url'
 import { formatDate } from '../../lib/date'
 import type { Transaction } from '../../lib/transactions'
 import { truncateMiddle } from '../../lib/truncate-middle'
@@ -25,7 +25,8 @@ type TransactionDetailsProps = {
 type SectionListProps = {
   transaction: Transaction
   showStatus: boolean
-  explorerUrl?: string
+  blockUrl: string | undefined
+  txUrl: string | undefined
   isLogSectionVisible: boolean
   isDetailSectionVisible: boolean
   onViewLogs: () => void
@@ -35,7 +36,8 @@ type SectionListProps = {
 const compileSectionList = ({
   transaction,
   showStatus,
-  explorerUrl,
+  blockUrl,
+  txUrl,
   isLogSectionVisible,
   isDetailSectionVisible,
   onViewLogs,
@@ -80,11 +82,8 @@ const compileSectionList = ({
   if (transaction.blockHeight) {
     rows.push({
       key: 'Block height',
-      value: explorerUrl ? (
-        <ExternalLink
-          className="text-neutral-light"
-          href={`${explorerUrl}/blocks/${transaction.blockHeight}`}
-        >
+      value: blockUrl ? (
+        <ExternalLink className="text-neutral-light" href={blockUrl as string}>
           {transaction.blockHeight}
           <ArrowTopRight className="w-[13px] ml-[6px]" />
         </ExternalLink>
@@ -170,11 +169,8 @@ const compileSectionList = ({
   if (transaction.txHash) {
     rows.push({
       key: 'Transaction hash',
-      value: explorerUrl ? (
-        <ExternalLink
-          className="text-neutral-light"
-          href={`${explorerUrl}/txs/${transaction.txHash}`}
-        >
+      value: txUrl ? (
+        <ExternalLink className="text-neutral-light" href={txUrl as string}>
           {truncateMiddle(transaction.txHash)}
           <ArrowTopRight className="w-[13px] ml-[6px]" />
         </ExternalLink>
@@ -197,11 +193,16 @@ export const TransactionDetails = ({
 }: TransactionDetailsProps) => {
   const [isDetailSectionVisible, setDetailSectionVisible] = useState(true)
   const [isLogSectionVisible, setLogSectionVisible] = useState(false)
-  const explorerUrl = useExplorerUrl()
+  const { getBlockUrl, getTxUrl } = useExplorerLinks()
+
+  const blockUrl = getBlockUrl(transaction.blockHeight?.toString())
+  const txUrl = getTxUrl(transaction.txHash)
+
   const sectionList = compileSectionList({
     transaction,
     showStatus,
-    explorerUrl,
+    blockUrl,
+    txUrl,
     isLogSectionVisible,
     isDetailSectionVisible,
     onViewLogs: () => setLogSectionVisible(!isLogSectionVisible),

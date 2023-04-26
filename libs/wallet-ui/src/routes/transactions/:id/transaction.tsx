@@ -3,7 +3,6 @@ import { TransactionStatus } from '../../../components/transaction-status'
 import type { Transaction } from '../../../lib/transactions'
 import { TRANSACTION_TITLES } from '@vegaprotocol/wallet-types'
 import {
-  AnchorButton,
   CopyWithTooltip,
   ExternalLink,
   Notification,
@@ -12,7 +11,7 @@ import {
 } from '@vegaprotocol/ui-toolkit'
 import { formatDate } from '../../../lib/date'
 import type { ReactNode } from 'react'
-import { useExplorerUrl } from '../../../hooks/use-explorer-url'
+import { useExplorerLinks } from '../../../hooks/use-explorer-url'
 import { TransactionLogs } from '../../../components/transaction-logs'
 import { CodeWindow } from '../../../components/code-window'
 import { Copy } from '../../../components/icons/copy'
@@ -44,8 +43,35 @@ export const TransactionDetails = ({
 }: {
   transaction: Transaction
 }) => {
-  const explorerUrl = useExplorerUrl()
-  const { signature, txHash } = transaction
+  const { getTxUrl, getPartyUrl, getBlockUrl } = useExplorerLinks()
+  const { signature, txHash, publicKey, blockHeight } = transaction
+
+  const partyUrl = getPartyUrl(publicKey)
+  const blockUrl = getBlockUrl(blockHeight?.toString())
+  const txUrl = getTxUrl(txHash)
+
+  const partyLink = partyUrl ? (
+    <ExternalLink className="uppercase" href={partyUrl}>
+      {truncateMiddle(transaction.publicKey)}
+    </ExternalLink>
+  ) : (
+    truncateMiddle(transaction.publicKey)
+  )
+
+  const blockLink = blockUrl ? (
+    <ExternalLink className="underline" href={blockUrl}>
+      {transaction.blockHeight?.toString()}
+    </ExternalLink>
+  ) : (
+    blockHeight?.toString()
+  )
+
+  const txLink = txUrl ? (
+    <ExternalLink href={txUrl}>{truncateMiddle(txHash as string)}</ExternalLink>
+  ) : (
+    truncateMiddle(txHash || '')
+  )
+
   return (
     <Page name={TRANSACTION_TITLES[transaction.type]} back={true}>
       <>
@@ -62,14 +88,9 @@ export const TransactionDetails = ({
           />
           <ListItem
             item={transaction}
-            renderItem={(transaction) => (
+            renderItem={() => (
               <TransactionDetailsItem title="Wallet">
-                <ExternalLink
-                  className="uppercase"
-                  href={`${explorerUrl}/parties/${transaction.publicKey}`}
-                >
-                  {truncateMiddle(transaction.publicKey)}
-                </ExternalLink>
+                {partyLink}
               </TransactionDetailsItem>
             )}
           />
@@ -89,12 +110,7 @@ export const TransactionDetails = ({
               item={transaction}
               renderItem={(transaction) => (
                 <TransactionDetailsItem title="Block height">
-                  <ExternalLink
-                    className="underline"
-                    href={`${explorerUrl}/block/${transaction.blockHeight}`}
-                  >
-                    {transaction.blockHeight?.toString()}
-                  </ExternalLink>
+                  {blockLink}
                 </TransactionDetailsItem>
               )}
             />
@@ -102,7 +118,7 @@ export const TransactionDetails = ({
           {signature ? (
             <ListItem
               item={transaction}
-              renderItem={(transaction) => (
+              renderItem={() => (
                 <TransactionDetailsItem title="Signature">
                   <CopyWithTooltip text={signature}>
                     <span>
@@ -143,7 +159,6 @@ export const TransactionDetails = ({
                     />
                   }
                 />
-                k
               </div>
             )}
           />
@@ -172,21 +187,22 @@ export const TransactionDetails = ({
           {txHash ? (
             <ListItem
               item={transaction}
-              renderItem={(transaction) => (
+              renderItem={() => (
                 <TransactionDetailsItem title="Transaction hash">
-                  <ExternalLink href={`${explorerUrl}/txs/${txHash}`}>
-                    {truncateMiddle(txHash)}
-                  </ExternalLink>
+                  {txLink}
                 </TransactionDetailsItem>
               )}
             />
           ) : null}
         </ul>
-        {transaction.txHash && (
+        {txUrl && (
           <div className="mt-6 flex justify-center">
-            <AnchorButton href={`${explorerUrl}/txs/${transaction.txHash}`}>
-              View on block explorer
-            </AnchorButton>
+            <ExternalLink
+              className="border rounded p-4 w-full justify-center"
+              href={txUrl}
+            >
+              <span>View in block explorer</span>
+            </ExternalLink>
           </div>
         )}
       </>
