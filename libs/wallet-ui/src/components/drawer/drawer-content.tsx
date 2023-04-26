@@ -162,7 +162,10 @@ interface DrawerContentWrapperProps {
 }
 
 function DrawerContentWrapper({ children }: DrawerContentWrapperProps) {
-  return <div className="p-[20px]">{children}</div>
+  const { state } = useGlobal()
+  const isHidden = !state.drawerState.isOpen
+
+  return <div className="p-[20px]">{!isHidden ? children : null}</div>
 }
 
 function DrawerBackButton({ onClick }: { onClick: () => void }) {
