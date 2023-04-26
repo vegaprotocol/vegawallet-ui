@@ -10,20 +10,27 @@ export interface PageProps {
 export const Page = ({ name, children, back = false }: PageProps) => {
   const navigate = useNavigate()
   return (
-    <section className="p-4" data-testid={name}>
-      <button onClick={() => navigate(-1)}>
-        <h1 className="pl-2 text-2xl flex" data-testid={`${name}-header`}>
-          {back && (
-            <div
-              data-testid="page-back"
-              className="flex flex-col justify-center mr-2"
-            >
-              <Icon size={6} name="chevron-left" />
-            </div>
-          )}
-          {name}
-        </h1>
-      </button>
+    <section
+      data-testid={name}
+      className="h-full pt-8 pb-5 px-5 grid grid-rows-[min-content_1fr] overflow-y-auto"
+    >
+      <h1 className="text-2xl flex" data-testid={`${name}-header`}>
+        {back && (
+          <button
+            onClick={() => navigate(-1)}
+            className="flex flex-col justify-center mr-2"
+            data-testid="page-back"
+          >
+            <Icon
+              size={6}
+              name="chevron-left"
+              // nudge icon left so it aligns with edge of container padding
+              className="ml-[-6px]"
+            />
+          </button>
+        )}
+        {name}
+      </h1>
       <div className="mt-4">{children}</div>
     </section>
   )

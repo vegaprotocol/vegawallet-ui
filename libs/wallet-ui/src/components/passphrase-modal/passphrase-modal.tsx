@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { Intent } from '../../config/intent'
 import { useGlobal } from '../../contexts/global/global-context'
 import { Validation } from '../../lib/form-validation'
-import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
+import { Spinner } from '../spinner'
 
 interface ModalHandler {
   open: () => void
@@ -107,12 +107,21 @@ function PassphraseModalForm({
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid="input-submit" type="submit" loading={loading}>
-          Submit
-        </Button>
-        <ButtonUnstyled data-testid="input-cancel" onClick={onCancel}>
-          Cancel
-        </ButtonUnstyled>
+        <div className="flex-1">
+          <Button data-testid="input-submit" type="submit" fill={true}>
+            {loading ? <Spinner /> : 'Submit'}
+          </Button>
+        </div>
+        <div className="flex-1">
+          <button
+            data-testid="input-cancel"
+            onClick={onCancel}
+            type="button"
+            className="underline w-full"
+          >
+            Cancel
+          </button>
+        </div>
       </ButtonGroup>
     </form>
   )

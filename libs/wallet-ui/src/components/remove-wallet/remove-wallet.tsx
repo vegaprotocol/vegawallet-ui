@@ -1,9 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { Navigate } from 'react-router-dom'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
-import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { FormGroup } from '../../components/form-group'
 import { Input } from '../../components/forms/input'
 import { Intent } from '../../config/intent'
@@ -12,6 +11,7 @@ import { FormStatus } from '../../hooks/use-form-state'
 import { useRemoveWallet } from '../../hooks/use-remove-wallet'
 import { Validation } from '../../lib/form-validation'
 import { Paths } from '../../routes'
+import { Spinner } from '../spinner'
 
 type RemoveWalletProps = {
   onClose: () => void
@@ -97,10 +97,12 @@ const RemoveForm = ({
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button type="submit" disabled={isPending} loading={isPending}>
-          Remove
+        <Button type="submit" disabled={isPending}>
+          {isPending ? <Spinner /> : 'Remove'}
         </Button>
-        <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>
+        <button className="underline" onClick={onCancel}>
+          Cancel
+        </button>
       </ButtonGroup>
     </form>
   )

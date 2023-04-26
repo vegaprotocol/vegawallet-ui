@@ -1,5 +1,5 @@
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { DrawerPanel } from '../../contexts/global/global-context'
-import { Button } from '../button'
 import { NetworkList } from '../network-list'
 
 interface DrawerManageNetworkProps {

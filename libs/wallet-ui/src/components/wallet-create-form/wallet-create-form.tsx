@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Validation } from '../../lib/form-validation'
-import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
+import { Intent } from '../../config/intent'
 
 interface FormFields {
   wallet: string
@@ -40,6 +40,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         label="Name"
         labelFor="wallet"
         helperText={errors.wallet?.message}
+        intent={errors.wallet ? Intent.DANGER : Intent.NONE}
       >
         <Input
           data-testid="create-wallet-form-name"
@@ -52,6 +53,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         label="Passphrase"
         labelFor="passphrase"
         helperText={errors.passphrase?.message}
+        intent={errors.passphrase ? Intent.DANGER : Intent.NONE}
       >
         <Input
           data-testid="create-wallet-form-passphrase"
@@ -63,6 +65,7 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         label="Confirm passphrase"
         labelFor="confirmPassphrase"
         helperText={errors.confirmPassphrase?.message}
+        intent={errors.confirmPassphrase ? Intent.DANGER : Intent.NONE}
       >
         <Input
           data-testid="create-wallet-form-passphrase-confirm"
@@ -74,10 +77,20 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid="create-wallet-form-submit" type="submit">
-          Submit
-        </Button>
-        <ButtonUnstyled onClick={cancel}>Cancel</ButtonUnstyled>
+        <div className="flex-1">
+          <Button
+            data-testid="create-wallet-form-submit"
+            type="submit"
+            fill={true}
+          >
+            Submit
+          </Button>
+        </div>
+        <div className="flex-1">
+          <button className="underline w-full" onClick={cancel}>
+            Cancel
+          </button>
+        </div>
       </ButtonGroup>
     </form>
   )

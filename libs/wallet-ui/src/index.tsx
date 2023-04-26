@@ -4,8 +4,7 @@ import type { WalletAdmin } from '@vegaprotocol/wallet-admin'
 import { ThemeProvider } from '@vegaprotocol/wallet-theme'
 
 import { AppFrame, AppLoader } from './app-loader'
-import { Button } from './components/button'
-import { Chrome } from './components/chrome'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { InteractionsProvider } from './components/interactions'
 import { NetworkCompatibilityDialog } from './components/network-compatibility-dialog'
 import { PassphraseModal } from './components/passphrase-modal'
@@ -72,16 +71,14 @@ export function App({ service, client, runtime, features }: AppProps) {
             <div id={ROOT} className="h-full text-white font-sans bg-black">
               <Router>
                 <AppFrame>
-                  <Chrome>
-                    <AppLoader>
-                      <AppRouter />
-                      <TelemetryDialog />
-                      <PassphraseModal />
-                      <InteractionsProvider />
-                      <NetworkCompatibilityDialog />
-                      <TransactionDetailsDialog />
-                    </AppLoader>
-                  </Chrome>
+                  <AppLoader>
+                    <AppRouter />
+                    <TelemetryDialog />
+                    <PassphraseModal />
+                    <InteractionsProvider />
+                    <NetworkCompatibilityDialog />
+                    <TransactionDetailsDialog />
+                  </AppLoader>
                 </AppFrame>
               </Router>
             </div>

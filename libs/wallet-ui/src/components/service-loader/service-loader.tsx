@@ -4,7 +4,6 @@ import type { ReactNode } from 'react'
 import { Intent } from '../../config/intent'
 import { ServiceState, useGlobal } from '../../contexts/global/global-context'
 import { Button } from '../button'
-import { Chrome } from '../chrome'
 import { SplashError } from '../splash-error'
 import { AppToaster } from '../toaster'
 
@@ -89,22 +88,19 @@ export function ServiceLoader({ children }: { children?: ReactNode }) {
   }, [service, dispatch])
 
   if (serviceError && httpServiceUrl) {
+    // TODO: check this renders okay without chrome
     return (
-      <Chrome>
-        <SplashError
-          title="Wallet service cannot load"
-          message={
-            <span>
-              Make sure you don't already have an application running on machine
-              on port <code className="inline">:1789</code>. Reload the
-              application, or change your network port.
-            </span>
-          }
-          actions={
-            <Button onClick={() => runtime.WindowReload()}>Reload</Button>
-          }
-        />
-      </Chrome>
+      <SplashError
+        title="Wallet service cannot load"
+        message={
+          <span>
+            Make sure you don't already have an application running on machine
+            on port <code className="inline">:1789</code>. Reload the
+            application, or change your network port.
+          </span>
+        }
+        actions={<Button onClick={() => runtime.WindowReload()}>Reload</Button>}
+      />
     )
   }
 

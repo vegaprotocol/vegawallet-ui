@@ -1,10 +1,10 @@
 import classnames from 'classnames'
 import { useCallback, useMemo, useState } from 'react'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 import type { Wallet } from '../../contexts/global/global-context'
 import { ServiceState } from '../../contexts/global/global-context'
 import { useGlobal } from '../../contexts/global/global-context'
-import { Button } from '../button'
 import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownItem, DropdownMenu } from '../dropdown-menu'
 import { DropdownArrow } from '../icons/dropdown-arrow'
@@ -55,15 +55,14 @@ export const NetworkSwitcher = () => {
     state.serviceStatus === ServiceState.Stopping
 
   return (
-    <>
+    <div className="min-w-[200px]">
       <DropdownMenu
         trigger={
-          <Button
-            data-testid="network-select"
-            className="flex justify-between items-center gap-[5px] min-w-[75px]"
-          >
-            <span>{state.currentNetwork}</span>
-            <DropdownArrow className="w-[13px] h-[13px] ml-[10px]" />
+          <Button data-testid="network-select" fill={true}>
+            <span className="flex justify-between items-center gap-[5px]">
+              <span>{state.currentNetwork}</span>
+              <DropdownArrow className="w-[13px] h-[13px]" />
+            </span>
           </Button>
         }
         content={
@@ -97,6 +96,6 @@ export const NetworkSwitcher = () => {
         setOpen={setConnectionWarning}
         onConfirm={handleConfirm}
       />
-    </>
+    </div>
   )
 }

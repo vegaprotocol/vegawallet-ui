@@ -1,9 +1,9 @@
+import { Button } from '@vegaprotocol/ui-toolkit'
+
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentKeypair } from '../../hooks/use-current-keypair'
 import { useTaint } from '../../hooks/use-taint'
-import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
 import { Dialog } from '../dialog'
 import { Warning } from '../icons/warning'
 import { PublicKey } from '../public-key'
@@ -64,16 +64,18 @@ export const TaintKeyDialog = () => {
               }
               dispatch({ type: 'SET_TAINT_KEY_MODAL', open: false })
             }}
+            fill={true}
           >
             {keypair.isTainted ? 'Untaint this key' : 'Taint this key'}
           </Button>
-          <ButtonUnstyled
+          <button
             onClick={() =>
               dispatch({ type: 'SET_TAINT_KEY_MODAL', open: false })
             }
+            className="underline w-full"
           >
             Cancel
-          </ButtonUnstyled>
+          </button>
         </ButtonGroup>
       </div>
     </Dialog>

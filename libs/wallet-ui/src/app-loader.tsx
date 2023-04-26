@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import type { ErrorInfo, ReactNode } from 'react'
 import { Component, useEffect } from 'react'
 
-import { Button } from './components/button'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { ServiceLoader } from './components/service-loader'
 import { Splash } from './components/splash'
 import { SplashError } from './components/splash-error'
@@ -77,8 +77,8 @@ export function AppFrame({ children }: AppFrameProps) {
     <div
       data-testid="app-frame"
       className={classnames(
+        'grid grid-rows-[min-content_1fr]',
         'h-full bg-cover relative overflow-y-hidden',
-        `pt-9`,
         {
           'vega-bg': useVegaBg,
           'bg-transparent': useVegaBg,
@@ -87,10 +87,9 @@ export function AppFrame({ children }: AppFrameProps) {
       )}
     >
       <div
-        className={classnames('absolute top-0 left-0 w-full ', `h-9`, {
-          'bg-transparent': useVegaBg,
-          'bg-black': !useVegaBg,
-        })}
+        // !pointer-events-auto is required to allow the user to click and drag the app
+        // when dialogs are open, as radix-ui will apply pointer-events: none to the body
+        className="h-9 bg-transparent !pointer-events-auto"
         style={{
           // The app is frameless by default so this element creates a space at the top of the app
           // which you can click and drag to move the app around.
@@ -111,7 +110,11 @@ export function AppFrame({ children }: AppFrameProps) {
           )}
         </div>
       </div>
-      {children}
+      <div
+        className="min-h-0" // prevent children from expanding to fit content
+      >
+        {children}
+      </div>
     </div>
   )
 }

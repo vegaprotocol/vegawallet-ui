@@ -72,15 +72,15 @@ export const InteractionError = ({
   const { title: defTitle, description } = getDefs(type)
 
   return (
-    <div className="flex flex-col py-[40px] px-[20px] justify-center items-center">
+    <div className="flex flex-col py-[40px] px-5 justify-center items-center">
       <Title className="text-xl">{title || defTitle}</Title>
       <div className="p-[10px]">
         <Warning className="w-[48px] text-danger-light" />
       </div>
-      <p data-testid="interaction-error-description" className="mt-[20px]">
+      <p data-testid="interaction-error-description" className="mt-5">
         {description}
       </p>
-      <div className="my-[20px]">
+      <div className="my-5">
         <CodeBlock
           data-testid="interaction-error-message"
           className="max-w-full"

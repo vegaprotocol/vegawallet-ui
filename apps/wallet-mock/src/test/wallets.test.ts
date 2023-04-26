@@ -11,7 +11,7 @@ test.describe('Wallets view', () => {
   })
 
   test('should see wallets header', async () => {
-    await expect(wallets.home.getByRole('heading')).toHaveText('Wallets')
+    await expect(wallets.header).toHaveText('Wallets')
   })
 
   test('should see wallets list', async () => {

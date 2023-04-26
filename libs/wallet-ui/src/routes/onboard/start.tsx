@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
-import { Button } from '../../components/button'
 import { ButtonGroup } from '../../components/button-group'
 import { Vega } from '../../components/icons'
 import { Title } from '../../components/title'
@@ -10,6 +10,7 @@ import { useVegaHome } from '../../hooks/use-vega-home'
 import { Paths } from '..'
 import { indexBy } from '../../lib/index-by'
 import { useNetworkMode } from '../../hooks/use-network-mode'
+import { Spinner } from '../../components/spinner'
 
 export function OnboardStart() {
   const navigate = useNavigate()
@@ -73,11 +74,10 @@ export function OnboardStart() {
         <ButtonGroup>
           <Button
             data-testid="use-existing-wallet"
-            loading={isLoading}
             className="w-full"
             onClick={handleImportExistingWallet}
           >
-            Use existing
+            {isLoading ? <Spinner /> : 'Use existing'}
           </Button>
         </ButtonGroup>
         <p className="my-5">OR</p>
@@ -94,13 +94,17 @@ export function OnboardStart() {
       <ButtonGroup orientation="vertical" className="mb-4">
         <Button
           data-testid="create-new-wallet"
-          onClick={() => navigate(Paths.Wallet.Create)}
+          onClick={() =>
+            navigate(`${Paths.Wallet.Home}/${Paths.Wallet.Create}`)
+          }
         >
           Create new wallet
         </Button>
         <Button
           data-testid="import-wallet"
-          onClick={() => navigate(Paths.Wallet.Import)}
+          onClick={() =>
+            navigate(`${Paths.Wallet.Home}/${Paths.Wallet.Import}`)
+          }
         >
           Use recovery phrase
         </Button>

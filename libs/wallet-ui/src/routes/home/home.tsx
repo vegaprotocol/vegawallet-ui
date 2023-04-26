@@ -1,17 +1,16 @@
 import classnames from 'classnames'
 import { useMemo } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { ButtonGroup } from '../../components/button-group'
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { Lock } from '../../components/icons/lock'
 import { OpenLock } from '../../components/icons/open-lock'
-import { Title } from '../../components/title'
 import { AppStatus, useGlobal } from '../../contexts/global/global-context'
 import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
-import { Button } from '@vegaprotocol/ui-toolkit'
+import { Page } from '../../components/page'
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -32,19 +31,22 @@ export const Home = () => {
   }
 
   return (
-    <div data-testid="wallet-home" className="p-5">
-      <Title className="m-0 mb-[30px] text-white">Wallets</Title>
-      <div data-testid="wallet-list" className="pb-[144px] w-full">
-        <div
-          className={`border-b-${
-            walletsList.length > 0 ? '1' : '0'
-          } border-black`}
-        >
+    <Page name="Wallets">
+      <div
+        data-testid="wallet-home"
+        className="grid grid-rows-[1fr_min-content] min-h-full"
+      >
+        <div data-testid="wallet-list">
           {walletsList.map((w) => (
-            <ButtonUnstyled
+            <button
               className={classnames(
-                'w-full flex items-center justify-between no-underline',
-                'border-t border-black py-[18px]'
+                'w-full flex items-center justify-between',
+                'border-b border-vega-dark-150 py-3',
+                'text-lg',
+                {
+                  'text-white': w.auth,
+                  'text-vega-dark-300': !w.auth,
+                }
               )}
               onClick={() => open(w.name)}
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
@@ -58,30 +60,22 @@ export const Home = () => {
                   <Lock className="w-5 mx-5" />
                 )}
               </div>
-            </ButtonUnstyled>
+            </button>
           ))}
         </div>
-      </div>
-      <div
-        className={classnames('text-center p-5 w-full bg-dark-100', {
-          fixed: wallets.length,
-          [`bottom-[88px]`]: wallets.length,
-          'left-0': wallets.length,
-        })}
-      >
-        <ButtonGroup className="mb-5">
-          <Link className="flex-1" to="/wallet-create">
-            <Button data-testid="create-new-wallet" className="w-full">
+        <ButtonGroup>
+          <Link className="flex-1" to="wallet-create">
+            <Button data-testid="create-new-wallet" size="lg" fill={true}>
               Create wallet
             </Button>
           </Link>
-          <Link className="flex-1" to="/wallet-import">
-            <Button data-testid="import-wallet" className="w-full">
+          <Link className="flex-1" to="wallet-import">
+            <Button data-testid="import-wallet" size="lg" fill={true}>
               Import wallet
             </Button>
           </Link>
         </ButtonGroup>
       </div>
-    </div>
+    </Page>
   )
 }

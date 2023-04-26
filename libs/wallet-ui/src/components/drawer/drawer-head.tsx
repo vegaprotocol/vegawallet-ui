@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import { useState } from 'react'
 
-import { ButtonUnstyled } from '../button-unstyled'
 import { DropdownArrow } from '../icons/dropdown-arrow'
 import { Title } from '../title'
 
@@ -47,12 +46,12 @@ function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
   const [hover, setHover] = useState(false)
 
   return (
-    <ButtonUnstyled
+    <button
       data-testid="network-drawer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={classnames(
-        'flex items-center justify-center rounded w-[45px] h-[45px]',
+        'relative flex items-center justify-center rounded w-[45px] h-[45px] right-[-15px]',
         {
           'bg-dark-100': hover,
         }
@@ -64,6 +63,6 @@ function DrawerToggle({ isOpen, setOpen }: DrawerToggleProps) {
           'rotate-180': !isOpen,
         })}
       />
-    </ButtonUnstyled>
+    </button>
   )
 }

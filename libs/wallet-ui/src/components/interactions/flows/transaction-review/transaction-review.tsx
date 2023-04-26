@@ -40,7 +40,7 @@ const InfoBox = ({ transaction }: { transaction: Transaction }) => {
   switch (transaction.status) {
     case TransactionStatus.PENDING: {
       return (
-        <div className="flex border border-neutral rounded p-[16px] mb-[20px]">
+        <div className="flex border border-neutral rounded p-[16px] mb-5">
           <Loader size="small" />
           <p className="ml-[10px]">Processing your transaction</p>
         </div>
@@ -48,7 +48,7 @@ const InfoBox = ({ transaction }: { transaction: Transaction }) => {
     }
     case TransactionStatus.FAILURE: {
       return (
-        <div className="flex border border-neutral rounded p-[16px] mb-[20px]">
+        <div className="flex border border-neutral rounded p-[16px] mb-5">
           <Warning className="w-[12px] text-danger-light" />
           <p className="ml-[10px]">The transaction failed</p>
         </div>
@@ -56,7 +56,7 @@ const InfoBox = ({ transaction }: { transaction: Transaction }) => {
     }
     case TransactionStatus.SUCCESS: {
       return (
-        <div className="flex border border-neutral rounded p-[16px] mb-[20px]">
+        <div className="flex border border-neutral rounded p-[16px] mb-5">
           <Tick className="w-[12px] text-success-light" />
           <p className="ml-[10px]">
             The transaction has been sent to the network
@@ -146,10 +146,10 @@ export const TransactionReview = ({
   }
 
   return (
-    <div className="p-[20px]">
+    <div className="p-5">
       <div className="text-center mt-[32px] mb-[32px]">
         <TransactionStatusDisplay transaction={data.transaction} />
-        <Title data-testid="transaction-type" className="mb-[5px] mt-[20px]">
+        <Title data-testid="transaction-type" className="mb-[5px] mt-5">
           {data.transaction ? TRANSACTION_TITLES[data.transaction.type] : ''}
         </Title>
         <p data-testid="transaction-hostname" className="text-neutral-light">
@@ -157,7 +157,7 @@ export const TransactionReview = ({
         </p>
       </div>
       {isProcessing && (
-        <div className="mb-[20px]">
+        <div className="mb-5">
           <InfoBox transaction={data.transaction} />
           <TransactionLogs
             isVisible={true}
@@ -167,7 +167,7 @@ export const TransactionReview = ({
           {data.transaction.txHash && (
             <Title data-testid="transaction-header">Transaction ID</Title>
           )}
-          <div className="flex gap-[20px] justify-between mt-[20px]">
+          <div className="flex gap-5 justify-between mt-5">
             {data.transaction.txHash && (
               <CopyWithTooltip text={data.transaction.txHash}>
                 <span

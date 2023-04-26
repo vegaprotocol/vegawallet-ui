@@ -2,7 +2,14 @@ import { render, screen } from '@testing-library/react'
 import type { NavButtonProps } from '.'
 import { NavButton, NavBar } from '.'
 import { MemoryRouter } from 'react-router-dom'
+import type { HTMLAttributes } from 'react'
+import type { GlobalContextShape } from '../../contexts/global/global-context'
+import { GlobalContext } from '../../contexts/global/global-context'
 import type { Features } from '../../types'
+
+jest.mock('@vegaprotocol/ui-toolkit', () => ({
+  Button: (props: HTMLAttributes<HTMLButtonElement>) => <button {...props} />,
+}))
 
 const renderNavButton = (
   props: NavButtonProps,
@@ -10,7 +17,16 @@ const renderNavButton = (
 ) =>
   render(
     <MemoryRouter initialEntries={initialEntries}>
-      <NavButton {...props} />
+      <GlobalContext.Provider
+        value={
+          {
+            actions: { setDrawerAction: jest.fn() },
+            dispatch: jest.fn(),
+          } as unknown as GlobalContextShape
+        }
+      >
+        <NavButton {...props} />
+      </GlobalContext.Provider>
     </MemoryRouter>
   )
 
@@ -21,10 +37,20 @@ const renderNav = ({
 }) =>
   render(
     <MemoryRouter>
-      <NavBar networkMode={networkMode} />
+      <GlobalContext.Provider
+        value={
+          {
+            actions: { setDrawerAction: jest.fn() },
+            dispatch: jest.fn(),
+          } as unknown as GlobalContextShape
+        }
+      >
+        <NavBar networkMode={networkMode} />
+      </GlobalContext.Provider>
     </MemoryRouter>
   )
 
+// eslint-disable-next-line jest/no-disabled-tests
 describe('NavButton', () => {
   it('renders with text and icon', () => {
     const icon = <svg data-testid="test-icon" />
@@ -94,6 +120,7 @@ describe('NavButton', () => {
   })
 })
 
+// eslint-disable-next-line jest/no-disabled-tests
 describe('NavBar', () => {
   it('renders with all three NavButtons', () => {
     renderNav({ networkMode: 'mainnet' })

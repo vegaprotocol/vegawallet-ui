@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { Validation } from '../../lib/form-validation'
-import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
 import { FormGroup } from '../form-group'
 import { Select } from '../forms'
 import { Input } from '../forms/input'
 import { Textarea } from '../forms/textarea'
+import { Intent } from '../../config/intent'
 
 interface FormFields {
   wallet: string
@@ -48,6 +48,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         label="Name"
         labelFor="wallet"
         helperText={errors.wallet?.message}
+        intent={errors.wallet ? Intent.DANGER : Intent.NONE}
       >
         <Input
           data-testid="wallet-import-form-name"
@@ -59,6 +60,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         label="Recovery phrase"
         labelFor="recoveryPhrase"
         helperText={errors.recoveryPhrase?.message}
+        intent={errors.recoveryPhrase ? Intent.DANGER : Intent.NONE}
       >
         <Textarea
           data-testid="wallet-import-form-recovery-phrase"
@@ -70,6 +72,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         label="Version"
         labelFor="version"
         helperText={errors.version?.message}
+        intent={errors.version ? Intent.DANGER : Intent.NONE}
       >
         <Select
           data-testid="version"
@@ -84,6 +87,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         label="Choose passphrase"
         labelFor="passphrase"
         helperText={errors.passphrase?.message}
+        intent={errors.passphrase ? Intent.DANGER : Intent.NONE}
       >
         <Input
           data-testid="wallet-import-form-passphrase"
@@ -95,6 +99,7 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         label="Confirm passphrase"
         labelFor="confirmPassphrase"
         helperText={errors.confirmPassphrase?.message}
+        intent={errors.confirmPassphrase ? Intent.DANGER : Intent.NONE}
       >
         <Input
           data-testid="wallet-import-form-passphrase-confirm"
@@ -106,12 +111,24 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button data-testid="wallet-import-form-submit" type="submit">
-          Submit
-        </Button>
-        <ButtonUnstyled data-testid="cancel" onClick={cancel}>
-          Cancel
-        </ButtonUnstyled>
+        <div className="flex-1">
+          <Button
+            data-testid="wallet-import-form-submit"
+            type="submit"
+            fill={true}
+          >
+            Submit
+          </Button>
+        </div>
+        <div className="flex-1">
+          <button
+            data-testid="cancel"
+            onClick={cancel}
+            className="underline w-full"
+          >
+            Cancel
+          </button>
+        </div>
       </ButtonGroup>
     </form>
   )

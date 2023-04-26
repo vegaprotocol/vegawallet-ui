@@ -1,28 +1,20 @@
 import { Icon } from '@vegaprotocol/ui-toolkit'
 import { List } from '../../../components/list'
-import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Page } from '../../../components/page'
 import { Paths } from '../..'
 
 export const SettingsHome = () => {
-  const items = useMemo(
-    () => [
-      {
-        title: 'App settings',
-        path: Paths.Settings.AppSettings,
-      },
-      // {
-      //   title: 'Networks',
-      //   path: Paths.Settings.Networks,
-      // },
-      {
-        title: 'Service',
-        path: Paths.Settings.Service,
-      },
-    ],
-    []
-  )
+  const items = [
+    {
+      title: 'App settings',
+      path: Paths.Settings.AppSettings,
+    },
+    {
+      title: 'Service',
+      path: Paths.Settings.Service,
+    },
+  ]
   return (
     <Page name="Settings">
       <List
@@ -30,7 +22,10 @@ export const SettingsHome = () => {
         idProp="path"
         clickable={true}
         renderItem={({ title, path }) => (
-          <Link to={{ pathname: path }} className="flex justify-between">
+          <Link
+            to={{ pathname: path }}
+            className="flex justify-between text-lg"
+          >
             <div>{title}</div>
             <div>
               <Icon name="chevron-right" />

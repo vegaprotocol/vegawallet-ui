@@ -132,16 +132,19 @@ export const TransactionDetails = ({
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
-              <CollapsiblePanel
-                title="Details"
-                initiallyOpen={true}
-                panelContent={
-                  <CodeWindow
-                    content={JSON.stringify(transaction.payload, null, 2)}
-                    text={JSON.stringify(transaction.payload)}
-                  />
-                }
-              />
+              <div style={{ maxWidth: 400 }}>
+                <CollapsiblePanel
+                  title="Details"
+                  initiallyOpen={true}
+                  panelContent={
+                    <CodeWindow
+                      content={JSON.stringify(transaction.payload, null, 2)}
+                      text={JSON.stringify(transaction.payload)}
+                    />
+                  }
+                />
+                k
+              </div>
             )}
           />
           <ListItem

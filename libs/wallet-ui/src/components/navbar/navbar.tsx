@@ -5,6 +5,8 @@ import type { To } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import classnames from 'classnames'
 import { LeftRightArrows } from '../icons/left-right-arrows'
+import { Paths } from '../../routes'
+import { useGlobal } from '../../contexts/global/global-context'
 import type { Features } from '../../types'
 
 export interface NavButtonProps {
@@ -37,10 +39,19 @@ export const NavButton = ({
   end,
   networkMode,
 }: NavButtonProps) => {
+  const { dispatch, actions } = useGlobal()
   const textColors = getTextColors(networkMode)
-  console.log(textColors, networkMode)
+
   return (
-    <NavLink end={end} data-testid="nav-button" to={to} className="text-center">
+    <NavLink
+      end={end}
+      data-testid="nav-button"
+      to={to}
+      className="text-center"
+      onClick={() => {
+        dispatch(actions.setDrawerAction(false))
+      }}
+    >
       {({ isActive }) => {
         const textColor = isActive ? textColors.active : textColors.inactive
 
@@ -94,7 +105,7 @@ export const NavBar = ({
     <nav
       data-testid="nav-bar"
       className={classnames(
-        'absolute z-10 w-full h-[88px] grid gap-0 grid-cols-[1fr_1fr_1fr] border-t border-dark-200',
+        'w-full h-full grid gap-0 grid-cols-[1fr_1fr_1fr] border-t border-dark-200',
         {
           'bg-gray-300': !networkMode || networkMode === 'dev',
           'bg-black': networkMode === 'mainnet',
@@ -104,23 +115,22 @@ export const NavBar = ({
     >
       <NavButton
         networkMode={networkMode}
-        end={true}
         icon={
           <Wallet className="m-auto" squareFill={getSquareFill(networkMode)} />
         }
-        to={{ pathname: '/' }}
+        to={{ pathname: Paths.Wallet.Home }}
         text="Wallets"
       />
       <NavButton
         networkMode={networkMode}
         icon={<LeftRightArrows className="m-auto" />}
-        to={{ pathname: '/transactions' }}
+        to={{ pathname: Paths.Transactions.Home }}
         text="Transactions"
       />
       <NavButton
         networkMode={networkMode}
         icon={<Settings className="m-auto" />}
-        to={{ pathname: '/settings' }}
+        to={{ pathname: Paths.Settings.Home }}
         text="Settings"
       />
     </nav>

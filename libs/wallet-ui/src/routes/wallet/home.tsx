@@ -3,19 +3,15 @@ import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { Paths } from '..'
 
-import { ButtonGroup } from '../../components/button-group'
-import { ButtonUnstyled } from '../../components/button-unstyled'
 import { ConnectionList } from '../../components/connection-list'
 import { Dialog } from '../../components/dialog'
-import { Header } from '../../components/header'
-import { Edit } from '../../components/icons/edit'
-import { Trash } from '../../components/icons/trash'
 import { KeypairList } from '../../components/keypair-list'
 import { RemoveWallet } from '../../components/remove-wallet'
 import { Title } from '../../components/title'
 import { WalletEdit } from '../../components/wallet-edit'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
+import { Page } from '../../components/page'
 import { Button } from '@vegaprotocol/ui-toolkit'
 
 enum Tabs {
@@ -30,7 +26,7 @@ type TabTitlesProps = {
 
 const TabTitles = ({ activeTab, setTab }: TabTitlesProps) => {
   return (
-    <div className="flex gap-[20px]">
+    <div className="flex gap-5">
       {Object.values(Tabs).map((tab) => (
         <Title
           data-testid={`tab-${tab.toLowerCase()}`}
@@ -62,39 +58,27 @@ export function WalletList() {
   }
 
   return (
-    <>
-      <Header
-        title={
-          <>
-            {wallet.name}
-            <ButtonGroup inline className="inline-flex ml-[20px] gap-[12px]">
-              <ButtonUnstyled
-                data-testid="edit-wallet"
-                className="no-underline"
-                onClick={() => setEditing(true)}
-              >
-                <Edit className="w-[16px]" />
-              </ButtonUnstyled>
-              <ButtonUnstyled
-                data-testid="remove-wallet"
-                className="no-underline"
-                onClick={() => setRemoving(true)}
-              >
-                <Trash className="w-[16px]" />
-              </ButtonUnstyled>
-            </ButtonGroup>
-          </>
-        }
-        breadcrumb="Wallets"
-        onBack={() => {
-          dispatch({
-            type: 'DEACTIVATE_WALLET',
-            wallet: wallet.name,
-          })
-          navigate(Paths.Home)
-        }}
-      />
-      <div className="pb-[20px] px-[20px] pt-0">
+    <Page name={wallet.name} back={true}>
+      <>
+        <div className="flex mb-10">
+          <Button
+            className="mr-3"
+            size="sm"
+            data-testid="edit-wallet"
+            onClick={() => setEditing(true)}
+          >
+            {/* <Edit className="w-[16px]" /> */}
+            Edit
+          </Button>
+          <Button
+            data-testid="remove-wallet"
+            size="sm"
+            onClick={() => setRemoving(true)}
+          >
+            {/* <Trash className="w-[16px]" /> */}
+            Delete
+          </Button>
+        </div>
         <TabTitles activeTab={tab} setTab={setTab} />
         {tab === Tabs.KEYPAIRS && (
           <KeypairList
@@ -108,22 +92,23 @@ export function WalletList() {
         )}
         {tab === Tabs.CONNECTIONS && <ConnectionList wallet={wallet} />}
         {tab === Tabs.KEYPAIRS && (
-          <Button
+          <button
+            className="underline"
             data-testid="generate-keypair"
             onClick={() => {
               dispatch(actions.addKeypairAction(wallet.name))
             }}
           >
             Generate key pair
-          </Button>
+          </button>
         )}
-      </div>
-      <Dialog size="lg" open={isRemoving} title="Remove wallet">
-        <RemoveWallet onClose={() => setRemoving(false)} />
-      </Dialog>
-      <Dialog open={isEditing} onChange={setEditing} title="Edit wallet">
-        <WalletEdit onClose={() => setEditing(false)} />
-      </Dialog>
-    </>
+        <Dialog size="lg" open={isRemoving} title="Remove wallet">
+          <RemoveWallet onClose={() => setRemoving(false)} />
+        </Dialog>
+        <Dialog open={isEditing} onChange={setEditing} title="Edit wallet">
+          <WalletEdit onClose={() => setEditing(false)} />
+        </Dialog>
+      </>
+    </Page>
   )
 }

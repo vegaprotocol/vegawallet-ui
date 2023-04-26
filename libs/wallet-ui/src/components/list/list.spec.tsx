@@ -12,7 +12,7 @@ const renderComponent = ({ items }: { items: Item[] }) =>
       items={items}
       idProp="id"
       empty={<p>Empty</p>}
-      renderItem={(i) => <li>{i.name}</li>}
+      renderItem={(i) => <div>{i.name}</div>}
     />
   )
 
