@@ -130,6 +130,15 @@ export const PermissionRequest = ({
       </Frame>
       <ButtonGroup inline>
         <Button
+          data-testid="wallet-request-permissions-reject"
+          // TODO loading spinner
+          // loading={isLoading === 'rejecßt'}
+          disabled={!!isLoading}
+          onClick={() => handleDecision(false)}
+        >
+          Cancel
+        </Button>
+        <Button
           data-testid="wallet-request-permissions-approve"
           // TODO loading spinner
           // loading={isLoading === 'approve'}
@@ -138,15 +147,6 @@ export const PermissionRequest = ({
           onClick={() => handleDecision(true)}
         >
           Approve
-        </Button>
-        <Button
-          data-testid="wallet-request-permissions-reject"
-          // TODO loading spinner
-          // loading={isLoading === 'rejecßt'}
-          disabled={!!isLoading}
-          onClick={() => handleDecision(false)}
-        >
-          Cancel
         </Button>
       </ButtonGroup>
     </div>

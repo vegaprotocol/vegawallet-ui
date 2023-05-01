@@ -195,20 +195,20 @@ export const TransactionReview = ({
       {!isProcessing && data.transaction.status === TransactionStatus.PENDING && (
         <ButtonGroup inline>
           <Button
-            data-testid="transaction-approve-button"
-            loading={isLoading === 'approve'}
-            disabled={!!isLoading && !!isProcessing}
-            onClick={() => handleDecision(true)}
-          >
-            Approve
-          </Button>
-          <Button
             data-testid="transaction-reject-button"
             loading={isLoading === 'reject'}
             disabled={!!isLoading && !!isProcessing}
             onClick={() => handleDecision(false)}
           >
             Reject
+          </Button>
+          <Button
+            data-testid="transaction-approve-button"
+            loading={isLoading === 'approve'}
+            disabled={!!isLoading && !!isProcessing}
+            onClick={() => handleDecision(true)}
+          >
+            Approve
           </Button>
         </ButtonGroup>
       )}

@@ -52,8 +52,8 @@ export const ConnectionsWarningDialog = ({
         </p>
       </div>
       <ButtonGroup inline className="p-[20px]">
-        <Button onClick={onConfirm}>Switch</Button>
         <ButtonUnstyled onClick={() => setOpen(false)}>Cancel</ButtonUnstyled>
+        <Button onClick={onConfirm}>Switch</Button>
       </ButtonGroup>
     </Dialog>
   )

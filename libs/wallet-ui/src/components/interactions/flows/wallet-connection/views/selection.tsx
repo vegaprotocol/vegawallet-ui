@@ -89,18 +89,18 @@ export const SelectionView = ({
         </Frame>
         <ButtonGroup inline>
           <Button
+            data-testid="dapp-select-deny-button"
+            onClick={() => onDeny()}
+          >
+            Deny
+          </Button>
+          <Button
             data-testid="dapp-select-approve-button"
             variant="primary"
             type="submit"
             disabled={isLoading || !formState.isValid}
           >
             Approve
-          </Button>
-          <Button
-            data-testid="dapp-select-deny-button"
-            onClick={() => onDeny()}
-          >
-            Deny
           </Button>
         </ButtonGroup>
       </form>

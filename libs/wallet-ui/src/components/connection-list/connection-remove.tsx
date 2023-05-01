@@ -46,6 +46,12 @@ export const Remove = ({ wallet, hostname, onClose }: RemoveDialogProps) => {
         </p>
       </div>
       <ButtonGroup inline className="p-[20px]">
+        <ButtonUnstyled
+          data-testid="remove-connection-cancel-button"
+          onClick={onClose}
+        >
+          Cancel
+        </ButtonUnstyled>
         <Button
           data-testid="remove-connection-remove-button"
           loading={isLoading}
@@ -53,12 +59,6 @@ export const Remove = ({ wallet, hostname, onClose }: RemoveDialogProps) => {
         >
           Remove
         </Button>
-        <ButtonUnstyled
-          data-testid="remove-connection-cancel-button"
-          onClick={onClose}
-        >
-          Cancel
-        </ButtonUnstyled>
       </ButtonGroup>
     </div>
   )

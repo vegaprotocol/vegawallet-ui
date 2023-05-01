@@ -48,8 +48,8 @@ export const ChangeNetwork = ({
         Add network
       </ButtonUnstyled>
       <ButtonGroup inline className="py-[20px]">
-        <Button type="submit">Select network</Button>
         <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>
+        <Button type="submit">Select network</Button>
       </ButtonGroup>
     </form>
   )

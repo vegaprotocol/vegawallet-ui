@@ -65,10 +65,10 @@ export const Disconnect = ({
         </p>
       </div>
       <ButtonGroup inline className="p-5">
+        <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
         <Button loading={isLoading} onClick={handleDisconnect}>
           Disconnect
         </Button>
-        <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
       </ButtonGroup>
     </div>
   )
