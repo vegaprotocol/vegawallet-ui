@@ -1,8 +1,10 @@
+import { z } from 'zod'
 import { omit } from 'ramda'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { indexBy } from '../../lib/index-by'
-import type { Transaction } from '../../lib/transactions'
+import type { Transaction} from '../../lib/transactions';
+import { TransactionSchema } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type {
   AppConfig,
@@ -20,6 +22,28 @@ import type {
 } from './global-context'
 import { AppStatus, DrawerPanel, ServiceState } from './global-context'
 
+export const TRANSACTION_STORAGE_KEY = 'vega-transactions'
+const TransactionItemsSchema = z.record(z.string(), TransactionSchema)
+
+let transactions: z.infer<typeof TransactionItemsSchema> = {}
+
+try {
+  const results = localStorage.getItem(TRANSACTION_STORAGE_KEY) || ''
+  const json = JSON.parse(results) || {}
+  console.log('RESULTS!', json)
+
+  if (results) {
+    transactions = TransactionItemsSchema.parse(json)
+  } else {
+    console.info('No transaction data found.')
+  }
+} catch {
+  console.error('Malformed transaction data found, resetting...')
+  localStorage.removeItem(TRANSACTION_STORAGE_KEY)
+}
+
+console.log('TRANSACTIONS!', transactions)
+
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   initError: null,
@@ -30,7 +54,7 @@ export const initialGlobalState: GlobalState = {
   // Wallet
   wallet: null,
   wallets: {},
-  transactions: {},
+  transactions,
 
   // Network
   currentNetwork: null,

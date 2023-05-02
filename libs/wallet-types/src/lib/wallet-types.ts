@@ -29,7 +29,7 @@ export enum TransactionKeys {
   ETHEREUM_KEY_ROTATE_SUBMISSION = 'ethereumKeyRotateSubmission',
 }
 
-export const TRANSACTION_TITLES: Record<TransactionKeys, string> = {
+export const TRANSACTION_TITLES: Record<string, string> = {
   [TransactionKeys.UNKNOWN]: 'Unknown transaction',
   [TransactionKeys.ORDER_SUBMISSION]: 'Order submission',
   [TransactionKeys.ORDER_CANCELLATION]: 'Order cancellation',
