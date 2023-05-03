@@ -161,11 +161,7 @@ export const TransactionReview = ({
       {isProcessing && (
         <div className="mb-5">
           <InfoBox transaction={data.transaction} />
-          <TransactionLogs
-            isVisible={true}
-            className="min-h-[150px]"
-            logs={data.transaction.logs}
-          />
+          <TransactionLogs logs={data.transaction.logs} />
           {data.transaction.txHash && (
             <Title data-testid="transaction-header">Transaction ID</Title>
           )}

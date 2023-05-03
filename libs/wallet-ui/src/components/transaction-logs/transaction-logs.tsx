@@ -4,11 +4,9 @@ import { CodeWindow } from '../code-window/code-window'
 
 type Props = {
   logs: LogContent[]
-  isVisible: boolean
-  className?: string
 }
 
-export const TransactionLogs = ({ logs, isVisible, className }: Props) => {
+export const TransactionLogs = ({ logs }: Props) => {
   return (
     <div style={{ maxWidth: 500 }}>
       <CodeWindow

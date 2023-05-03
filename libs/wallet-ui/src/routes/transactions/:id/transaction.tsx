@@ -177,9 +177,7 @@ export const TransactionDetails = ({
                 <CollapsiblePanel
                   title="Event logs"
                   initiallyOpen={false}
-                  panelContent={
-                    <TransactionLogs logs={transaction.logs} isVisible={true} />
-                  }
+                  panelContent={<TransactionLogs logs={transaction.logs} />}
                 />
               )}
             />
