@@ -3,7 +3,7 @@ import { omit } from 'ramda'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { indexBy } from '../../lib/index-by'
-import type { Transaction} from '../../lib/transactions';
+import type { Transaction } from '../../lib/transactions'
 import { TransactionSchema } from '../../lib/transactions'
 import { extendKeypair } from '../../lib/wallet-helpers'
 import type {
