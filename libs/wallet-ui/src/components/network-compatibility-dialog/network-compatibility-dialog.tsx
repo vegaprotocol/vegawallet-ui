@@ -77,11 +77,11 @@ const getIsCompatible = ({
   networkData,
   telemetry,
 }: GetShouldOpenProps) => {
-  return (
-    telemetry?.consentAsked === true &&
-    networkData?.isCompatible !== false &&
-    features.NETWORK_COMPATIBILITY_WARNING === true
-  )
+  if (features.NETWORK_COMPATIBILITY_WARNING === true) {
+    return networkData?.isCompatible === true
+  }
+
+  return true
 }
 
 export const NetworkCompatibilityDialog = () => {
@@ -98,15 +98,18 @@ export const NetworkCompatibilityDialog = () => {
   const [subview, setSubview] = useState<Subview>(null)
 
   useEffect(() => {
-    const isCompatible = getIsCompatible({
-      features,
-      networkData,
-      telemetry: state.config?.telemetry,
-    })
-    dispatch({
-      type: 'SET_NETWORK_COMPATIBILITY',
-      isCompatible,
-    })
+    if (networkData) {
+      const isCompatible = getIsCompatible({
+        features,
+        networkData,
+        telemetry: state.config?.telemetry,
+      })
+
+      dispatch({
+        type: 'SET_NETWORK_COMPATIBILITY',
+        isCompatible,
+      })
+    }
   }, [
     dispatch,
     supportedVersion,
