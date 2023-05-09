@@ -56,6 +56,8 @@ export const AppRouter = () => {
         <Route index={true} element={<Onboard />} />
         <Route path="start" element={<OnboardStart />} />
         <Route path="vega-home" element={<OnboardHome />} />
+        <Route path={Paths.Wallet.Create} element={<WalletCreate />} />
+        <Route path={Paths.Wallet.Import} element={<WalletImport />} />
       </Route>
       <Route path={Paths.Wallet.Home} element={<Layout />}>
         <Route index={true} element={<Home />} />
