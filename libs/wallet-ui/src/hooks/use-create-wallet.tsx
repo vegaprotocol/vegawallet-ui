@@ -1,12 +1,15 @@
 import { useMemo, useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { AppStatus, useGlobal } from '../contexts/global/global-context'
 import { useVegaHome } from './use-vega-home'
+import { Paths } from '../routes'
 
 export function useCreateWallet() {
+  const navigate = useNavigate()
   const vegaHome = useVegaHome()
   const { service, client, dispatch, actions, state, features } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseCreateWallet'), [service])
@@ -36,9 +39,8 @@ export function useCreateWallet() {
           })
           if (state.status === AppStatus.Onboarding) {
             dispatch(
-              actions.completeOnboardAction(
-                features.NETWORK_MODE,
-                () => undefined
+              actions.completeOnboardAction(features.NETWORK_MODE, () =>
+                navigate(Paths.Home)
               )
             )
           }
@@ -72,6 +74,7 @@ export function useCreateWallet() {
       state.status,
       dispatch,
       features,
+      navigate,
       actions,
     ]
   )
