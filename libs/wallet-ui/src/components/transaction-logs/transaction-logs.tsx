@@ -10,7 +10,7 @@ export const TransactionLogs = ({ logs }: Props) => {
   return (
     <div style={{ maxWidth: 500 }}>
       <CodeWindow
-        text={logs.join('\n')}
+        text={logs.map((l) => l.message).join('\n')}
         content={logs.map((entry, i) => (
           <p
             key={i}
