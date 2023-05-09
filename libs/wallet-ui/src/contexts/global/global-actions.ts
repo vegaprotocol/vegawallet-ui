@@ -116,25 +116,38 @@ const startService = async ({
   }
 }
 
-const isMainnet = (config: WalletModel.DescribeNetworkResult) => {
-  return !!config.metadata?.find(
-    ({ key, value }) => key === 'network' && value === 'mainnet'
-  )
+const getDefaultNetwork = (
+  networkMode: Features['NETWORK_MODE'],
+  networks: Record<string, WalletModel.DescribeNetworkResult>
+) => {
+  if (networkMode === 'mainnet' && networks['mainnet1']) {
+    return 'mainnet1'
+  }
+
+  if (networkMode === 'fairground' && networks['fairground']) {
+    return 'fairground'
+  }
+
+  if (networkMode === 'dev' && networks['devnet1']) {
+    return 'devnet1'
+  }
+
+  if (networks['mainnet1']) {
+    return 'mainnet1'
+  }
+
+  return null
 }
 
 const compileNetworks = (
+  networkMode: Features['NETWORK_MODE'],
   config: AppConfig,
   networkConfigs: WalletModel.DescribeNetworkResult[]
 ) => {
   const networks = networkConfigs.reduce(indexBy('name'), {})
 
   const currentNetwork =
-    config.defaultNetwork ||
-    // @TODO: remove this ugly nonsense when metadata is fixed on the backend
-    (networks['mainnet1'] && 'mainnet1') ||
-    networkConfigs.find(isMainnet)?.name ||
-    networkConfigs[0]?.name ||
-    null
+    config.defaultNetwork || getDefaultNetwork(networkMode, networks)
 
   return {
     currentNetwork,
@@ -194,6 +207,7 @@ export function createActions(service: Service, client: WalletAdmin) {
           )
 
           const { currentNetwork, networks } = compileNetworks(
+            networkMode,
             config,
             networkConfigs
           )
@@ -243,7 +257,10 @@ export function createActions(service: Service, client: WalletAdmin) {
       }
     },
 
-    completeOnboardAction(onComplete: () => void) {
+    completeOnboardAction(
+      networkMode: Features['NETWORK_MODE'],
+      onComplete: () => void
+    ) {
       return async (dispatch: GlobalDispatch, getState: () => GlobalState) => {
         const [config, serviceConfig] = await Promise.all([
           service.GetAppConfig(),
@@ -264,6 +281,7 @@ export function createActions(service: Service, client: WalletAdmin) {
         )
 
         const { currentNetwork, networks } = compileNetworks(
+          networkMode,
           config,
           networkConfigs
         )
