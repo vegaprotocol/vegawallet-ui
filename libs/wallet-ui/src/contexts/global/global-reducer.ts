@@ -30,7 +30,6 @@ let transactions: z.infer<typeof TransactionItemsSchema> = {}
 try {
   const results = localStorage.getItem(TRANSACTION_STORAGE_KEY) || ''
   const json = JSON.parse(results) || {}
-  console.log('RESULTS!', json)
 
   if (results) {
     transactions = TransactionItemsSchema.parse(json)
@@ -41,8 +40,6 @@ try {
   console.error('Malformed transaction data found, resetting...')
   localStorage.removeItem(TRANSACTION_STORAGE_KEY)
 }
-
-console.log('TRANSACTIONS!', transactions)
 
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
