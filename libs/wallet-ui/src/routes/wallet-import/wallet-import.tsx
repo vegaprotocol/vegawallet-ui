@@ -18,7 +18,10 @@ export const WalletImport = () => {
 
   return (
     <Page name="Import wallet">
-      <WalletImportForm submit={submit} cancel={() => navigate(Paths.Home)} />
+      <WalletImportForm
+        submit={submit}
+        cancel={() => navigate(Paths.Home, { replace: true })}
+      />
     </Page>
   )
 }

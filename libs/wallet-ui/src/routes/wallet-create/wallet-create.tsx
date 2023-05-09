@@ -12,7 +12,7 @@ export const WalletCreate = () => {
   const { response, submit } = useCreateWallet()
 
   return (
-    <Page name="Create wallet" back={false}>
+    <Page name="Create wallet">
       <>
         {response ? (
           <WalletCreateFormSuccess
@@ -26,7 +26,7 @@ export const WalletCreate = () => {
                         encodeURIComponent(response.wallet.name)
                       )
                     : Paths.Home
-                  navigate(path)
+                  navigate(path, { replace: true })
                 }}
               >
                 View wallet

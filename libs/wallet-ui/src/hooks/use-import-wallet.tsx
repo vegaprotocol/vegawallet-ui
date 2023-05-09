@@ -47,9 +47,13 @@ export function useImportWallet() {
           })
 
           if (state.status === AppStatus.Onboarding) {
+            const targetPath = Paths.Wallet.Wallet(
+              encodeURIComponent(resp.wallet.name)
+            )
+
             dispatch(
               actions.completeOnboardAction(features.NETWORK_MODE, () =>
-                navigate(Paths.Home)
+                navigate(targetPath)
               )
             )
           }
