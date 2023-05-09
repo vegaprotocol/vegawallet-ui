@@ -120,12 +120,7 @@ const compileSectionList = ({
           </ButtonUnstyled>
         </>
       ),
-      value: (
-        <TransactionLogs
-          logs={transaction.logs}
-          isVisible={isLogSectionVisible}
-        />
-      ),
+      value: <TransactionLogs logs={transaction.logs} />,
     })
   }
 
