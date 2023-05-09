@@ -58,7 +58,7 @@ export function WalletList() {
   }
 
   return (
-    <Page name={wallet.name} back={true}>
+    <Page name={wallet.name} back={Paths.Wallet.Home}>
       <>
         <div className="flex mb-10">
           <Button

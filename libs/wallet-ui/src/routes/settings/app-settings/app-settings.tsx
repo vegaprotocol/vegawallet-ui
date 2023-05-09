@@ -10,6 +10,7 @@ import { YesNo } from './hooks'
 import { useUpdateConfig } from './hooks'
 import { FormStatus } from '../../../hooks/use-form-state'
 import { HelperText } from '../../../components/helper-text'
+import { Paths } from '../..'
 
 export const AppSettings = () => {
   const {
@@ -31,7 +32,7 @@ export const AppSettings = () => {
     return null
   }
   return (
-    <Page name="App settings" back={true}>
+    <Page name="App settings" back={Paths.Settings.Home}>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup label="Wallet directory" labelFor="wallet-directory">
           <Input {...register('vegaHome')} type="text" id="wallet-directory" />

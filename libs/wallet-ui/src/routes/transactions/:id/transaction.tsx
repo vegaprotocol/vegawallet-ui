@@ -21,6 +21,7 @@ import { useGlobal } from '../../../contexts/global/global-context'
 import { TransactionNotFound } from './transaction-not-found'
 import { useFullscreenRoute } from '../../../contexts/fullscreen/hooks'
 import { Page } from '../../../components/page'
+import { Paths } from '../..'
 
 const TransactionDetailsItem = ({
   children,
@@ -78,7 +79,7 @@ export const TransactionDetails = ({
         TRANSACTION_TITLES[transaction.type] ||
         TRANSACTION_TITLES[TransactionKeys.UNKNOWN]
       }
-      back={true}
+      back={Paths.Transactions.Home}
     >
       <>
         <TransactionStatus transaction={transaction} />
