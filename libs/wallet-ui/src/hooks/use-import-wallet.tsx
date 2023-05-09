@@ -1,15 +1,12 @@
 import { useMemo, useState, useCallback } from 'react'
 import type { WalletModel } from '@vegaprotocol/wallet-admin'
-import { useNavigate } from 'react-router-dom'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
 import { AppStatus, useGlobal } from '../contexts/global/global-context'
 import { useVegaHome } from './use-vega-home'
-import { Paths } from '../routes'
 
 export function useImportWallet() {
-  const navigate = useNavigate()
   const vegaHome = useVegaHome()
   const { service, client, dispatch, actions, state, features } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseImportWallet'), [service])
@@ -47,13 +44,10 @@ export function useImportWallet() {
           })
 
           if (state.status === AppStatus.Onboarding) {
-            const targetPath = Paths.Wallet.Wallet(
-              encodeURIComponent(resp.wallet.name)
-            )
-
             dispatch(
-              actions.completeOnboardAction(features.NETWORK_MODE, () =>
-                navigate(targetPath)
+              actions.completeOnboardAction(
+                features.NETWORK_MODE,
+                () => undefined
               )
             )
           }
@@ -86,7 +80,6 @@ export function useImportWallet() {
       state.status,
       dispatch,
       actions,
-      navigate,
       features,
     ]
   )
