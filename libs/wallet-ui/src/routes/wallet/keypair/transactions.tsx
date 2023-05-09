@@ -24,7 +24,7 @@ export function Transactions() {
   return (
     <Page
       name="Transactions"
-      back={`${Paths.Wallet.Wallet(':wallet')}/keypair/${keypair.publicKey}`}
+      back={`${Paths.Wallet.Wallet(wallet)}/keypair/${keypair.publicKey}`}
     >
       <>
         <PublicKey publicKey={keypair.publicKey} />
