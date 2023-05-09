@@ -100,7 +100,7 @@ export function OnboardStart() {
         <Button
           data-testid="create-new-wallet"
           onClick={() =>
-            navigate(`${Paths.Wallet.Home}/${Paths.Wallet.Create}`)
+            navigate(`${Paths.Onboard.Home}/${Paths.Wallet.Create}`)
           }
         >
           Create new wallet
@@ -108,7 +108,7 @@ export function OnboardStart() {
         <Button
           data-testid="import-wallet"
           onClick={() =>
-            navigate(`${Paths.Wallet.Home}/${Paths.Wallet.Import}`)
+            navigate(`${Paths.Onboard.Home}/${Paths.Wallet.Import}`)
           }
         >
           Use recovery phrase
