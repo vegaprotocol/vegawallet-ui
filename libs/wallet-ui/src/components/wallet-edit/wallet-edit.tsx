@@ -61,8 +61,8 @@ export const WalletEdit = ({ onClose }: WalletEditProps) => {
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button type="submit">Update</Button>
         <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
+        <Button type="submit">Update</Button>
       </ButtonGroup>
     </form>
   )

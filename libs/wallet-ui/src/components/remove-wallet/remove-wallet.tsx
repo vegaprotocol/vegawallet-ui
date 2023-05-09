@@ -97,12 +97,12 @@ const RemoveForm = ({
         />
       </FormGroup>
       <ButtonGroup inline>
-        <Button type="submit" disabled={isPending}>
-          {isPending ? <Spinner /> : 'Remove'}
-        </Button>
         <button className="underline" onClick={onCancel}>
           Cancel
         </button>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? <Spinner /> : 'Remove'}
+        </Button>
       </ButtonGroup>
     </form>
   )

@@ -192,8 +192,8 @@ export const ManagePermissions = ({
         </div>
       </div>
       <ButtonGroup inline className="px-[20px] pb-[20px]">
-        <Button type="submit">Update</Button>
         <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
+        <Button type="submit">Update</Button>
       </ButtonGroup>
     </form>
   )

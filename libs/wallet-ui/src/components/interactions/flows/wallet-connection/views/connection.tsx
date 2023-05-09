@@ -65,6 +65,15 @@ export const ConnectionView = ({
       </Frame>
       <ButtonGroup inline>
         <Button
+          data-testid="dapp-connect-deny-button"
+          // TODO need a loading spinner but UI toolkit doesn't support this
+          // loading={isLoading === 'reject'}
+          disabled={!!isLoading}
+          onClick={() => handleDecision(false)}
+        >
+          Deny
+        </Button>
+        <Button
           data-testid="dapp-connect-approve-button"
           variant="primary"
           // TODO need a loading spinner but UI toolkit doesn't support this
@@ -73,15 +82,6 @@ export const ConnectionView = ({
           onClick={() => handleDecision(true)}
         >
           Approve
-        </Button>
-        <Button
-          data-testid="dapp-connect-deny-button"
-          // TODO need a loading spinner but UI toolkit doesn't support this
-          // loading={isLoading === 'reject'}
-          disabled={!!isLoading}
-          onClick={() => handleDecision(false)}
-        >
-          Deny
         </Button>
       </ButtonGroup>
     </div>

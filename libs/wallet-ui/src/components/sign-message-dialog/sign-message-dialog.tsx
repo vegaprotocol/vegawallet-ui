@@ -47,6 +47,14 @@ export const SignMessageDialog = () => {
               </CopyWithTooltip>
             </div>
             <ButtonGroup inline>
+              <ButtonUnstyled
+                data-testid="sign-close"
+                onClick={() =>
+                  dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: false })
+                }
+              >
+                Close
+              </ButtonUnstyled>
               <Button
                 data-testid="sign-more"
                 onClick={() => {
@@ -56,14 +64,6 @@ export const SignMessageDialog = () => {
               >
                 Sign another
               </Button>
-              <ButtonUnstyled
-                data-testid="sign-close"
-                onClick={() =>
-                  dispatch({ type: 'SET_SIGN_MESSAGE_MODAL', open: false })
-                }
-              >
-                Close
-              </ButtonUnstyled>
             </ButtonGroup>
           </>
         ) : (
@@ -85,11 +85,6 @@ export const SignMessageDialog = () => {
             </FormGroup>
             <ButtonGroup inline>
               <div className="flex-1">
-                <Button data-testid="sign" type="submit" fill={true}>
-                  Sign
-                </Button>
-              </div>
-              <div className="flex-1">
                 <button
                   data-testid="sign-close"
                   onClick={() =>
@@ -99,6 +94,11 @@ export const SignMessageDialog = () => {
                 >
                   Cancel
                 </button>
+              </div>
+              <div className="flex-1">
+                <Button data-testid="sign" type="submit" fill={true}>
+                  Sign
+                </Button>
               </div>
             </ButtonGroup>
           </form>
