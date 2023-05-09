@@ -78,6 +78,11 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
       </FormGroup>
       <ButtonGroup inline>
         <div className="flex-1">
+          <button className="underline w-full" onClick={cancel}>
+            Cancel
+          </button>
+        </div>
+        <div className="flex-1">
           <Button
             data-testid="create-wallet-form-submit"
             type="submit"
@@ -85,11 +90,6 @@ export function WalletCreateForm({ submit, cancel }: WalletCreateFormProps) {
           >
             Submit
           </Button>
-        </div>
-        <div className="flex-1">
-          <button className="underline w-full" onClick={cancel}>
-            Cancel
-          </button>
         </div>
       </ButtonGroup>
     </form>

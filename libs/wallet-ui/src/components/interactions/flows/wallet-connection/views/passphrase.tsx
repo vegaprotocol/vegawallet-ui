@@ -121,6 +121,12 @@ export const PassphraseView = ({
           </FormGroup>
         </Frame>
         <ButtonGroup inline>
+          <ButtonLink
+            data-testid="dapp-passphrase-cancel-button"
+            onClick={() => onDeny()}
+          >
+            Cancel
+          </ButtonLink>
           <Button
             data-testid="dapp-passphrase-approve-button"
             variant="primary"
@@ -131,12 +137,6 @@ export const PassphraseView = ({
           >
             Approve
           </Button>
-          <ButtonLink
-            data-testid="dapp-passphrase-cancel-button"
-            onClick={() => onDeny()}
-          >
-            Cancel
-          </ButtonLink>
         </ButtonGroup>
       </form>
     </div>

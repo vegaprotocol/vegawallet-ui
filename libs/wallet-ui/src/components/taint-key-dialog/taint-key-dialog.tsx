@@ -53,6 +53,14 @@ export const TaintKeyDialog = () => {
       <PublicKey publicKey={keypair.publicKey} />
       <div className="pt-[32px] px-[20px] pb-[20px]">
         <ButtonGroup inline>
+          <button
+            onClick={() =>
+              dispatch({ type: 'SET_TAINT_KEY_MODAL', open: false })
+            }
+            className="underline w-full"
+          >
+            Cancel
+          </button>
           <Button
             data-testid="taint-action"
             disabled={loading}
@@ -68,14 +76,6 @@ export const TaintKeyDialog = () => {
           >
             {keypair.isTainted ? 'Untaint this key' : 'Taint this key'}
           </Button>
-          <button
-            onClick={() =>
-              dispatch({ type: 'SET_TAINT_KEY_MODAL', open: false })
-            }
-            className="underline w-full"
-          >
-            Cancel
-          </button>
         </ButtonGroup>
       </div>
     </Dialog>

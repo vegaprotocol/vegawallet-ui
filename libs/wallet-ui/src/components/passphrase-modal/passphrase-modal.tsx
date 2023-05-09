@@ -108,11 +108,6 @@ function PassphraseModalForm({
       </FormGroup>
       <ButtonGroup inline>
         <div className="flex-1">
-          <Button data-testid="input-submit" type="submit" fill={true}>
-            {loading ? <Spinner /> : 'Submit'}
-          </Button>
-        </div>
-        <div className="flex-1">
           <button
             data-testid="input-cancel"
             onClick={onCancel}
@@ -121,6 +116,11 @@ function PassphraseModalForm({
           >
             Cancel
           </button>
+        </div>
+        <div className="flex-1">
+          <Button data-testid="input-submit" type="submit" fill={true}>
+            {loading ? <Spinner /> : 'Submit'}
+          </Button>
         </div>
       </ButtonGroup>
     </form>

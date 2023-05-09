@@ -126,6 +126,7 @@ export function NetworkImportForm({
         </FormGroup>
       )}
       <ButtonGroup inline>
+        {onCancel && <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>}
         <Button
           data-testid="import-network"
           type="submit"
@@ -133,7 +134,6 @@ export function NetworkImportForm({
         >
           Import
         </Button>
-        {onCancel && <ButtonUnstyled onClick={onCancel}>Cancel</ButtonUnstyled>}
       </ButtonGroup>
     </form>
   )

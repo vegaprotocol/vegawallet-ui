@@ -112,15 +112,6 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
       </FormGroup>
       <ButtonGroup inline>
         <div className="flex-1">
-          <Button
-            data-testid="wallet-import-form-submit"
-            type="submit"
-            fill={true}
-          >
-            Submit
-          </Button>
-        </div>
-        <div className="flex-1">
           <button
             data-testid="cancel"
             onClick={cancel}
@@ -128,6 +119,15 @@ export function WalletImportForm({ submit, cancel }: WalletImportFormProps) {
           >
             Cancel
           </button>
+        </div>
+        <div className="flex-1">
+          <Button
+            data-testid="wallet-import-form-submit"
+            type="submit"
+            fill={true}
+          >
+            Submit
+          </Button>
         </div>
       </ButtonGroup>
     </form>

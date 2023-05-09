@@ -236,16 +236,6 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
       </div>
       <ButtonGroup>
         <div className="flex-1">
-          <Button
-            data-testid="metadata-submit"
-            disabled={loading}
-            type="submit"
-            fill={true}
-          >
-            Update
-          </Button>
-        </div>
-        <div className="flex-1">
           <button
             onClick={() =>
               dispatch({ type: 'SET_UPDATE_KEY_MODAL', open: false })
@@ -254,6 +244,16 @@ function UpdateKeyForm({ keypair, wallet }: UpdateKeyFormProps) {
           >
             Cancel
           </button>
+        </div>
+        <div className="flex-1">
+          <Button
+            data-testid="metadata-submit"
+            disabled={loading}
+            type="submit"
+            fill={true}
+          >
+            Update
+          </Button>
         </div>
       </ButtonGroup>
     </form>
