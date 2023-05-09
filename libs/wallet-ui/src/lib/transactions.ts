@@ -1,6 +1,6 @@
+import { z } from 'zod'
 import { omit } from 'ramda'
-import { TransactionStatus } from '@vegaprotocol/wallet-types'
-import type { TransactionKeys } from '@vegaprotocol/wallet-types'
+import { TransactionKeys, TransactionStatus } from '@vegaprotocol/wallet-types'
 
 import type {
   LogContent,
@@ -10,23 +10,51 @@ import type {
 } from '../types/interaction'
 import { Intent } from '../config/intent'
 
+const LogContentSchema = z.object({
+  type: z.enum(['Info', 'Warning', 'Error', 'Success']),
+  message: z.string(),
+})
+
 type TransactionData = object
 
-export type Transaction = {
-  id: string
-  type: TransactionKeys
-  hostname: string
-  wallet: string
-  publicKey: string
-  payload: TransactionData
-  status: TransactionStatus
-  receivedAt: Date
-  logs: LogContent[]
-  txHash?: null | string
-  blockHeight?: number
-  signature?: string
-  error?: string
-}
+type StringArray = [string, ...string[]]
+
+const types = Object.values(TransactionKeys) as StringArray
+const statuses = Object.values(TransactionStatus) as StringArray
+
+export const TransactionSchema = z.object({
+  id: z.string(),
+  type: z.enum(types),
+  hostname: z.string(),
+  wallet: z.string(),
+  publicKey: z.string(),
+  payload: z.object({}),
+  status: z.enum(statuses),
+  receivedAt: z.coerce.date(),
+  logs: z.array(LogContentSchema),
+  txHash: z.string().optional().nullable(),
+  blockHeight: z.number().optional(),
+  signature: z.string().optional(),
+  error: z.string().optional(),
+})
+
+export type Transaction = z.infer<typeof TransactionSchema>
+
+// export type Transaction = {
+//   id: string
+//   type: TransactionKeys
+//   hostname: string
+//   wallet: string
+//   publicKey: string
+//   payload: TransactionData
+//   status: TransactionStatus
+//   receivedAt: Date
+//   logs: LogContent[]
+//   txHash?: null | string
+//   blockHeight?: number
+//   signature?: string
+//   error?: string
+// }
 
 const getPayload = (transaction: string): TransactionData => {
   try {

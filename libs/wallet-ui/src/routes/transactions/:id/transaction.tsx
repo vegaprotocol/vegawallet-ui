@@ -1,7 +1,7 @@
 import { ListItem } from '../../../components/list'
 import { TransactionStatus } from '../../../components/transaction-status'
 import type { Transaction } from '../../../lib/transactions'
-import { TRANSACTION_TITLES } from '@vegaprotocol/wallet-types'
+import { TransactionKeys, TRANSACTION_TITLES } from '@vegaprotocol/wallet-types'
 import {
   CopyWithTooltip,
   ExternalLink,
@@ -73,7 +73,13 @@ export const TransactionDetails = ({
   )
 
   return (
-    <Page name={TRANSACTION_TITLES[transaction.type]} back={true}>
+    <Page
+      name={
+        TRANSACTION_TITLES[transaction.type] ||
+        TRANSACTION_TITLES[TransactionKeys.UNKNOWN]
+      }
+      back={true}
+    >
       <>
         <TransactionStatus transaction={transaction} />
         <ul>
@@ -89,22 +95,11 @@ export const TransactionDetails = ({
           <ListItem
             item={transaction}
             renderItem={() => (
-              <TransactionDetailsItem title="Wallet">
+              <TransactionDetailsItem title="Public Key">
                 {partyLink}
               </TransactionDetailsItem>
             )}
           />
-          {transaction.blockHeight && (
-            <ListItem
-              data-testid="transaction-wallet-name"
-              item={transaction}
-              renderItem={(transaction) => (
-                <TransactionDetailsItem title="Wallet">
-                  {transaction.wallet}
-                </TransactionDetailsItem>
-              )}
-            />
-          )}
           {transaction.blockHeight && (
             <ListItem
               item={transaction}
@@ -148,7 +143,7 @@ export const TransactionDetails = ({
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
-              <div style={{ maxWidth: 400 }}>
+              <div>
                 <CollapsiblePanel
                   title="Details"
                   initiallyOpen={true}

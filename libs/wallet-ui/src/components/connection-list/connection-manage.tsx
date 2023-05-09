@@ -31,8 +31,11 @@ export type NormalizedPermissionMap = Record<
 
 type CompileResult = {
   permissions: NormalizedPermissionMap
-  permissionAccessKeys: Array<keyof WalletModel.Permissions>
 }
+
+const permissionAccessKeys: Array<keyof WalletModel.Permissions> = [
+  'publicKeys',
+]
 
 const compileDefaultValues = (
   wallet: Wallet,
@@ -41,10 +44,6 @@ const compileDefaultValues = (
   if (!walletPermissions) {
     throw new Error(`Missing permissions for wallet ${wallet.name}.`)
   }
-
-  const permissionAccessKeys = Object.keys(walletPermissions) as Array<
-    keyof WalletModel.Permissions
-  >
 
   const keyList = Object.keys(wallet.keypairs || {})
 
@@ -75,7 +74,6 @@ const compileDefaultValues = (
 
   return {
     permissions,
-    permissionAccessKeys,
   }
 }
 
@@ -115,7 +113,7 @@ export const ManagePermissions = ({
   onClose,
 }: ManageDialogProps) => {
   const { client, dispatch } = useGlobal()
-  const { permissions, permissionAccessKeys } = useMemo(
+  const { permissions } = useMemo(
     () =>
       compileDefaultValues(wallet, wallet.connections?.[hostname]?.permissions),
     [wallet, hostname]

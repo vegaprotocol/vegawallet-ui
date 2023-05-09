@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import type { Transaction } from '../../lib/transactions'
 import { TransactionStatus as TransactionStatusTypes } from '@vegaprotocol/wallet-types'
 
-const getTransactionInfo = (status?: TransactionStatusTypes) => {
+const getTransactionInfo = (status?: string) => {
   switch (status) {
     case TransactionStatusTypes.SUCCESS: {
       return {

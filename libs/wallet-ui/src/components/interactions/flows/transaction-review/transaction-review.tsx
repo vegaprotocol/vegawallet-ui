@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import type { Transaction } from '../../../../lib/transactions'
 import { TransactionDetails } from '../../../transaction-details'
@@ -74,10 +74,17 @@ export const TransactionReview = ({
   onClose,
   onUpdate,
 }: TransactionReviewProps) => {
+  const logsRef = useRef<HTMLDivElement>(null)
   const { getTxUrl } = useExplorerLinks()
   const [isLoading, setLoading] = useState<'approve' | 'reject' | false>(false)
   const { service, dispatch } = useGlobal()
   const isProcessing = data.transaction && data.transaction.logs.length > 0
+
+  useEffect(() => {
+    if (logsRef.current) {
+      logsRef.current.scrollTo({ top: logsRef.current.scrollHeight })
+    }
+  }, [data.transaction?.logs.length])
 
   const handleDecision = async (decision: boolean) => {
     setLoading(decision ? 'approve' : 'reject')
@@ -161,7 +168,7 @@ export const TransactionReview = ({
       {isProcessing && (
         <div className="mb-5">
           <InfoBox transaction={data.transaction} />
-          <TransactionLogs logs={data.transaction.logs} />
+          <TransactionLogs ref={logsRef} logs={data.transaction.logs} />
           {data.transaction.txHash && (
             <Title data-testid="transaction-header">Transaction ID</Title>
           )}
