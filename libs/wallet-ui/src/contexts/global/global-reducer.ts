@@ -42,8 +42,6 @@ try {
   localStorage.removeItem(TRANSACTION_STORAGE_KEY)
 }
 
-console.log('TRANSACTIONS!', transactions)
-
 export const initialGlobalState: GlobalState = {
   status: AppStatus.Pending,
   initError: null,

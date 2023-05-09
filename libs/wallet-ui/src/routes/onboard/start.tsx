@@ -23,6 +23,7 @@ export function OnboardStart() {
     actions,
     service,
     client,
+    features,
     state: { initNetworks, wallets },
   } = useGlobal()
   const logger = useMemo(() => service.GetLogger('Onboard'), [service])
@@ -57,7 +58,11 @@ export function OnboardStart() {
       }
 
       // Found wallets and networks, go to the main app
-      dispatch(actions.completeOnboardAction(() => navigate(Paths.Home)))
+      dispatch(
+        actions.completeOnboardAction(features.NETWORK_MODE, () =>
+          navigate(Paths.Home)
+        )
+      )
     } catch (err) {
       logger.error(err)
     }

@@ -8,7 +8,7 @@ import { useVegaHome } from './use-vega-home'
 
 export function useImportWallet() {
   const vegaHome = useVegaHome()
-  const { service, client, dispatch, actions, state } = useGlobal()
+  const { service, client, dispatch, actions, state, features } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseImportWallet'), [service])
   const [response, setResponse] =
     useState<WalletModel.ImportWalletResult | null>(null)
@@ -44,7 +44,12 @@ export function useImportWallet() {
           })
 
           if (state.status === AppStatus.Onboarding) {
-            dispatch(actions.completeOnboardAction(() => undefined))
+            dispatch(
+              actions.completeOnboardAction(
+                features.NETWORK_MODE,
+                () => undefined
+              )
+            )
           }
 
           dispatch({
@@ -67,7 +72,16 @@ export function useImportWallet() {
         logger.error(err)
       }
     },
-    [logger, service, client, vegaHome, state.status, dispatch, actions]
+    [
+      logger,
+      service,
+      client,
+      vegaHome,
+      state.status,
+      dispatch,
+      actions,
+      features,
+    ]
   )
 
   return {
