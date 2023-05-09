@@ -26,7 +26,7 @@ export const WalletCreate = () => {
                         encodeURIComponent(response.wallet.name)
                       )
                     : Paths.Home
-                  navigate(path, { replace: true })
+                  navigate(path)
                 }}
               >
                 View wallet

@@ -8,6 +8,7 @@ import type { FormFields } from './hooks'
 import { useUpdateServiceConfig } from './hooks'
 import { FormStatus } from '../../../hooks/use-form-state'
 import { HelperText } from '../../../components/helper-text'
+import { Paths } from '../..'
 
 export const Service = () => {
   const {
@@ -22,7 +23,7 @@ export const Service = () => {
     },
   })
   return (
-    <Page name="Service" back={true}>
+    <Page name="Service" back={Paths.Settings.Home}>
       <form onSubmit={handleSubmit(submit)}>
         <FormGroup label="Port" labelFor="wallet-directory">
           <Input {...register('port')} type="number" id="port" />

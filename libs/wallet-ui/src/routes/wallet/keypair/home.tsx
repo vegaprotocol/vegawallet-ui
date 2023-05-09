@@ -20,7 +20,7 @@ export function KeyPairHome() {
   }
 
   return (
-    <Page name={keypair.name} back={true}>
+    <Page name={keypair.name} back={Paths.Wallet.Wallet(wallet)}>
       <>
         <PublicKey publicKey={keypair.publicKey} />
         {keypair.isTainted && (

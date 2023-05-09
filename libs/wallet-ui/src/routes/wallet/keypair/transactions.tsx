@@ -8,6 +8,7 @@ import { TransactionHistory } from '../../../components/transaction-history'
 import { useCurrentKeypair } from '../../../hooks/use-current-keypair'
 import { useExplorerLinks } from '../../../hooks/use-explorer-url'
 import { Page } from '../../../components/page'
+import { Paths } from '../..'
 
 export function Transactions() {
   const { getPartyUrl } = useExplorerLinks()
@@ -21,7 +22,10 @@ export function Transactions() {
   const partyUrl = getPartyUrl(keypair.publicKey)
 
   return (
-    <Page name="Transactions" back={true}>
+    <Page
+      name="Transactions"
+      back={`${Paths.Wallet.Wallet(':wallet')}/keypair/${keypair.publicKey}`}
+    >
       <>
         <PublicKey publicKey={keypair.publicKey} />
         <div className="pt-0 px-5 pb-5" data-testid="keypair-home">

@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom'
 export interface PageProps {
   name: string
   children: React.ReactElement
-  back?: boolean
+  back?: string
 }
 
-export const Page = ({ name, children, back = false }: PageProps) => {
+export const Page = ({ name, children, back }: PageProps) => {
   const navigate = useNavigate()
   return (
     <section
@@ -17,7 +17,7 @@ export const Page = ({ name, children, back = false }: PageProps) => {
       <h1 className="text-2xl flex" data-testid={`${name}-header`}>
         {back && (
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(back)}
             className="flex flex-col justify-center mr-2"
             data-testid="page-back"
           >
