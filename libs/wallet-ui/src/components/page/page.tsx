@@ -12,9 +12,9 @@ export const Page = ({ name, children, back }: PageProps) => {
   return (
     <section
       data-testid={name}
-      className="h-full pt-8 pb-5 px-5 grid grid-rows-[min-content_1fr] overflow-y-auto"
+      className="h-full pt-8 pb-5 px-5  overflow-y-auto flex flex-col"
     >
-      <h1 className="text-2xl flex" data-testid={`${name}-header`}>
+      <h1 className="text-2xl mb-4 flex" data-testid={`${name}-header`}>
         {back && (
           <button
             onClick={() => navigate(back)}
@@ -31,7 +31,7 @@ export const Page = ({ name, children, back }: PageProps) => {
         )}
         {name}
       </h1>
-      <div className="mt-4">{children}</div>
+      {children}
     </section>
   )
 }
