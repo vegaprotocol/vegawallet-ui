@@ -59,7 +59,7 @@ export function WalletList() {
 
   return (
     <Page name={wallet.name} back={Paths.Wallet.Home}>
-      <>
+      <div className="grid grid-rows-[min-content_1fr]">
         <div className="flex mb-10">
           <Button
             className="mr-3"
@@ -108,7 +108,7 @@ export function WalletList() {
         <Dialog open={isEditing} onChange={setEditing} title="Edit wallet">
           <WalletEdit onClose={() => setEditing(false)} />
         </Dialog>
-      </>
+      </div>
     </Page>
   )
 }

@@ -59,7 +59,7 @@ export const TransactionHomePage = () => {
   const { state } = useGlobal()
   const transactions = useMemo(() => {
     return Object.values(state.transactions).sort((a, b) => {
-      return a.receivedAt.getTime() - b.receivedAt.getTime()
+      return b.receivedAt.getTime() - a.receivedAt.getTime()
     })
   }, [state.transactions])
   return <TransactionHome transactions={transactions} />

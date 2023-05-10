@@ -32,11 +32,8 @@ export const Home = () => {
 
   return (
     <Page name="Wallets">
-      <div
-        data-testid="wallet-home"
-        className="grid grid-rows-[1fr_min-content] min-h-full"
-      >
-        <div data-testid="wallet-list">
+      <div data-testid="wallet-home" className="flex-1 flex flex-col">
+        <div data-testid="wallet-list" className="mb-4">
           {walletsList.map((w) => (
             <button
               className={classnames(
@@ -63,18 +60,20 @@ export const Home = () => {
             </button>
           ))}
         </div>
-        <ButtonGroup>
-          <Link className="flex-1" to="wallet-create">
-            <Button data-testid="create-new-wallet" size="lg" fill={true}>
-              Create wallet
-            </Button>
-          </Link>
-          <Link className="flex-1" to="wallet-import">
-            <Button data-testid="import-wallet" size="lg" fill={true}>
-              Import wallet
-            </Button>
-          </Link>
-        </ButtonGroup>
+        <div className="w-full flex-1 flex items-end">
+          <ButtonGroup className="w-full">
+            <Link className="flex-1" to="wallet-create">
+              <Button data-testid="create-new-wallet" size="lg" fill={true}>
+                Create wallet
+              </Button>
+            </Link>
+            <Link className="flex-1" to="wallet-import">
+              <Button data-testid="import-wallet" size="lg" fill={true}>
+                Import wallet
+              </Button>
+            </Link>
+          </ButtonGroup>
+        </div>
       </div>
     </Page>
   )
