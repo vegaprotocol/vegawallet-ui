@@ -10,7 +10,7 @@ type Props = {
 export const TransactionLogs = forwardRef<HTMLDivElement, Props>(
   ({ logs }, ref) => {
     return (
-      <div>
+      <div className="max-w-full overflow-x-scroll">
         <CodeWindow
           ref={ref}
           text={logs.map((l) => l.message).join('\n')}
