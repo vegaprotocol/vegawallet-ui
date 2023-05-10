@@ -39,9 +39,7 @@ test.describe('Wallets list', () => {
     await mock(page, adminMock.ListWallets, { wallets: [] })
     await page.goto('/')
 
-    console.log(wallets.walletList)
-    await expect(wallets.walletList).toBeVisible()
-    await expect(wallets.walletList.getByRole('button')).toBeHidden()
+    await expect(wallets.walletList).toBeEmpty()
   })
 
   test('should see list with few wallets', async ({ page }) => {
