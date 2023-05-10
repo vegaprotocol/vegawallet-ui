@@ -56,6 +56,7 @@ export function useImportWallet() {
             type: 'ADD_WALLET',
             wallet: values.wallet,
             key: keypair,
+            auth: true,
           })
           AppToaster.show({
             message: `Wallet imported`,
