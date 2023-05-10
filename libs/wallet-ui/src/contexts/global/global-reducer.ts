@@ -119,6 +119,7 @@ export type GlobalAction =
   | {
       type: 'ADD_WALLET'
       wallet: string
+      auth?: boolean
       key: WalletModel.DescribeKeyResult
     }
   | {
@@ -357,7 +358,7 @@ export function globalReducer(
             [keypairExtended.publicKey ?? '']: keypairExtended,
           }),
         },
-        auth: false,
+        auth: action.auth || false,
       }
       return {
         ...state,

@@ -51,6 +51,7 @@ export function useCreateWallet() {
             type: 'ADD_WALLET',
             wallet: values.wallet,
             key: keypair,
+            auth: true,
           })
           dispatch({
             type: 'ACTIVATE_WALLET',
