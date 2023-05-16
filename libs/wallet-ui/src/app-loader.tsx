@@ -49,7 +49,7 @@ export function AppLoader({ children }: { children?: ReactNode }) {
   return <ServiceLoader>{children}</ServiceLoader>
 }
 
-export const APP_FRAME_HEIGHT = 28
+export const APP_FRAME_HEIGHT = 32
 interface AppFrameProps {
   children: ReactNode
 }
@@ -89,7 +89,7 @@ export function AppFrame({ children }: AppFrameProps) {
       <div
         // !pointer-events-auto is required to allow the user to click and drag the app
         // when dialogs are open, as radix-ui will apply pointer-events: none to the body
-        className="h-7 bg-transparent !pointer-events-auto cursor-pointer"
+        className="h-8 bg-transparent !pointer-events-auto cursor-pointer flex justify-center items-center"
         style={{
           // The app is frameless by default so this element creates a space at the top of the app
           // which you can click and drag to move the app around.
@@ -98,7 +98,7 @@ export function AppFrame({ children }: AppFrameProps) {
           '--wails-draggable': 'drag',
         }}
       >
-        <div className="pt-2 flex justify-center text-sm">
+        <div className="flex justify-center text-sm h-min">
           {state.version?.version && (
             <>
               <span className="text-white">{getAppTitle(mode)}</span>

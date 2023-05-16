@@ -24,7 +24,7 @@ export const SettingsHome = () => {
         renderItem={({ title, path }) => (
           <Link
             to={{ pathname: path }}
-            className="flex justify-between text-xl"
+            className="flex justify-between text-base"
           >
             <div>{title}</div>
             <div>

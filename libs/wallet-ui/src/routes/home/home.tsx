@@ -31,18 +31,22 @@ export const Home = () => {
 
   return (
     <Page name="Wallets">
-      <div data-testid="wallet-home" className="flex-1 flex flex-col">
+      <div
+        data-testid="wallet-home"
+        className="flex-1 flex flex-col justify-between h-full"
+      >
         <div data-testid="wallet-list" className="mb-4">
           {walletsList.map((w) => (
             <button
               className={classnames(
                 'w-full flex items-center justify-between',
-                'border-b border-vega-dark-150 py-3',
-                'text-[18px]',
+                'border-b border-vega-dark-150 py-3 px-3',
+                'text-xl',
                 {
                   'text-white': w.auth,
                   'text-vega-dark-300': !w.auth,
-                }
+                },
+                'hover:bg-vega-dark-150'
               )}
               onClick={() => open(w.name)}
               data-testid={`wallet-${w.name.replace(' ', '-')}`}
