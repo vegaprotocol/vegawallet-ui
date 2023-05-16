@@ -12,10 +12,10 @@ export const Page = ({ name, children, back }: PageProps) => {
   return (
     <section
       data-testid={name}
-      className="h-full pt-5 pb-4 px-4 grid grid-rows-[min-content_1fr] overflow-y-auto"
+      className="h-full pt-5 pb-4 px-4 grid grid-rows-[min-content_1fr] grid-cols-[100%] overflow-y-auto"
     >
       <h1
-        className="text-[24px] flex font-alpha"
+        className="text-[24px] flex font-alpha mb-3"
         data-testid={`${name}-header`}
       >
         {back && (
@@ -34,7 +34,7 @@ export const Page = ({ name, children, back }: PageProps) => {
         )}
         {name}
       </h1>
-      {children}
+      <div>{children}</div>
     </section>
   )
 }

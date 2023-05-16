@@ -30,7 +30,7 @@ export const TransactionSchema = z.object({
   publicKey: z.string(),
   payload: z.object({}),
   status: z.enum(statuses),
-  receivedAt: z.coerce.date(),
+  receivedAt: z.date(),
   logs: z.array(LogContentSchema),
   txHash: z.string().optional().nullable(),
   blockHeight: z.number().optional(),

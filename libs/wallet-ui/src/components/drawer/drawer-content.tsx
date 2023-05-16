@@ -165,7 +165,7 @@ function DrawerContentWrapper({ children }: DrawerContentWrapperProps) {
   const { state } = useGlobal()
   const isHidden = !state.drawerState.isOpen
 
-  return <div className="p-[20px]">{!isHidden ? children : null}</div>
+  return <div className="p-[20px] text-base">{!isHidden ? children : null}</div>
 }
 
 function DrawerBackButton({ onClick }: { onClick: () => void }) {
