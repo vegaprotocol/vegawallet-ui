@@ -5,16 +5,18 @@ import { className as defaultClassName } from './style'
 export function OpenLock({ className }: { className?: string }) {
   return (
     <svg
-      className={classnames(defaultClassName, 'fill-transparent', className)}
-      data-testid="open-lock-icon"
-      viewBox="0 0 16 16"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={classnames(defaultClassName, className)}
     >
-      <path
-        d="M11.99-0.01c-2.21,0-4,1.79-4,4v3h-7c-0.55,0-1,0.45-1,1v7c0,0.55,0.45,1,1,1h12
-  			c0.55,0,1-0.45,1-1v-7c0-0.55-0.45-1-1-1h-3v-3c0-1.1,0.9-2,2-2s2,0.9,2,2v1c0,0.55,0.45,1,1,1s1-0.45,1-1v-1
-  			C15.99,1.78,14.2-0.01,11.99-0.01z"
-      />
+      <rect x="5.5" y="9.5" width="13" height="12" stroke="white" fill="none" />
+      <rect x="11.5" y="13.5" width="1" height="4" fill="white" />
+      <rect x="8" y="3" width="1" height="6" fill="white" />
+      <rect x="15" y="3" width="1" height="2" fill="white" />
+      <rect x="9" y="2" width="6" height="1" fill="white" />
     </svg>
   )
 }

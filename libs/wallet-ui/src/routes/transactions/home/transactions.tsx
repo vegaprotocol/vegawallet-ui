@@ -27,19 +27,21 @@ export const TransactionHome = ({
         idProp="id"
         renderItem={(transaction) => (
           <NavLink to={{ pathname: `/transactions/${transaction.id}` }}>
-            <div data-testid="transactions-transaction">
-              <TransactionStatus transaction={transaction} />
+            <div className="text-base" data-testid="transactions-transaction">
+              <div className="text-sm">
+                <TransactionStatus transaction={transaction} />
+              </div>
               <div className="flex justify-between">
-                <div data-testid="transactions-type" className="text-lg">
+                <div data-testid="transactions-type" className="">
                   {TRANSACTION_TITLES[transaction.type]}
                 </div>
-                <div data-testid="transactions-hash">
+                <div className="text-sm" data-testid="transactions-hash">
                   {transaction.txHash
                     ? truncateMiddle(transaction.txHash)
                     : null}
                 </div>
               </div>
-              <div className="flex justify-between text-dark-400">
+              <div className="flex justify-between text-dark-400 text-sm">
                 <div data-testid="transactions-sender">
                   {transaction.wallet}, {truncateMiddle(transaction.publicKey)}
                 </div>

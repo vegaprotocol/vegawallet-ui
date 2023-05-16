@@ -22,7 +22,7 @@ export function FormGroup({
   intent = Intent.NONE,
 }: FormGroupProps) {
   return (
-    <div className={classnames('flex flex-col mb-[8px]', className)}>
+    <div className={classnames('flex flex-col mb-[8px] text-base', className)}>
       <label htmlFor={labelFor}>{label}</label>
       <div className="relative mt-[5px] pb-[21px]">
         {children}

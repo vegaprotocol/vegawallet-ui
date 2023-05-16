@@ -1,4 +1,4 @@
-import { Button, FormGroup } from '@vegaprotocol/ui-toolkit'
+import { Button } from '@vegaprotocol/ui-toolkit'
 import { LogLevels } from '../../../config/log-levels'
 import { Page } from '../../../components/page'
 import { Input, Select } from '../../../components/forms'
@@ -8,6 +8,7 @@ import type { FormFields } from './hooks'
 import { useUpdateServiceConfig } from './hooks'
 import { FormStatus } from '../../../hooks/use-form-state'
 import { HelperText } from '../../../components/helper-text'
+import { FormGroup } from '../../../components/form-group'
 import { Paths } from '../..'
 
 export const Service = () => {

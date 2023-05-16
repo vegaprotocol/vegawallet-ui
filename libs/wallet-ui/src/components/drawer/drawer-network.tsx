@@ -24,6 +24,7 @@ export function DrawerNetwork({ setView }: DrawerNetworkProps) {
           <NetworkSwitcher />
           <ButtonUnstyled
             data-testid="manage-networks"
+            className="text-base"
             onClick={() => setView(DrawerPanel.Manage)}
           >
             Manage networks

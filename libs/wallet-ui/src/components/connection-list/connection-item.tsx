@@ -20,12 +20,13 @@ export const ConnectionItem = ({
     <div
       data-testid={`connection-${connection.hostname}`}
       className={classnames(
-        'flex justify-between items-center gap-[20px]',
-        'py-[20px] px-0 border-t border-black'
+        'text-base',
+        'flex justify-between items-center gap-[10px]',
+        'py-[10px] px-0 border-t border-black'
       )}
     >
-      <div className="min-w-0 basis-1/2">
-        <code className="whitespace-nowrap overflow-hidden text-ellipsis">
+      <div className="">
+        <code title={connection.hostname} className="block">
           <StatusCircle
             blinking={connection.active}
             background={connection.active ? 'bg-green' : 'bg-orange'}
@@ -33,7 +34,7 @@ export const ConnectionItem = ({
           {connection.hostname}
         </code>
       </div>
-      <div className="flex gap-[20px]">
+      <div className="flex gap-[10px]">
         <ButtonUnstyled data-testid="manage-button" onClick={onManage}>
           Manage
         </ButtonUnstyled>
