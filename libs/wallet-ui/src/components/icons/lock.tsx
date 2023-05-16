@@ -11,6 +11,7 @@ export function Lock({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={classnames(defaultClassName, className)}
+      data-testid="lock-icon"
     >
       <rect
         x="5.5"
