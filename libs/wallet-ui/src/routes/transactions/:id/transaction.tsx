@@ -33,7 +33,9 @@ const TransactionDetailsItem = ({
   useFullscreenRoute()
   return (
     <div>
-      <div className="text-dark-300 uppercase">{title}</div>
+      <div data-label className="text-dark-300 uppercase">
+        {title}
+      </div>
       <div>{children}</div>
     </div>
   )
@@ -83,7 +85,7 @@ export const TransactionDetails = ({
     >
       <>
         <TransactionStatus transaction={transaction} />
-        <ul>
+        <ul className="text-base">
           <ListItem
             data-testid="transaction-wallet-name"
             item={transaction}

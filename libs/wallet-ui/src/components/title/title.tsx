@@ -15,7 +15,7 @@ const secondaryTitleStyles = classnames(
   'uppercase leading-tight tracking-widest'
 )
 
-const mainTitleStyles = 'text-white text-3xl m-0 p-[20px] leading-tight'
+const mainTitleStyles = 'text-white text-2xl m-0 p-[20px] leading-tight'
 
 const getVariantClassName = (variant: Variant): string => {
   switch (variant) {

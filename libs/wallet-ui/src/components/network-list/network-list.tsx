@@ -22,7 +22,7 @@ const NetworkListItem = ({
 
   return (
     <div key={config.name} className={itemStyles}>
-      <div>{config.name}</div>
+      <div className="text-base">{config.name}</div>
 
       {type && (
         <div className="flex gap-2">

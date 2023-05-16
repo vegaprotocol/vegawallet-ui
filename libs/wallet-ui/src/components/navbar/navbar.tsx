@@ -57,10 +57,10 @@ export const NavButton = ({
 
         return (
           <div className="h-full grid gap-0 grid-rows-[1fr_auto_auto]">
-            <div className={classnames('grid items-center mt-5', textColor)}>
+            <div className={classnames('grid items-center mt-1', textColor)}>
               {icon}
             </div>
-            <span className={classnames('uppercase mt-3 text-sm', textColor)}>
+            <span className={classnames('uppercase mt-1 text-sm', textColor)}>
               {text}
             </span>
             <div

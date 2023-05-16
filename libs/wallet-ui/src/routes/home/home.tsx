@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import { useMemo } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { ButtonGroup } from '../../components/button-group'
 import { Lock } from '../../components/icons/lock'
@@ -39,7 +38,7 @@ export const Home = () => {
               className={classnames(
                 'w-full flex items-center justify-between',
                 'border-b border-vega-dark-150 py-3',
-                'text-lg',
+                'text-[18px]',
                 {
                   'text-white': w.auth,
                   'text-vega-dark-300': !w.auth,
@@ -50,30 +49,32 @@ export const Home = () => {
               key={w.name}
             >
               <div data-testid="wallet-name">{w.name}</div>
-              <div className="text-neutral">
+              <div className="">
                 {w.auth ? (
-                  <OpenLock className="w-5 mx-5" />
+                  <OpenLock className="w-[24px] mx-3 fill-vega-light-100" />
                 ) : (
-                  <Lock className="w-5 mx-5" />
+                  <Lock className="w-[24px] mx-3 fill-vega-dark-300" />
                 )}
               </div>
             </button>
           ))}
         </div>
-        <div className="w-full flex-1 flex items-end">
-          <ButtonGroup className="w-full">
-            <Link className="flex-1" to="wallet-create">
-              <Button data-testid="create-new-wallet" size="lg" fill={true}>
-                Create wallet
-              </Button>
-            </Link>
-            <Link className="flex-1" to="wallet-import">
-              <Button data-testid="import-wallet" size="lg" fill={true}>
-                Import wallet
-              </Button>
-            </Link>
-          </ButtonGroup>
-        </div>
+        <ButtonGroup>
+          <Link
+            className="flex-1 border border-vega-dark-300 rounded text-center p-3 uppercase"
+            to="wallet-create"
+            data-testid="create-new-wallet"
+          >
+            Create wallet
+          </Link>
+          <Link
+            className="flex-1 border border-vega-dark-300 rounded text-center p-3 uppercase"
+            to="wallet-import"
+            data-testid="import-wallet"
+          >
+            Import wallet
+          </Link>
+        </ButtonGroup>
       </div>
     </Page>
   )
