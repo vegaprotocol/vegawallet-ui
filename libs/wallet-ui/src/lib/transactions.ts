@@ -36,6 +36,8 @@ export const TransactionSchema = z.object({
   blockHeight: z.number().optional(),
   signature: z.string().optional(),
   error: z.string().optional(),
+
+  networkName: z.string().optional().nullable(),
 })
 
 export type Transaction = z.infer<typeof TransactionSchema>
