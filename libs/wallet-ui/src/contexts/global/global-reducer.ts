@@ -592,23 +592,34 @@ export function globalReducer(
       }
     }
     case 'ADD_TRANSACTION': {
+      const tx = action.transaction
+      if (!tx.networkName) {
+        // adds current network name to the transaction object for filtering
+        // purposes in transaction list
+        tx.networkName = state.currentNetwork
+      }
       return {
         ...state,
         transactions: {
           ...state.transactions,
-          [action.transaction.id]: action.transaction,
+          [tx.id]: tx,
         },
       }
     }
     case 'UPDATE_TRANSACTION': {
-      if (state.transactions[action.transaction.id]) {
+      const tx = action.transaction
+      const existing = state.transactions[tx.id]
+      if (existing) {
+        if (!existing.networkName && !tx.networkName) {
+          tx.networkName = state.currentNetwork
+        }
         return {
           ...state,
           transactions: {
             ...state.transactions,
-            [action.transaction.id]: {
-              ...state.transactions[action.transaction.id],
-              ...action.transaction,
+            [tx.id]: {
+              ...existing,
+              ...tx,
             },
           },
         }

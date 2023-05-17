@@ -60,9 +60,11 @@ export const TransactionHome = ({
 export const TransactionHomePage = () => {
   const { state } = useGlobal()
   const transactions = useMemo(() => {
-    return Object.values(state.transactions).sort((a, b) => {
-      return b.receivedAt.getTime() - a.receivedAt.getTime()
-    })
-  }, [state.transactions])
+    return Object.values(state.transactions)
+      .sort((a, b) => {
+        return b.receivedAt.getTime() - a.receivedAt.getTime()
+      })
+      .filter((tx) => tx.networkName === state.currentNetwork)
+  }, [state.currentNetwork, state.transactions])
   return <TransactionHome transactions={transactions} />
 }
