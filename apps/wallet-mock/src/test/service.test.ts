@@ -21,7 +21,7 @@ test.describe('Service status', () => {
       window.document.body.dispatchEvent(new CustomEvent('service_is_healthy'))
     })
     await expect(page.getByTestId('service-status')).toHaveText(
-      'Wallet Service: test on http://localhost:1789'
+      'Wallet Service: local-network on http://localhost:1789'
     )
   })
 

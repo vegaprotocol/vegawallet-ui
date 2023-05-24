@@ -50,7 +50,7 @@ export const service: Service = {
         gitHash: '0x0',
         networksCompatibility: [
           {
-            network: 'test',
+            network: 'local-network',
             isCompatible: false,
             retrievedVersion: '1.0.0',
           },
@@ -68,7 +68,7 @@ export const service: Service = {
       storageMock(ServiceMock.GetAppConfig, {
         logLevel: 'debug',
         vegaHome: '/some/vega/home',
-        defaultNetwork: 'test',
+        defaultNetwork: 'local-network',
         telemetry: {
           consentAsked: true,
           enabled: false,
@@ -79,7 +79,7 @@ export const service: Service = {
     Promise.resolve(
       storageMock(ServiceMock.SearchForExistingConfiguration, {
         wallets: [],
-        networks: ['test'],
+        networks: ['local-network', 'local-network-2'],
       })
     ),
   UpdateAppConfig: () => Promise.resolve(undefined),
