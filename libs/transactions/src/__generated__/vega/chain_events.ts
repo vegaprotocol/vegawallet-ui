@@ -8,10 +8,7 @@ export interface BuiltinAssetDeposit {
   vegaAssetId: string
   /** Vega party ID i.e. public key. */
   partyId: string
-  /**
-   * Amount to be deposited
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
-   */
+  /** Amount to be deposited. This field is an unsigned integer scaled to the asset's decimal places. */
   amount: string
 }
 
@@ -21,10 +18,7 @@ export interface BuiltinAssetWithdrawal {
   vegaAssetId: string
   /** Vega network party ID i.e. public key. */
   partyId: string
-  /**
-   * The amount to be withdrawn
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
-   */
+  /** The amount to be withdrawn. This field is an unsigned integer scaled to the asset's decimal places. */
   amount: string
 }
 
@@ -177,10 +171,7 @@ export interface StakeDeposited {
   ethereumAddress: string
   /** Hex encoded public key of the party receiving the stake deposit. */
   vegaPublicKey: string
-  /**
-   * Amount deposited as an unsigned base 10 integer.
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
-   */
+  /** Amount deposited as an unsigned base 10 integer scaled to the asset's decimal places. */
   amount: string
   /**
    * Time at which the block was produced.
@@ -195,10 +186,7 @@ export interface StakeRemoved {
   ethereumAddress: string
   /** Hex encoded public key of the party from which to remove stake. */
   vegaPublicKey: string
-  /**
-   * Amount removed as a base 10 unsigned integer.
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the staking token.
-   */
+  /** Amount removed as a base 10 unsigned integer scaled to the asset's decimal places. */
   amount: string
   /**
    * The time at which the block was produced
@@ -211,9 +199,6 @@ export interface StakeRemoved {
 export interface StakeTotalSupply {
   /** Address of the staking asset */
   tokenAddress: string
-  /**
-   * Total supply observed for the token as an unsigned based 10 integer.
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the staking token.
-   */
+  /** Total supply observed for the token as an unsigned based 10 integer scaled to the asset's decimal places. */
   totalSupply: string
 }

@@ -19,6 +19,16 @@ export interface AuctionDuration {
   volume: number
 }
 
+/** Spot product definition */
+export interface Spot {
+  /** Asset ID of the underlying base asset for the spot product. */
+  baseAsset: string
+  /** Asset ID of the underlying quote asset for the spot product. */
+  quoteAsset: string
+  /** Name of the instrument. */
+  name: string
+}
+
 /** Future product definition */
 export interface Future {
   /** Underlying asset for the future. */
@@ -39,8 +49,7 @@ export interface Future {
  */
 export interface DataSourceSpecToFutureBinding {
   /**
-   * settlement_data_property holds the name of the property in the source data
-   * that should be used as settlement data.
+   * Name of the property in the source data that should be used as settlement data.
    * If it is set to "prices.BTC.value", then the Future will use the value of
    * this property as settlement data.
    */
@@ -57,7 +66,7 @@ export interface InstrumentMetadata {
 
 /** Instrument definition */
 export interface Instrument {
-  /** Instrument ID. */
+  /** Unique instrument ID. */
   id: string
   /** Code for the instrument. */
   code: string
@@ -67,6 +76,8 @@ export interface Instrument {
   metadata: InstrumentMetadata | undefined
   /** Future. */
   future?: Future | undefined
+  /** Spot. */
+  spot?: Spot | undefined
 }
 
 /** Risk model for log normal */
@@ -114,11 +125,21 @@ export interface SimpleModelParams {
 
 /** Scaling Factors (for use in margin calculation) */
 export interface ScalingFactors {
-  /** Search level. */
+  /**
+   * Collateral search level. If collateral dips below this value,
+   * the system will search for collateral to release.
+   */
   searchLevel: number
-  /** Initial margin level. */
+  /**
+   * Initial margin level. This is the minimum amount of collateral
+   * required to open a position in a market that requires margin.
+   */
   initialMargin: number
-  /** Collateral release level. */
+  /**
+   * Collateral release level. If a trader has collateral above this level,
+   * the system will release collateral to a trader's general collateral account
+   * for the asset.
+   */
   collateralRelease: number
 }
 
@@ -130,7 +151,7 @@ export interface MarginCalculator {
 
 /** Tradable Instrument definition */
 export interface TradableInstrument {
-  /** Instrument details. */
+  /** Details for the underlying instrument. */
   instrument: Instrument | undefined
   /** Margin calculator for the instrument. */
   marginCalculator: MarginCalculator | undefined
@@ -142,11 +163,11 @@ export interface TradableInstrument {
 
 /** Fee factors definition */
 export interface FeeFactors {
-  /** Maker fee. */
+  /** Market maker fee charged network wide. */
   makerFee: string
-  /** Infrastructure fee. */
+  /** Infrastructure fee charged network wide for staking and governance. */
   infrastructureFee: string
-  /** Liquidity fee. */
+  /** Liquidity fee applied per market for market making. */
   liquidityFee: string
 }
 
@@ -211,7 +232,7 @@ export interface Market {
    * `realPrice = price / 10^decimalPlaces`.
    */
   decimalPlaces: number
-  /** Fees configuration. */
+  /** Fees configuration that apply to the market. */
   fees: Fees | undefined
   /**
    * Auction duration specifies how long the opening auction will run (minimum
@@ -239,6 +260,10 @@ export interface Market {
   linearSlippageFactor: string
   /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
+  /** ID of the market this market succeeds */
+  parentMarketId?: string | undefined
+  /** The fraction of the parent market's insurance pool that this market inherits; range 0 through 1. */
+  insurancePoolFraction?: string | undefined
 }
 
 /** Current state of the market */

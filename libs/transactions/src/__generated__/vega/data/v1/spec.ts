@@ -7,10 +7,10 @@ export const protobufPackage = 'vega.data.v1'
  * interest or not.
  */
 export interface Filter {
-  /** key is the data source data property key targeted by the filter. */
+  /** Data source's data property key targeted by the filter. */
   key: PropertyKey | undefined
   /**
-   * conditions are the conditions that should be matched by the data to be
+   * Conditions that should be matched by the data to be
    * considered of interest.
    */
   conditions: Condition[]

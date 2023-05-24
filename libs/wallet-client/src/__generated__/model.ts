@@ -3,6 +3,7 @@ import type { Transaction as VegaTransaction } from '@vegaprotocol/transactions'
 
 export namespace WalletModel {
   export type ConnectWalletResult = null
+  export type DisconnectWalletResult = null
   /**
    * The Vega public key to use.
    */
@@ -32,9 +33,6 @@ export namespace WalletModel {
     GetChainIdParams?: GetChainIdParams
   }
   export interface ConnectWalletParams {}
-  export interface DisconnectWalletResult {
-    [k: string]: unknown
-  }
   export interface DisconnectWalletParams {}
   export interface ListKeysResult {
     keys: {
@@ -54,10 +52,7 @@ export namespace WalletModel {
         algo: string
         version: number
       }
-      from: {
-        publicKey?: string
-        address?: string
-      }
+      from: Record<string, unknown>
       version: number
       pow: {
         tid: string
@@ -100,10 +95,7 @@ export namespace WalletModel {
         algo: string
         version: number
       }
-      from: {
-        publicKey?: string
-        address?: string
-      }
+      from: Record<string, unknown>
       version: number
       pow: {
         tid: string
@@ -139,10 +131,7 @@ export namespace WalletModel {
         algo: string
         version: number
       }
-      from: {
-        publicKey?: string
-        address?: string
-      }
+      from: Record<string, unknown>
       version: number
       pow: {
         tid: string
