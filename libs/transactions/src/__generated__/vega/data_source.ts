@@ -34,6 +34,7 @@ export interface DataSourceDefinitionInternal {
  */
 export interface DataSourceDefinitionExternal {
   oracle?: DataSourceSpecConfiguration | undefined
+  ethCall?: EthCallSpec | undefined
 }
 
 /**
@@ -52,6 +53,38 @@ export interface DataSourceSpecConfiguration {
    * the product (or the risk model).
    */
   filters: Filter[]
+}
+
+/** Specifies a data source that derives its content from calling a read method on an Ethereum contract. */
+export interface EthCallSpec {
+  /** Ethereum address of the contract to call. */
+  address: string
+  /** The ABI of that contract. */
+  abi: Array<any> | undefined
+  /** Name of the method on the contract to call. */
+  method: string
+  /**
+   * List of arguments to pass to method call.
+   * Protobuf 'Value' wraps an arbitrary JSON type that is mapped to an Ethereum type according to the ABI.
+   */
+  args: any[]
+  /** Conditions for determining when to call the contract method. */
+  trigger: EthCallTrigger | undefined
+}
+
+/** Determines when the contract method should be called. */
+export interface EthCallTrigger {
+  timeTrigger?: EthTimeTrigger | undefined
+}
+
+/** Trigger for an Ethereum call based on the Ethereum block timestamp. Can be one-off or repeating. */
+export interface EthTimeTrigger {
+  /** Trigger when the Ethereum time is greater or equal to this time, in Unix seconds. */
+  initial?: number | undefined
+  /** Repeat the call every n seconds after the inital call. If no time for initial call was specified, begin repeating immediately. */
+  every?: number | undefined
+  /** If repeating, stop once Ethereum time is greater than this time, in Unix seconds. If not set, then repeat indefinitely. */
+  until?: number | undefined
 }
 
 /**
