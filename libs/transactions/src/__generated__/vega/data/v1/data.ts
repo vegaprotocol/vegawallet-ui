@@ -21,7 +21,7 @@ export interface Signer {
    * public keys.
    */
   pubKey?: PubKey | undefined
-  /** In case of an open oracle - Ethereum address will be submitted */
+  /** In case of an open oracle - Ethereum address will be submitted. */
   ethAddress?: ETHAddress | undefined
 }
 
@@ -31,11 +31,6 @@ export interface Property {
   name: string
   /** Value of the property. */
   value: string
-  /**
-   * Optional decimal place to be be applied on the provided value
-   * valid only for PropertyType of type DECIMAL and INTEGER
-   */
-  numberDecimalPlaces?: number | undefined
 }
 
 /**
@@ -47,15 +42,13 @@ export interface Data {
   /** Data holds all the properties of the data */
   data: Property[]
   /**
-   * matched_specs_ids lists all the specs that matched this data.
+   * `matched_specs_ids` lists all the specs that matched this data.
    * When the array is empty, it means no spec matched this data.
    */
   matchedSpecIds: string[]
   /**
-   * broadcast_at is the time at which the data was broadcast to the markets
-   * with a matching spec.
-   * It has no value when the date did not match any spec.
-   * The value is a Unix timestamp in nanoseconds.
+   * Timestamp in Unix nanoseconds for when the data was broadcast to the markets
+   * with a matching spec. It has no value when the data did not match any spec.
    */
   broadcastAt: number
 }

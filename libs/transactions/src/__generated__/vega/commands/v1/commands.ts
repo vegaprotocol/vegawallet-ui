@@ -46,21 +46,18 @@ export interface OrderSubmission {
   /**
    * Price for the order, the price is an integer, for example `123456` is a correctly
    * formatted price of `1.23456` assuming market configured to 5 decimal places,
-   * required field for limit orders, however it is not required for market orders
-   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   * required field for limit orders, however it is not required for market orders.
+   * This field is an unsigned integer scaled to the market's decimal places.
    */
   price: string
-  /**
-   * Size for the order, for example, in a futures market the size equals the number of units, cannot be negative
-   * This field is an unsigned integer passed as a string and needs to be scaled using the market's position decimal places.
-   */
+  /** Size for the order, for example, in a futures market the size equals the number of units, cannot be negative. */
   size: number
   /** Side for the order, e.g. SIDE_BUY or SIDE_SELL, required field. */
   side: Side
   /** Time in force indicates how long an order will remain active before it is executed or expires, required field. */
   timeInForce: Order_TimeInForce
   /**
-   * Timestamp for when the order will expire, in nanoseconds,
+   * Timestamp in Unix nanoseconds for when the order will expire,
    * required field only for `Order.TimeInForce`.TIME_IN_FORCE_GTT`.
    */
   expiresAt: number
@@ -98,7 +95,7 @@ export interface OrderAmendment {
   marketId: string
   /**
    * Amend the price for the order if the price value is set, otherwise price will remain unchanged.
-   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
+   * This field is an unsigned integer scaled to the market's decimal places.
    */
   price?: string | undefined
   /**
@@ -113,10 +110,7 @@ export interface OrderAmendment {
   expiresAt?: number | undefined
   /** Amend the time in force for the order, set to TIME_IN_FORCE_UNSPECIFIED to remain unchanged. */
   timeInForce: Order_TimeInForce
-  /**
-   * Amend the pegged order offset for the order
-   * This field is an unsigned integer passed as a string and needs to be scaled using the market's decimal places.
-   */
+  /** Amend the pegged order offset for the order. This field is an unsigned integer scaled to the market's decimal places. */
   peggedOffset: string
   /** Amend the pegged order reference for the order. */
   peggedReference: PeggedReference
@@ -124,11 +118,11 @@ export interface OrderAmendment {
 
 /** A liquidity provision submitted for a given market */
 export interface LiquidityProvisionSubmission {
-  /** Market ID for the order, required field. */
+  /** Market ID for the order. */
   marketId: string
   /**
-   * Specified as a unitless number that represents the amount of settlement asset of the market
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places.
+   * Specified as a unitless number that represents the amount of settlement asset of the market.
+   * This field is an unsigned integer scaled using the asset's decimal places.
    */
   commitmentAmount: string
   /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers. */
@@ -137,12 +131,36 @@ export interface LiquidityProvisionSubmission {
   sells: LiquidityOrder[]
   /** Set of liquidity buy orders to meet the liquidity provision obligation. */
   buys: LiquidityOrder[]
-  /** Reference to be added to every order created out of this liquidityProvisionSubmission. */
+  /** Reference to be added to every order created out of this liquidity provision submission. */
   reference: string
+}
+
+/** A liquidity provision submitted for a given spot market */
+export interface SpotLiquidityProvisionSubmission {
+  /** Market ID for the order. */
+  marketId: string
+  /**
+   * Specified as a unitless number that represents the amount of quote asset of the market.
+   * This field is an unsigned integer scaled using the asset's decimal places.
+   */
+  buyCommitmentAmount: string
+  /**
+   * Specified as a unitless number that represents the amount of the market's base asset.
+   * This field is an unsigned integer scaled using the asset's decimal places.
+   */
+  sellCommitmentAmount: string
+  /** Nominated liquidity fee factor, which is an input to the calculation of maker fees paid on the market, as per setting fees and rewarding liquidity providers. */
+  fee: string
 }
 
 /** Cancel a liquidity provision request */
 export interface LiquidityProvisionCancellation {
+  /** Unique ID for the market with the liquidity provision to be cancelled. */
+  marketId: string
+}
+
+/** Cancel a spot liquidity provision request */
+export interface SpotLiquidityProvisionCancellation {
   /** Unique ID for the market with the liquidity provision to be cancelled. */
   marketId: string
 }
@@ -163,12 +181,19 @@ export interface LiquidityProvisionAmendment {
   reference: string
 }
 
+/** Amend a spot liquidity provision request */
+export interface SpotLiquidityProvisionAmendment {
+  /** Unique ID for the market with the liquidity provision to be amended. */
+  marketId: string
+  /** From here at least one of the following is required to consider the command valid. */
+  buyCommitmentAmount?: string | undefined
+  sellCommitmentAmount?: string | undefined
+  fee?: string | undefined
+}
+
 /** Represents the submission request to withdraw funds for a party on Vega */
 export interface WithdrawSubmission {
-  /**
-   * Amount to be withdrawn
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
-   */
+  /** Amount to be withdrawn. This field is an unsigned integer scaled to the asset's decimal places. */
   amount: string
   /** Asset to be withdrawn. */
   asset: string
@@ -181,7 +206,7 @@ export interface WithdrawSubmission {
  * Vega network governance
  */
 export interface ProposalSubmission {
-  /** Proposal reference. */
+  /** Reference identifying the proposal. */
   reference: string
   /** Proposal configuration and the actual change that is meant to be executed when proposal is enacted. */
   terms: ProposalTerms | undefined
@@ -189,10 +214,7 @@ export interface ProposalSubmission {
   rationale: ProposalRationale | undefined
 }
 
-/**
- * Command to submit a new vote for a governance
- * proposal.
- */
+/** Command to submit a new vote for a governance proposal. */
 export interface VoteSubmission {
   /** Submit vote for the specified proposal ID. */
   proposalId: string
@@ -204,10 +226,7 @@ export interface VoteSubmission {
 export interface DelegateSubmission {
   /** Delegate to the specified node ID. */
   nodeId: string
-  /**
-   * Amount of stake to delegate
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
-   */
+  /** Amount of stake to delegate. This field is an unsigned integer scaled to the asset's decimal places. */
   amount: string
 }
 
@@ -215,8 +234,9 @@ export interface UndelegateSubmission {
   /** Node ID to delegate to. */
   nodeId: string
   /**
-   * Optional, if not specified = ALL
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset decimal places for the token.
+   * Optional, if not specified = ALL.
+   * If provided, this field must be an unsigned integer passed as a string
+   * and needs to be scaled using the asset decimal places for the token.
    */
   amount: string
   /** Method of delegation. */
@@ -243,10 +263,7 @@ export interface Transfer {
   toAccountType: AccountType
   /** Asset ID of the asset to be transferred. */
   asset: string
-  /**
-   * Amount to be taken from the source account
-   * This field is an unsigned integer passed as a string and needs to be scaled using the asset's decimal places.
-   */
+  /** Amount to be taken from the source account. This field is an unsigned integer scaled to the asset's decimal places. */
   amount: string
   /** Reference to be attached to the transfer. */
   reference: string
@@ -256,10 +273,7 @@ export interface Transfer {
 
 /** Specific details for a one off transfer */
 export interface OneOffTransfer {
-  /**
-   * Unix timestamp in nanoseconds. Time at which the
-   * transfer should be delivered into the To account.
-   */
+  /** Timestamp in Unix nanoseconds for when the transfer should be delivered into the receiver's account. */
   deliverOn: number
 }
 
@@ -277,7 +291,7 @@ export interface RecurringTransfer {
 
 /** Request for cancelling a recurring transfer */
 export interface CancelTransfer {
-  /** ID of the transfer to cancel. */
+  /** Transfer ID of the transfer to cancel. */
   transferId: string
 }
 
@@ -287,6 +301,6 @@ export interface IssueSignatures {
   submitter: string
   /** What kind of signatures to generate, namely for whether a signer is being added or removed. */
   kind: NodeSignatureKind
-  /** ID of the validator node that will be signed in or out of the smart contract. */
+  /** Node ID of the validator node that will be signed in or out of the smart contract. */
   validatorNodeId: string
 }

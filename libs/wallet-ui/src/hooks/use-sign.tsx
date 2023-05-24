@@ -17,7 +17,7 @@ export const useSign = (pubKey?: string, wallet?: string) => {
 
         const resp = await client.SignMessage({
           wallet,
-          pubKey,
+          publicKey: pubKey,
           encodedMessage: btoa(values.message),
         })
         setSignedData(resp.encodedSignature)

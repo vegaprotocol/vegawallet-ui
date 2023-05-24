@@ -434,6 +434,20 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
       }
       case Identifier.SignTransaction: {
         return Promise.resolve<WalletModel.SignTransactionResult>({
+          transaction: {
+            inputData: 'string',
+            signature: {
+              value: 'string',
+              algo: 'string',
+              version: 0,
+            },
+            from: {},
+            version: 0,
+            pow: {
+              tid: 'string',
+              nonce: 0,
+            },
+          },
           encodedTransaction: 'string',
         })
       }
@@ -445,7 +459,7 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
       }
       case Identifier.VerifyMessage: {
         return Promise.resolve<WalletModel.VerifyMessageResult>({
-          isValid: 'string',
+          isValid: true,
         })
       }
       case Identifier.SendTransaction: {
@@ -460,15 +474,15 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
               algo: 'string',
               version: 0,
             },
-            from: {
-              publicKey: 'string',
-              address: 'string',
-            },
+            from: {},
             version: 0,
             pow: {
               tid: 'string',
               nonce: 0,
             },
+          },
+          node: {
+            host: 'string',
           },
         })
       }
@@ -476,6 +490,7 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
         return Promise.resolve<WalletModel.CheckTransactionResult>({
           receivedAt: 'string',
           sentAt: 'string',
+          encodedTransaction: 'string',
           transaction: {
             inputData: 'string',
             signature: {
@@ -483,15 +498,15 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
               algo: 'string',
               version: 0,
             },
-            from: {
-              publicKey: 'string',
-              address: 'string',
-            },
+            from: {},
             version: 0,
             pow: {
               tid: 'string',
               nonce: 0,
             },
+          },
+          node: {
+            host: 'string',
           },
         })
       }
@@ -507,15 +522,15 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
               algo: 'string',
               version: 0,
             },
-            from: {
-              publicKey: 'string',
-              address: 'string',
-            },
+            from: {},
             version: 0,
             pow: {
               tid: 'string',
               nonce: 0,
             },
+          },
+          node: {
+            host: 'string',
           },
         })
       }

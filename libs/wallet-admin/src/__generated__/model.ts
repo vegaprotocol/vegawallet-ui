@@ -208,7 +208,7 @@ export namespace WalletModel {
   }
   export interface ListNetworksResult {
     networks: {
-      name?: string
+      name: string
       metadata?: {
         key: string
         value: string
@@ -326,6 +326,7 @@ export namespace WalletModel {
     }[]
   }
   export interface DescribeKeyResult {
+    name: string
     /**
      * The Vega public key to use.
      */
@@ -411,11 +412,11 @@ export namespace WalletModel {
     /**
      * The block height (approximation) at which the transaction will be submitted
      */
-    submissionBlockHeight: string
+    submissionBlockHeight: number
     /**
      * The block height at which the rotation should happen
      */
-    enactmentBlockHeight: string
+    enactmentBlockHeight: number
   }
   export interface TaintKeyParams {
     wallet: string
@@ -459,9 +460,10 @@ export namespace WalletModel {
        */
       [k: string]: {
         /**
-         * The different access modes a permission can have.
+         * This interface was referenced by `undefined`'s JSON-Schema definition
+         * via the `patternProperty` ".".
          */
-        public_keys: 'read' | 'none'
+        [k: string]: string
       }
     }
   }
@@ -519,36 +521,62 @@ export namespace WalletModel {
     wallet: string
   }
   export interface SignTransactionResult {
+    /**
+     * A transaction that has been signed by the wallet.
+     */
+    transaction: {
+      inputData: string
+      signature: {
+        value: string
+        algo: string
+        version: number
+      }
+      from: Record<string, unknown>
+      version: number
+      pow: {
+        tid: string
+        nonce: number
+      }
+    }
     encodedTransaction: string
   }
   export interface SignTransactionParams {
     wallet: string
-    pubKey: string
-    chainId: string
-    blockHeight: number
-    network?: number
+    publicKey: string
+    network?: string
     transaction: Transaction
+    lastBlockData?: LastBlockData
   }
   /**
    * The transaction as a JSON object
    */
   export interface Transaction {}
+  /**
+   * The data related to the last block forged on the network.
+   */
+  export interface LastBlockData {
+    blockHeight: number
+    blockHash: string
+    chainID: string
+    proofOfWorkHashFunction: string
+    proofOfWorkDifficulty: number
+  }
   export interface SignMessageResult {
     encodedSignature: string
   }
   export interface SignMessageParams {
     wallet: string
-    pubKey: string
+    publicKey: string
     /**
      * The message to sign encoded using base-64.
      */
     encodedMessage: string
   }
   export interface VerifyMessageResult {
-    isValid: string
+    isValid: boolean
   }
   export interface VerifyMessageParams {
-    pubKey: string
+    publicKey: string
     /**
      * The message use to create the signature, encoded using base-64.
      */
@@ -585,30 +613,29 @@ export namespace WalletModel {
         algo: string
         version: number
       }
-      from: {
-        publicKey?: string
-        address?: string
-      }
+      from: Record<string, unknown>
       version: number
       pow: {
         tid: string
         nonce: number
       }
     }
+    /**
+     * The node that handled the transaction.
+     */
+    node: {
+      host: string
+    }
   }
   export interface SendTransactionParams {
     wallet: string
-    pubKey: string
-    network?: number
+    publicKey: string
+    network?: string
     nodeAddress?: string
     retries?: number
     sendingMode: SendingMode
-    transaction: Transaction1
+    transaction: Transaction
   }
-  /**
-   * The transaction as a JSON object
-   */
-  export interface Transaction1 {}
   export interface CheckTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
@@ -622,6 +649,7 @@ export namespace WalletModel {
      * The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
      */
     sentAt: string
+    encodedTransaction: string
     /**
      * A transaction that has been signed by the wallet.
      */
@@ -632,29 +660,28 @@ export namespace WalletModel {
         algo: string
         version: number
       }
-      from: {
-        publicKey?: string
-        address?: string
-      }
+      from: Record<string, unknown>
       version: number
       pow: {
         tid: string
         nonce: number
       }
     }
+    /**
+     * The node that handled the transaction.
+     */
+    node: {
+      host: string
+    }
   }
   export interface CheckTransactionParams {
     wallet: string
-    pubKey: string
-    network?: number
+    publicKey: string
+    network?: string
     nodeAddress?: string
     retries?: number
-    transaction: Transaction2
+    transaction: Transaction
   }
-  /**
-   * The transaction as a JSON object
-   */
-  export interface Transaction2 {}
   export interface SendRawTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
@@ -682,15 +709,18 @@ export namespace WalletModel {
         algo: string
         version: number
       }
-      from: {
-        publicKey?: string
-        address?: string
-      }
+      from: Record<string, unknown>
       version: number
       pow: {
         tid: string
         nonce: number
       }
+    }
+    /**
+     * The node that handled the transaction.
+     */
+    node: {
+      host: string
     }
   }
   export interface SendRawTransactionParams {
