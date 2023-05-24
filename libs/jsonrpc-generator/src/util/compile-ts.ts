@@ -37,6 +37,7 @@ export const getMethodParamsExample = (method: MethodType) => {
   const example = createExample(method)
 
   if (method.paramStructure === 'by-name') {
+    // @ts-ignore - reduce is ok
     const params = example.params.reduce(
       (acc, param, i) => ({
         ...acc,
@@ -162,8 +163,16 @@ export const compileTs = async (openrpcDocument: DocumentType) => {
       type: 'object',
       properties: {},
       components: {
-        schemas: normalizeComponent(openrpcDocument.components?.schemas),
-        errors: normalizeComponent(openrpcDocument.components?.errors),
+        schemas: normalizeComponent(
+          openrpcDocument.components?.schemas as
+            | Record<string, object>
+            | undefined
+        ),
+        errors: normalizeComponent(
+          openrpcDocument.components?.errors as
+            | Record<string, object>
+            | undefined
+        ),
       },
     }
   )

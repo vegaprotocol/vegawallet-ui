@@ -13,7 +13,7 @@ const getChunk = async (
       },
       components: doc.components,
     })
-    return resolvedSchema?.properties?.schema ?? {}
+    return (resolvedSchema?.properties?.schema as unknown as SchemaType) ?? {}
   }
   return {
     type: null,
