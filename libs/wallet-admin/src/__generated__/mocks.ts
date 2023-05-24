@@ -327,6 +327,7 @@ export function MockAPIRequest({ method }: WalletAPIRequest) {
       }
       case Identifier.DescribeKey: {
         return Promise.resolve<WalletModel.DescribeKeyResult>({
+          name: 'Key 1',
           publicKey:
             'b5fd9d3c4ad553cb3196303b6e6df7f484cf7f5331a572a45031239fd71ad8a0',
           algorithm: {
