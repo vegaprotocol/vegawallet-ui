@@ -8,7 +8,7 @@ const getVersion = {
   gitHash: '0x0',
   networksCompatibility: [
     {
-      network: 'test',
+      network: 'local-network',
       isCompatible: false,
       retrievedVersion: '1.0.0',
     },
@@ -81,7 +81,7 @@ test.describe('Network incompatible dialog validations', () => {
     await expect(
       page.getByTestId('network-compatibility-info-text')
     ).toHaveText(
-      `This software and the network ${getVersion.networksCompatibility[0].network} are relying on different network software versions. You may encounter compatibility issues, such as transactions not being seen by the network.The network test is currently running on version "${getVersion.networksCompatibility[0].retrievedVersion}", while this software is running on version "${getVersion.backend.version}".`
+      `This software and the network ${getVersion.networksCompatibility[0].network} are relying on different network software versions. You may encounter compatibility issues, such as transactions not being seen by the network.The network local-network is currently running on version "${getVersion.networksCompatibility[0].retrievedVersion}", while this software is running on version "${getVersion.backend.version}".`
     )
   })
 
@@ -127,7 +127,7 @@ test.describe('Network incompatible dialog actions', async () => {
       expect(dialog.locator('h2')).toHaveText('Choose a compatible network'),
       expect(dialog.locator('#test2')).toBeVisible(),
       expect(dialog.locator('#test4')).toBeVisible(),
-      expect(dialog.locator('#test')).toBeHidden(),
+      expect(dialog.locator('#local-network')).toBeHidden(),
       expect(dialog.locator('#test3')).toBeHidden(),
     ])
   })

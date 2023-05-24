@@ -4,34 +4,41 @@ import type { EventFlowType, InteractionType } from '@vegaprotocol/wallet-ui'
 export async function sendBackendInteraction(
   page: Page,
   interaction: InteractionType,
-  data?: object
+  data?: object,
+  traceID?: string
 ) {
   await page.evaluate(
-    ({ interaction, data }) =>
+    ({ interaction, data, traceID }) =>
       window.document.body.dispatchEvent(
         new CustomEvent('new_interaction', {
           detail: {
             name: interaction,
             data,
-            traceID: '1',
+            traceID: traceID ? traceID : '1',
           },
         })
       ),
-    { interaction, data }
+    { interaction, data, traceID }
   )
 }
 
 export async function beginInteractionSession(
   page: Page,
-  eventFlowType: EventFlowType
+  eventFlowType: EventFlowType,
+  traceID?: string
 ) {
-  sendBackendInteraction(page, 'INTERACTION_SESSION_BEGAN', {
-    workflow: eventFlowType,
-  })
+  sendBackendInteraction(
+    page,
+    'INTERACTION_SESSION_BEGAN',
+    {
+      workflow: eventFlowType,
+    },
+    traceID
+  )
 }
 
-export async function endInteractionSession(page: Page) {
-  sendBackendInteraction(page, 'INTERACTION_SESSION_ENDED')
+export async function endInteractionSession(page: Page, traceID?: string) {
+  sendBackendInteraction(page, 'INTERACTION_SESSION_ENDED', undefined, traceID)
 }
 
 // Below is a scheme of possible wallet worfklows:

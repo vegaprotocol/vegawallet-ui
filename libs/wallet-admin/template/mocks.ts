@@ -4,11 +4,18 @@ import { Identifier } from './'
 <% methods.forEach((method) => { %>
 export function MockAPIRequest (req: { method: Identifier.<%= getMethodName(method) %>, params: WalletModel.<%= getMethodParamsType(method) %> }): Promise<WalletModel.<%= getMethodResultType(method) %>><%
 }) %>
-export function MockAPIRequest ({ method }: WalletAPIRequest) {
+export function MockAPIRequest ({ method, params }: WalletAPIRequest) {
   if (window.localStorage.getItem(`MOCK.${method}`)) {
-    return JSON.parse(
+    const mock = JSON.parse(
       window.localStorage.getItem(`MOCK.${method}`)?.toString() as string
     )
+    if (method === Identifier.DescribeNetwork && params) {
+      return mock.filter(
+        (network: WalletModel.DescribeNetworkResult) =>
+          network.name === params.name
+      )[0]
+    }
+    return mock
   } else {
     switch (method) {
       <% methods.forEach((method) => { %>case Identifier.<%= getMethodName(method) %>: {

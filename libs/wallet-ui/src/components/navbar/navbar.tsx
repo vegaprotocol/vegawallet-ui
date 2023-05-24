@@ -45,7 +45,7 @@ export const NavButton = ({
   return (
     <NavLink
       end={end}
-      data-testid="nav-button"
+      data-testid={`nav-${text.toLowerCase()}`}
       to={to}
       className="text-center"
       onClick={() => {

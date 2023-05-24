@@ -87,7 +87,7 @@ export const TransactionDetails = ({
         <TransactionStatus transaction={transaction} />
         <ul className="text-base">
           <ListItem
-            data-testid="transaction-wallet-name"
+            testid="transaction-wallet-name"
             item={transaction}
             renderItem={(transaction) => (
               <TransactionDetailsItem title="Wallet">
@@ -96,6 +96,7 @@ export const TransactionDetails = ({
             )}
           />
           <ListItem
+            testid="public-key"
             item={transaction}
             renderItem={() => (
               <TransactionDetailsItem title="Public Key">
@@ -105,6 +106,7 @@ export const TransactionDetails = ({
           />
           {transaction.blockHeight && (
             <ListItem
+              testid="block-height"
               item={transaction}
               renderItem={(transaction) => (
                 <TransactionDetailsItem title="Block height">
@@ -146,7 +148,7 @@ export const TransactionDetails = ({
           <ListItem
             item={transaction}
             renderItem={(transaction) => (
-              <div>
+              <div data-testid="transaction-payload">
                 <CollapsiblePanel
                   title="Details"
                   initiallyOpen={true}
@@ -182,6 +184,7 @@ export const TransactionDetails = ({
           ) : null}
           {txHash ? (
             <ListItem
+              testid="tx-hash"
               item={transaction}
               renderItem={() => (
                 <TransactionDetailsItem title="Transaction hash">

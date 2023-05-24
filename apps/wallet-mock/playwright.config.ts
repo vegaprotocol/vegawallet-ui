@@ -98,6 +98,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
+    reuseExistingServer: true,
     command: 'yarn test wallet-ui:serve',
     port: 3000,
   },
