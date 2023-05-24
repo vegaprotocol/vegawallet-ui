@@ -65,7 +65,6 @@ describe('NavButton', () => {
       ['/foo']
     )
 
-    expect(screen.getByTestId('nav-button')).toBeInTheDocument()
     expect(screen.getByTestId('test-icon')).toBeInTheDocument()
     expect(screen.getByText('Test Button')).toBeInTheDocument()
     expect(screen.getByTestId('link-active')).not.toHaveClass('bg-vega-yellow')
@@ -126,7 +125,9 @@ describe('NavBar', () => {
     renderNav({ networkMode: 'mainnet' })
     expect(screen.getByTestId('nav-bar')).toBeInTheDocument()
     expect(screen.getByTestId('nav-bar')).toHaveClass('bg-black')
-    expect(screen.getAllByTestId('nav-button')).toHaveLength(3)
+    expect(screen.getByTestId('nav-wallets')).toBeInTheDocument()
+    expect(screen.getByTestId('nav-transactions')).toBeInTheDocument()
+    expect(screen.getByTestId('nav-settings')).toBeInTheDocument()
   })
 
   it('changes color if in fairground mode', () => {
