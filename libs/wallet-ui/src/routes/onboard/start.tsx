@@ -4,19 +4,17 @@ import { Button } from '@vegaprotocol/ui-toolkit'
 
 import { ButtonGroup } from '../../components/button-group'
 import { Vega } from '../../components/icons'
-import { Title } from '../../components/title'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useVegaHome } from '../../hooks/use-vega-home'
 import { Paths } from '..'
 import { indexBy } from '../../lib/index-by'
-import { useNetworkMode } from '../../hooks/use-network-mode'
 import { Spinner } from '../../components/spinner'
+import { OnboardingPage } from '../../components/page'
 
 export function OnboardStart() {
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
   const vegaHome = useVegaHome()
-  const { isMainnet } = useNetworkMode()
 
   const {
     dispatch,
@@ -68,52 +66,37 @@ export function OnboardStart() {
     }
   }
 
-  const renderExistingMessage = () => {
-    if (!Object.keys(wallets).length || !isMainnet) {
-      return null
-    }
-
-    return (
-      <>
-        <p className="mb-5">Existing wallets found</p>
-        <ButtonGroup>
-          <Button
-            data-testid="use-existing-wallet"
-            className="w-full"
-            onClick={handleImportExistingWallet}
-          >
-            {isLoading ? <Spinner /> : 'Use existing'}
-          </Button>
-        </ButtonGroup>
-        <p className="my-5">OR</p>
-      </>
-    )
-  }
-
   return (
-    <div className="w-[545px] m-auto text-center pt-10">
-      <Title className="m-0 mb-7 text-white">
-        <Vega />
-      </Title>
-      {renderExistingMessage()}
+    <OnboardingPage title={<Vega />}>
+      {Object.keys(wallets).length ? (
+        <>
+          <p className="mb-5 text-base">Existing wallets found</p>
+          <ButtonGroup>
+            <Button
+              data-testid="use-existing-wallet"
+              className="w-full"
+              onClick={handleImportExistingWallet}
+            >
+              {isLoading ? <Spinner /> : 'Use existing'}
+            </Button>
+          </ButtonGroup>
+          <p className="my-5 text-base">OR</p>
+        </>
+      ) : undefined}
       <ButtonGroup orientation="vertical" className="mb-4">
         <Button
           data-testid="create-new-wallet"
-          onClick={() =>
-            navigate(`${Paths.Onboard.Home}/${Paths.Wallet.Create}`)
-          }
+          onClick={() => navigate(Paths.Onboard.WalletCreate)}
         >
           Create new wallet
         </Button>
         <Button
           data-testid="import-wallet"
-          onClick={() =>
-            navigate(`${Paths.Onboard.Home}/${Paths.Wallet.Import}`)
-          }
+          onClick={() => navigate(Paths.Onboard.WalletImport)}
         >
           Use recovery phrase
         </Button>
       </ButtonGroup>
-    </div>
+    </OnboardingPage>
   )
 }

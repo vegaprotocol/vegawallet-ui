@@ -18,6 +18,9 @@ import { AppSettings } from './settings/app-settings'
 import { Networks } from './settings/networks'
 import { Service } from './settings/service'
 import { Layout } from '../layout'
+import { GetStarted } from './onboard/get-started'
+import { UnderstandRisks } from './onboard/understand-risks'
+import { Disclaimer } from './onboard/disclaimer'
 
 export const Paths = {
   Home: '/',
@@ -25,11 +28,18 @@ export const Paths = {
     Home: '/onboard',
     Start: '/onboard/start',
     VegaHome: '/onboard/vega-home',
+    // "Get Started -> Understand the risks -> Disclaimer" flow
+    GetStarted: '/onboard/get-started',
+    UnderstandRisks: '/onboard/understand-the-risks',
+    Disclaimer: '/onboard/disclaimer',
+    // Create and import actions for onboarding layout
+    WalletCreate: '/onboard/wallet-create',
+    WalletImport: '/onboard/wallet-import',
   },
   Wallet: {
     Home: '/wallet',
-    Create: 'wallet-create',
-    Import: 'wallet-import',
+    Create: '/wallet/wallet-create',
+    Import: '/wallet/wallet-import',
     Wallet: (wallet: string) => `/wallet/${wallet}`,
     Transactions: (wallet: string, pubkey: string) =>
       `/wallet/${wallet}/keypair/${pubkey}/transactions`,
@@ -45,6 +55,7 @@ export const Paths = {
     AppSettings: '/settings/app-settings',
     Networks: '/settings/networks',
     Service: '/settings/service',
+    Disclaimer: '/settings/disclaimer',
   },
 }
 
@@ -54,10 +65,19 @@ export const AppRouter = () => {
       <Route index={true} element={<Navigate to={Paths.Wallet.Home} />} />
       <Route path={Paths.Onboard.Home} element={<Outlet />}>
         <Route index={true} element={<Onboard />} />
-        <Route path="start" element={<OnboardStart />} />
-        <Route path="vega-home" element={<OnboardHome />} />
-        <Route path={Paths.Wallet.Create} element={<WalletCreate />} />
-        <Route path={Paths.Wallet.Import} element={<WalletImport />} />
+        <Route path={Paths.Onboard.Start} element={<OnboardStart />} />
+        <Route path={Paths.Onboard.VegaHome} element={<OnboardHome />} />
+
+        {/* "Get Started -> Understand the risks -> Disclaimer" flow */}
+        <Route path={Paths.Onboard.GetStarted} element={<GetStarted />} />
+        <Route
+          path={Paths.Onboard.UnderstandRisks}
+          element={<UnderstandRisks />}
+        />
+        <Route path={Paths.Onboard.Disclaimer} element={<Disclaimer />} />
+
+        <Route path={Paths.Onboard.WalletCreate} element={<WalletCreate />} />
+        <Route path={Paths.Onboard.WalletImport} element={<WalletImport />} />
       </Route>
       <Route path={Paths.Wallet.Home} element={<Layout />}>
         <Route index={true} element={<Home />} />
@@ -80,6 +100,7 @@ export const AppRouter = () => {
         <Route path={Paths.Settings.AppSettings} element={<AppSettings />} />
         <Route path={Paths.Settings.Networks} element={<Networks />} />
         <Route path={Paths.Settings.Service} element={<Service />} />
+        <Route path={Paths.Settings.Disclaimer} element={<Disclaimer />} />
       </Route>
     </Routes>
   )

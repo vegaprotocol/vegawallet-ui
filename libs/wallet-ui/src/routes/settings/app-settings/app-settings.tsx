@@ -74,7 +74,7 @@ export const AppSettings = () => {
           className="mt-4"
           variant="primary"
         >
-          Update and restart
+          Apply and restart
         </Button>
       </form>
     </Page>

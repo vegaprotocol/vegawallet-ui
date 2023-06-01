@@ -35,7 +35,7 @@ export const useUpdateConfig = () => {
       })
       runtime.WindowReload()
     } catch (err) {
-      const message = 'Failed to update config'
+      const message = `Failed to update config: ${err}`
       AppToaster.show({ message, intent: Intent.DANGER })
       logger.error(err)
       setStatus(FormStatus.Error)

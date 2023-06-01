@@ -19,8 +19,9 @@ export const Layout = () => {
     }
   )
   return (
-    // must use 88px here for tw to compile with correct styles
-    <div className={`grid grid-rows-[1fr_88px] h-full`}>
+    // must use NAVBAR_HEIGHT here for tailwind to compile with correct styles
+    // see libs/wallet-ui/src/components/navbar/navbar.tsx:84
+    <div className={`grid grid-rows-[1fr_64px] h-full`}>
       <main className={mainClasses} style={{ paddingBottom: DRAWER_HEIGHT }}>
         <Outlet />
         <Drawer />

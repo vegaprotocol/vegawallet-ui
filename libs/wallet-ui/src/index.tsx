@@ -33,23 +33,26 @@ export type AppProps = {
 
 const ROOT = 'wallet-ui'
 
-/**
- * Renders all the providers
- */
-export function App({ service, client, runtime, features }: AppProps) {
+const useSkipAnimation = () => {
   useEffect(() => {
     if (localStorage.getItem('playwright')) {
       Globals.assign({
         skipAnimation: true,
       })
     }
-
     return () => {
       Globals.assign({
         skipAnimation: false,
       })
     }
   })
+}
+
+/**
+ * Renders all the providers
+ */
+export function App({ service, client, runtime, features }: AppProps) {
+  useSkipAnimation()
   return (
     <ErrorBoundary
       fallback={({ error }) => (

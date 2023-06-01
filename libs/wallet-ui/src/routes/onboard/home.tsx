@@ -1,7 +1,5 @@
 import { Button, Input } from '@vegaprotocol/ui-toolkit'
 import { useCallback, useEffect, useState } from 'react'
-import { Vega } from '../../components/icons'
-import { Title } from '../../components/title'
 import { useForm } from 'react-hook-form'
 import { Validation } from '../../lib/form-validation'
 import { FormGroup } from '../../components/form-group'
@@ -10,10 +8,13 @@ import { AppToaster } from '../../components/toaster'
 import { useGlobal } from '../../contexts/global/global-context'
 import { useNavigate } from 'react-router-dom'
 import { Paths } from '..'
+import { OnboardingPage } from '../../components/page'
 
 export const OnboardHome = () => {
-  const { service } = useGlobal()
+  const { service, client, actions, features, dispatch } = useGlobal()
+
   const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -23,12 +24,12 @@ export const OnboardHome = () => {
     reValidateMode: 'onChange',
   })
 
-  const [homeDirectory, setHomeDirectory] = useState<string>('')
+  const [VEGA_HOME, setHomeDirectory] = useState<string>('')
   useEffect(() => {
     const getHomeDirectory = async () => {
-      const vegaHome = await service.SuggestFairgroundFolder()
-      setHomeDirectory(vegaHome)
-      setValue('vegaHome', vegaHome)
+      const FAIRGROUND_VEGA_HOME = await service.SuggestFairgroundFolder()
+      setHomeDirectory(FAIRGROUND_VEGA_HOME)
+      setValue('vegaHome', FAIRGROUND_VEGA_HOME)
     }
     getHomeDirectory()
   }, [service, setValue])
@@ -37,6 +38,22 @@ export const OnboardHome = () => {
     async ({ vegaHome }: { vegaHome: string }) => {
       try {
         await service.InitialiseApp({ vegaHome })
+
+        const { wallets } = await client.ListWallets()
+        if (wallets.length > 0) {
+          /**
+           * If wallet(s) are available inside the chosen VEGA_HOME directory
+           * then it's not necessary to go through the onboarding process.
+           */
+          dispatch(
+            actions.completeOnboardAction(features.NETWORK_MODE, () =>
+              navigate(Paths.Home)
+            )
+          )
+
+          return
+        }
+
         navigate(Paths.Onboard.Start)
       } catch (err) {
         AppToaster.show({
@@ -45,29 +62,24 @@ export const OnboardHome = () => {
         })
       }
     },
-    [navigate, service]
+    [actions, client, dispatch, features.NETWORK_MODE, navigate, service]
   )
 
-  if (!homeDirectory) {
+  if (!VEGA_HOME) {
     return null
   }
 
   return (
-    <section
-      className="m-auto w-[545px] text-center pt-10"
-      data-testid="onboard-home"
-    >
-      <Title className="m-0 mb-7 text-white">
-        <Vega />
-      </Title>
-      <p>
-        Looks like you are using a Fairground build of the wallet. We
-        recommended that you use a different <code>VegaHome</code> directory as
-        compatibility between versions is not yet guaranteed.
+    <OnboardingPage title="Before you start">
+      <p className="text-base pb-8 text-left">
+        Looks like you are using a Fairground build of the wallet. We recommend
+        that you use a different wallet directory as compatibility between
+        versions is not guaranteed.
       </p>
-      <form onSubmit={handleSubmit(onSubmit)} className="pt-8 text-left">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
-          label="Vega Home Directory:"
+          className="text-left"
+          label="Wallet Directory:"
           labelFor="vega-home"
           helperText={errors.vegaHome?.message}
           intent={errors.vegaHome?.message ? Intent.DANGER : Intent.NONE}
@@ -75,14 +87,14 @@ export const OnboardHome = () => {
           <Input
             id="vega-home"
             type="text"
-            placeholder={homeDirectory}
+            placeholder={VEGA_HOME}
             {...register('vegaHome', { required: Validation.REQUIRED })}
           />
         </FormGroup>
-        <Button fill={true} variant="primary" type="submit">
+        <Button variant="primary" type="submit">
           Continue
         </Button>
       </form>
-    </section>
+    </OnboardingPage>
   )
 }
