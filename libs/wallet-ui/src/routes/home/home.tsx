@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import { useMemo } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import { ButtonGroup } from '../../components/button-group'
 import { Lock } from '../../components/icons/lock'
@@ -10,6 +10,7 @@ import { useOpenWallet } from '../../hooks/use-open-wallet'
 import { sortWallet } from '../../lib/wallet-helpers'
 import { Paths } from '../'
 import { Page } from '../../components/page'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 /**
  * Redirects to import if no wallets are loaded, or to wallet home
@@ -19,6 +20,7 @@ export const Home = () => {
   const {
     state: { wallets, status },
   } = useGlobal()
+  const navigate = useNavigate()
 
   const walletsList = useMemo(
     () => Object.values(wallets).sort(sortWallet),
@@ -26,7 +28,8 @@ export const Home = () => {
   )
 
   if (status === AppStatus.Onboarding) {
-    return <Navigate to={Paths.Onboard.Home} />
+    // navigate to "Get Started" page
+    return <Navigate to={Paths.Onboard.GetStarted} />
   }
 
   return (
@@ -63,21 +66,21 @@ export const Home = () => {
             </button>
           ))}
         </div>
-        <ButtonGroup>
-          <Link
-            className="flex-1 border border-vega-dark-300 rounded text-center p-3 uppercase"
-            to="wallet-create"
+        <ButtonGroup orientation="horizontal">
+          <Button
             data-testid="create-new-wallet"
+            fill={true}
+            onClick={() => navigate(Paths.Wallet.Create)}
           >
             Create wallet
-          </Link>
-          <Link
-            className="flex-1 border border-vega-dark-300 rounded text-center p-3 uppercase"
-            to="wallet-import"
+          </Button>
+          <Button
             data-testid="import-wallet"
+            fill={true}
+            onClick={() => navigate(Paths.Wallet.Import)}
           >
             Import wallet
-          </Link>
+          </Button>
         </ButtonGroup>
       </div>
     </Page>

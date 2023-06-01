@@ -15,11 +15,14 @@ export const useSign = (pubKey?: string, wallet?: string) => {
           return
         }
 
-        const resp = await client.SignMessage({
+        const params = {
           wallet,
           publicKey: pubKey,
+          pubKey, // FIXME: public key has to be passed twice here because of the wallet api bug that accepts pubKey and not publicKey param (as per schema)
           encodedMessage: btoa(values.message),
-        })
+        }
+
+        const resp = await client.SignMessage(params)
         setSignedData(resp.encodedSignature)
         AppToaster.show({
           message: `Message signed successfully`,

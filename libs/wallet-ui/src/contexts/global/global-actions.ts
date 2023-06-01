@@ -175,7 +175,7 @@ export function createActions(service: Service, client: WalletAdmin) {
                     wallets: [],
                     networks: [],
                   }
-                : await service.SearchForExistingConfiguration()
+                : await service.SearchForExistingConfiguration() // checks for wallets and networks inside default VEGA_HOME (empty)
             dispatch({ type: 'START_ONBOARDING', existing: existingConfig })
             return
           }

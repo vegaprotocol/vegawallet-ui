@@ -14,6 +14,10 @@ export const SettingsHome = () => {
       title: 'Service',
       path: Paths.Settings.Service,
     },
+    {
+      title: 'Disclaimer',
+      path: Paths.Settings.Disclaimer,
+    },
   ]
   return (
     <Page name="Settings">

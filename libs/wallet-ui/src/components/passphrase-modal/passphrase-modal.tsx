@@ -106,22 +106,24 @@ function PassphraseModalForm({
           {...register('passphrase', { required: Validation.REQUIRED })}
         />
       </FormGroup>
-      <ButtonGroup inline>
-        <div className="flex-1">
-          <button
-            data-testid="input-cancel"
-            onClick={onCancel}
-            type="button"
-            className="underline w-full"
-          >
-            Cancel
-          </button>
-        </div>
-        <div className="flex-1">
-          <Button data-testid="input-submit" type="submit" fill={true}>
-            {loading ? <Spinner /> : 'Submit'}
-          </Button>
-        </div>
+      <ButtonGroup orientation="horizontal">
+        <Button
+          data-testid="input-cancel"
+          onClick={onCancel}
+          type="button"
+          fill={true}
+        >
+          Cancel
+        </Button>
+
+        <Button
+          data-testid="input-submit"
+          type="submit"
+          fill={true}
+          variant="primary"
+        >
+          {loading ? <Spinner /> : 'Submit'}
+        </Button>
       </ButtonGroup>
     </form>
   )

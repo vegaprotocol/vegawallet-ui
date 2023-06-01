@@ -56,16 +56,16 @@ export const NavButton = ({
         const textColor = isActive ? textColors.active : textColors.inactive
 
         return (
-          <div className="h-full grid gap-0 grid-rows-[1fr_auto_auto]">
-            <div className={classnames('grid items-center mt-1', textColor)}>
+          <div className="h-full grid gap-0 grid-rows-[30px_auto_auto]">
+            <div className={classnames('grid items-center mt-2', textColor)}>
               {icon}
             </div>
-            <span className={classnames('uppercase mt-1 text-sm', textColor)}>
+            <span className={classnames('uppercase mt-2 text-sm', textColor)}>
               {text}
             </span>
             <div
               data-testid="link-active"
-              className={classnames('h-2 w-full mt-3', {
+              className={classnames('h-1 w-full mt-2', {
                 'bg-vega-yellow': isActive && networkMode === 'mainnet',
                 'bg-black':
                   isActive &&
@@ -81,7 +81,7 @@ export const NavButton = ({
   )
 }
 
-export const NAVBAR_HEIGHT = 88
+export const NAVBAR_HEIGHT = 64 // see libs/wallet-ui/src/layout.tsx:24
 
 const getSquareFill = (networkMode: Features['NETWORK_MODE']) => {
   switch (networkMode) {

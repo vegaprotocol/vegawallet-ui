@@ -78,8 +78,6 @@ const transactions = {
 
 localStorage.setItem(TRANSACTION_STORAGE_KEY, JSON.stringify(transactions))
 
-console.log(localStorage.getItem(TRANSACTION_STORAGE_KEY))
-
 /** @param p { {children?: import('react').ReactNode, fill?: boolean }} */
 const StoryWrapper = ({ children, fill }) => {
   const classes = classnames(

@@ -72,18 +72,22 @@ const getAppTitle = (networkMode: Features['NETWORK_MODE']) => {
 export function AppFrame({ children }: AppFrameProps) {
   const { state } = useGlobal()
   const { mode } = useNetworkMode()
-  const useVegaBg = state.status === AppStatus.Onboarding
+  // Disabled vega background - to enable it for the onboarding process
+  // set the below value to: state.status === AppStatus.Onboarding
+  const displayVegaBackground = false
+  const background = {
+    'vega-bg': displayVegaBackground,
+    'bg-transparent': displayVegaBackground,
+    'bg-grey-100': !displayVegaBackground,
+  }
+
   return (
     <div
       data-testid="app-frame"
       className={classnames(
         'grid grid-rows-[min-content_1fr]',
         'h-full bg-cover relative overflow-y-hidden',
-        {
-          'vega-bg': useVegaBg,
-          'bg-transparent': useVegaBg,
-          'bg-grey-100': !useVegaBg,
-        }
+        background
       )}
     >
       <div
