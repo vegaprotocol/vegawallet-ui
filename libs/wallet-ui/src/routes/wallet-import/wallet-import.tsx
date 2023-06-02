@@ -8,13 +8,16 @@ import { Page } from '../../components/page'
 
 export const WalletImport = () => {
   const navigate = useNavigate()
-  const { submit, response } = useImportWallet()
+  const { submit, imported } = useImportWallet()
 
   useEffect(() => {
-    if (response) {
-      navigate(Paths.Home)
+    if (!imported) {
+      return
     }
-  }, [response, navigate])
+
+    const path = Paths.Wallet.Wallet(encodeURIComponent(imported))
+    navigate(path)
+  }, [imported, navigate])
 
   return (
     <Page name="Import wallet">

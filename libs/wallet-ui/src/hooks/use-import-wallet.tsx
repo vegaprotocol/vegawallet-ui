@@ -1,5 +1,4 @@
 import { useMemo, useState, useCallback } from 'react'
-import type { WalletModel } from '@vegaprotocol/wallet-admin'
 
 import { AppToaster } from '../components/toaster'
 import { Intent } from '../config/intent'
@@ -10,8 +9,7 @@ export function useImportWallet() {
   const vegaHome = useVegaHome()
   const { service, client, dispatch, actions, state, features } = useGlobal()
   const logger = useMemo(() => service.GetLogger('UseImportWallet'), [service])
-  const [response, setResponse] =
-    useState<WalletModel.ImportWalletResult | null>(null)
+  const [imported, setImported] = useState<string | null>(null)
   const [error, setError] = useState<Error | null>(null)
 
   const submit = useCallback(
@@ -36,8 +34,6 @@ export function useImportWallet() {
         })
 
         if (resp && resp.key && resp.wallet) {
-          setResponse(resp)
-
           const keypair = await client.DescribeKey({
             wallet: values.wallet,
             publicKey: resp.key.publicKey,
@@ -58,6 +54,8 @@ export function useImportWallet() {
             key: keypair,
             auth: true,
           })
+
+          setImported(values.wallet)
           AppToaster.show({
             message: `Wallet imported`,
             intent: Intent.SUCCESS,
@@ -81,12 +79,12 @@ export function useImportWallet() {
       state.status,
       dispatch,
       actions,
-      features,
+      features.NETWORK_MODE,
     ]
   )
 
   return {
-    response,
+    imported,
     submit,
     error,
   }
