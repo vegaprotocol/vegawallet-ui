@@ -6,10 +6,12 @@ import { WalletCreateForm } from '../../components/wallet-create-form'
 import { WalletCreateFormSuccess } from '../../components/wallet-create-form/wallet-create-form-success'
 import { useCreateWallet } from '../../hooks/use-create-wallet'
 import { Paths } from '../'
+import { useGlobal } from '../../contexts/global/global-context'
 
 export const WalletCreate = () => {
   const navigate = useNavigate()
   const { response, submit } = useCreateWallet()
+  const { dispatch } = useGlobal()
 
   return (
     <Page name="Create wallet">
@@ -26,6 +28,10 @@ export const WalletCreate = () => {
                         encodeURIComponent(response.wallet.name)
                       )
                     : Paths.Home
+                  dispatch({
+                    type: 'ACTIVATE_WALLET',
+                    wallet: response.wallet.name,
+                  })
                   navigate(path)
                 }}
               >

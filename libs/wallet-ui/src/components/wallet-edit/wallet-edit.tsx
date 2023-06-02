@@ -5,11 +5,10 @@ import { Intent } from '../../config/intent'
 import { useCurrentWallet } from '../../hooks/use-current-wallet'
 import { useRenameWallet } from '../../hooks/use-rename-wallet'
 import { Validation } from '../../lib/form-validation'
-import { Button } from '../button'
 import { ButtonGroup } from '../button-group'
-import { ButtonUnstyled } from '../button-unstyled'
 import { FormGroup } from '../form-group'
 import { Input } from '../forms/input'
+import { Button } from '@vegaprotocol/ui-toolkit'
 
 type WalletEditProps = {
   onClose: () => void
@@ -60,9 +59,13 @@ export const WalletEdit = ({ onClose }: WalletEditProps) => {
           })}
         />
       </FormGroup>
-      <ButtonGroup inline>
-        <ButtonUnstyled onClick={onClose}>Cancel</ButtonUnstyled>
-        <Button type="submit">Update</Button>
+      <ButtonGroup orientation="horizontal">
+        <Button fill={true} onClick={onClose}>
+          Cancel
+        </Button>
+        <Button fill={true} variant="primary" type="submit">
+          Update
+        </Button>
       </ButtonGroup>
     </form>
   )

@@ -42,10 +42,10 @@ export const SettingsHome = () => {
               href={path}
               target="_blank"
               rel="noreferrer"
-              className="flex fle-row items-center gap-2"
+              className="flex fle-row items-center gap-2 text-base"
             >
               <span>{title}</span>{' '}
-              <ArrowTopRight className="w-3 h-3 stroke-white stroke-1" />
+              <ArrowTopRight className="w-3 h-3 stroke-white stroke-0" />
             </a>
           ) : (
             <Link
