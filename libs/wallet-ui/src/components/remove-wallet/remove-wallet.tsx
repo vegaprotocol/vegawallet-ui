@@ -96,11 +96,16 @@ const RemoveForm = ({
           })}
         />
       </FormGroup>
-      <ButtonGroup inline>
-        <button className="underline" onClick={onCancel}>
+      <ButtonGroup orientation="horizontal">
+        <Button fill={true} onClick={onCancel}>
           Cancel
-        </button>
-        <Button type="submit" disabled={isPending}>
+        </Button>
+        <Button
+          fill={true}
+          type="submit"
+          disabled={isPending}
+          variant="primary"
+        >
           {isPending ? <Spinner /> : 'Remove'}
         </Button>
       </ButtonGroup>

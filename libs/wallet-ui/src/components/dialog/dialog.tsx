@@ -52,9 +52,9 @@ export function Dialog({
                   <animated.div
                     className={classnames(
                       'fixed bg-black overflow-y-auto shadow',
-                      'max-h-[calc(100vh_-_60px)]',
+                      'max-h-[calc(100vh_-_50px)]',
                       {
-                        'top-[100px]': size !== 'full',
+                        'top-[40px]': size !== 'full',
                         'left-[10%]': size === 'lg',
                         'w-[80%]': size === 'lg',
                         'left-[calc(50%_-_170px)]': size === 'sm',

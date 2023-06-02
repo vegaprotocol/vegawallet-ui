@@ -26,7 +26,10 @@ export const ConnectionItem = ({
       )}
     >
       <div className="">
-        <code title={connection.hostname} className="block">
+        <code
+          title={connection.hostname}
+          className="block max-w-[420px] break-all"
+        >
           <StatusCircle
             blinking={connection.active}
             background={connection.active ? 'bg-green' : 'bg-orange'}
