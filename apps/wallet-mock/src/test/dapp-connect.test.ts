@@ -42,7 +42,7 @@ test.describe('Connect to Dapp modal validations', () => {
       connectionContent
     )
   })
-
+  // THIS IS JUST TEST COMMENT
   test.afterAll(async () => {
     await page.close()
   })
