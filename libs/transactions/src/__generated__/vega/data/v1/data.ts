@@ -21,7 +21,7 @@ export interface Signer {
    * public keys.
    */
   pubKey?: PubKey | undefined
-  /** In case of an open oracle - Ethereum address will be submitted. */
+  /** In case of an open oracle - Ethereum address will be submitted */
   ethAddress?: ETHAddress | undefined
 }
 
@@ -47,8 +47,10 @@ export interface Data {
    */
   matchedSpecIds: string[]
   /**
-   * Timestamp in Unix nanoseconds for when the data was broadcast to the markets
-   * with a matching spec. It has no value when the data did not match any spec.
+   * `broadcast_at` is the time at which the data was broadcast to the markets
+   * with a matching spec.
+   * It has no value when the date did not match any spec.
+   * The value is a Unix timestamp in nanoseconds.
    */
   broadcastAt: number
 }

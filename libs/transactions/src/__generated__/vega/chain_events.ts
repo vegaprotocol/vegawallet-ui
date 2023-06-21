@@ -2,18 +2,6 @@
 
 export const protobufPackage = 'vega'
 
-/** Result of calling an arbitrary Ethereum contract method */
-export interface EthContractCallEvent {
-  /** ID of the data source spec that triggered this contract call. */
-  specId: string
-  /** Ethereum block height. */
-  blockHeight: number
-  /** Ethereum block time in Unix seconds. */
-  blockTime: number
-  /** Result of contract call, packed according to the ABI stored in the associated data source spec. */
-  result: Uint8Array
-}
-
 /** Deposit for a Vega built-in asset */
 export interface BuiltinAssetDeposit {
   /** Vega network internal asset ID. */

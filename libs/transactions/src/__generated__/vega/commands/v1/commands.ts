@@ -57,7 +57,7 @@ export interface OrderSubmission {
   /** Time in force indicates how long an order will remain active before it is executed or expires, required field. */
   timeInForce: Order_TimeInForce
   /**
-   * Timestamp in Unix nanoseconds for when the order will expire,
+   * Timestamp for when the order will expire, in nanoseconds,
    * required field only for `Order.TimeInForce`.TIME_IN_FORCE_GTT`.
    */
   expiresAt: number
@@ -118,7 +118,7 @@ export interface OrderAmendment {
 
 /** A liquidity provision submitted for a given market */
 export interface LiquidityProvisionSubmission {
-  /** Market ID for the order. */
+  /** Market ID for the order, required field. */
   marketId: string
   /**
    * Specified as a unitless number that represents the amount of settlement asset of the market.
@@ -131,36 +131,12 @@ export interface LiquidityProvisionSubmission {
   sells: LiquidityOrder[]
   /** Set of liquidity buy orders to meet the liquidity provision obligation. */
   buys: LiquidityOrder[]
-  /** Reference to be added to every order created out of this liquidity provision submission. */
+  /** Reference to be added to every order created out of this liquidityProvisionSubmission. */
   reference: string
-}
-
-/** A liquidity provision submitted for a given spot market */
-export interface SpotLiquidityProvisionSubmission {
-  /** Market ID for the order. */
-  marketId: string
-  /**
-   * Specified as a unitless number that represents the amount of quote asset of the market.
-   * This field is an unsigned integer scaled using the asset's decimal places.
-   */
-  buyCommitmentAmount: string
-  /**
-   * Specified as a unitless number that represents the amount of the market's base asset.
-   * This field is an unsigned integer scaled using the asset's decimal places.
-   */
-  sellCommitmentAmount: string
-  /** Nominated liquidity fee factor, which is an input to the calculation of maker fees paid on the market, as per setting fees and rewarding liquidity providers. */
-  fee: string
 }
 
 /** Cancel a liquidity provision request */
 export interface LiquidityProvisionCancellation {
-  /** Unique ID for the market with the liquidity provision to be cancelled. */
-  marketId: string
-}
-
-/** Cancel a spot liquidity provision request */
-export interface SpotLiquidityProvisionCancellation {
   /** Unique ID for the market with the liquidity provision to be cancelled. */
   marketId: string
 }
@@ -179,16 +155,6 @@ export interface LiquidityProvisionAmendment {
   buys: LiquidityOrder[]
   /** empty string means no change */
   reference: string
-}
-
-/** Amend a spot liquidity provision request */
-export interface SpotLiquidityProvisionAmendment {
-  /** Unique ID for the market with the liquidity provision to be amended. */
-  marketId: string
-  /** From here at least one of the following is required to consider the command valid. */
-  buyCommitmentAmount?: string | undefined
-  sellCommitmentAmount?: string | undefined
-  fee?: string | undefined
 }
 
 /** Represents the submission request to withdraw funds for a party on Vega */
@@ -273,7 +239,10 @@ export interface Transfer {
 
 /** Specific details for a one off transfer */
 export interface OneOffTransfer {
-  /** Timestamp in Unix nanoseconds for when the transfer should be delivered into the receiver's account. */
+  /**
+   * Unix timestamp in nanoseconds. Time at which the
+   * transfer should be delivered into the To account.
+   */
   deliverOn: number
 }
 
