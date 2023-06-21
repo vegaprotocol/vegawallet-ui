@@ -3,7 +3,6 @@ import type {
   BuiltinAssetEvent,
   ERC20Event,
   ERC20MultiSigEvent,
-  EthContractCallEvent,
   StakingEvent,
 } from '../../chain_events'
 import type { StateValueProposal } from '../../vega'
@@ -141,8 +140,6 @@ export interface ChainEvent {
   stakingEvent?: StakingEvent | undefined
   /** Ethereum ERC20 multisig event. */
   erc20Multisig?: ERC20MultiSigEvent | undefined
-  /** Arbitrary contract call */
-  contractCall?: EthContractCallEvent | undefined
 }
 
 /** Transaction to allow a validator to rotate their Vega keys */

@@ -7,7 +7,6 @@ import type {
   LogNormalRiskModel,
   PriceMonitoringParameters,
   SimpleModelParams,
-  TargetStakeParameters,
 } from './markets'
 import type { NetworkParameter } from './vega'
 
@@ -98,23 +97,7 @@ export enum ProposalError {
   PROPOSAL_ERROR_LINEAR_SLIPPAGE_FACTOR_OUT_OF_RANGE = 44,
   /** PROPOSAL_ERROR_QUADRATIC_SLIPPAGE_FACTOR_OUT_OF_RANGE - Quadratic slippage factor is out of range, either negative or too large */
   PROPOSAL_ERROR_QUADRATIC_SLIPPAGE_FACTOR_OUT_OF_RANGE = 45,
-  /** PROPOSAL_ERROR_INVALID_SPOT - Validation failed for spot proposal */
-  PROPOSAL_ERROR_INVALID_SPOT = 46,
-  /** PROPOSAL_ERROR_SPOT_PRODUCT_DISABLED - Spot trading not enabled */
-  PROPOSAL_ERROR_SPOT_PRODUCT_DISABLED = 47,
-  /** PROPOSAL_ERROR_INVALID_SUCCESSOR_MARKET - Market proposal is invalid, either invalid insurance pool fraction, or it specifies a parent market that it can't succeed. */
-  PROPOSAL_ERROR_INVALID_SUCCESSOR_MARKET = 48,
   UNRECOGNIZED = -1,
-}
-
-/** Spot product configuration */
-export interface SpotProduct {
-  /** Base asset ID. */
-  baseAsset: string
-  /** Quote asset ID. */
-  quoteAsset: string
-  /** Product name. */
-  name: string
 }
 
 /** Future product configuration */
@@ -139,37 +122,15 @@ export interface InstrumentConfiguration {
   code: string
   /** Future. */
   future?: FutureProduct | undefined
-  /** Spot. */
-  spot?: SpotProduct | undefined
 }
 
-/** Configuration for a new spot market on Vega */
-export interface NewSpotMarketConfiguration {
-  /** New spot market instrument configuration. */
-  instrument: InstrumentConfiguration | undefined
-  /** Decimal places used for the new spot market, sets the smallest price increment on the book. */
-  decimalPlaces: number
-  /** Optional new spot market metadata, tags. */
-  metadata: string[]
-  /** Price monitoring parameters. */
-  priceMonitoringParameters: PriceMonitoringParameters | undefined
-  /** Specifies parameters related to target stake calculation. */
-  targetStakeParameters: TargetStakeParameters | undefined
-  /** Simple risk model parameters, valid only if MODEL_SIMPLE is selected. */
-  simple?: SimpleModelParams | undefined
-  /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected. */
-  logNormal?: LogNormalRiskModel | undefined
-  /** Decimal places for order sizes, sets what size the smallest order / position on the spot market can be. */
-  positionDecimalPlaces: number
-}
-
-/** Configuration for a new futures market on Vega */
+/** Configuration for a new market on Vega */
 export interface NewMarketConfiguration {
-  /** New futures market instrument configuration. */
+  /** New market instrument configuration. */
   instrument: InstrumentConfiguration | undefined
-  /** Decimal places used for the new futures market, sets the smallest price increment on the book. */
+  /** Decimal places used for the new market, sets the smallest price increment on the book. */
   decimalPlaces: number
-  /** Optional new futures market metadata, tags. */
+  /** Optional new market metadata, tags. */
   metadata: string[]
   /** Price monitoring parameters. */
   priceMonitoringParameters: PriceMonitoringParameters | undefined
@@ -179,7 +140,7 @@ export interface NewMarketConfiguration {
   simple?: SimpleModelParams | undefined
   /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected. */
   logNormal?: LogNormalRiskModel | undefined
-  /** Decimal places for order sizes, sets what size the smallest order / position on the futures market can be. */
+  /** Decimal places for order sizes, sets what size the smallest order / position on the market can be. */
   positionDecimalPlaces: number
   /**
    * Percentage move up and down from the mid price which specifies the range of
@@ -190,22 +151,6 @@ export interface NewMarketConfiguration {
   linearSlippageFactor: string
   /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
-  /** Successor configuration. If this proposal is meant to succeed a given market, then this should be set. */
-  successor?: SuccessorConfiguration | undefined
-}
-
-/** New spot market on Vega */
-export interface NewSpotMarket {
-  /** Configuration of the new spot market. */
-  changes: NewSpotMarketConfiguration | undefined
-}
-
-/** Configuration required to turn a new market proposal in to a successor market proposal. */
-export interface SuccessorConfiguration {
-  /** ID of the market that the successor should take over from. */
-  parentMarketId: string
-  /** A decimal value between or equal to 0 and 1, specifying the fraction of the insurance pool balance that is carried over from the parent market to the successor. */
-  insurancePoolFraction: string
 }
 
 /** New market on Vega */
@@ -218,23 +163,15 @@ export interface NewMarket {
 export interface UpdateMarket {
   /** Market ID the update is for. */
   marketId: string
-  /** Updated configuration of the futures market. */
+  /** Updated configuration of the market. */
   changes: UpdateMarketConfiguration | undefined
 }
 
-/** Update an existing spot market on Vega */
-export interface UpdateSpotMarket {
-  /** Market ID the update is for. */
-  marketId: string
-  /** Updated configuration of the spot market. */
-  changes: UpdateSpotMarketConfiguration | undefined
-}
-
-/** Configuration to update a futures market on Vega */
+/** Configuration to update a market on Vega */
 export interface UpdateMarketConfiguration {
-  /** Updated futures market instrument configuration. */
+  /** Updated market instrument configuration. */
   instrument: UpdateInstrumentConfiguration | undefined
-  /** Optional futures market metadata, tags. */
+  /** Optional market metadata, tags. */
   metadata: string[]
   /** Price monitoring parameters. */
   priceMonitoringParameters: PriceMonitoringParameters | undefined
@@ -253,20 +190,6 @@ export interface UpdateMarketConfiguration {
   linearSlippageFactor: string
   /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
-}
-
-/** Configuration to update a spot market on Vega */
-export interface UpdateSpotMarketConfiguration {
-  /** Optional spot market metadata, tags. */
-  metadata: string[]
-  /** Price monitoring parameters. */
-  priceMonitoringParameters: PriceMonitoringParameters | undefined
-  /** Specifies parameters related to target stake calculation. */
-  targetStakeParameters: TargetStakeParameters | undefined
-  /** Simple risk model parameters, valid only if MODEL_SIMPLE is selected. */
-  simple?: SimpleModelParams | undefined
-  /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected. */
-  logNormal?: LogNormalRiskModel | undefined
 }
 
 /** Instrument configuration */
@@ -330,9 +253,9 @@ export interface ProposalTerms {
   enactmentTimestamp: number
   /** Validation timestamp as Unix time in seconds. */
   validationTimestamp: number
-  /** Proposal change for modifying an existing futures market on Vega. */
+  /** Proposal change for modifying an existing market on Vega. */
   updateMarket?: UpdateMarket | undefined
-  /** Proposal change for creating new futures market on Vega. */
+  /** Proposal change for creating new market on Vega. */
   newMarket?: NewMarket | undefined
   /** Proposal change for updating Vega network parameters. */
   updateNetworkParameter?: UpdateNetworkParameter | undefined
@@ -345,10 +268,6 @@ export interface ProposalTerms {
   newFreeform?: NewFreeform | undefined
   /** Proposal change for updating an asset. */
   updateAsset?: UpdateAsset | undefined
-  /** Proposal change for creating new spot market on Vega. */
-  newSpotMarket?: NewSpotMarket | undefined
-  /** Proposal change for modifying an existing spot market on Vega. */
-  updateSpotMarket?: UpdateSpotMarket | undefined
 }
 
 /** Rationale behind a proposal. */
@@ -462,11 +381,11 @@ export enum Proposal_State {
 export interface Vote {
   /** Voter's party ID. */
   partyId: string
-  /** Which way the party voted. */
+  /** Actual vote. */
   value: Vote_Value
   /** Proposal ID being voted on. */
   proposalId: string
-  /** Timestamp in Unix nanoseconds when the vote was acknowledged by the network. */
+  /** Vote timestamp for date and time as Unix time in nanoseconds when vote was submitted to the network. */
   timestamp: number
   /** Total number of governance token for the party that cast the vote. */
   totalGovernanceTokenBalance: string
