@@ -23,16 +23,15 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Serve wallet-mock
-        run: yarn test wallet-ui:serve --skip-nx-cache &
-
       - name: Install playwright dependencies
         run: |
           yarn playwright install
           yarn playwright install-deps chromium
 
       - name: Run tests
-        run: yarn e2e --verbose
+        run: yarn e2e:percy
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 
       - name: Show test summary
         if: success() || failure()
