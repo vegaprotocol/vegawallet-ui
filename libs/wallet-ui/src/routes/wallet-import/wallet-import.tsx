@@ -16,6 +16,7 @@ export const WalletImport = () => {
     }
 
     const path = Paths.Wallet.Wallet(encodeURIComponent(imported))
+
     navigate(path)
   }, [imported, navigate])
 

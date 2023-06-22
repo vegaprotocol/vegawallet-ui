@@ -45,7 +45,7 @@ export const OnboardHome = () => {
            * If wallet(s) are available inside the chosen VEGA_HOME directory
            * then it's not necessary to go through the onboarding process.
            */
-          dispatch(
+          await dispatch(
             actions.completeOnboardAction(features.NETWORK_MODE, () =>
               navigate(Paths.Home)
             )

@@ -34,7 +34,7 @@ export function useCreateWallet() {
           })
 
           if (state.status === AppStatus.Onboarding) {
-            dispatch(
+            await dispatch(
               actions.completeOnboardAction(
                 features.NETWORK_MODE,
                 () => undefined

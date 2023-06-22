@@ -57,7 +57,7 @@ export function App({ service, client, runtime, features }: AppProps) {
     <ErrorBoundary
       fallback={({ error }) => (
         <SplashError
-          title="Somthing went wrong"
+          title="Something went wrong"
           message={error.message}
           actions={[<Button onClick={runtime.WindowReload}>Reload</Button>]}
         />
