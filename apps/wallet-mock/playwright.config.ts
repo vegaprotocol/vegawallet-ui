@@ -99,7 +99,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     reuseExistingServer: true,
-    command: 'yarn test wallet-ui:serve',
+    command: 'yarn test wallet-ui:serve --skip-nx-cache',
     port: 3000,
   },
 })
