@@ -24,7 +24,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Serve wallet-mock
-        run: yarn test wallet-ui:serve --verbose
+        run: yarn test wallet-ui:serve --verbose --skip-nx-cache
 
       - name: Install playwright dependencies
         run: |
