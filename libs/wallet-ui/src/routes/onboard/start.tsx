@@ -56,7 +56,7 @@ export function OnboardStart() {
       }
 
       // Found wallets and networks, go to the main app
-      dispatch(
+      await dispatch(
         actions.completeOnboardAction(features.NETWORK_MODE, () =>
           navigate(Paths.Home)
         )
