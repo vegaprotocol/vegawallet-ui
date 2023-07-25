@@ -172,7 +172,6 @@ function fieldsToConfig(
     api: {
       grpc: {
         hosts: values.grpcHosts.map((x) => x.value),
-        // retries: Number(values.grpcNodeRetries),
       },
       graphQL: {
         hosts: values.graphqlHosts.map((x) => x.value),
