@@ -11,7 +11,6 @@ import { Input } from '../forms/input'
 
 interface FormFields {
   name: string
-  // grpcNodeRetries: number
   grpcHosts: Array<{ value: string }>
   graphqlHosts: Array<{ value: string }>
   restHosts: Array<{ value: string }>
@@ -100,22 +99,6 @@ export const NetworkConfigForm = ({
       <HostEditor name="graphqlHosts" control={control} register={register} />
       <h2>REST Nodes</h2>
       <HostEditor name="restHosts" control={control} register={register} />
-      {/* <FormGroup
-        label="gRPC Node retries"
-        labelFor="grpcNodeRetries"
-        intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
-        helperText={errors.grpcNodeRetries?.message}
-      >
-        <Input
-          data-testid="node-retries"
-          type="number"
-          {...register('grpcNodeRetries', {
-            required: Validation.REQUIRED,
-            min: Validation.NUMBER_MIN_GRPC_RETRIES,
-            max: Validation.NUMBER_MAX_GRPC_RETRIES,
-          })}
-        />
-      </FormGroup> */}
       <Button data-testid="submit" type="submit">
         Submit
       </Button>
@@ -209,7 +192,6 @@ function fieldsToConfig(
 function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
   return {
     name: config.name,
-    // grpcNodeRetries: config.api?.grpc?.retries || 0,
     // @ts-ignore any resulting from generated types
     grpcHosts: config.api.grpc?.hosts.map((x) => ({ value: x })) || [],
     // @ts-ignore any resulting from generated types
