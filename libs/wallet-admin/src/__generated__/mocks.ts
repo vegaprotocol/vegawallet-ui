@@ -135,14 +135,6 @@ export function MockAPIRequest(req: {
   params: WalletModel.SendRawTransactionParams
 }): Promise<WalletModel.SendRawTransactionResult>
 export function MockAPIRequest(req: {
-  method: Identifier.StartService
-  params: WalletModel.StartServiceParams
-}): Promise<WalletModel.StartServiceResult>
-export function MockAPIRequest(req: {
-  method: Identifier.StopService
-  params: WalletModel.StopServiceParams
-}): Promise<WalletModel.StopServiceResult>
-export function MockAPIRequest(req: {
   method: Identifier.ListConnections
   params: WalletModel.ListConnectionsParams
 }): Promise<WalletModel.ListConnectionsResult>
@@ -282,7 +274,6 @@ export function MockAPIRequest({ method, params }: WalletAPIRequest) {
           api: {
             grpc: {
               hosts: ['localhost:3028'],
-              retries: 5,
             },
             graphQL: {
               hosts: ['localhost:3028'],
@@ -345,10 +336,6 @@ export function MockAPIRequest({ method, params }: WalletAPIRequest) {
             {
               key: 'portfolio',
               value: 'btc',
-            },
-            {
-              key: 'name',
-              value: 'Key 1',
             },
           ],
           isTainted: false,
@@ -541,12 +528,6 @@ export function MockAPIRequest({ method, params }: WalletAPIRequest) {
             host: 'string',
           },
         })
-      }
-      case Identifier.StartService: {
-        return Promise.resolve<WalletModel.StartServiceResult>(null)
-      }
-      case Identifier.StopService: {
-        return Promise.resolve<WalletModel.StopServiceResult>(null)
       }
       case Identifier.ListConnections: {
         return Promise.resolve<WalletModel.ListConnectionsResult>({

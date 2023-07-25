@@ -40,6 +40,11 @@ const handleEvent = ({
   const q = new Map(queue)
   const queueItem = q.get(event.traceID)
 
+  if (queueItem && (queueItem?.workflow as unknown) === 'WALLET_UNLOCKING') {
+    // piggyback on WALLET_CONNECTION flow
+    queueItem.workflow = 'WALLET_CONNECTION'
+  }
+
   switch (event.name) {
     case 'INTERACTION_SESSION_BEGAN': {
       dispatch({ type: 'START_INTERACTION' })
@@ -85,6 +90,7 @@ const handleEvent = ({
           // you don't go through the multiple wallet selection step
           wallet: event.data.wallet,
           view: 'passphrase',
+          reason: event.data.reason,
         })
       }
       break

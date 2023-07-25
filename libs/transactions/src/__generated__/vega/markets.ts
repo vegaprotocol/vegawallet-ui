@@ -19,6 +19,16 @@ export interface AuctionDuration {
   volume: number
 }
 
+/** Spot product definition */
+export interface Spot {
+  /** Asset ID of the underlying base asset for the spot product. */
+  baseAsset: string
+  /** Asset ID of the underlying quote asset for the spot product. */
+  quoteAsset: string
+  /** Name of the instrument. */
+  name: string
+}
+
 /** Future product definition */
 export interface Future {
   /** Underlying asset for the future. */
@@ -66,6 +76,8 @@ export interface Instrument {
   metadata: InstrumentMetadata | undefined
   /** Future. */
   future?: Future | undefined
+  /** Spot. */
+  spot?: Spot | undefined
 }
 
 /** Risk model for log normal */
@@ -248,6 +260,12 @@ export interface Market {
   linearSlippageFactor: string
   /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
+  /** ID of the market this market succeeds */
+  parentMarketId?: string | undefined
+  /** The fraction of the parent market's insurance pool that this market inherits; range 0 through 1. */
+  insurancePoolFraction?: string | undefined
+  /** ID of the market that succeeds this market if it exists. This will be populated by the system when the successor market is enabled. */
+  successorMarketId?: string | undefined
 }
 
 /** Current state of the market */

@@ -98,7 +98,7 @@ export const PassphraseView = ({
 
   return (
     <div data-testid="dapp-passphrase-modal">
-      <InteractionHeader hostname={data.hostname} />
+      <InteractionHeader hostname={data.hostname} reason={data.reason} />
       <form
         data-testid="dapp-passphrase-form"
         onSubmit={handleSubmit(onSubmit)}

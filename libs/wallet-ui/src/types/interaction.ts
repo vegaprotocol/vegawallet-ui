@@ -52,6 +52,7 @@ export interface RequestWalletSelectionContent {
 
 export interface RequestPassphraseContent {
   wallet: string
+  reason?: string
 }
 
 export type PermissionTargetType = 'public_keys'

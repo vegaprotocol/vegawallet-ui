@@ -266,6 +266,12 @@ export enum AccountType {
   ACCOUNT_TYPE_REWARD_LP_RECEIVED_FEES = 16,
   /** ACCOUNT_TYPE_REWARD_MARKET_PROPOSERS - Per asset reward account for market proposers when the market goes above some trading threshold */
   ACCOUNT_TYPE_REWARD_MARKET_PROPOSERS = 17,
+  /** ACCOUNT_TYPE_HOLDING - Per asset account for holding in-flight unfilled orders' funds */
+  ACCOUNT_TYPE_HOLDING = 18,
+  /** ACCOUNT_TYPE_LP_LIQUIDITY_FEES - Network controlled liquidity provider's account, per market, to hold accrued liquidity fees. */
+  ACCOUNT_TYPE_LP_LIQUIDITY_FEES = 19,
+  /** ACCOUNT_TYPE_LIQUIDITY_FEES_BONUS_DISTRIBUTION - Network controlled liquidity fees bonus distribution account, per market. */
+  ACCOUNT_TYPE_LIQUIDITY_FEES_BONUS_DISTRIBUTION = 20,
   UNRECOGNIZED = -1,
 }
 
@@ -319,6 +325,26 @@ export enum TransferType {
   TRANSFER_TYPE_CLEAR_ACCOUNT = 24,
   /** TRANSFER_TYPE_CHECKPOINT_BALANCE_RESTORE - Balances restored after network restart */
   TRANSFER_TYPE_CHECKPOINT_BALANCE_RESTORE = 25,
+  /** TRANSFER_TYPE_SPOT - Spot trade delivery */
+  TRANSFER_TYPE_SPOT = 26,
+  /** TRANSFER_TYPE_HOLDING_LOCK - An internal instruction to transfer a quantity corresponding to an active spot order from a general account into a party holding account. */
+  TRANSFER_TYPE_HOLDING_LOCK = 27,
+  /** TRANSFER_TYPE_HOLDING_RELEASE - An internal instruction to transfer an excess quantity corresponding to an active spot order from a holding account into a party general account. */
+  TRANSFER_TYPE_HOLDING_RELEASE = 28,
+  /** TRANSFER_TYPE_SUCCESSOR_INSURANCE_FRACTION - Insurance pool fraction transfer from parent to successor market. */
+  TRANSFER_TYPE_SUCCESSOR_INSURANCE_FRACTION = 29,
+  /** TRANSFER_TYPE_LIQUIDITY_FEE_ALLOCATE - Allocates liquidity fee earnings to each liquidity provider's network controlled liquidity fee account. */
+  TRANSFER_TYPE_LIQUIDITY_FEE_ALLOCATE = 30,
+  /** TRANSFER_TYPE_LIQUIDITY_FEE_NET_DISTRIBUTE - Distributes net fee earnings from liquidity provider's fee account to their general account. */
+  TRANSFER_TYPE_LIQUIDITY_FEE_NET_DISTRIBUTE = 31,
+  /** TRANSFER_TYPE_SLA_PENALTY_BOND_APPLY - Applies SLA penalty by moving funds from party's bond account to market's insurance pool. */
+  TRANSFER_TYPE_SLA_PENALTY_BOND_APPLY = 32,
+  /** TRANSFER_TYPE_SLA_PENALTY_LP_FEE_APPLY - Applies SLA penalty by moving funds from the liquidity provider's fee account to market insurance pool. */
+  TRANSFER_TYPE_SLA_PENALTY_LP_FEE_APPLY = 33,
+  /** TRANSFER_TYPE_LIQUIDITY_FEE_UNPAID_COLLECT - Collects penalties from the liquidity provider's fee account before the fee revenue is paid, and transfers it to the market's bonus distribution account. */
+  TRANSFER_TYPE_LIQUIDITY_FEE_UNPAID_COLLECT = 34,
+  /** TRANSFER_TYPE_SLA_PERFORMANCE_BONUS_DISTRIBUTE - Distributes performance bonus from market bonus to liquidity provider's general account. */
+  TRANSFER_TYPE_SLA_PERFORMANCE_BONUS_DISTRIBUTE = 35,
   UNRECOGNIZED = -1,
 }
 
@@ -367,6 +393,79 @@ export enum ValidatorNodeStatus {
   UNRECOGNIZED = -1,
 }
 
+export interface StopOrder {
+  /**
+   * ID of this stop order
+   * also the ID of the associated order if it is ever triggered
+   */
+  id: string
+  /** The ID of the 'other' part of the OCO if 2 stop orders were submitted at once */
+  ocoLinkId?: string | undefined
+  /** Optional expiry timestamp. */
+  expiresAt?: number | undefined
+  /** Strategy to adopt if the expiry time is reached. */
+  expiryStrategy?: StopOrder_ExpiryStrategy | undefined
+  /** Trigger direction for this stop order. */
+  triggerDirection: StopOrder_TriggerDirection
+  /** Status of the stop order. */
+  status: StopOrder_Status
+  /** Creation time of the stop order. */
+  createdAt: number
+  /** Last update of this stop order. */
+  updatedAt?: number | undefined
+  /** ID of the order created once the trigger is hit. */
+  orderId: string
+  /** ID of the party that submitted this stop order. */
+  partyId: string
+  /** ID of the market the stop order is submitted to. */
+  marketId: string
+  /** Fixed price at which the order will be submitted. */
+  price?: string | undefined
+  /**
+   * Trailing percentage at which the order will be submitted.
+   * This should be expressed as a decimal value between 0 and 1, e.g. 0.01 for 1%
+   */
+  trailingPercentOffset?: string | undefined
+}
+
+export enum StopOrder_ExpiryStrategy {
+  /** EXPIRY_STRATEGY_UNSPECIFIED - Never valid */
+  EXPIRY_STRATEGY_UNSPECIFIED = 0,
+  /** EXPIRY_STRATEGY_CANCELS - Stop order should be cancelled if the expiry time is reached. */
+  EXPIRY_STRATEGY_CANCELS = 1,
+  /** EXPIRY_STRATEGY_SUBMIT - Order should be submitted if the expiry time is reached. */
+  EXPIRY_STRATEGY_SUBMIT = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum StopOrder_TriggerDirection {
+  /** TRIGGER_DIRECTION_UNSPECIFIED - Never valid */
+  TRIGGER_DIRECTION_UNSPECIFIED = 0,
+  /** TRIGGER_DIRECTION_RISES_ABOVE - Stop order is triggered once the price rises above a certain level */
+  TRIGGER_DIRECTION_RISES_ABOVE = 1,
+  /** TRIGGER_DIRECTION_FALLS_BELOW - Stop order is triggered once the price falls below a certain level */
+  TRIGGER_DIRECTION_FALLS_BELOW = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum StopOrder_Status {
+  /** STATUS_UNSPECIFIED - Never valid */
+  STATUS_UNSPECIFIED = 0,
+  /** STATUS_PENDING - Pending to be executed once the trigger is breached */
+  STATUS_PENDING = 1,
+  /** STATUS_CANCELLED - Cancelled by the user */
+  STATUS_CANCELLED = 2,
+  /** STATUS_STOPPED - Stopped by the network, e.g: OCO on the other side has been triggered */
+  STATUS_STOPPED = 3,
+  /** STATUS_TRIGGERED - Stop order has been triggered and generated an order */
+  STATUS_TRIGGERED = 4,
+  /** STATUS_EXPIRED - Stop order has expired */
+  STATUS_EXPIRED = 5,
+  /** STATUS_REJECTED - Stop order was rejected at submission */
+  STATUS_REJECTED = 6,
+  UNRECOGNIZED = -1,
+}
+
 /** Party represents an entity who wishes to trade on or query a Vega network */
 export interface Party {
   /** Unique ID for the party, typically represented by a public key. */
@@ -394,9 +493,19 @@ export interface PeggedOrder {
   offset: string
 }
 
+/** Details of an iceberg order */
+export interface IcebergOrder {
+  /** Size of the order that will be made visible if the iceberg order is replenished after trading. */
+  peakSize: number
+  /** If the visible size of the order falls below this value, it will be replenished back to the peak size using the reserved amount. */
+  minimumVisibleSize: number
+  /** Size of the order that is reserved and used to restore the iceberg's peak when it is refreshed. */
+  reservedRemaining: number
+}
+
 /** Orders can be submitted, amended and cancelled on Vega in an attempt to make trades with other parties */
 export interface Order {
-  /** Unique ID generated for the order. This is set by the system after consensus. */
+  /** Unique ID generated for the order. */
   id: string
   /** Market ID for the order. */
   marketId: string
@@ -422,35 +531,26 @@ export interface Order {
   type: Order_Type
   /** Timestamp for when the order was created at, in nanoseconds. */
   createdAt: number
-  /**
-   * Current status for the order.
-   * - For detail on `STATUS_REJECTED` please check the OrderError value given in the `reason` field.
-   */
+  /** Current status of the order. */
   status: Order_Status
-  /** Timestamp for when the order will expire, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for when the order will expire. */
   expiresAt: number
-  /**
-   * Reference given for the order, this is typically used to retrieve an order submitted through consensus
-   * - Currently set internally by the node to return a unique reference ID for the order submission.
-   */
+  /** Reference given for the order. */
   reference: string
-  /**
-   * If the Order `status` is `STATUS_REJECTED` then an OrderError reason will be specified
-   * - The default for this field is `ORDER_ERROR_NONE` which signifies that there were no errors.
-   */
+  /** Futher details for why an order with status `STATUS_REJECTED` was rejected. */
   reason?: OrderError | undefined
-  /** Timestamp for when the order was last updated, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for when the order was last updated. */
   updatedAt: number
-  /** Version for the order, initial value is version 1 and is incremented after each successful amend */
+  /** Version for the order, initial value is version 1 and is incremented after each successful amend. */
   version: number
   /**
    * Batch ID for the order, used internally for orders submitted during auctions
-   * to keep track of the auction batch this order falls under (required for fees calculation)
+   * to keep track of the auction batch this order falls under. Required for fees calculation.
    */
   batchId: number
   /** Pegged order details, used only if the order represents a pegged order. */
   peggedOrder: PeggedOrder | undefined
-  /** Set if order was created as part of a liquidity provision, will be empty if not. */
+  /** Set if the order was created as part of a liquidity provision, will be empty if not. */
   liquidityProvisionId: string
   /** Only valid for Limit orders. Cannot be True at the same time as Reduce-Only. */
   postOnly: boolean
@@ -459,6 +559,8 @@ export interface Order {
    * If set, order will only be executed if the outcome of the trade moves the trader's position closer to 0.
    */
   reduceOnly: boolean
+  /** Details of an iceberg order */
+  icebergOrder?: IcebergOrder | undefined
 }
 
 /** Time In Force for an order */
@@ -564,9 +666,9 @@ export interface AuctionIndicativeState {
 
 /** A trade occurs when an aggressive order crosses one or more passive orders on the order book for a market on Vega */
 export interface Trade {
-  /** Unique ID for the trade (generated by Vega). */
+  /** Unique ID for the trade. */
   id: string
-  /** Market ID (the market that the trade occurred on). */
+  /** Market ID on which the trade occurred. */
   marketId: string
   /**
    * Price for the trade, the price is an integer, for example `123456` is a correctly
@@ -585,7 +687,7 @@ export interface Trade {
   buyOrder: string
   /** Identifier of the order from the sell side. */
   sellOrder: string
-  /** Timestamp for when the trade occurred, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for when the trade occurred. */
   timestamp: number
   /** Type for the trade. */
   type: Trade_Type
@@ -638,7 +740,7 @@ export interface TradeSet {
  * referred to commonly as a candlestick or candle
  */
 export interface Candle {
-  /** Timestamp for the point in time when the candle was initially created/opened, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for the point in time when the candle was initially created/opened. */
   timestamp: number
   /** ISO-8601 datetime with nanosecond precision for when the candle was last updated. */
   datetime: string
@@ -654,6 +756,8 @@ export interface Candle {
   volume: number
   /** Time interval for the candle. */
   interval: Interval
+  /** Total notional value traded during the candle interval. */
+  notional: number
 }
 
 /** Represents a price level from market depth or order book data */
@@ -919,7 +1023,7 @@ export interface LedgerEntry {
   amount: string
   /** Transfer type for this entry. */
   type: TransferType
-  /** Unixnano timestamp at which the ledger entry was created. */
+  /** Timestamp in nanoseconds of when the ledger entry was created. */
   timestamp: number
   /** Sender account balance after the transfer. This field is an unsigned integer scaled to the asset's decimal places. */
   fromAccountBalance: string
@@ -958,7 +1062,7 @@ export interface MarginLevels {
   marketId: string
   /** Asset ID for which the margin levels apply. */
   asset: string
-  /** Timestamp for the time the ledger entry was created, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for when the ledger entry was created. */
   timestamp: number
 }
 
@@ -1012,7 +1116,7 @@ export interface MarketData {
   staticMidPrice: string
   /** Market ID for the data */
   market: string
-  /** Timestamp at which this mark price was relevant, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds at which this mark price was relevant. */
   timestamp: number
   /** Sum of the size of all positions greater than zero on the market. */
   openInterest: number
@@ -1042,22 +1146,26 @@ export interface MarketData {
   liquidityProviderFeeShare: LiquidityProviderFeeShare[]
   /** Current state of the market. */
   marketState: Market_State
-  /** Next MTM timestamp. */
+  /** Time in Unix nanoseconds when the next mark-to-market calculation will occur. */
   nextMarkToMarket: number
   /** Last traded price of the market. This field is an unsigned integer scaled to the market's decimal places. */
   lastTradedPrice: string
+  /** Market growth at the last market time window. */
+  marketGrowth: string
 }
 
 /** Equity like share of liquidity fee for each liquidity provider */
 export interface LiquidityProviderFeeShare {
   /** Liquidity provider party ID. */
   party: string
-  /** Share own by this liquidity provider (float). */
+  /** Share own by this liquidity provider. */
   equityLikeShare: string
   /** Average entry valuation of the liquidity provider for the market. */
   averageEntryValuation: string
   /** Average liquidity score. */
   averageScore: string
+  /** The virtual stake of this liquidity provider. */
+  virtualStake: string
 }
 
 /** Represents a list of valid (at the current timestamp) price ranges per associated trigger */
@@ -1108,9 +1216,9 @@ export interface NetworkLimits {
   proposeAssetEnabled: boolean
   /** True once the genesis file is loaded. */
   genesisLoaded: boolean
-  /** Date/timestamp in unix nanoseconds at which market proposals will be enabled (0 indicates not set). */
+  /** Timestamp in Unix nanoseconds at which market proposals will be enabled (0 indicates not set). */
   proposeMarketEnabledFrom: number
-  /** Date/timestamp in unix nanoseconds at which asset proposals will be enabled (0 indicates not set). */
+  /** Timestamp in Unix nanoseconds at which asset proposals will be enabled (0 indicates not set). */
   proposeAssetEnabledFrom: number
 }
 
@@ -1124,9 +1232,9 @@ export interface LiquidityOrder {
   offset: string
 }
 
-/** Pair of a liquidity order and the ID of the generated order by the core */
+/** Pair of a liquidity order and the ID of the generated order */
 export interface LiquidityOrderReference {
-  /** Unique ID of the pegged order generated by the core to fulfil this liquidity order. */
+  /** Unique ID of the pegged order generated to fulfil this liquidity order. */
   orderId: string
   /** Liquidity order from the original submission. */
   liquidityOrder: LiquidityOrder | undefined
@@ -1138,11 +1246,11 @@ export interface LiquidityProvision {
   id: string
   /** Unique party ID for the creator of the provision. */
   partyId: string
-  /** Timestamp for when the order was created at, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for when the order was created. */
   createdAt: number
-  /** Timestamp for when the order was updated at, in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for when the order was updated. */
   updatedAt: number
-  /** Market ID for the order, required field. */
+  /** Market ID for the order. */
   marketId: string
   /**
    * Specified as a unitless number that represents the amount of settlement asset of the market.
@@ -1165,7 +1273,7 @@ export interface LiquidityProvision {
 
 /** Status of a liquidity provision order. */
 export enum LiquidityProvision_Status {
-  /** STATUS_UNSPECIFIED - Default value */
+  /** STATUS_UNSPECIFIED - Always invalid */
   STATUS_UNSPECIFIED = 0,
   /** STATUS_ACTIVE - Liquidity provision is active */
   STATUS_ACTIVE = 1,
@@ -1219,11 +1327,11 @@ export interface EthereumContractConfig {
 
 /** Describes in both human readable and block time when an epoch spans */
 export interface EpochTimestamps {
-  /** Timestamp of epoch start in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for when epoch started. */
   startTime: number
-  /** Timestamp of epoch expiry in nanoseconds. */
+  /** Timestamp in Unix nanoseconds for the epoch's expiry. */
   expiryTime: number
-  /** Timestamp of epoch end in nanoseconds, empty if not started. */
+  /** Timestamp in Unix nanoseconds for when the epoch ended, empty if not ended. */
   endTime: number
   /** Height of first block in the epoch. */
   firstBlock: number

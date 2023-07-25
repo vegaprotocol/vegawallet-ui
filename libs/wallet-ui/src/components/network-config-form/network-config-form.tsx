@@ -11,7 +11,7 @@ import { Input } from '../forms/input'
 
 interface FormFields {
   name: string
-  grpcNodeRetries: number
+  // grpcNodeRetries: number
   grpcHosts: Array<{ value: string }>
   graphqlHosts: Array<{ value: string }>
   restHosts: Array<{ value: string }>
@@ -100,7 +100,7 @@ export const NetworkConfigForm = ({
       <HostEditor name="graphqlHosts" control={control} register={register} />
       <h2>REST Nodes</h2>
       <HostEditor name="restHosts" control={control} register={register} />
-      <FormGroup
+      {/* <FormGroup
         label="gRPC Node retries"
         labelFor="grpcNodeRetries"
         intent={errors.grpcNodeRetries?.message ? Intent.DANGER : Intent.NONE}
@@ -115,7 +115,7 @@ export const NetworkConfigForm = ({
             max: Validation.NUMBER_MAX_GRPC_RETRIES,
           })}
         />
-      </FormGroup>
+      </FormGroup> */}
       <Button data-testid="submit" type="submit">
         Submit
       </Button>
@@ -189,7 +189,7 @@ function fieldsToConfig(
     api: {
       grpc: {
         hosts: values.grpcHosts.map((x) => x.value),
-        retries: Number(values.grpcNodeRetries),
+        // retries: Number(values.grpcNodeRetries),
       },
       graphQL: {
         hosts: values.graphqlHosts.map((x) => x.value),
@@ -209,7 +209,7 @@ function fieldsToConfig(
 function configToFields(config: WalletModel.DescribeNetworkResult): FormFields {
   return {
     name: config.name,
-    grpcNodeRetries: config.api?.grpc?.retries || 0,
+    // grpcNodeRetries: config.api?.grpc?.retries || 0,
     // @ts-ignore any resulting from generated types
     grpcHosts: config.api.grpc?.hosts.map((x) => ({ value: x })) || [],
     // @ts-ignore any resulting from generated types

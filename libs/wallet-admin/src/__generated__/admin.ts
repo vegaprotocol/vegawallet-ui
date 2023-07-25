@@ -410,30 +410,6 @@ export class WalletAdmin {
   }
 
   /**
-   * Start a wallet service.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public StartService = (params: WalletModel.StartServiceParams) => {
-    return this.request({
-      method: Identifier.StartService,
-      params,
-    })
-  }
-
-  /**
-   * Stop a wallet service.
-   */
-
-  // tslint:disable-next-line:max-line-length
-  public StopService = (params: WalletModel.StopServiceParams) => {
-    return this.request({
-      method: Identifier.StopService,
-      params,
-    })
-  }
-
-  /**
    * List all the connections of a service.
    */
 
