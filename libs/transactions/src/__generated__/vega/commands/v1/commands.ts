@@ -13,6 +13,7 @@ import type {
   PeggedOrder,
   PeggedReference,
   Side,
+  StopOrder_ExpiryStrategy,
   WithdrawExt,
 } from '../../vega'
 import type { NodeSignatureKind } from './validator_commands'
@@ -37,6 +38,59 @@ export interface BatchMarketInstructions {
   amendments: OrderAmendment[]
   /** List of order submissions to be processed sequentially. */
   submissions: OrderSubmission[]
+  /** List of stop order cancellations to be processed sequentially. */
+  stopOrdersCancellation: StopOrdersCancellation[]
+  /** List of stop order submissions to be processed sequentially. */
+  stopOrdersSubmission: StopOrdersSubmission[]
+}
+
+/**
+ * Stop order submission submits stops orders.
+ * It is possible to make a single stop order submission by
+ * specifying a single direction,
+ * or an OCO (One Cancels the Other) stop order submission
+ * by specifying a configuration for both directions
+ */
+export interface StopOrdersSubmission {
+  /**
+   * Stop order that will be triggered
+   * if the price rises above a given trigger price.
+   */
+  risesAbove?: StopOrderSetup | undefined
+  /**
+   * Stop order that will be triggered
+   * if the price falls below a given trigger price.
+   */
+  fallsBelow?: StopOrderSetup | undefined
+}
+
+/** Price and expiry configuration for a stop order */
+export interface StopOrderSetup {
+  /** Order to be submitted once the trigger is breached. */
+  orderSubmission: OrderSubmission | undefined
+  /** Optional expiry timestamp. */
+  expiresAt?: number | undefined
+  /** Strategy to adopt if the expiry time is reached. */
+  expiryStrategy?: StopOrder_ExpiryStrategy | undefined
+  /** Fixed price at which the order will be submitted. */
+  price?: string | undefined
+  /** Trailing percentage at which the order will be submitted. */
+  trailingPercentOffset?: string | undefined
+}
+
+/**
+ * Cancel a stop order.
+ * The following combinations are available:
+ * Empty object will cancel all stop orders for the party
+ * Market ID alone will cancel all stop orders in a market
+ * Market ID and order ID will cancel a specific stop order in a market
+ * If the stop order is part of an OCO, both stop orders will be cancelled
+ */
+export interface StopOrdersCancellation {
+  /** Optional market ID. */
+  marketId?: string | undefined
+  /** Optional order ID. */
+  stopOrderId?: string | undefined
 }
 
 /** Order submission is a request to submit or create a new order on Vega */
@@ -57,7 +111,7 @@ export interface OrderSubmission {
   /** Time in force indicates how long an order will remain active before it is executed or expires, required field. */
   timeInForce: Order_TimeInForce
   /**
-   * Timestamp for when the order will expire, in nanoseconds,
+   * Timestamp in Unix nanoseconds for when the order will expire,
    * required field only for `Order.TimeInForce`.TIME_IN_FORCE_GTT`.
    */
   expiresAt: number
@@ -77,6 +131,16 @@ export interface OrderSubmission {
    * If set, order will only be executed if the outcome of the trade moves the trader's position closer to 0.
    */
   reduceOnly: boolean
+  /** Parameters used to specify an iceberg order. */
+  icebergOpts?: IcebergOpts | undefined
+}
+
+/** Iceberg order options */
+export interface IcebergOpts {
+  /** Size of the order that is made visible and can be traded with during the execution of a single order. */
+  peakSize: number
+  /** Minimum allowed remaining size of the order before it is replenished back to its peak size. */
+  minimumVisibleSize: number
 }
 
 /** Order cancellation is a request to cancel an existing order on Vega */
@@ -118,7 +182,7 @@ export interface OrderAmendment {
 
 /** A liquidity provision submitted for a given market */
 export interface LiquidityProvisionSubmission {
-  /** Market ID for the order, required field. */
+  /** Market ID for the order. */
   marketId: string
   /**
    * Specified as a unitless number that represents the amount of settlement asset of the market.
@@ -131,7 +195,7 @@ export interface LiquidityProvisionSubmission {
   sells: LiquidityOrder[]
   /** Set of liquidity buy orders to meet the liquidity provision obligation. */
   buys: LiquidityOrder[]
-  /** Reference to be added to every order created out of this liquidityProvisionSubmission. */
+  /** Reference to be added to every order created out of this liquidity provision submission. */
   reference: string
 }
 
@@ -239,10 +303,7 @@ export interface Transfer {
 
 /** Specific details for a one off transfer */
 export interface OneOffTransfer {
-  /**
-   * Unix timestamp in nanoseconds. Time at which the
-   * transfer should be delivered into the To account.
-   */
+  /** Timestamp in Unix nanoseconds for when the transfer should be delivered into the receiver's account. */
   deliverOn: number
 }
 

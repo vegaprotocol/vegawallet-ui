@@ -14,6 +14,7 @@ export type WalletConnectionData = {
   selectedWallet?: string // populated if multiple wallets are available
   wallet?: string // populated if only a single wallet is available
   error?: InteractionErrorType
+  reason?: string
 }
 
 export type WalletConnectionProps = {

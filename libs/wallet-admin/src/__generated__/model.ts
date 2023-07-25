@@ -18,14 +18,29 @@ export namespace WalletModel {
   export type RevokePermissionsResult = null
   export type PurgePermissionsResult = null
   /**
-   * The chosen mode to send the transaction:
-   * - `TYPE_SYNC` returns the result of running the transaction.
-   * - `TYPE_ASYNC` returns right away without waiting to hear if the transaction is even valid.
-   * - `TYPE_COMMIT` waits until the transaction is committed in a block, or until some timeout is reached, or returns return right away if the transaction is not valid.
+   * The maximum duration the software waits for the node to respond. If the node does not respond in time, the software cancels the request. Not required if the last block data is specified, as no network query will be issued.
+   */
+  export type Duration = number
+  /**
+   * The maximum duration the software waits for the node to respond. If the node does not respond in time, the software cancels the request.
+   */
+  export type Duration1 = number
+  /**
+   * The mode used to send the transaction to the network.
    */
   export type SendingMode = 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
-  export type StartServiceResult = null
-  export type StopServiceResult = null
+  /**
+   * The maximum duration the software waits for the node to respond. If the node does not respond in time, the software cancels the request.
+   */
+  export type Duration2 = number
+  /**
+   * The maximum duration the software waits for the node to respond. If the node does not respond in time, the software cancels the request.
+   */
+  export type Duration3 = number
+  /**
+   * The mode used to send the transaction to the network.
+   */
+  export type SendingMode1 = 'TYPE_SYNC' | 'TYPE_ASYNC' | 'TYPE_COMMIT'
   export type CloseConnectionResult = null
   export type CloseConnectionsToHostnameResult = null
   export type CloseConnectionsToWalletResult = null
@@ -97,10 +112,6 @@ export namespace WalletModel {
     CheckTransactionParams?: CheckTransactionParams
     SendRawTransactionResult?: SendRawTransactionResult
     SendRawTransactionParams?: SendRawTransactionParams
-    StartServiceResult?: StartServiceResult
-    StartServiceParams?: StartServiceParams
-    StopServiceResult?: StopServiceResult
-    StopServiceParams?: StopServiceParams
     ListConnectionsResult?: ListConnectionsResult
     ListConnectionsParams?: ListConnectionsParams
     CloseConnectionResult?: CloseConnectionResult
@@ -227,7 +238,6 @@ export namespace WalletModel {
     api: {
       grpc: {
         hosts: string[]
-        retries: number
       }
       graphQL?: {
         hosts: string[]
@@ -263,7 +273,6 @@ export namespace WalletModel {
   export interface NetworkApiConfig {
     grpc: {
       hosts: string[]
-      retries: number
     }
     graphQL?: {
       hosts: string[]
@@ -541,18 +550,32 @@ export namespace WalletModel {
     encodedTransaction: string
   }
   export interface SignTransactionParams {
+    /**
+     * The wallet from which the signing key comes from.
+     */
     wallet: string
+    /**
+     * The public key associated to the private key that is used to sign the transaction.
+     */
     publicKey: string
+    /**
+     * The network configuration to use to retrieve the last block data. If specified, the last block data will be fetched by one of the nodes specified in this network configuration. Not required if the last block data is specified, as no network query will be issued.
+     */
     network?: string
     transaction: Transaction
     lastBlockData?: LastBlockData
+    /**
+     * The number of times the software should retry sending the requests to the node if there is a communication failure. Not required if the last block data is specified, as no network query will be issued.
+     */
+    retries?: number
+    maximumRequestDuration?: Duration
   }
   /**
-   * The transaction as a JSON object
+   * The transaction to sign.
    */
   export interface Transaction {}
   /**
-   * The data related to the last block forged on the network.
+   * Instead of fetching the last block data from a network, it possible to manually specify it. If specified, then the parameters `network`, `retries` and `maximumRequestDuration` do not have to be specified.
    */
   export interface LastBlockData {
     blockHeight: number
@@ -628,14 +651,34 @@ export namespace WalletModel {
     }
   }
   export interface SendTransactionParams {
+    /**
+     * The wallet from which the signing key comes from.
+     */
     wallet: string
+    /**
+     * The public key associated to the private key that is used to sign the transaction.
+     */
     publicKey: string
+    /**
+     * The network configuration used to connect the network and send the transaction to. It should not be specified if the parameter `nodeAddress` is specified.
+     */
     network?: string
+    /**
+     * he specific node address used to connect to the network and send the transaction. It should not be specified if the parameter `network` is specified.
+     */
     nodeAddress?: string
+    /**
+     * The number of times the software should retry sending the requests to the node if there is a communication failure.
+     */
     retries?: number
+    maximumRequestDuration?: Duration1
     sendingMode: SendingMode
-    transaction: Transaction
+    transaction: Transaction1
   }
+  /**
+   * The transaction to send.
+   */
+  export interface Transaction1 {}
   export interface CheckTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
@@ -675,13 +718,33 @@ export namespace WalletModel {
     }
   }
   export interface CheckTransactionParams {
+    /**
+     * The wallet from which the signing key comes from.
+     */
     wallet: string
+    /**
+     * The public key associated to the private key that is used to sign the transaction.
+     */
     publicKey: string
+    /**
+     * The network configuration used to connect the network and check the transaction against. It should not be specified if the parameter `nodeAddress` is specified.
+     */
     network?: string
+    /**
+     * The specific node address used to connect the network and check the transaction against. It should not be specified if the parameter `network` is specified.
+     */
     nodeAddress?: string
-    retries?: number
-    transaction: Transaction
+    /**
+     * The number of times the software should retry sending the requests to the node if there is a communication failure.
+     */
+    retries: number
+    maximumRequestDuration: Duration2
+    transaction: Transaction2
   }
+  /**
+   * The transaction to check.
+   */
+  export interface Transaction2 {}
   export interface SendRawTransactionResult {
     /**
      * The date when the API received the request to send the transaction.
@@ -729,25 +792,19 @@ export namespace WalletModel {
      */
     encodedTransaction: string
     /**
-     * The network to send the transaction to.
+     * The network configuration used to connect the network and send the transaction to. It should not be specified if the parameter `nodeAddress` is specified.
      */
     network: string
     /**
-     * The node address to send the transaction to.
+     * he specific node address used to connect to the network and send the transaction. It should not be specified if the parameter `network` is specified.
      */
     nodeAddress: string
     /**
-     * the number of times sending the transaction should be attempted if it fails
+     * The number of times the software should retry sending the requests to the node if there is a communication failure.
      */
     retries: number
-    sendingMode: SendingMode
-  }
-  export interface StartServiceParams {
-    network: string
-    noVersionCheck: boolean
-  }
-  export interface StopServiceParams {
-    network: string
+    maximumRequestDuration: Duration3
+    sendingMode: SendingMode1
   }
   export interface ListConnectionsResult {
     /**
@@ -805,8 +862,6 @@ export enum Identifier {
   SendTransaction = 'admin.send_transaction',
   CheckTransaction = 'admin.check_transaction',
   SendRawTransaction = 'admin.send_raw_transaction',
-  StartService = 'admin.start_service',
-  StopService = 'admin.stop_service',
   ListConnections = 'admin.list_connections',
   CloseConnection = 'admin.close_connection',
   CloseConnectionsToHostname = 'admin.close_connections_to_hostname',
@@ -898,8 +953,6 @@ export type WalletAPIRequest =
       method: Identifier.SendRawTransaction
       params: WalletModel.SendRawTransactionParams
     }
-  | { method: Identifier.StartService; params: WalletModel.StartServiceParams }
-  | { method: Identifier.StopService; params: WalletModel.StopServiceParams }
   | {
       method: Identifier.ListConnections
       params: WalletModel.ListConnectionsParams
@@ -951,8 +1004,6 @@ export type WalletAPIResponse =
   | WalletModel.SendTransactionResult
   | WalletModel.CheckTransactionResult
   | WalletModel.SendRawTransactionResult
-  | WalletModel.StartServiceResult
-  | WalletModel.StopServiceResult
   | WalletModel.ListConnectionsResult
   | WalletModel.CloseConnectionResult
   | WalletModel.CloseConnectionsToHostnameResult
@@ -1090,14 +1141,6 @@ export type WalletAPIHandler = ((req: {
     method: Identifier.SendRawTransaction
     params: WalletModel.SendRawTransactionParams
   }) => Promise<WalletModel.SendRawTransactionResult>) &
-  ((req: {
-    method: Identifier.StartService
-    params: WalletModel.StartServiceParams
-  }) => Promise<WalletModel.StartServiceResult>) &
-  ((req: {
-    method: Identifier.StopService
-    params: WalletModel.StopServiceParams
-  }) => Promise<WalletModel.StopServiceResult>) &
   ((req: {
     method: Identifier.ListConnections
     params: WalletModel.ListConnectionsParams
