@@ -3,13 +3,21 @@ import type { AssetDetails, AssetDetailsUpdate } from './assets'
 import type { DataSourceDefinition } from './data_source'
 import type {
   DataSourceSpecToFutureBinding,
+  DataSourceSpecToPerpetualBinding,
   LiquidityMonitoringParameters,
+  LiquiditySLAParameters,
   LogNormalRiskModel,
   PriceMonitoringParameters,
   SimpleModelParams,
   TargetStakeParameters,
 } from './markets'
-import type { AccountType, NetworkParameter } from './vega'
+import type {
+  AccountType,
+  DispatchStrategy,
+  NetworkParameter,
+  ReferralProgram,
+  VolumeDiscountProgram,
+} from './vega'
 
 export const protobufPackage = 'vega'
 
@@ -110,6 +118,30 @@ export enum ProposalError {
   PROPOSAL_ERROR_GOVERNANCE_TRANSFER_PROPOSAL_INVALID = 50,
   /** PROPOSAL_ERROR_GOVERNANCE_CANCEL_TRANSFER_PROPOSAL_INVALID - Proposal for cancelling transfer is invalid, check proposal ID */
   PROPOSAL_ERROR_GOVERNANCE_CANCEL_TRANSFER_PROPOSAL_INVALID = 51,
+  /** PROPOSAL_ERROR_INVALID_MARKET_STATE_UPDATE - Proposal for updating market state is invalid */
+  PROPOSAL_ERROR_INVALID_MARKET_STATE_UPDATE = 52,
+  /** PROPOSAL_ERROR_INVALID_SLA_PARAMS - Liquidity provision SLA parameters are invalid */
+  PROPOSAL_ERROR_INVALID_SLA_PARAMS = 53,
+  /** PROPOSAL_ERROR_MISSING_SLA_PARAMS - Mandatory liquidity provision SLA parameters are missing */
+  PROPOSAL_ERROR_MISSING_SLA_PARAMS = 54,
+  /** PROPOSAL_ERROR_INVALID_PERPETUAL_PRODUCT - Perpetual market proposal contained invalid product definition */
+  PROPOSAL_ERROR_INVALID_PERPETUAL_PRODUCT = 55,
+  /** PROPOSAL_ERROR_INVALID_REFERRAL_PROGRAM - Referral program proposal is invalid */
+  PROPOSAL_ERROR_INVALID_REFERRAL_PROGRAM = 56,
+  /** PROPOSAL_ERROR_INVALID_VOLUME_DISCOUNT_PROGRAM - Volume discount program proposal is invalid */
+  PROPOSAL_ERROR_INVALID_VOLUME_DISCOUNT_PROGRAM = 57,
+  UNRECOGNIZED = -1,
+}
+
+export enum MarketStateUpdateType {
+  /** MARKET_STATE_UPDATE_TYPE_UNSPECIFIED - Default value, always invalid */
+  MARKET_STATE_UPDATE_TYPE_UNSPECIFIED = 0,
+  /** MARKET_STATE_UPDATE_TYPE_TERMINATE - Request to terminate a market via governance */
+  MARKET_STATE_UPDATE_TYPE_TERMINATE = 1,
+  /** MARKET_STATE_UPDATE_TYPE_SUSPEND - Request to suspend a market via governance */
+  MARKET_STATE_UPDATE_TYPE_SUSPEND = 2,
+  /** MARKET_STATE_UPDATE_TYPE_RESUME - Request to resume a market via governance */
+  MARKET_STATE_UPDATE_TYPE_RESUME = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -144,6 +176,28 @@ export interface FutureProduct {
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
 }
 
+/** Perpetual product configuration */
+export interface PerpetualProduct {
+  /** Asset ID for the product's settlement asset. */
+  settlementAsset: string
+  /** Product quote name. */
+  quoteName: string
+  /** Controls how much the upcoming funding payment liability contributes to party's margin, in the range [0, 1]. */
+  marginFundingFactor: string
+  /** Continuously compounded interest rate used in funding rate calculation, in the range [-1, 1]. */
+  interestRate: string
+  /** Lower bound for the clamp function used as part of the funding rate calculation, in the range [-1, 1]. */
+  clampLowerBound: string
+  /** Upper bound for the clamp function used as part of the funding rate calculation, in the range [-1, 1]. */
+  clampUpperBound: string
+  /** Data source spec describing the data source for settlement schedule. */
+  dataSourceSpecForSettlementSchedule: DataSourceDefinition | undefined
+  /** Data source spec describing the data source for settlement. */
+  dataSourceSpecForSettlementData: DataSourceDefinition | undefined
+  /** Binding between the data source spec and the settlement data. */
+  dataSourceSpecBinding: DataSourceSpecToPerpetualBinding | undefined
+}
+
 /** Instrument configuration */
 export interface InstrumentConfiguration {
   /** Instrument name. */
@@ -154,6 +208,8 @@ export interface InstrumentConfiguration {
   future?: FutureProduct | undefined
   /** Spot. */
   spot?: SpotProduct | undefined
+  /** Perpetual. */
+  perpetual?: PerpetualProduct | undefined
 }
 
 /** Configuration for a new spot market on Vega */
@@ -174,6 +230,8 @@ export interface NewSpotMarketConfiguration {
   logNormal?: LogNormalRiskModel | undefined
   /** Decimal places for order sizes, sets what size the smallest order / position on the spot market can be. */
   positionDecimalPlaces: number
+  /** Specifies the liquidity provision SLA parameters. */
+  slaParams: LiquiditySLAParameters | undefined
 }
 
 /** Configuration for a new futures market on Vega */
@@ -195,16 +253,19 @@ export interface NewMarketConfiguration {
   /** Decimal places for order sizes, sets what size the smallest order / position on the futures market can be. */
   positionDecimalPlaces: number
   /**
+   * DEPRECATED: Use liquidity SLA parameters instead.
    * Percentage move up and down from the mid price which specifies the range of
    * price levels over which automated liquidity provision orders will be deployed.
    */
-  lpPriceRange: string
+  lpPriceRange?: string | undefined
   /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
   /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
   /** Successor configuration. If this proposal is meant to succeed a given market, then this should be set. */
   successor?: SuccessorConfiguration | undefined
+  /** Liquidity SLA parameters */
+  liquiditySlaParameters: LiquiditySLAParameters | undefined
 }
 
 /** New spot market on Vega */
@@ -258,14 +319,17 @@ export interface UpdateMarketConfiguration {
   /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected. */
   logNormal?: LogNormalRiskModel | undefined
   /**
+   * DEPRECATED: Use liquidity SLA parameters instead.
    * Percentage move up and down from the mid price which specifies the range of
    * price levels over which automated liquidity provision orders will be deployed.
    */
-  lpPriceRange: string
+  lpPriceRange?: string | undefined
   /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */
   linearSlippageFactor: string
   /** Quadratic slippage factor is used to cap the slippage component of maintenance margin - it is applied to the square of the slippage volume. */
   quadraticSlippageFactor: string
+  /** Liquidity SLA parameters */
+  liquiditySlaParameters: LiquiditySLAParameters | undefined
 }
 
 /** Configuration to update a spot market on Vega */
@@ -280,6 +344,8 @@ export interface UpdateSpotMarketConfiguration {
   simple?: SimpleModelParams | undefined
   /** Log normal risk model parameters, valid only if MODEL_LOG_NORMAL is selected. */
   logNormal?: LogNormalRiskModel | undefined
+  /** Specifies the liquidity provision SLA parameters. */
+  slaParams: LiquiditySLAParameters | undefined
 }
 
 /** Instrument configuration */
@@ -288,6 +354,8 @@ export interface UpdateInstrumentConfiguration {
   code: string
   /** Future. */
   future?: UpdateFutureProduct | undefined
+  /** Perpetual. */
+  perpetual?: UpdatePerpetualProduct | undefined
 }
 
 /** Future product configuration */
@@ -300,6 +368,26 @@ export interface UpdateFutureProduct {
   dataSourceSpecForTradingTermination: DataSourceDefinition | undefined
   /** The binding between the data source spec and the settlement data. */
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
+}
+
+/** Perpetual product configuration */
+export interface UpdatePerpetualProduct {
+  /** Human-readable name/abbreviation of the quote name. */
+  quoteName: string
+  /** Controls how much the upcoming funding payment liability contributes to party's margin, in the range [0, 1]. */
+  marginFundingFactor: string
+  /** Continuously compounded interest rate used in funding rate calculation, in the range [-1, 1]. */
+  interestRate: string
+  /** Lower bound for the clamp function used as part of the funding rate calculation, in the range [-1, 1]. */
+  clampLowerBound: string
+  /** Upper bound for the clamp function used as part of the funding rate calculation, in the range [-1, 1]. */
+  clampUpperBound: string
+  /** Data source spec describing the data source for settlement schedule. */
+  dataSourceSpecForSettlementSchedule: DataSourceDefinition | undefined
+  /** Data source spec describing the data source for settlement. */
+  dataSourceSpecForSettlementData: DataSourceDefinition | undefined
+  /** Binding between the data source spec and the settlement data. */
+  dataSourceSpecBinding: DataSourceSpecToPerpetualBinding | undefined
 }
 
 /** Update network configuration on Vega */
@@ -366,6 +454,12 @@ export interface ProposalTerms {
   newTransfer?: NewTransfer | undefined
   /** Cancel a governance transfer. */
   cancelTransfer?: CancelTransfer | undefined
+  /** Proposal change for updating the state of a market. */
+  updateMarketState?: UpdateMarketState | undefined
+  /** Proposal change for updating the referral program. */
+  updateReferralProgram?: UpdateReferralProgram | undefined
+  /** Proposal change for updating the volume discount program. */
+  updateVolumeDiscountProgram?: UpdateVolumeDiscountProgram | undefined
 }
 
 /** Rationale behind a proposal. */
@@ -504,6 +598,30 @@ export enum Vote_Value {
   UNRECOGNIZED = -1,
 }
 
+export interface UpdateVolumeDiscountProgram {
+  /** Configuration for a change to update a volume discount program */
+  changes: VolumeDiscountProgram | undefined
+}
+
+export interface UpdateReferralProgram {
+  /** Configuration for change to update a referral program. */
+  changes: ReferralProgram | undefined
+}
+
+export interface UpdateMarketState {
+  /** Configuration for governance-initiated change of a market's state */
+  changes: UpdateMarketStateConfiguration | undefined
+}
+
+export interface UpdateMarketStateConfiguration {
+  /** ID of the market */
+  marketId: string
+  /** Type of the market update */
+  updateType: MarketStateUpdateType
+  /** Settlement price, relevant only for market termination for futures markets */
+  price?: string | undefined
+}
+
 export interface CancelTransfer {
   /** Configuration for cancellation of a governance-initiated transfer */
   changes: CancelTransferConfiguration | undefined
@@ -558,8 +676,9 @@ export interface OneOffTransfer {
 
 /** Specific details for a recurring transfer */
 export interface RecurringTransfer {
-  /** First epoch from which this transfer shall be paid. */
   startEpoch: number
   /** Last epoch at which this transfer shall be paid. */
   endEpoch?: number | undefined
+  /** Optional parameter defining how a transfer is dispatched. */
+  dispatchStrategy?: DispatchStrategy | undefined
 }

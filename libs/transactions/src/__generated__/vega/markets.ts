@@ -43,6 +43,28 @@ export interface Future {
   dataSourceSpecBinding: DataSourceSpecToFutureBinding | undefined
 }
 
+/** Perpetual product definition */
+export interface Perpetual {
+  /** Underlying asset for the perpetual. */
+  settlementAsset: string
+  /** Quote name of the instrument. */
+  quoteName: string
+  /** Controls how much the upcoming funding payment liability contributes to party's margin, in the range [0, 1]. */
+  marginFundingFactor: string
+  /** Continuously compounded interest rate used in funding rate calculation, in the range [-1, 1]. */
+  interestRate: string
+  /** Lower bound for the clamp function used as part of the funding rate calculation, in the range [-1, 1]. */
+  clampLowerBound: string
+  /** Upper bound for the clamp function used as part of the funding rate calculation, in the range [-1, 1]. */
+  clampUpperBound: string
+  /** Data source spec describing the data source for settlement schedule. */
+  dataSourceSpecForSettlementSchedule: DataSourceSpec | undefined
+  /** Data source spec describing the data source for settlement. */
+  dataSourceSpecForSettlementData: DataSourceSpec | undefined
+  /** Binding between the data source spec and the settlement data. */
+  dataSourceSpecBinding: DataSourceSpecToPerpetualBinding | undefined
+}
+
 /**
  * DataSourceSpecToFutureBinding describes which property of the data source data is to be
  * used as settlement data and which to use as the trading terminated trigger
@@ -56,6 +78,25 @@ export interface DataSourceSpecToFutureBinding {
   settlementDataProperty: string
   /** Name of the property in the data source data that signals termination of trading. */
   tradingTerminationProperty: string
+}
+
+/**
+ * Describes which property of the data source data is to be
+ * used as settlement data and which to use as the trading terminated trigger
+ */
+export interface DataSourceSpecToPerpetualBinding {
+  /**
+   * Name of the property in the source data that should be used as settlement data.
+   * If it is set to "prices.BTC.value", then the perpetual market will use the value of
+   * this property as settlement data.
+   */
+  settlementDataProperty: string
+  /**
+   * Name of the property in the source data that should be used as settlement data.
+   * If it is set to "prices.BTC.value", then the perpetual market will use the value of
+   * this property as settlement data.
+   */
+  settlementScheduleProperty: string
 }
 
 /** Instrument metadata definition */
@@ -78,6 +119,8 @@ export interface Instrument {
   future?: Future | undefined
   /** Spot. */
   spot?: Spot | undefined
+  /** Perpetual. */
+  perpetual?: Perpetual | undefined
 }
 
 /** Risk model for log normal */
@@ -212,6 +255,19 @@ export interface LiquidityMonitoringParameters {
   auctionExtension: number
 }
 
+export interface LiquiditySLAParameters {
+  priceRange: string
+  /** Specifies the minimum fraction of time LPs must spend "on the book" providing their committed liquidity. */
+  commitmentMinTimeFraction: string
+  /** Specifies the number of liquidity epochs over which past performance will continue to affect rewards. */
+  performanceHysteresisEpochs: number
+  /**
+   * Specifies the maximum fraction of their accrued fees an LP that meets the SLA implied by market.liquidity.commitmentMinTimeFraction will lose to liquidity providers
+   * that achieved a higher SLA performance than them.
+   */
+  slaCompetitionFactor: string
+}
+
 /** TargetStakeParameters contains parameters used in target stake calculation */
 export interface TargetStakeParameters {
   /** Specifies length of time window expressed in seconds for target stake calculation. */
@@ -266,6 +322,8 @@ export interface Market {
   insurancePoolFraction?: string | undefined
   /** ID of the market that succeeds this market if it exists. This will be populated by the system when the successor market is enabled. */
   successorMarketId?: string | undefined
+  /** Liquidity SLA parameters for the market. */
+  liquiditySlaParams?: LiquiditySLAParameters | undefined
 }
 
 /** Current state of the market */
@@ -296,6 +354,8 @@ export enum Market_State {
   STATE_TRADING_TERMINATED = 8,
   /** STATE_SETTLED - Settlement triggered and completed as defined by product */
   STATE_SETTLED = 9,
+  /** STATE_SUSPENDED_VIA_GOVERNANCE - Market has been suspended via governance */
+  STATE_SUSPENDED_VIA_GOVERNANCE = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -313,6 +373,8 @@ export enum Market_TradingMode {
   TRADING_MODE_MONITORING_AUCTION = 4,
   /** TRADING_MODE_NO_TRADING - No trading is allowed */
   TRADING_MODE_NO_TRADING = 5,
+  /** TRADING_MODE_SUSPENDED_VIA_GOVERNANCE - Special auction mode triggered via governance */
+  TRADING_MODE_SUSPENDED_VIA_GOVERNANCE = 6,
   UNRECOGNIZED = -1,
 }
 

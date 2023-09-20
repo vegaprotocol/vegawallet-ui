@@ -1,6 +1,6 @@
 {
   "name": "@vegaprotocol/wallet-admin",
-  "version": "0.2.5",
+  "version": "0.73.0-preview.5",
   "types": "./index.d.ts",
   "license": "MIT"
 }

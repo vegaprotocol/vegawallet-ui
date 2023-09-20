@@ -114,6 +114,8 @@ export enum NodeVote_Type {
   TYPE_SIGNER_THRESHOLD_SET = 11,
   /** TYPE_GOVERNANCE_VALIDATE_ASSET - Node vote to validate a new assert governance proposal */
   TYPE_GOVERNANCE_VALIDATE_ASSET = 12,
+  /** TYPE_ETHEREUM_CONTRACT_CALL_RESULT - Node vote for an Ethereum contract call result */
+  TYPE_ETHEREUM_CONTRACT_CALL_RESULT = 13,
   UNRECOGNIZED = -1,
 }
 

@@ -51,6 +51,10 @@ export interface Data {
    * with a matching spec. It has no value when the data did not match any spec.
    */
   broadcastAt: number
+  /** Holds all metadata properties */
+  metaData: Property[]
+  /** Error message if the data could not be sourced. */
+  error?: string | undefined
 }
 
 export interface ExternalData {

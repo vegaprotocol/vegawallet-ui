@@ -334,3 +334,58 @@ export interface IssueSignatures {
   /** Node ID of the validator node that will be signed in or out of the smart contract. */
   validatorNodeId: string
 }
+
+/**
+ * Request for creating a referral set
+ *
+ * Creates a referral set. The creator automatically becomes
+ * the leader, called a referrer. This cannot be changed.
+ * A referrer cannot be part of an existing set as referrer or referee.
+ */
+export interface CreateReferralSet {
+  isTeam: boolean
+  team?: CreateReferralSet_Team | undefined
+}
+
+export interface CreateReferralSet_Team {
+  /** Team name to be added to the referral banner. */
+  name: string
+  /** Optional link to a team forum, discord, etc. */
+  teamUrl?: string | undefined
+  /** Optional link to an image to be used as the team avatar. */
+  avatarUrl?: string | undefined
+  /** Is this team closed for external other users */
+  closed: boolean
+}
+
+/** Request for updating a referral set's properties */
+export interface UpdateReferralSet {
+  /** ID of the referral set to update. */
+  id: string
+  isTeam: boolean
+  team?: UpdateReferralSet_Team | undefined
+}
+
+export interface UpdateReferralSet_Team {
+  /** Optional team name to be added to the referral banner. */
+  name?: string | undefined
+  /** Optional link to a team forum, discord, etc. */
+  teamUrl?: string | undefined
+  /** Optional link to an image to be used as the team avatar. */
+  avatarUrl?: string | undefined
+  /** Is this team closed for external other users */
+  closed?: boolean | undefined
+}
+
+/**
+ * Request to apply a referral code
+ *
+ * A party that joins a referral team is called a referee. A referee cannot
+ * create a referral set or join multiple sets.
+ * To switch, the referee can ask to join another set, and the switch will
+ * be effective at the end of the epoch.
+ */
+export interface ApplyReferralCode {
+  /** Referral code for the set to join. */
+  id: string
+}
