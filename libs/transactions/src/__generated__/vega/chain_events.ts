@@ -12,6 +12,8 @@ export interface EthContractCallEvent {
   blockTime: number
   /** Result of contract call, packed according to the ABI stored in the associated data source spec. */
   result: Uint8Array
+  /** Error message if the call failed. */
+  error?: string | undefined
 }
 
 /** Deposit for a Vega built-in asset */

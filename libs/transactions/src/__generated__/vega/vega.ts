@@ -62,8 +62,14 @@ export enum AuctionTrigger {
   AUCTION_TRIGGER_LIQUIDITY = 4,
   /** AUCTION_TRIGGER_LIQUIDITY_TARGET_NOT_MET - Liquidity auction due to not enough committed liquidity */
   AUCTION_TRIGGER_LIQUIDITY_TARGET_NOT_MET = 5,
-  /** AUCTION_TRIGGER_UNABLE_TO_DEPLOY_LP_ORDERS - Liquidity auction due to not being able to deploy LP orders because there's nothing to peg on one or both sides of the book */
+  /**
+   * AUCTION_TRIGGER_UNABLE_TO_DEPLOY_LP_ORDERS - Deprecated
+   *
+   * @deprecated
+   */
   AUCTION_TRIGGER_UNABLE_TO_DEPLOY_LP_ORDERS = 6,
+  /** AUCTION_TRIGGER_GOVERNANCE_SUSPENSION - Market is suspended and put into auction via governance */
+  AUCTION_TRIGGER_GOVERNANCE_SUSPENSION = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -272,6 +278,22 @@ export enum AccountType {
   ACCOUNT_TYPE_LP_LIQUIDITY_FEES = 19,
   /** ACCOUNT_TYPE_LIQUIDITY_FEES_BONUS_DISTRIBUTION - Network controlled liquidity fees bonus distribution account, per market. */
   ACCOUNT_TYPE_LIQUIDITY_FEES_BONUS_DISTRIBUTION = 20,
+  /** ACCOUNT_TYPE_NETWORK_TREASURY - Network controlled treasury */
+  ACCOUNT_TYPE_NETWORK_TREASURY = 21,
+  /** ACCOUNT_TYPE_VESTING_REWARDS - Account holding user's rewards for the vesting period */
+  ACCOUNT_TYPE_VESTING_REWARDS = 22,
+  /** ACCOUNT_TYPE_VESTED_REWARDS - Account holding user's rewards after the vesting period */
+  ACCOUNT_TYPE_VESTED_REWARDS = 23,
+  /** ACCOUNT_TYPE_REWARD_AVERAGE_POSITION - Per asset market reward account given for average position */
+  ACCOUNT_TYPE_REWARD_AVERAGE_POSITION = 24,
+  /** ACCOUNT_TYPE_REWARD_RELATIVE_RETURN - Per asset market reward account given for relative return */
+  ACCOUNT_TYPE_REWARD_RELATIVE_RETURN = 25,
+  /** ACCOUNT_TYPE_REWARD_RETURN_VOLATILITY - Per asset market reward account given for return volatility */
+  ACCOUNT_TYPE_REWARD_RETURN_VOLATILITY = 26,
+  /** ACCOUNT_TYPE_REWARD_VALIDATOR_RANKING - Per asset market reward account given to validators by their ranking */
+  ACCOUNT_TYPE_REWARD_VALIDATOR_RANKING = 27,
+  /** ACCOUNT_TYPE_PENDING_FEE_REFERRAL_REWARD - Per asset account for pending fee referral reward payouts */
+  ACCOUNT_TYPE_PENDING_FEE_REFERRAL_REWARD = 28,
   UNRECOGNIZED = -1,
 }
 
@@ -345,19 +367,66 @@ export enum TransferType {
   TRANSFER_TYPE_LIQUIDITY_FEE_UNPAID_COLLECT = 34,
   /** TRANSFER_TYPE_SLA_PERFORMANCE_BONUS_DISTRIBUTE - Distributes performance bonus from market bonus to liquidity provider's general account. */
   TRANSFER_TYPE_SLA_PERFORMANCE_BONUS_DISTRIBUTE = 35,
+  /** TRANSFER_TYPE_PERPETUALS_FUNDING_LOSS - Funds deducted from margin account after a perpetuals funding loss. */
+  TRANSFER_TYPE_PERPETUALS_FUNDING_LOSS = 36,
+  /** TRANSFER_TYPE_PERPETUALS_FUNDING_WIN - Funds added to margin account after a perpetuals funding gain. */
+  TRANSFER_TYPE_PERPETUALS_FUNDING_WIN = 37,
+  /** TRANSFER_TYPE_REWARDS_VESTED - Funds moved from the vesting account to the vested account once the vesting period is reached. */
+  TRANSFER_TYPE_REWARDS_VESTED = 38,
+  /** TRANSFER_TYPE_FEE_REFERRER_REWARD_PAY - Fee referrer reward paid from general account. */
+  TRANSFER_TYPE_FEE_REFERRER_REWARD_PAY = 39,
+  /** TRANSFER_TYPE_FEE_REFERRER_REWARD_DISTRIBUTE - Fee referrer reward received into general account of the referrer. */
+  TRANSFER_TYPE_FEE_REFERRER_REWARD_DISTRIBUTE = 44,
   UNRECOGNIZED = -1,
 }
 
 export enum DispatchMetric {
   DISPATCH_METRIC_UNSPECIFIED = 0,
-  /** DISPATCH_METRIC_MAKER_FEES_PAID - Dispatch metric that is using the total maker fees paid in the market */
+  /** DISPATCH_METRIC_MAKER_FEES_PAID - Dispatch metric that uses the total maker fees paid in the market */
   DISPATCH_METRIC_MAKER_FEES_PAID = 1,
-  /** DISPATCH_METRIC_MAKER_FEES_RECEIVED - Dispatch metric that is using the total maker fees received in the market */
+  /** DISPATCH_METRIC_MAKER_FEES_RECEIVED - Dispatch metric that uses the total maker fees received in the market */
   DISPATCH_METRIC_MAKER_FEES_RECEIVED = 2,
-  /** DISPATCH_METRIC_LP_FEES_RECEIVED - Dispatch metric that is using the total LP fees received in the market */
+  /** DISPATCH_METRIC_LP_FEES_RECEIVED - Dispatch metric that uses the total LP fees received in the market */
   DISPATCH_METRIC_LP_FEES_RECEIVED = 3,
-  /** DISPATCH_METRIC_MARKET_VALUE - Dispatch metric that is using total value of the market if above the required threshold and not paid given proposer bonus yet */
+  /** DISPATCH_METRIC_MARKET_VALUE - Dispatch metric that uses total value of the market if above the required threshold and not paid given proposer bonus yet */
   DISPATCH_METRIC_MARKET_VALUE = 4,
+  /** DISPATCH_METRIC_AVERAGE_POSITION - Dispatch metric that uses the time weighted average position */
+  DISPATCH_METRIC_AVERAGE_POSITION = 5,
+  /** DISPATCH_METRIC_RELATIVE_RETURN - Dispatch metric that uses the relative PNL of the party in the market */
+  DISPATCH_METRIC_RELATIVE_RETURN = 6,
+  /** DISPATCH_METRIC_RETURN_VOLATILITY - Dispatch metric that uses return volatility of the party in the market */
+  DISPATCH_METRIC_RETURN_VOLATILITY = 7,
+  /** DISPATCH_METRIC_VALIDATOR_RANKING - Dispatch metric that uses the validator ranking of the validator as metric */
+  DISPATCH_METRIC_VALIDATOR_RANKING = 8,
+  UNRECOGNIZED = -1,
+}
+
+export enum EntityScope {
+  ENTITY_SCOPE_UNSPECIFIED = 0,
+  /** ENTITY_SCOPE_INDIVIDUALS - Rewards must be distributed directly to eligible parties. */
+  ENTITY_SCOPE_INDIVIDUALS = 1,
+  /** ENTITY_SCOPE_TEAMS - Rewards must be distributed to directly eligible teams, and then amongst team members */
+  ENTITY_SCOPE_TEAMS = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum IndividualScope {
+  INDIVIDUAL_SCOPE_UNSPECIFIED = 0,
+  /** INDIVIDUAL_SCOPE_ALL - All parties on the network are within the scope of this reward. */
+  INDIVIDUAL_SCOPE_ALL = 1,
+  /** INDIVIDUAL_SCOPE_IN_TEAM - All parties that are part of a team are within the scope of this reward. */
+  INDIVIDUAL_SCOPE_IN_TEAM = 2,
+  /** INDIVIDUAL_SCOPE_NOT_IN_TEAM - All parties that are not part of a team are within the scope of this reward. */
+  INDIVIDUAL_SCOPE_NOT_IN_TEAM = 3,
+  UNRECOGNIZED = -1,
+}
+
+export enum DistributionStrategy {
+  DISTRIBUTION_STRATEGY_UNSPECIFIED = 0,
+  /** DISTRIBUTION_STRATEGY_PRO_RATA - Rewards funded using the pro-rata strategy should be distributed pro-rata by each entity's reward metric, scaled by any active multipliers that party has. */
+  DISTRIBUTION_STRATEGY_PRO_RATA = 1,
+  /** DISTRIBUTION_STRATEGY_RANK - Rewards funded using the party rank. */
+  DISTRIBUTION_STRATEGY_RANK = 2,
   UNRECOGNIZED = -1,
 }
 
@@ -419,6 +488,8 @@ export interface StopOrder {
   partyId: string
   /** ID of the market the stop order is submitted to. */
   marketId: string
+  /** An optional reason for why a stop order was rejected */
+  rejectionReason?: StopOrder_RejectionReason | undefined
   /** Fixed price at which the order will be submitted. */
   price?: string | undefined
   /**
@@ -463,6 +534,24 @@ export enum StopOrder_Status {
   STATUS_EXPIRED = 5,
   /** STATUS_REJECTED - Stop order was rejected at submission */
   STATUS_REJECTED = 6,
+  UNRECOGNIZED = -1,
+}
+
+export enum StopOrder_RejectionReason {
+  /** REJECTION_REASON_UNSPECIFIED - Never valid */
+  REJECTION_REASON_UNSPECIFIED = 0,
+  /** REJECTION_REASON_TRADING_NOT_ALLOWED - Trading is not allowed yet */
+  REJECTION_REASON_TRADING_NOT_ALLOWED = 1,
+  /** REJECTION_REASON_EXPIRY_IN_THE_PAST - Expiry of the stop order is in the past */
+  REJECTION_REASON_EXPIRY_IN_THE_PAST = 2,
+  /** REJECTION_REASON_MUST_BE_REDUCE_ONLY - Stop orders submission must be reduce only */
+  REJECTION_REASON_MUST_BE_REDUCE_ONLY = 3,
+  /** REJECTION_REASON_MAX_STOP_ORDERS_PER_PARTY_REACHED - Party has reached the maximum stop orders allowed for this market */
+  REJECTION_REASON_MAX_STOP_ORDERS_PER_PARTY_REACHED = 4,
+  /** REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_WITHOUT_A_POSITION - Stop orders are not allowed if there is no open position */
+  REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_WITHOUT_A_POSITION = 5,
+  /** REJECTION_REASON_STOP_ORDER_DOES_NOT_CLOSE_POSITION - This stop order does not close the position */
+  REJECTION_REASON_STOP_ORDER_DOES_NOT_CLOSE_POSITION = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -728,6 +817,24 @@ export interface Fee {
   infrastructureFee: string
   /** Fee amount paid to market makers. This field is an unsigned integer scaled to the asset's decimal places. */
   liquidityFee: string
+  /**
+   * Volume discounts.
+   * Discount on maker fee based on the taker volume.
+   */
+  makerFeeVolumeDiscount: string
+  /** Discount on infrastructure fee based on the taker volume. */
+  infrastructureFeeVolumeDiscount: string
+  /** Discount on liquidity fee basedo on taker volume. */
+  liquidityFeeVolumeDiscount: string
+  /**
+   * Referrer discounts.
+   * Discount on maker fee for eligible referrer.
+   */
+  makerFeeReferrerDiscount: string
+  /** Discount on infrastructure fee for eligible referrer. */
+  infrastructureFeeReferrerDiscount: string
+  /** Discount on liquidity fee for eligible referrer. */
+  liquidityFeeReferrerDiscount: string
 }
 
 export interface TradeSet {
@@ -981,6 +1088,31 @@ export interface DispatchStrategy {
   metric: DispatchMetric
   /** Optional markets in scope. */
   markets: string[]
+  /** Mandatory enum that defines the entities within scope. */
+  entityScope: EntityScope
+  /** Optional enum if the entity scope defined is for individuals, which determines the subset of individuals that are eligible to be rewarded. */
+  individualScope: IndividualScope
+  /** Optional list applicable if the reward type has a scope of teams, which allows the funder to define a list of team IDs that are eligible to be rewarded from this transfer */
+  teamScope: string[]
+  /** The proportion of the top performers in the team for a given metric to be averaged for the metric calculation if the scope is team */
+  nTopPerformers: string
+  /** Minimum number of governance (e.g. VEGA) tokens staked for a party to be considered eligible. Defaults to 0 */
+  stakingRequirement: string
+  /** Minimum notional time-weighted averaged position required for a party to be considered eligible. Defaults to 0 */
+  notionalTimeWeightedAveragePositionRequirement: string
+  /** Number of epochs to evaluate the metric on */
+  windowLength: number
+  /** Number of epochs after distribution to delay vesting of rewards by */
+  lockPeriod: number
+  /** Controls how the reward is distributed between qualifying parties */
+  distributionStrategy: DistributionStrategy
+  /** Ordered list, using start rank, defining the rank bands and share ratio for each band. Mandatory for the rank distribution strategy. */
+  rankTable: Rank[]
+}
+
+export interface Rank {
+  startRank: number
+  shareRatio: number
 }
 
 /** Represents a request to transfer from one set of accounts to another */
@@ -1064,6 +1196,23 @@ export interface MarginLevels {
   asset: string
   /** Timestamp in Unix nanoseconds for when the ledger entry was created. */
   timestamp: number
+}
+
+/** Represents market data specific to a perpetual market. */
+export interface PerpetualData {
+  /** Current funding payment for the in-progress funding period. */
+  fundingPayment: string
+  /** Current funding rate for the in-progress funding period. */
+  fundingRate: string
+  /** Time-weighted-average the internal data-points for the in-progress funding period. */
+  internalTwap: string
+  /** Time-weighted-average the external data points for the in-progress funding period. */
+  externalTwap: string
+}
+
+/** Represents market data specific to a particular product type. */
+export interface ProductData {
+  perpetualData?: PerpetualData | undefined
 }
 
 /** Represents data generated by a market when open */
@@ -1152,6 +1301,8 @@ export interface MarketData {
   lastTradedPrice: string
   /** Market growth at the last market time window. */
   marketGrowth: string
+  /** Data related to the particular product type of the market. */
+  productData?: ProductData | undefined
 }
 
 /** Equity like share of liquidity fee for each liquidity provider */
@@ -1220,6 +1371,10 @@ export interface NetworkLimits {
   proposeMarketEnabledFrom: number
   /** Timestamp in Unix nanoseconds at which asset proposals will be enabled (0 indicates not set). */
   proposeAssetEnabledFrom: number
+  /** Are spot market proposals allowed at this point in time. */
+  canProposeSpotMarket: boolean
+  /** Are perpetual market proposals allowed at this point in time. */
+  canProposePerpetualMarket: boolean
 }
 
 /** Represents a liquidity order */
@@ -1273,6 +1428,60 @@ export interface LiquidityProvision {
 
 /** Status of a liquidity provision order. */
 export enum LiquidityProvision_Status {
+  /** STATUS_UNSPECIFIED - Always invalid */
+  STATUS_UNSPECIFIED = 0,
+  /** STATUS_ACTIVE - Liquidity provision is active */
+  STATUS_ACTIVE = 1,
+  /** STATUS_STOPPED - Liquidity provision was stopped by the network */
+  STATUS_STOPPED = 2,
+  /** STATUS_CANCELLED - Liquidity provision was cancelled by the liquidity provider */
+  STATUS_CANCELLED = 3,
+  /** STATUS_REJECTED - Liquidity provision was invalid and got rejected */
+  STATUS_REJECTED = 4,
+  /** STATUS_UNDEPLOYED - Liquidity provision is valid and accepted by network, but orders aren't deployed */
+  STATUS_UNDEPLOYED = 5,
+  /**
+   * STATUS_PENDING - Liquidity provision is valid and accepted by network
+   * but has never been deployed. If when it's possible to deploy the orders for the first time
+   * margin check fails, then they will be cancelled without any penalties.
+   */
+  STATUS_PENDING = 6,
+  UNRECOGNIZED = -1,
+}
+
+/** Liquidity provider commitment */
+export interface LiquidityProvisionV2 {
+  /** Unique ID for the liquidity provision. */
+  id: string
+  /** Unique party ID for the creator of the provision. */
+  partyId: string
+  /** Timestamp in Unix nanoseconds for when the order was created. */
+  createdAt: number
+  /** Timestamp in Unix nanoseconds for when the order was updated. */
+  updatedAt: number
+  /** Market ID for the order. */
+  marketId: string
+  /**
+   * Specified as a unitless number that represents the amount of settlement asset of the market.
+   * This field is an unsigned integer scaled to the asset's decimal places.
+   */
+  commitmentAmount: string
+  /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers. */
+  fee: string
+  /** Set of liquidity sell orders to meet the liquidity provision obligation. */
+  sells: LiquidityOrderReference[]
+  /** Set of liquidity buy orders to meet the liquidity provision obligation. */
+  buys: LiquidityOrderReference[]
+  /** Version of this liquidity provision order. */
+  version: number
+  /** Status of this liquidity provision order. */
+  status: LiquidityProvisionV2_Status
+  /** Reference shared between this liquidity provision and all its orders. */
+  reference: string
+}
+
+/** Status of a liquidity provision order. */
+export enum LiquidityProvisionV2_Status {
   /** STATUS_UNSPECIFIED - Always invalid */
   STATUS_UNSPECIFIED = 0,
   /** STATUS_ACTIVE - Liquidity provision is active */
@@ -1552,4 +1761,121 @@ export interface VectorValue {
 
 export interface MatrixValue {
   value: VectorValue[]
+}
+
+export interface ReferralProgram {
+  /**
+   * Incremental version of the program. It is incremented after each program
+   * update.
+   */
+  version: number
+  /** Unique ID generated from the proposal that created this program. */
+  id: string
+  /**
+   * Defined benefit tiers in increasing order. First element will give Tier 1,
+   * second element will give Tier 2, and so on. Determines the level of
+   * benefit a party can expect based on performance criteria.
+   */
+  benefitTiers: BenefitTier[]
+  /**
+   * Timestamp as Unix time in seconds, after which when the current epoch ends, the
+   * programs status will become STATE_CLOSED and benefits will be disabled.
+   */
+  endOfProgramTimestamp: number
+  /** Number of epochs over which to evaluate a referral set's running volume. */
+  windowLength: number
+  /**
+   * Defined staking tiers in increasing order. First element will give Tier 1,
+   * second element will give Tier 2, and so on. Determines the level of
+   * benefit a party can expect based on their staking.
+   */
+  stakingTiers: StakingTier[]
+}
+
+export interface VolumeBenefitTier {
+  /**
+   * Required running notional taker volume in quantum units for parties
+   * to access this tier.
+   */
+  minimumRunningNotionalTakerVolume: string
+  /** Proportion of the taker fees to be discounted */
+  volumeDiscountFactor: string
+}
+
+export interface BenefitTier {
+  /**
+   * Required running notional taker volume in quantum units for parties
+   * to access this tier.
+   */
+  minimumRunningNotionalTakerVolume: string
+  /**
+   * Required number of epochs a party must have been in a referral set to
+   * access this tier.
+   */
+  minimumEpochs: string
+  /** Proportion of the referee's taker fees to be rewarded to the referrer */
+  referralRewardFactor: string
+  /** Proportion of the referee's taker fees to be discounted */
+  referralDiscountFactor: string
+}
+
+export interface VestingBenefitTiers {
+  tiers: VestingBenefitTier[]
+}
+
+export interface VestingBenefitTier {
+  minimumQuantumBalance: string
+  rewardMultiplier: string
+}
+
+export interface StakingTier {
+  /**
+   * Required number of governance tokens ($VEGA) a referrer must have staked to
+   * receive the multiplier.
+   */
+  minimumStakedTokens: string
+  /**
+   * Multiplier applied to the referral reward factor when calculating referral
+   * rewards due to the referrer.
+   */
+  referralRewardMultiplier: string
+}
+
+export interface VolumeDiscountProgram {
+  /**
+   * Incremental version of the program. It is incremented after each program
+   * update.
+   */
+  version: number
+  /** Unique ID generated from the proposal that created this program. */
+  id: string
+  /**
+   * Defined benefit tiers in increasing order. First element will give Tier 1,
+   * second element will give Tier 2, and so on. Determines the level of
+   * benefit a party can expect based on performance criteria.
+   */
+  benefitTiers: VolumeBenefitTier[]
+  /**
+   * Timestamp as Unix time in seconds after which when the current epoch ends, the
+   * program's status will become STATE_CLOSED and benefits will be disabled.
+   */
+  endOfProgramTimestamp: number
+  /** Number of epochs over which to evaluate a referral set's running volume. */
+  windowLength: number
+}
+
+/** A list of activity streak benefit tiers */
+export interface ActivityStreakBenefitTiers {
+  /** The tiers. */
+  tiers: ActivityStreakBenefitTier[]
+}
+
+/** An activity streak benefit tier */
+export interface ActivityStreakBenefitTier {
+  /** The minimum number of epochs necessary for this tier. */
+  minimumActivityStreak: number
+  /** The reward multiplier applicable for this tier. */
+  rewardMultiplier: string
+  /** The vesting bonus applicable for this tier. */
+  vestingMultiplier: string
 }

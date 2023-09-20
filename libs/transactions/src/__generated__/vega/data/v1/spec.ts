@@ -81,3 +81,14 @@ export enum Condition_Operator {
   OPERATOR_LESS_THAN_OR_EQUAL = 5,
   UNRECOGNIZED = -1,
 }
+
+/** Trigger for an internal time data source. */
+export interface InternalTimeTrigger {
+  /** Trigger when the vega time is greater or equal to this time, in Unix seconds. */
+  initial?: number | undefined
+  /**
+   * Repeat the trigger every n seconds after the initial. If no time for
+   * initial was specified, begin repeating immediately.
+   */
+  every: number
+}
