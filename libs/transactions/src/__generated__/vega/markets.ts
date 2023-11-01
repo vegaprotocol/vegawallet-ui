@@ -309,7 +309,7 @@ export interface Market {
   positionDecimalPlaces: number
   /**
    * Percentage move up and down from the mid price which specifies the range of
-   * price levels over which automated liquidity provision orders will be deployed.
+   * price levels over which automated liquidity provisions will be deployed.
    */
   lpPriceRange: string
   /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */

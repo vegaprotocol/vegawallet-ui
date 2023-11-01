@@ -550,8 +550,8 @@ export enum StopOrder_RejectionReason {
   REJECTION_REASON_MAX_STOP_ORDERS_PER_PARTY_REACHED = 4,
   /** REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_WITHOUT_A_POSITION - Stop orders are not allowed if there is no open position */
   REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_WITHOUT_A_POSITION = 5,
-  /** REJECTION_REASON_STOP_ORDER_DOES_NOT_CLOSE_POSITION - This stop order does not close the position */
-  REJECTION_REASON_STOP_ORDER_DOES_NOT_CLOSE_POSITION = 6,
+  /** REJECTION_REASON_STOP_ORDER_NOT_CLOSING_THE_POSITION - This stop order does not close the position */
+  REJECTION_REASON_STOP_ORDER_NOT_CLOSING_THE_POSITION = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -1303,6 +1303,8 @@ export interface MarketData {
   marketGrowth: string
   /** Data related to the particular product type of the market. */
   productData?: ProductData | undefined
+  /** SLA performance for each liquidity provider. */
+  liquidityProviderSla: LiquidityProviderSLA[]
 }
 
 /** Equity like share of liquidity fee for each liquidity provider */
@@ -1317,6 +1319,31 @@ export interface LiquidityProviderFeeShare {
   averageScore: string
   /** The virtual stake of this liquidity provider. */
   virtualStake: string
+}
+
+/** SLA performance for each liquidity provider */
+export interface LiquidityProviderSLA {
+  /** Liquidity provider party ID. */
+  party: string
+  /** Indicates how often LP meets the commitment during the current epoch. */
+  currentEpochFractionOfTimeOnBook: string
+  /** Indicates how often LP met the commitment in the previous epoch. */
+  lastEpochFractionOfTimeOnBook: string
+  /** Indicates the fee penalty amount applied in the previous epoch. */
+  lastEpochFeePenalty: string
+  /** Shows the bond penalties from past epochs. */
+  lastEpochBondPenalty: string
+  /** Determines how the fee penalties from past epochs affect future fee revenue. */
+  hysteresisPeriodFeePenalties: string[]
+  /**
+   * Represents the total amount of funds LP must supply. The amount to be supplied is in the market’s
+   * settlement currency, spread on both buy and sell sides of the order book within a defined range.
+   */
+  requiredLiquidity: string
+  /** Notional volume of orders within the range provided on the buy side of the book. */
+  notionalVolumeBuys: string
+  /** Notional volume of orders within the range provided on the sell side of the book. */
+  notionalVolumeSells: string
 }
 
 /** Represents a list of valid (at the current timestamp) price ranges per associated trigger */
@@ -1401,11 +1428,11 @@ export interface LiquidityProvision {
   id: string
   /** Unique party ID for the creator of the provision. */
   partyId: string
-  /** Timestamp in Unix nanoseconds for when the order was created. */
+  /** Timestamp in Unix nanoseconds for when the liquidity provision was created. */
   createdAt: number
-  /** Timestamp in Unix nanoseconds for when the order was updated. */
+  /** Timestamp in Unix nanoseconds for when the liquidity provision was updated. */
   updatedAt: number
-  /** Market ID for the order. */
+  /** Market ID for the liquidity provision. */
   marketId: string
   /**
    * Specified as a unitless number that represents the amount of settlement asset of the market.
@@ -1418,70 +1445,16 @@ export interface LiquidityProvision {
   sells: LiquidityOrderReference[]
   /** Set of liquidity buy orders to meet the liquidity provision obligation. */
   buys: LiquidityOrderReference[]
-  /** Version of this liquidity provision order. */
+  /** Version of this liquidity provision. */
   version: number
-  /** Status of this liquidity provision order. */
+  /** Status of this liquidity provision. */
   status: LiquidityProvision_Status
   /** Reference shared between this liquidity provision and all its orders. */
   reference: string
 }
 
-/** Status of a liquidity provision order. */
+/** Status of a liquidity provision. */
 export enum LiquidityProvision_Status {
-  /** STATUS_UNSPECIFIED - Always invalid */
-  STATUS_UNSPECIFIED = 0,
-  /** STATUS_ACTIVE - Liquidity provision is active */
-  STATUS_ACTIVE = 1,
-  /** STATUS_STOPPED - Liquidity provision was stopped by the network */
-  STATUS_STOPPED = 2,
-  /** STATUS_CANCELLED - Liquidity provision was cancelled by the liquidity provider */
-  STATUS_CANCELLED = 3,
-  /** STATUS_REJECTED - Liquidity provision was invalid and got rejected */
-  STATUS_REJECTED = 4,
-  /** STATUS_UNDEPLOYED - Liquidity provision is valid and accepted by network, but orders aren't deployed */
-  STATUS_UNDEPLOYED = 5,
-  /**
-   * STATUS_PENDING - Liquidity provision is valid and accepted by network
-   * but has never been deployed. If when it's possible to deploy the orders for the first time
-   * margin check fails, then they will be cancelled without any penalties.
-   */
-  STATUS_PENDING = 6,
-  UNRECOGNIZED = -1,
-}
-
-/** Liquidity provider commitment */
-export interface LiquidityProvisionV2 {
-  /** Unique ID for the liquidity provision. */
-  id: string
-  /** Unique party ID for the creator of the provision. */
-  partyId: string
-  /** Timestamp in Unix nanoseconds for when the order was created. */
-  createdAt: number
-  /** Timestamp in Unix nanoseconds for when the order was updated. */
-  updatedAt: number
-  /** Market ID for the order. */
-  marketId: string
-  /**
-   * Specified as a unitless number that represents the amount of settlement asset of the market.
-   * This field is an unsigned integer scaled to the asset's decimal places.
-   */
-  commitmentAmount: string
-  /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers. */
-  fee: string
-  /** Set of liquidity sell orders to meet the liquidity provision obligation. */
-  sells: LiquidityOrderReference[]
-  /** Set of liquidity buy orders to meet the liquidity provision obligation. */
-  buys: LiquidityOrderReference[]
-  /** Version of this liquidity provision order. */
-  version: number
-  /** Status of this liquidity provision order. */
-  status: LiquidityProvisionV2_Status
-  /** Reference shared between this liquidity provision and all its orders. */
-  reference: string
-}
-
-/** Status of a liquidity provision order. */
-export enum LiquidityProvisionV2_Status {
   /** STATUS_UNSPECIFIED - Always invalid */
   STATUS_UNSPECIFIED = 0,
   /** STATUS_ACTIVE - Liquidity provision is active */
@@ -1704,6 +1677,8 @@ export interface Reward {
   marketId: string
   /** Type of reward being paid. */
   rewardType: string
+  /** The epoch when the reward is being released. */
+  lockedUntilEpoch: number
 }
 
 /** Details for rewards for a single asset */
@@ -1771,22 +1746,17 @@ export interface ReferralProgram {
   version: number
   /** Unique ID generated from the proposal that created this program. */
   id: string
-  /**
-   * Defined benefit tiers in increasing order. First element will give Tier 1,
-   * second element will give Tier 2, and so on. Determines the level of
-   * benefit a party can expect based on performance criteria.
-   */
+  /** Defined benefit tiers ordered by increasing discounts. */
   benefitTiers: BenefitTier[]
   /**
-   * Timestamp as Unix time in seconds, after which when the current epoch ends, the
-   * programs status will become STATE_CLOSED and benefits will be disabled.
+   * Timestamp in Unix nanoseconds, after which when the current epoch ends,
+   * the program will end and benefits will be disabled.
    */
   endOfProgramTimestamp: number
-  /** Number of epochs over which to evaluate a referral set's running volume. */
+  /** Number of epochs over which the referral set's running volume is evaluated. */
   windowLength: number
   /**
-   * Defined staking tiers in increasing order. First element will give Tier 1,
-   * second element will give Tier 2, and so on. Determines the level of
+   * Defined benefit tiers ordered by increasing reward multiplier. Determines the level of
    * benefit a party can expect based on their staking.
    */
   stakingTiers: StakingTier[]
@@ -1798,7 +1768,7 @@ export interface VolumeBenefitTier {
    * to access this tier.
    */
   minimumRunningNotionalTakerVolume: string
-  /** Proportion of the taker fees to be discounted */
+  /** Proportion of the taker fees to be discounted. */
   volumeDiscountFactor: string
 }
 
@@ -1813,9 +1783,9 @@ export interface BenefitTier {
    * access this tier.
    */
   minimumEpochs: string
-  /** Proportion of the referee's taker fees to be rewarded to the referrer */
+  /** Proportion of the referee's taker fees to be rewarded to the referrer. */
   referralRewardFactor: string
-  /** Proportion of the referee's taker fees to be discounted */
+  /** Proportion of the referee's taker fees to be discounted. */
   referralDiscountFactor: string
 }
 
@@ -1849,33 +1819,29 @@ export interface VolumeDiscountProgram {
   version: number
   /** Unique ID generated from the proposal that created this program. */
   id: string
-  /**
-   * Defined benefit tiers in increasing order. First element will give Tier 1,
-   * second element will give Tier 2, and so on. Determines the level of
-   * benefit a party can expect based on performance criteria.
-   */
+  /** Defined benefit tiers ordered by increasing discounts. */
   benefitTiers: VolumeBenefitTier[]
   /**
-   * Timestamp as Unix time in seconds after which when the current epoch ends, the
-   * program's status will become STATE_CLOSED and benefits will be disabled.
+   * Timestamp in Unix seconds, after which when the current epoch
+   * ends, the program will end and benefits will be disabled.
    */
   endOfProgramTimestamp: number
-  /** Number of epochs over which to evaluate a referral set's running volume. */
+  /** Number of epochs over which a referral set's running volume is evaluated. */
   windowLength: number
 }
 
 /** A list of activity streak benefit tiers */
 export interface ActivityStreakBenefitTiers {
-  /** The tiers. */
+  /** Defined benefit tiers ordered by increasing reward multipliers. */
   tiers: ActivityStreakBenefitTier[]
 }
 
 /** An activity streak benefit tier */
 export interface ActivityStreakBenefitTier {
-  /** The minimum number of epochs necessary for this tier. */
+  /** Number of epochs a party must be active to receive the multiplier. */
   minimumActivityStreak: number
-  /** The reward multiplier applicable for this tier. */
+  /** Reward multiplier applicable to this tier. */
   rewardMultiplier: string
-  /** The vesting bonus applicable for this tier. */
+  /** Vesting bonus applicable to this tier. */
   vestingMultiplier: string
 }

@@ -13,10 +13,11 @@ import type {
 } from './markets'
 import type {
   AccountType,
+  BenefitTier,
   DispatchStrategy,
   NetworkParameter,
-  ReferralProgram,
-  VolumeDiscountProgram,
+  StakingTier,
+  VolumeBenefitTier,
 } from './vega'
 
 export const protobufPackage = 'vega'
@@ -255,7 +256,7 @@ export interface NewMarketConfiguration {
   /**
    * DEPRECATED: Use liquidity SLA parameters instead.
    * Percentage move up and down from the mid price which specifies the range of
-   * price levels over which automated liquidity provision orders will be deployed.
+   * price levels over which automated liquidity provisions will be deployed.
    */
   lpPriceRange?: string | undefined
   /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */
@@ -321,7 +322,7 @@ export interface UpdateMarketConfiguration {
   /**
    * DEPRECATED: Use liquidity SLA parameters instead.
    * Percentage move up and down from the mid price which specifies the range of
-   * price levels over which automated liquidity provision orders will be deployed.
+   * price levels over which automated liquidity provisions will be deployed.
    */
   lpPriceRange?: string | undefined
   /** Linear slippage factor is used to cap the slippage component of maintenance margin - it is applied to the slippage volume. */
@@ -600,12 +601,50 @@ export enum Vote_Value {
 
 export interface UpdateVolumeDiscountProgram {
   /** Configuration for a change to update a volume discount program */
-  changes: VolumeDiscountProgram | undefined
+  changes: VolumeDiscountProgramChanges | undefined
+}
+
+export interface VolumeDiscountProgramChanges {
+  /**
+   * Defined benefit tiers in increasing order. First element will give Tier 1,
+   * second element will give Tier 2, and so on. Determines the level of
+   * benefit a party can expect based on performance criteria.
+   */
+  benefitTiers: VolumeBenefitTier[]
+  /**
+   * Timestamp as Unix time in seconds, after which when the current epoch
+   * ends, the program will end and benefits will be disabled.
+   */
+  endOfProgramTimestamp: number
+  /** Number of epochs over which to evaluate a referral set's running volume. */
+  windowLength: number
 }
 
 export interface UpdateReferralProgram {
   /** Configuration for change to update a referral program. */
-  changes: ReferralProgram | undefined
+  changes: ReferralProgramChanges | undefined
+}
+
+export interface ReferralProgramChanges {
+  /**
+   * Defined benefit tiers in increasing order. First element will give Tier 1,
+   * second element will give Tier 2, and so on. Determines the level of
+   * benefit a party can expect based on performance criteria.
+   */
+  benefitTiers: BenefitTier[]
+  /**
+   * Timestamp as Unix time in seconds, after which when the current epoch
+   * ends, the program will end and benefits will be disabled.
+   */
+  endOfProgramTimestamp: number
+  /** Number of epochs over which to evaluate a referral set's running volume. */
+  windowLength: number
+  /**
+   * Defined staking tiers in increasing order. First element will give Tier 1,
+   * second element will give Tier 2, and so on. Determines the level of
+   * benefit a party can expect based on their staking.
+   */
+  stakingTiers: StakingTier[]
 }
 
 export interface UpdateMarketState {

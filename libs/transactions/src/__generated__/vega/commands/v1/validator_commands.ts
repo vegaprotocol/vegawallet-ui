@@ -13,77 +13,71 @@ export const protobufPackage = 'vega.commands.v1'
 
 /** Kind of signature created by a node, for example, allow-listing a new asset, withdrawal etc */
 export enum NodeSignatureKind {
-  /** NODE_SIGNATURE_KIND_UNSPECIFIED - Represents an unspecified or missing value from the input */
+  /** NODE_SIGNATURE_KIND_UNSPECIFIED - Represents an unspecified or missing value from the input. */
   NODE_SIGNATURE_KIND_UNSPECIFIED = 0,
-  /** NODE_SIGNATURE_KIND_ASSET_NEW - Represents a signature for a new asset allow-listing */
+  /** NODE_SIGNATURE_KIND_ASSET_NEW - Represents a signature for a new asset allow-listing. */
   NODE_SIGNATURE_KIND_ASSET_NEW = 1,
-  /** NODE_SIGNATURE_KIND_ASSET_WITHDRAWAL - Represents a signature for an asset withdrawal */
+  /** NODE_SIGNATURE_KIND_ASSET_WITHDRAWAL - Represents a signature for an asset withdrawal. */
   NODE_SIGNATURE_KIND_ASSET_WITHDRAWAL = 2,
-  /** NODE_SIGNATURE_KIND_ERC20_MULTISIG_SIGNER_ADDED - Represents a signature for a new signer added to the erc20 multisig contract */
+  /** NODE_SIGNATURE_KIND_ERC20_MULTISIG_SIGNER_ADDED - Represents a signature for a new signer added to the erc20 multisig contract. */
   NODE_SIGNATURE_KIND_ERC20_MULTISIG_SIGNER_ADDED = 3,
-  /** NODE_SIGNATURE_KIND_ERC20_MULTISIG_SIGNER_REMOVED - Represents a signature for a signer removed from the erc20 multisig contract */
+  /** NODE_SIGNATURE_KIND_ERC20_MULTISIG_SIGNER_REMOVED - Represents a signature for a signer removed from the erc20 multisig contract. */
   NODE_SIGNATURE_KIND_ERC20_MULTISIG_SIGNER_REMOVED = 4,
-  /** NODE_SIGNATURE_KIND_ASSET_UPDATE - Represents a signature for an asset update allow-listing */
+  /** NODE_SIGNATURE_KIND_ASSET_UPDATE - Represents a signature for an asset update allow-listing. */
   NODE_SIGNATURE_KIND_ASSET_UPDATE = 5,
   UNRECOGNIZED = -1,
 }
 
 /**
- * Message from a validator signalling they are still online and validating blocks
- * or ready to validate blocks when they are still a pending validator
+ * A validator command which is sent automatically at regular intervals by any validator participating in the network.
+ * It is used to allow the network to know whether a validator is active, or if they have shut down.
  */
 export interface ValidatorHeartbeat {
   /** Node ID of the validator emitting the heartbeat. */
   nodeId: string
-  /** Signature from the validator made using the ethereum wallet. */
+  /** Signature from the validator made using their Ethereum wallet. */
   ethereumSignature: Signature | undefined
-  /** Signature from the validator made using the vega wallet. */
+  /** Signature from the validator made using their Vega wallet. */
   vegaSignature: Signature | undefined
   /** Message which has been signed. */
   message: string
 }
 
-/** Used to announce a node as a new pending validator */
+/** A command that allows a new node operator to announce themselves to the network as a new validator. */
 export interface AnnounceNode {
-  /** Vega public key, required field. */
+  /** Vega public key of the node being announced. */
   vegaPubKey: string
-  /** Ethereum public key, required field. */
+  /** Ethereum public key of the node being announced. */
   ethereumAddress: string
-  /** Public key for the blockchain, required field. */
+  /** Public key for the blockchain, currently the node's CometBFT key. */
   chainPubKey: string
-  /** URL with more info on the node. */
+  /** URL to the node operators homepage allowing stake holders to make an informed decision when delegating. */
   infoUrl: string
   /** Country code (ISO 3166-1 alpha-2) for the location of the node. */
   country: string
-  /** Node ID of the validator, i.e. the node's public master key. */
+  /** Node ID of the validator, which is the node's public master key. */
   id: string
-  /** Name of the validator. */
+  /** Human-readable name of the node. */
   name: string
-  /** AvatarURL of the validator. */
+  /** URL to the node operator's avatar. */
   avatarUrl: string
   /** Vega public key derivation index. */
   vegaPubKeyIndex: number
-  /**
-   * Epoch from which the validator is expected
-   * to be ready to validate blocks.
-   */
+  /** Epoch from which the node is expected to be ready to validate blocks. */
   fromEpoch: number
-  /** Signature from the validator made using the ethereum wallet. */
+  /** Signature from the node made using the ethereum wallet. */
   ethereumSignature: Signature | undefined
-  /** Signature from the validator made using the Vega wallet. */
+  /** Signature from the node made using the Vega wallet. */
   vegaSignature: Signature | undefined
   /** Ethereum public key to use as a submitter to allow automatic signature generation. */
   submitterAddress: string
 }
 
-/**
- * Used when a node votes for validating that a given resource exists or is valid,
- * for example, an ERC20 deposit is valid and exists on ethereum.
- */
+/** A validator command which is sent automatically by a node when it has verified a resource external to the network. */
 export interface NodeVote {
-  /** Reference identifying the resource making the vote, required field. */
+  /** Reference identifying the resource that has been verified. */
   reference: string
-  /** Type of NodeVote, also required. */
+  /** Type of external event that has been verified. */
   type: NodeVote_Type
 }
 
@@ -119,19 +113,19 @@ export enum NodeVote_Type {
   UNRECOGNIZED = -1,
 }
 
-/** Represents a signature from a validator, to be used by a foreign chain in order to recognise a decision taken by the Vega network */
+/** A validator command sent automatically containing a signature that can be used on a foreign chain to process an action. */
 export interface NodeSignature {
-  /** ID of the resource being signed. */
+  /** ID of the resource that the signature relates to. */
   id: string
-  /** The signature generated by the signer. */
+  /** Signature generated by the node. */
   sig: Uint8Array
   /** Kind of resource being signed. */
   kind: NodeSignatureKind
 }
 
-/** Event forwarded to the Vega network to provide information on events happening on other networks */
+/** A validator command sent automatically that provides information of events that have happened on foreign chains. */
 export interface ChainEvent {
-  /** Transaction ID of the transaction in which the events happened, usually a hash. */
+  /** ID of the transaction on the foreign chain that caused the event. */
   txId: string
   /** Arbitrary one-time integer used to prevent replay attacks. */
   nonce: number
@@ -143,43 +137,43 @@ export interface ChainEvent {
   stakingEvent?: StakingEvent | undefined
   /** Ethereum ERC20 multisig event. */
   erc20Multisig?: ERC20MultiSigEvent | undefined
-  /** Arbitrary contract call */
+  /** Ethereum contract call event. */
   contractCall?: EthContractCallEvent | undefined
 }
 
-/** Transaction to allow a validator to rotate their Vega keys */
+/** A validator command sent manually that allows a node operator to indicate to the network that their node's Vega key will be rotated. */
 export interface KeyRotateSubmission {
   /** New Vega public key derivation index. */
   newPubKeyIndex: number
-  /** Target block at which the key rotation will take effect on. */
+  /** Block height at which the key rotation will take effect. */
   targetBlock: number
-  /** New public key to rotate to. */
+  /** Vega public key that would be rotated to. */
   newPubKey: string
-  /** Hash of currently used public key. */
+  /** Hash of the node's current Vega public key. */
   currentPubKeyHash: string
 }
 
-/** Transaction to allow a validator to rotate their ethereum keys */
+/** A validator command sent manually that allows a node operator to indicate to the network that their node's Ethereum key will be rotated. */
 export interface EthereumKeyRotateSubmission {
-  /** Target block at which the key rotation will take effect on. */
+  /** Block height at which the key rotation will take effect. */
   targetBlock: number
-  /** New address to rotate to. */
+  /** Ethereum address that is being rotated to. */
   newAddress: string
-  /** Currently used public address. */
+  /** Ethereum address of the node's current Ethereum keys. */
   currentAddress: string
   /** Ethereum public key to use as a submitter to allow automatic signature generation. */
   submitterAddress: string
-  /** Signature that can be verified using the new ethereum address. */
+  /** Signature signed by the new Ethereum key that can be verified to prove ownership. */
   ethereumSignature: Signature | undefined
 }
 
-/** Transaction for a validator to submit a floating point value */
+/** A validator command sent automatically to reach consensus on floating point values. */
 export interface StateVariableProposal {
-  /** State value proposal details. */
+  /** Details of the state variable being proposed. */
   proposal: StateValueProposal | undefined
 }
 
-/** Transaction for a validator to suggest a protocol upgrade */
+/** A validator command sent manually by a node operator to propose a protocol upgrade. */
 export interface ProtocolUpgradeProposal {
   /** Block height at which to perform the upgrade. */
   upgradeBlockHeight: number

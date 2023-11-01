@@ -7,7 +7,6 @@ import type {
 import type {
   AccountType,
   DispatchStrategy,
-  LiquidityOrder,
   Order_TimeInForce,
   Order_Type,
   PeggedOrder,
@@ -21,15 +20,13 @@ import type { NodeSignatureKind } from './validator_commands'
 export const protobufPackage = 'vega.commands.v1'
 
 /**
- * Batch of order instructions.
- * This command accepts only the following batches of commands
- * and will be processed in the following order:
+ * A command that allows the submission of a batch market instruction which wraps up multiple market instructions into a single transaction.
+ * These instructions are then processed sequentially in the following order:
  * - OrderCancellation
  * - OrderAmendment
  * - OrderSubmission
- * The total amount of commands in the batch across all three lists of
- * instructions is restricted by the following network parameter:
- * "spam.protection.max.batchSize"
+ * - StopOrderSubmission
+ * where the maximum allow of instructions in a batch is controlled by the network parameter "spam.protection.max.batchSize".
  */
 export interface BatchMarketInstructions {
   /** List of order cancellations to be processed sequentially. */
@@ -45,57 +42,46 @@ export interface BatchMarketInstructions {
 }
 
 /**
- * Stop order submission submits stops orders.
- * It is possible to make a single stop order submission by
- * specifying a single direction,
- * or an OCO (One Cancels the Other) stop order submission
- * by specifying a configuration for both directions
+ * A command that allows a party to submit a stop order for a given market.
+ * A stop order is a normal order that remains off the order book and is only submitted if a given trigger is breached from a particular direction.
+ * If both rises-above and falls-below are configured, then if one is triggered the other will be cancelled (OCO).
  */
 export interface StopOrdersSubmission {
-  /**
-   * Stop order that will be triggered
-   * if the price rises above a given trigger price.
-   */
+  /** Stop order that will be triggered if the price rises above a given trigger price. */
   risesAbove?: StopOrderSetup | undefined
-  /**
-   * Stop order that will be triggered
-   * if the price falls below a given trigger price.
-   */
+  /** Stop order that will be triggered if the price falls below a given trigger price. */
   fallsBelow?: StopOrderSetup | undefined
 }
 
-/** Price and expiry configuration for a stop order */
+/** Price and expiry configuration for a stop order. */
 export interface StopOrderSetup {
   /** Order to be submitted once the trigger is breached. */
   orderSubmission: OrderSubmission | undefined
-  /** Optional expiry timestamp. */
+  /** Timestamp, in Unix nanoseconds, for when the stop order should expire. If not set the stop order will not expire. */
   expiresAt?: number | undefined
   /** Strategy to adopt if the expiry time is reached. */
   expiryStrategy?: StopOrder_ExpiryStrategy | undefined
-  /** Fixed price at which the order will be submitted. */
+  /** Order will be submitted if the last traded price on the market breaches the given price. */
   price?: string | undefined
-  /** Trailing percentage at which the order will be submitted. */
+  /** Order will be submitted if the last traded price has moved the given percent from the highest/lowest mark price since the stop order was submitted. */
   trailingPercentOffset?: string | undefined
 }
 
 /**
- * Cancel a stop order.
- * The following combinations are available:
- * Empty object will cancel all stop orders for the party
- * Market ID alone will cancel all stop orders in a market
- * Market ID and order ID will cancel a specific stop order in a market
- * If the stop order is part of an OCO, both stop orders will be cancelled
+ * A command that instructs the network to cancel untriggered stop orders that were submitted by the sender of this transaction.
+ * If any cancelled stop order is part of an OCO, both stop orders will be cancelled.
+ * It is not possible to cancel another party's stop orders with this command.
  */
 export interface StopOrdersCancellation {
-  /** Optional market ID. */
+  /** Restrict cancellations to those submitted to the given market. If not set, all stop orders across all markets will be cancelled. */
   marketId?: string | undefined
-  /** Optional order ID. */
+  /** Restrict cancellations to a stop order with the given ID. If set, then a market ID must also be provided. */
   stopOrderId?: string | undefined
 }
 
-/** Order submission is a request to submit or create a new order on Vega */
+/** A command that submits an order to the Vega network for a given market. */
 export interface OrderSubmission {
-  /** Market ID for the order, required field. */
+  /** Market ID to submit the order to. */
   marketId: string
   /**
    * Price for the order, the price is an integer, for example `123456` is a correctly
@@ -104,34 +90,28 @@ export interface OrderSubmission {
    * This field is an unsigned integer scaled to the market's decimal places.
    */
   price: string
-  /** Size for the order, for example, in a futures market the size equals the number of units, cannot be negative. */
+  /** Size for the order, for example, in a futures market the size equals the number of units. */
   size: number
-  /** Side for the order, e.g. SIDE_BUY or SIDE_SELL, required field. */
+  /** Which side of the order book the order is for, e.g. buy or sell. */
   side: Side
-  /** Time in force indicates how long an order will remain active before it is executed or expires, required field. */
+  /** Time in force indicates how long an order will remain active before it is executed or expires.. */
   timeInForce: Order_TimeInForce
-  /**
-   * Timestamp in Unix nanoseconds for when the order will expire,
-   * required field only for `Order.TimeInForce`.TIME_IN_FORCE_GTT`.
-   */
+  /** Timestamp, in Unix nanoseconds, for when the order will expire. Can only be set when the order's time-in-force is GTT. */
   expiresAt: number
-  /** Type for the order, required field - See `Order.Type`. */
+  /** Type of the order. */
   type: Order_Type
-  /**
-   * Reference given for the order, this is typically used to retrieve an order submitted through consensus, currently
-   * set internally by the node to return a unique reference ID for the order submission.
-   */
+  /** Arbitrary optional reference for the order, to be used as a human-readable non-unique identifier for the order. */
   reference: string
-  /** Used to specify the details for a pegged order. */
+  /** Pegged order details. If set, the order's price will be offset from a particular reference price of the order book at all times. */
   peggedOrder: PeggedOrder | undefined
-  /** Only valid for Limit orders. Cannot be True at the same time as Reduce-Only. */
+  /** If set, the order will only be executed if it would not trade on entry to the order book. Only valid for limit orders. */
   postOnly: boolean
   /**
-   * Only valid for Non-Persistent orders. Cannot be True at the same time as Post-Only.
-   * If set, order will only be executed if the outcome of the trade moves the trader's position closer to 0.
+   * If set, the order will only be executed if the outcome of the trade moves the trader's position closer to 0.
+   * Only valid for non-persistent orders.
    */
   reduceOnly: boolean
-  /** Parameters used to specify an iceberg order. */
+  /** Iceberg order details. If set, the order will exist on the order book in chunks. */
   icebergOpts?: IcebergOpts | undefined
 }
 
@@ -143,24 +123,28 @@ export interface IcebergOpts {
   minimumVisibleSize: number
 }
 
-/** Order cancellation is a request to cancel an existing order on Vega */
+/**
+ * A command that instructs the network to cancel orders, active or partially filled, that were previously submitted by the sender of this transaction.
+ * It is not possible to cancel another party's order with this command.
+ */
 export interface OrderCancellation {
-  /** Unique ID for the order. This is set by the system after consensus. Required field. */
+  /** Restrict cancellations to an order with the given ID. If set, then a market ID must also be provided. */
   orderId: string
-  /** Market ID for the order, required field. */
+  /** Restrict cancellations to those submitted to the given market. If not set, all stop orders across all markets will be cancelled. */
   marketId: string
 }
 
-/** An order amendment is a request to amend or update an existing order on Vega */
+/**
+ * A command that allows a party to update the details of an existing order.
+ * Any field that is left unset or as a default value indicates that this field on the original order will be left unchanged.
+ * It is not possible to change an order's type through this command.
+ */
 export interface OrderAmendment {
-  /** Order ID, this is required to find the order and will not be updated, required field. */
+  /** ID of the order to amend. */
   orderId: string
-  /** Market ID, this is required to find the order and will not be updated. */
+  /** Market ID that the order was originally submitted to. */
   marketId: string
-  /**
-   * Amend the price for the order if the price value is set, otherwise price will remain unchanged.
-   * This field is an unsigned integer scaled to the market's decimal places.
-   */
+  /** New price for the order. This field is an unsigned integer scaled to the market's decimal places. */
   price?: string | undefined
   /**
    * Amend the size for the order by the delta specified:
@@ -170,81 +154,86 @@ export interface OrderAmendment {
    * This field needs to be scaled using the market's position decimal places.
    */
   sizeDelta: number
-  /** Amend the expiry time for the order, if the Timestamp value is set, otherwise expiry time will remain unchanged. */
+  /** Timestamp, in Unix nanoseconds, for the new expiry time for the order. */
   expiresAt?: number | undefined
-  /** Amend the time in force for the order, set to TIME_IN_FORCE_UNSPECIFIED to remain unchanged. */
+  /** New time in force for the order. */
   timeInForce: Order_TimeInForce
-  /** Amend the pegged order offset for the order. This field is an unsigned integer scaled to the market's decimal places. */
+  /**
+   * New pegged offset for the order.
+   * This field is an unsigned integer scaled to the market's decimal places.
+   */
   peggedOffset: string
-  /** Amend the pegged order reference for the order. */
+  /** New pegged reference for the order. */
   peggedReference: PeggedReference
 }
 
-/** A liquidity provision submitted for a given market */
+/**
+ * A command that indicates to the network the party's intention to supply liquidity to the given market and become a liquidity provider.
+ * An active liquidity provider for a market will earn fees based on the trades that occur in the market.
+ */
 export interface LiquidityProvisionSubmission {
-  /** Market ID for the order. */
+  /** Market that the submitter wishes to provide liquidity for. */
   marketId: string
   /**
-   * Specified as a unitless number that represents the amount of settlement asset of the market.
+   * Amount that the submitter will commit as liquidity to the market, specified as a unitless number in the settlement asset of the market.
    * This field is an unsigned integer scaled using the asset's decimal places.
    */
   commitmentAmount: string
   /** Nominated liquidity fee factor, which is an input to the calculation of taker fees on the market, as per setting fees and rewarding liquidity providers. */
   fee: string
-  /** Set of liquidity sell orders to meet the liquidity provision obligation. */
-  sells: LiquidityOrder[]
-  /** Set of liquidity buy orders to meet the liquidity provision obligation. */
-  buys: LiquidityOrder[]
-  /** Reference to be added to every order created out of this liquidity provision submission. */
+  /** Arbitrary reference to be added to every order created out of this liquidity provision submission. */
   reference: string
 }
 
-/** Cancel a liquidity provision request */
+/** Command that allows a liquidity provider to inform the network that they will stop providing liquidity for a market. */
 export interface LiquidityProvisionCancellation {
-  /** Unique ID for the market with the liquidity provision to be cancelled. */
+  /** Market that the submitter will stop providing liquidity for. */
   marketId: string
 }
 
-/** Amend a liquidity provision request */
+/**
+ * Command that allows a liquidity provider to update the details of their existing liquidity commitment.
+ * Any field that is left unset or as a default value indicates that this field on the original submission will be left unchanged.
+ */
 export interface LiquidityProvisionAmendment {
-  /** Unique ID for the market with the liquidity provision to be amended. */
+  /** Market that the submitter wants to amend the liquidity commitment for. */
   marketId: string
-  /** From here at least one of the following is required to consider the command valid. */
+  /** New commitment amount. */
   commitmentAmount: string
-  /** empty strings means no change */
+  /** New nominated liquidity fee factor. */
   fee: string
-  /** empty slice means no change */
-  sells: LiquidityOrder[]
-  /** empty slice means no change */
-  buys: LiquidityOrder[]
-  /** empty string means no change */
+  /** New arbitrary reference to be added to every order created out of this liquidity provision submission. */
   reference: string
 }
 
-/** Represents the submission request to withdraw funds for a party on Vega */
+/**
+ * Command to instruct the network to process an asset withdrawal from the Vega network.
+ * The process is specific to the destination foreign chain, for example, a withdrawal to Ethereum will generate signatures
+ * that allow funds to be taken across the bridge.
+ */
 export interface WithdrawSubmission {
-  /** Amount to be withdrawn. This field is an unsigned integer scaled to the asset's decimal places. */
+  /** Amount to be withdrawn, as an unsigned integer scaled to the asset's decimal places. */
   amount: string
   /** Asset to be withdrawn. */
   asset: string
-  /** Foreign chain specifics. */
+  /** Details specific to the foreign chain, such as the receiver address. */
   ext: WithdrawExt | undefined
 }
 
 /**
- * Command to submit a new proposal for the
- * Vega network governance
+ * Command that allows a token holder to submit a governance proposal that can be voted on by any other token holders, and eventually enacted on the Vega network.
+ * For example this command can be used to propose a new market.
  */
 export interface ProposalSubmission {
-  /** Reference identifying the proposal. */
+  /** Arbitrary human-readable reference identifying the proposal. */
   reference: string
-  /** Proposal configuration and the actual change that is meant to be executed when proposal is enacted. */
+  /** Proposal terms containing the type and details of the proposal, as well as time spans for voting and enactment. */
   terms: ProposalTerms | undefined
   /** Rationale behind a proposal. */
   rationale: ProposalRationale | undefined
 }
 
-/** Command to submit a new vote for a governance proposal. */
+/** Command that allows a token holder to vote for or against an active governance proposal. */
 export interface VoteSubmission {
   /** Submit vote for the specified proposal ID. */
   proposalId: string
@@ -252,21 +241,24 @@ export interface VoteSubmission {
   value: Vote_Value
 }
 
-/** Command to submit an instruction to delegate some stake to a node */
+/**
+ * Command to allow a token holder to delegate their tokens to a validator to help secure the network.
+ * A token holder delegating to a validator will earn rewards based on the amount they have delegated, and the performance of the chosen validator.
+ */
 export interface DelegateSubmission {
-  /** Delegate to the specified node ID. */
+  /** Node ID to delegate stake to. */
   nodeId: string
-  /** Amount of stake to delegate. This field is an unsigned integer scaled to the asset's decimal places. */
+  /** Amount of stake to delegate, as an unsigned integer scaled to the governance asset's decimal places. */
   amount: string
 }
 
+/** Command to allow a token holder to instruct the network to remove their delegated stake from a given validator node. */
 export interface UndelegateSubmission {
-  /** Node ID to delegate to. */
+  /** Node ID to undelegate stake from. */
   nodeId: string
   /**
-   * Optional, if not specified = ALL.
-   * If provided, this field must be an unsigned integer passed as a string
-   * and needs to be scaled using the asset decimal places for the token.
+   * Amount to undelegate, as an unsigned integer scaled to the governance asset's decimal places.
+   * If not set, then all delegations to the given validator node will be removed.
    */
   amount: string
   /** Method of delegation. */
@@ -275,17 +267,20 @@ export interface UndelegateSubmission {
 
 export enum UndelegateSubmission_Method {
   METHOD_UNSPECIFIED = 0,
+  /** METHOD_NOW - Undelegate straight away, losing all rewards for the current epoch. */
   METHOD_NOW = 1,
+  /** METHOD_AT_END_OF_EPOCH - Undelegate at the end of an epoch, retaining all rewards for the current epoch. */
   METHOD_AT_END_OF_EPOCH = 2,
   UNRECOGNIZED = -1,
 }
 
-/** Transfer initiated by a party */
+/**
+ * Command that allows a party to move assets from one account to another.
+ * A transfer can be set up as a single one-off transfer, or a recurring transfer that occurs once at the start of each epoch.
+ * Each transfer incurs a fee as specified by the network parameter `transfer.fee.factor`
+ */
 export interface Transfer {
-  /**
-   * Account type from which the funds of the party
-   * should be taken.
-   */
+  /** Account type from which the funds of the party should be taken. */
   fromAccountType: AccountType
   /** Public key of the destination account. */
   to: string
@@ -293,39 +288,48 @@ export interface Transfer {
   toAccountType: AccountType
   /** Asset ID of the asset to be transferred. */
   asset: string
-  /** Amount to be taken from the source account. This field is an unsigned integer scaled to the asset's decimal places. */
+  /** Amount to be taken from the source account, as an unsigned integer scaled to the asset's decimal places. */
   amount: string
   /** Reference to be attached to the transfer. */
   reference: string
+  /** Details of a one-off transfer that is executed once at a specified time. */
   oneOff?: OneOffTransfer | undefined
+  /** Details of a transfer that is executed once every epoch until stopped. */
   recurring?: RecurringTransfer | undefined
 }
 
-/** Specific details for a one off transfer */
+/** Details for a one-off transfer. */
 export interface OneOffTransfer {
-  /** Timestamp in Unix nanoseconds for when the transfer should be delivered into the receiver's account. */
+  /** Timestamp, in Unix nanoseconds, for when the transfer should be executed, i.e., assets transferred into the receiver's account. */
   deliverOn: number
 }
 
-/** Specific details for a recurring transfer */
+/** Details for a recurring transfer */
 export interface RecurringTransfer {
-  /** First epoch from which this transfer shall be paid. */
+  /** First epoch from which this transfer shall be executed. */
   startEpoch: number
-  /** Last epoch at which this transfer shall be paid. */
+  /** Last epoch at which this transfer shall be executed. */
   endEpoch?: number | undefined
-  /** Factor needs to be > 0. */
+  /**
+   * Factor that the initial transfer amount is multiplied by for each epoch that it is executed.
+   * For example if the initial transfer amount is 1000 and the factor is 0.5, then the amounts transferred per epoch will be 1000, 500, 250, 125, etc.
+   */
   factor: string
   /** Optional parameter defining how a transfer is dispatched. */
   dispatchStrategy: DispatchStrategy | undefined
 }
 
-/** Request for cancelling a recurring transfer */
+/** Command that can be used by the party that initiated a transfer to instruct the network to stop an active recurring transaction. */
 export interface CancelTransfer {
   /** Transfer ID of the transfer to cancel. */
   transferId: string
 }
 
-/** Transaction for a validator to submit signatures to a smart contract */
+/**
+ * Command that can be used by a validator to instruct the network to generate signatures to add or remove validators from the multisig-control contract.
+ * Signatures can only be generated for validator nodes that have been promoted or demoted from the consensus validator set, and any attempt to generate signatures for another node will be rejected.
+ * The generated signatures can only be submitted to the contract by the Ethereum addresses included in the command.
+ */
 export interface IssueSignatures {
   /** Ethereum address which will submit the signatures to the smart contract. */
   submitter: string
@@ -336,56 +340,58 @@ export interface IssueSignatures {
 }
 
 /**
- * Request for creating a referral set
- *
- * Creates a referral set. The creator automatically becomes
- * the leader, called a referrer. This cannot be changed.
- * A referrer cannot be part of an existing set as referrer or referee.
+ * Command that a party can use to instruct the network to create a new referral set on the network.
+ * The submitter of this command will become the referrer of the new set and cannot be the referrer or a referee of another set.
+ * A referrer can use the referral set ID as a referral code to attract others to the Vega network and have fees reduced for the referral set.
  */
 export interface CreateReferralSet {
+  /** Whether or not the referral set should be considered a team that can participate in team games on the network. */
   isTeam: boolean
+  /** Team details, if the referral set is to be considered a team. */
   team?: CreateReferralSet_Team | undefined
 }
 
 export interface CreateReferralSet_Team {
-  /** Team name to be added to the referral banner. */
+  /** Name of the team. */
   name: string
-  /** Optional link to a team forum, discord, etc. */
+  /** External link to the team's homepage. */
   teamUrl?: string | undefined
-  /** Optional link to an image to be used as the team avatar. */
+  /** External link to an avatar for the team. */
   avatarUrl?: string | undefined
-  /** Is this team closed for external other users */
+  /** Whether or not the team is closed to new party members. */
   closed: boolean
 }
 
-/** Request for updating a referral set's properties */
+/**
+ * A command that allows the referrer of a referral set to update team details for a referral set.
+ * Any field that is left unset or has a default value indicates that this field on the original referral set will be left unchanged.
+ */
 export interface UpdateReferralSet {
   /** ID of the referral set to update. */
   id: string
+  /** Whether or not the referral set should be considered a team that can participate in team games on the network. */
   isTeam: boolean
+  /** Team details, if the referral set is to be considered a team. */
   team?: UpdateReferralSet_Team | undefined
 }
 
 export interface UpdateReferralSet_Team {
-  /** Optional team name to be added to the referral banner. */
+  /** New name of the team. */
   name?: string | undefined
-  /** Optional link to a team forum, discord, etc. */
+  /** New link to the team's homepage. */
   teamUrl?: string | undefined
-  /** Optional link to an image to be used as the team avatar. */
+  /** New link to an avatar for the team. */
   avatarUrl?: string | undefined
-  /** Is this team closed for external other users */
+  /** Whether or not the team is closed to new party members. */
   closed?: boolean | undefined
 }
 
 /**
- * Request to apply a referral code
- *
- * A party that joins a referral team is called a referee. A referee cannot
- * create a referral set or join multiple sets.
- * To switch, the referee can ask to join another set, and the switch will
- * be effective at the end of the epoch.
+ * Command that allows the submitter to join a referral set and earn a collective reduction in fees based on the activity of all members of that set.
+ * A party that joins a referral set is called a referee. A referee can only be a member of one referral set and cannot themselves be or become a referrer.
+ * To switch to another referral set, a subsequent command can be sent and the switch will take effect at the end of the epoch.
  */
 export interface ApplyReferralCode {
-  /** Referral code for the set to join. */
+  /** Referral code, normally the referral set ID, for the party to join. */
   id: string
 }
